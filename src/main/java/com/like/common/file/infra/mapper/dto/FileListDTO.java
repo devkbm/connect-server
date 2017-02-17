@@ -1,10 +1,15 @@
-package com.like.common.file.service.dto;
+package com.like.common.file.infra.mapper.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class FileListDTO implements Serializable {
 		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5209972853064339607L;
+
 	/**
 	 * 생성일자
 	 */

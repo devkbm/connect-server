@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.like.common.file.service.dto.FileListDTO;
+import com.like.common.file.infra.mapper.dto.FileListDTO;
 
 @Mapper
 public interface FileMapper {

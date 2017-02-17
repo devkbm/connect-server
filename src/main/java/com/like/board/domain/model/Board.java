@@ -7,16 +7,18 @@ import java.util.*;
 import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-
-
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.*;
 import com.like.common.domain.AuditEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles"})
+@Getter
+@Setter
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {
@@ -59,7 +61,7 @@ public class Board extends AuditEntity implements Serializable {
      * 시작일자
      */	
 	@Column(name="from_dt")
-	@JsonFormat(pattern = "dd::MM::yyyy")
+	//@JsonFormat(pattern = "dd::MM::yyyy")
 	LocalDate fromDt;
     
     /**
@@ -105,8 +107,7 @@ public class Board extends AuditEntity implements Serializable {
     }
     
     public boolean hasParentBoard() {    	    		    
-		//return StringUtils.isEmpty(this.ppkBoard) ? false : true;
-    	return false;
+		return StringUtils.isEmpty(this.ppkBoard) ? false : true;    	
 	}
     
     public void setParentRoot() {
@@ -122,51 +123,6 @@ public class Board extends AuditEntity implements Serializable {
 		/*if (article.getBoard() != this) {	// 무한루프에 빠지지 않도록 체크
 			article.setBoard(this);
 		}*;	*/
-	}
-
-
-	public Long getPkBoard() {
-		return pkBoard;
-	}
-
-	public String getPpkBoard() {
-		return ppkBoard;
-	}
-
-	public String getBoardType() {
-		return boardType;
-	}
-
-	public String getBoardNm() {
-		return boardNm;
-	}
-
-	public String getBoardDesc() {
-		return boardDesc;
-	}
-
-	public LocalDate getFromDt() {
-		return fromDt;
-	}
-
-	public LocalDate getToDt() {
-		return toDt;
-	}
-
-	public String getUseYn() {
-		return useYn;
-	}
-
-	public long getArticleCnt() {
-		return articleCnt;
-	}
-
-	public long getSeq() {
-		return seq;
-	}
-
-	public List<Article> getArticles() {
-		return articles;
 	}
 
 	@Override

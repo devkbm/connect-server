@@ -17,10 +17,10 @@ public interface BoardRepository {
 	List<Board> getBoardList();
 	
 	List<Board> getBoardList(String boardName);
+		
+	void saveBoard(Board board);
 	
-	List<Map<String, Object>> getBoardListByTree(Map<String, Object> map);
-	
-	void saveBoard(Board board);	
+	void deleteBoard(Long pkBoard);
 	
 	Long saveArticle(Article article, Long fkBoard);
 	

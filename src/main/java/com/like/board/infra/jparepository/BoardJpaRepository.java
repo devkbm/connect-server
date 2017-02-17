@@ -7,21 +7,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
-import com.like.board.infra.mapper.BoardMapper;
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import com.like.board.domain.model.*;
 
 @Repository
-public class BoardJpaRepository implements BoardRepository {
-
+public class BoardJpaRepository extends QueryDslRepositorySupport implements BoardRepository {
+	
+	public BoardJpaRepository() {
+		super(Board.class);
+	}
+	
+	@PersistenceContext
 	private EntityManager entityManager;
 			
 	@Autowired
@@ -32,27 +37,24 @@ public class BoardJpaRepository implements BoardRepository {
 	
 	@Autowired
 	private JpaArticleCheck jpaArticleCheck;
+		
 	
-	@Autowired
-	private BoardMapper boardDAO;
+	private final QBoard qBoard = QBoard.board;
+	private final QArticle qArticle = QArticle.article;
+	private final QArticleCheck qArticleCheck = QArticleCheck.articleCheck;
 	
-	public BoardJpaRepository() {	
-	}
-	
-	@PersistenceContext
+	/*@PersistenceContext
 	public void setEntityManager(EntityManager entityManager) {	
 		this.entityManager = entityManager;
-	}
+	}*/
 
 	public ArticleCheck findFkarticleAndSysuser(Long fkarticle, String userId) {
-									
-		QArticleCheck tbl = QArticleCheck.articleCheck;
-		
+												
 		JPAQuery<ArticleCheck> query = new JPAQuery<ArticleCheck>(this.entityManager);
 					
-		return query.from(tbl)
-					.where(tbl.sysUser.eq(userId)
-					  .and(tbl.article.pkArticle.eq(fkarticle)))
+		return query.from(qArticleCheck)
+					.where(qArticleCheck.sysUser.eq(userId)
+					  .and(qArticleCheck.article.pkArticle.eq(fkarticle)))
 					.fetchOne();		
 	}
 	
@@ -67,18 +69,15 @@ public class BoardJpaRepository implements BoardRepository {
 	}
 	
 	public List<Board> getBoardList(String likeBoardName) {		
+				
+		JPAQuery<Board> query = new JPAQuery<Board>(this.entityManager);		
 		
-		QBoard tbl = QBoard.board;
-		JPAQuery<Board> query = new JPAQuery<Board>(this.entityManager);
-					
-		return query.from(tbl)
-					.where(tbl.boardNm.like(likeBoardName))
-					.fetch();				                    				
-	}
-
-	@Override
-	public List<Map<String, Object>> getBoardListByTree(Map<String, Object> map) {		
-		return boardDAO.getBoardListByTree(map);
+		//query = (JPAQuery) super.getQuerydsl().applyPagination(pageable, query);
+		
+		return query.from(qBoard)
+					.where(qBoard.boardNm.like(likeBoardName))
+					.fetch();
+				
 	}
 
 	@Override
@@ -87,6 +86,13 @@ public class BoardJpaRepository implements BoardRepository {
 			board.setParentRoot();
 		}
 		jpaBoard.save(board);
+	}
+		
+
+	@Override
+	public void deleteBoard(Long pkBoard) {
+		// TODO Auto-generated method stub
+		jpaBoard.delete(pkBoard);
 	}
 
 	@Override
@@ -117,33 +123,29 @@ public class BoardJpaRepository implements BoardRepository {
 	}
 	
 	private void deleteArticleCheck(Long fkArticle) {
-		
-		QArticleCheck tbl = QArticleCheck.articleCheck;
-						
-		new JPADeleteClause(entityManager, tbl).where(tbl.article.pkArticle.eq(fkArticle)).execute();		
+									
+		new JPADeleteClause(entityManager, qArticleCheck).where(qArticleCheck.article.pkArticle.eq(fkArticle)).execute();		
 	}
 
 	@Override
-	public ArticleCheck getArticleCheck(Long fkarticle, String userId) {		
-		QArticleCheck tbl = QArticleCheck.articleCheck;
+	public ArticleCheck getArticleCheck(Long fkarticle, String userId) {				
 		
 		JPAQuery<ArticleCheck> query = new JPAQuery<ArticleCheck>(this.entityManager);
 		
-		return query.from(tbl)
-					.where(tbl.sysUser.eq(userId)
-					  .and(tbl.article.pkArticle.eq(fkarticle)))
+		return query.from(qArticleCheck)
+					.where(qArticleCheck.sysUser.eq(userId)
+					  .and(qArticleCheck.article.pkArticle.eq(fkarticle)))
 					.fetchOne();			
 	}
 	
 	@Override
 	public Long getArticleNextSeq(Long pkboard) {
-		QArticle tbl = QArticle.article;
 				
 		JPAQuery<Article> query = new JPAQuery<Article>(this.entityManager);
 		
-		Long rtn = query.select(tbl.seq.max())
-			  			.from(tbl)
-			  			.where(tbl.board.pkBoard.eq(pkboard))				  
+		Long rtn = query.select(qArticle.seq.max())
+			  			.from(qArticle)
+			  			.where(qArticle.board.pkBoard.eq(pkboard))				  
 			  			.fetchOne();
 		if ( rtn == null) {
 			rtn = 0L;
@@ -153,20 +155,19 @@ public class BoardJpaRepository implements BoardRepository {
 	}
 
 	@Override
-	public int updateArticleHitCnt(Long pkAriticle, String userId) {
-		Article article = jpaArticle.findOne(pkAriticle);		
-		
-		QArticleCheck tbl = QArticleCheck.articleCheck;		
+	public int updateArticleHitCnt(Long pkAriticle, String userId) {				
 		JPAQuery<ArticleCheck> query = new JPAQuery<ArticleCheck>(this.entityManager);
 		
+		Article article = jpaArticle.findOne(pkAriticle);		
+				
 		article.updateHitCnt();
 		
 		jpaArticle.save(article);
 		
 		
-		ArticleCheck check = query.from(tbl)
-				 				  .where(tbl.article.pkArticle.eq(pkAriticle)
-				 				    .and(tbl.sysUser.eq(userId)))
+		ArticleCheck check = query.from(qArticleCheck)
+				 				  .where(qArticleCheck.article.pkArticle.eq(pkAriticle)
+				 				    .and(qArticleCheck.sysUser.eq(userId)))
 				 				  .fetchOne();
 		
 		if ( check == null) {

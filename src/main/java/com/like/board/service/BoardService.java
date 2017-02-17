@@ -31,8 +31,14 @@ public class BoardService {
 		boardRepository.saveBoard(board);		
 	}
 	
+	public void deleteBoard(Long id) {
+		boardRepository.deleteBoard(id);
+	}
+	
+	
 	public List<Map<String,Object>> getBoardListByTree(Map<String,Object> map) throws Exception {
-		return boardRepository.getBoardListByTree(map);
+		//return boardRepository.getBoardListByTree(map);
+		return null;
 	}
 	
 	
