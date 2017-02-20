@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.like.common.domain.AuditEntity;
@@ -90,9 +89,6 @@ public class Article extends AuditEntity implements Serializable {
 	@Column(name="depth")
     long depth;
     
-	@Transient
-	Long fkBoard;
-	
 	/**
 	 * 게시판 외래키
 	 */    
@@ -135,55 +131,5 @@ public class Article extends AuditEntity implements Serializable {
 	public void updateHitCnt() {
 		this.hitCnt = this.hitCnt + 1;	
 	}
-
-	/*public Long getPkArticle() {
-		return pkArticle;
-	}
-
-	public Long getPpkArticle() {
-		return ppkArticle;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getContents() {
-		return contents;
-	}
-
-	public String getPwd() {
-		return pwd;
-	}
-
-	public int getHitCnt() {
-		return hitCnt;
-	}
-
-	public LocalDate getFromDt() {
-		return fromDt;
-	}
-
-	public LocalDate getToDt() {
-		return toDt;
-	}
-
-	public Long getSeq() {
-		return seq;
-	}
-
-	public long getDepth() {
-		return depth;
-	}
-
-	public Board getBoard() {
-		return board;
-	}
-
-	public List<ArticleCheck> getArticleChecks() {
-		return articleChecks;
-	}*/
-	
-	
 	
 }

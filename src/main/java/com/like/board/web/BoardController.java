@@ -176,4 +176,26 @@ public class BoardController {
 		return result;
 	}
 	
+	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.POST) 
+	public ResponseEntity<ExtjsReturnObject> saveArticle(@RequestBody List<Article> articleList,
+			@RequestParam(value="fkBoard", required=true) Long fkBoard) throws Exception {
+			
+		ResponseEntity<ExtjsReturnObject> result = null;			
+		
+		try {
+					
+			for (Article article : articleList ) {
+				LOGGER.info(article.toString());
+				boardService.saveArticle(article, fkBoard);
+			}
+						
+			result = WebControllerUtil.getResponse(null, articleList.size(), true, String.format("%d 건 저장되었습니다.", 1)); 			
+		} catch (Exception ex) {	
+			ex.printStackTrace();
+			result = WebControllerUtil.getResponse(null, 0, false, "저장시 오류가 발생하였습니다.");		
+		}
+		
+		return result;
+	}
+	
 }
