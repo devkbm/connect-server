@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.service.BoardService;
 import com.like.common.ExtjsReturnObject;
@@ -158,5 +159,21 @@ public class BoardController {
 		return result;
 	}
 	
+	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
+	public ResponseEntity<ExtjsReturnObject> getArticleList(@RequestParam(value="pkBoard", required=true) Long pkBoard) throws Exception {
+			
+		ResponseEntity<ExtjsReturnObject> result = null;			
+		
+		try {									
+			List<Article> list = boardService.getAritlceList(pkBoard);
+			
+			result = WebControllerUtil.getResponse(list, list.size(), true, String.format("%d 건 조회되었습니다.", list.size())); 			
+		} catch (Exception ex) {	
+			ex.printStackTrace();
+			result = WebControllerUtil.getResponse(null, 0, false, "조회시 오류가 발생하였습니다.");		
+		}
+		
+		return result;
+	}
 	
 }

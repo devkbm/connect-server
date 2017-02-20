@@ -94,6 +94,16 @@ public class BoardJpaRepository extends QueryDslRepositorySupport implements Boa
 		// TODO Auto-generated method stub
 		jpaBoard.delete(pkBoard);
 	}
+	
+	@Override
+	public List<Article> getArticleList(Long fkBoard) { 
+		
+		JPAQuery<Article> query = new JPAQuery<Article>(this.entityManager);
+		
+		return query.from(qArticle)
+					.where(qArticle.board.pkBoard.eq(fkBoard))
+					.fetch();				
+	}
 
 	@Override
 	public Long saveArticle(Article article, Long fkBoard) {		
@@ -186,7 +196,6 @@ public class BoardJpaRepository extends QueryDslRepositorySupport implements Boa
 	public List<BookmarkVO> getBookmarkList(String userId) {		
 		return boardDAO.getBoardBookmarkList(userId);
 	}
-
 	@Override
 	public Long saveBookmark(Bookmark bookmark, Long fkBoard) {
 		Board board = jpaBoard.findOne(fkBoard);

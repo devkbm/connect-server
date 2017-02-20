@@ -2,20 +2,17 @@ package com.like.common.file.infra;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.UUID;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 //import org.apache.commons.codec.binary.Base64;

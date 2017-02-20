@@ -13,12 +13,10 @@ import com.fasterxml.jackson.annotation.*;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles"})
 @Getter
-@Setter
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {

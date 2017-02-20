@@ -1,7 +1,6 @@
 package com.like.board.domain.repository;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +20,8 @@ public interface BoardRepository {
 	void saveBoard(Board board);
 	
 	void deleteBoard(Long pkBoard);
+	
+	List<Article> getArticleList(Long fkBoard);
 	
 	Long saveArticle(Article article, Long fkBoard);
 	

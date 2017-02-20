@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.BoardRepository;
+import com.like.board.infra.mapper.BoardMapper;
 
 @Service("boardService")
 @Transactional
@@ -18,6 +19,9 @@ public class BoardService {
 	
     @Resource(name="boardJpaRepository")
 	private BoardRepository boardRepository;
+    
+    @Resource(name="boardMapper")
+    private BoardMapper boardMapper;
     
     public Board getBoard(Long id) {
     	return boardRepository.getBoard(id);
@@ -37,10 +41,12 @@ public class BoardService {
 	
 	
 	public List<Map<String,Object>> getBoardListByTree(Map<String,Object> map) throws Exception {
-		//return boardRepository.getBoardListByTree(map);
-		return null;
+		return boardMapper.getBoardListByTree(map);		
 	}
 	
+	public List<Article> getAritlceList(Long fkBoard) {
+		return boardRepository.getArticleList(fkBoard);
+	}
 	
 	public String saveArticle(Article article, Long fkBoard) throws Exception {										
 		return boardRepository.saveArticle(article, fkBoard).toString();
@@ -50,8 +56,7 @@ public class BoardService {
 		boardRepository.deleteArticle(article);
 	}
 	
-	public int updateArticleHitCnt(Long pkAriticle, String userId) throws Exception {
-		
+	public int updateArticleHitCnt(Long pkAriticle, String userId) throws Exception {		
 		return boardRepository.updateArticleHitCnt(pkAriticle, userId);
 	}	
 		

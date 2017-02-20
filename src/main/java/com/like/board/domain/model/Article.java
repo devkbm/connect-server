@@ -14,9 +14,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.like.common.domain.AuditEntity;
 
 @JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"articleChecks","board"})
 @Getter
 @Entity
 @Table(name = "grarticle")
@@ -86,16 +89,19 @@ public class Article extends AuditEntity implements Serializable {
      */
 	@Column(name="depth")
     long depth;
-        
+    
+	@Transient
+	Long fkBoard;
+	
 	/**
 	 * 게시판 외래키
 	 */    
-    @JsonBackReference
-    @JsonIgnore
+    @JsonBackReference    
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_board", nullable=false, updatable=false)
 	Board board;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "article")
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
     
