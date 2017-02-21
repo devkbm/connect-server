@@ -40,7 +40,7 @@ public class AuditEntity {
 	protected LocalDateTime updDt;
 	
 	/**
-	 * 수정유저			s
+	 * 수정유저
 	 */
 	@LastModifiedBy
 	@Column(name = "upd_user")
