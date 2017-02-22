@@ -31,7 +31,7 @@ public class BoardService {
 		return boardRepository.getBoardList();
 	}
 		
-	public void saveBoard(Board board) throws Exception {		
+	public void saveBoard(Board board) {		
 		boardRepository.saveBoard(board);		
 	}
 	
@@ -40,7 +40,7 @@ public class BoardService {
 	}
 	
 	
-	public List<Map<String,Object>> getBoardListByTree(Map<String,Object> map) throws Exception {
+	public List<Map<String,Object>> getBoardListByTree(Map<String,Object> map) {
 		return boardMapper.getBoardListByTree(map);		
 	}
 	
@@ -48,7 +48,7 @@ public class BoardService {
 		return boardRepository.getArticleList(fkBoard);
 	}
 	
-	public String saveArticle(Article article, Long fkBoard) throws Exception {										
+	public String saveArticle(Article article, Long fkBoard) {										
 		return boardRepository.saveArticle(article, fkBoard).toString();
 	}
 
@@ -56,7 +56,7 @@ public class BoardService {
 		boardRepository.deleteArticle(article);
 	}
 	
-	public int updateArticleHitCnt(Long pkAriticle, String userId) throws Exception {		
+	public int updateArticleHitCnt(Long pkAriticle, String userId) {		
 		return boardRepository.updateArticleHitCnt(pkAriticle, userId);
 	}	
 		

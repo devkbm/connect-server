@@ -86,24 +86,14 @@ public class WebControllerUtil {
 		return retMap;		
 	} 
 	
-	public static ResponseEntity<ExtjsReturnObject> getResponse(List<?> recv, int size, boolean success, String message) throws Exception {
+	public static ResponseEntity<ExtjsReturnObject> getResponse(List<?> recv, int size, boolean success, String message, HttpStatus httpStatus) {
 		
-		ExtjsReturnObject obj = new ExtjsReturnObject(recv, size, success, message);				
+		ExtjsReturnObject obj = new ExtjsReturnObject(recv, size, success, message);
+		
 	    HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.add("Content-Type", "application/json;charset=UTF-8"); //인코딩을 utf-8로 설정
 	    
-	    if ( size == 0) {
-	    	return new ResponseEntity<ExtjsReturnObject>(obj,responseHeaders,HttpStatus.NO_CONTENT);
-	    } else if ( success ) {
-	    	return new ResponseEntity<ExtjsReturnObject>(obj,responseHeaders,HttpStatus.OK);
-	    } else {
-	    	return new ResponseEntity<ExtjsReturnObject>(obj,responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
-	    
-	    
-	    
+	    return new ResponseEntity<ExtjsReturnObject>(obj,responseHeaders,httpStatus);	    	    	    	    	
 	}
-
-
 	
 }
