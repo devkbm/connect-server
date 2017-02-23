@@ -45,7 +45,10 @@ public class ArticleCheck extends AuditEntity implements Serializable {
 	@JoinColumn(name = "fk_article", nullable=false, updatable=false)
 	Article article;
 
-	public ArticleCheck() {}
+	public ArticleCheck() {
+		this.sysUser = "test";
+		this.updUser = "test";
+	}
 			
 	public void updateHitCnt() {
 		this.hitCnt = this.hitCnt + 1;

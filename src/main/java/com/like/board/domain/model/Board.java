@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.StringUtils;
 
@@ -47,7 +47,7 @@ public class Board extends AuditEntity implements Serializable {
 	/**
      * 게시판 명
      */
-	@NotNull
+	@NotEmpty
 	@Column(name="board_name")
     String boardNm;             
     

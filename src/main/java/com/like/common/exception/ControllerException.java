@@ -1,6 +1,8 @@
 package com.like.common.exception;
 
 public class ControllerException extends RuntimeException {
+		
+	private static final long serialVersionUID = -4588969707725570905L;
 	
 	private String message;
 	

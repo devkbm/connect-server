@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 import lombok.Getter;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -44,6 +45,7 @@ public class Article extends AuditEntity implements Serializable {
 	/**
 	 * 제목
 	 */
+	@NotEmpty
 	@Column(name="title")
 	String title;
     

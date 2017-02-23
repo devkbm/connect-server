@@ -37,16 +37,10 @@ public class BoardJpaRepository extends QueryDslRepositorySupport implements Boa
 	
 	@Autowired
 	private JpaArticleCheck jpaArticleCheck;
-		
-	
+			
 	private final QBoard qBoard = QBoard.board;
 	private final QArticle qArticle = QArticle.article;
-	private final QArticleCheck qArticleCheck = QArticleCheck.articleCheck;
-	
-	/*@PersistenceContext
-	public void setEntityManager(EntityManager entityManager) {	
-		this.entityManager = entityManager;
-	}*/
+	private final QArticleCheck qArticleCheck = QArticleCheck.articleCheck;	
 
 	public ArticleCheck findFkarticleAndSysuser(Long fkarticle, String userId) {
 												
@@ -173,15 +167,14 @@ public class BoardJpaRepository extends QueryDslRepositorySupport implements Boa
 		article.updateHitCnt();
 		
 		jpaArticle.save(article);
-		
-		
+				
 		ArticleCheck check = query.from(qArticleCheck)
 				 				  .where(qArticleCheck.article.pkArticle.eq(pkAriticle)
 				 				    .and(qArticleCheck.sysUser.eq(userId)))
 				 				  .fetchOne();
 		
 		if ( check == null) {
-			check = new ArticleCheck();		
+			check = new ArticleCheck();				
 			check.setArticle(article);			
 		} else {
 			check.updateHitCnt();
