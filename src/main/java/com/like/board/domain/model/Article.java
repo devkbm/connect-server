@@ -45,7 +45,7 @@ public class Article extends AuditEntity implements Serializable {
 	/**
 	 * 제목
 	 */
-	@NotEmpty
+	@NotEmpty(message="제목은 필수 입력 사항입니다.")
 	@Column(name="title")
 	String title;
     

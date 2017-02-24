@@ -1,4 +1,4 @@
-package com.like.common.exception;
+package com.like.common.web.exception;
 
 public class ControllerException extends RuntimeException {
 		

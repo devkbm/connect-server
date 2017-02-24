@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.service.BoardService;
-import com.like.common.ExtjsReturnObject;
-import com.like.common.exception.ControllerException;
-import com.like.common.util.WebControllerUtil;
+import com.like.common.web.exception.ControllerException;
+import com.like.common.web.response.ExtjsReturnObject;
+import com.like.common.web.util.WebControllerUtil;
 
 /**
  * 게시판 Rest 컨트롤러
@@ -39,36 +39,44 @@ public class BoardController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BoardController.class);
 			
 	@RequestMapping(value={"/grw/boards/{id}"}, method=RequestMethod.GET) 
-	public ResponseEntity<ExtjsReturnObject> getBoard(@PathVariable(value="id") Long id) {
+	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;
+		ResponseEntity<?> result = null;
 				
 		List<Board> list = new ArrayList<Board>(); 
 			
 		list.add(boardService.getBoard(id));
 			
-		result = WebControllerUtil.getResponse(list, list.size(), true, String.format("%d 건 조회되었습니다.", list.size()), HttpStatus.OK); 					
+		result = WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK); 					
 		
 		return result;
-	}
+	}	
 	
 	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 
-	public ResponseEntity<ExtjsReturnObject> getBoardList() {
+	public ResponseEntity<?> getBoardList() {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;			
+		ResponseEntity<?> result = null;			
 				
 		List<Board> list = boardService.getBoardList();
 		
-		result = WebControllerUtil.getResponse(list, list.size(), true, String.format("%d 건 조회되었습니다.", list.size()), HttpStatus.OK); 					
+		result = WebControllerUtil.getResponse(list,
+				list.size(), 
+				true,
+				String.format("%d 건 조회되었습니다.", list.size()),
+				HttpStatus.OK); 					
 		
 		return result;
 	}
 		
 	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.POST) 
-	public ResponseEntity<ExtjsReturnObject> saveBoard(@RequestBody List<Board> boardList, BindingResult result) {
+	public ResponseEntity<?> saveBoard(@RequestBody List<Board> boardList, BindingResult result) {
 			
-		ResponseEntity<ExtjsReturnObject> res = null;
-		LOGGER.info(result.toString());			
+		ResponseEntity<?> res = null;
+		
 		if ( result.hasErrors()) {
 			//throw new IllegalArgumentException();
 			throw new ControllerException("오류");
@@ -78,74 +86,97 @@ public class BoardController {
 				boardService.saveBoard(board);
 			}
 			
-			res = WebControllerUtil.getResponse(null, boardList.size(), true, String.format("%d 건 저장되었습니다.", 1), HttpStatus.OK);
+			res = WebControllerUtil.getResponse(null,
+					boardList.size(), 
+					true, 
+					String.format("%d 건 저장되었습니다.", 1), 
+					HttpStatus.OK);
 		}
 								 					
 		return res;
 	}
 	
 	@RequestMapping(value={"/grw/boards/{id}"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<ExtjsReturnObject> delBoard(@PathVariable(value="id") Long id) {
+	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;			
+		ResponseEntity<?> result = null;			
 												
 		boardService.deleteBoard(id);
 						
-		result = WebControllerUtil.getResponse(null, 1, true, String.format("%d 건 삭제되었습니다.", 1), HttpStatus.OK); 					
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK); 					
 		
 		return result;
 	}
 	
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
-	public ResponseEntity<ExtjsReturnObject> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard) {
+	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard) {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;			
+		ResponseEntity<?> result = null;			
 												
 		List<Article> list = boardService.getAritlceList(fkBoard);
 			
-		result = WebControllerUtil.getResponse(list, list.size(), true, String.format("%d 건 조회되었습니다.", list.size()), HttpStatus.OK); 			
+		result = WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK); 			
 				
 		return result;
 	}
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.POST) 
-	public ResponseEntity<ExtjsReturnObject> saveArticle(@RequestBody List<Article> articleList,
+	public ResponseEntity<?> saveArticle(@RequestBody List<Article> articleList,
 			@RequestParam(value="fkBoard", required=true) Long fkBoard) {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;			
+		ResponseEntity<?> result = null;			
 								
-		for (Article article : articleList ) {
-			LOGGER.info(article.toString());
+		for (Article article : articleList ) {			
 			boardService.saveArticle(article, fkBoard);
 		}
 						
-		result = WebControllerUtil.getResponse(null, articleList.size(), true, String.format("%d 건 저장되었습니다.", 1), HttpStatus.OK); 					
+		result = WebControllerUtil.getResponse(null, 
+				articleList.size(), 
+				true, 
+				String.format("%d 건 저장되었습니다.", 1), 
+				HttpStatus.OK); 					
 		
 		return result;
 	}
 	
 	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<ExtjsReturnObject> delArticle(@PathVariable(value="id") Long id) {
+	public ResponseEntity<?> delArticle(@PathVariable(value="id") Long id) {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;			
+		ResponseEntity<?> result = null;			
 												
 		boardService.deleteBoard(id);
 						
-		result = WebControllerUtil.getResponse(null, 1, true, String.format("%d 건 삭제되었습니다.", 1), HttpStatus.OK); 					
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK); 					
 		
 		return result;
 	}
 	
 	@RequestMapping(value={"/grw/boards/articles/hitcnt"}, method=RequestMethod.PUT) 
-	public ResponseEntity<ExtjsReturnObject> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,
+	public ResponseEntity<?> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,
 			@RequestParam(value="userid", required=true) String userId) {
 			
-		ResponseEntity<ExtjsReturnObject> result = null;			
+		ResponseEntity<?> result = null;			
 												
 		boardService.updateArticleHitCnt(id, userId);
 						
-		result = WebControllerUtil.getResponse(null, 1, true, String.format("%d건 업데이트 하였습니다.", 1), HttpStatus.OK); 					
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d건 업데이트 하였습니다.", 1), 
+				HttpStatus.OK); 					
 		
 		return result;
 	}

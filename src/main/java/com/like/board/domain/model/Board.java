@@ -47,7 +47,7 @@ public class Board extends AuditEntity implements Serializable {
 	/**
      * 게시판 명
      */
-	@NotEmpty
+	@NotEmpty(message="게시판명은 필수 입력사항입니다.")
 	@Column(name="board_name")
     String boardNm;             
     

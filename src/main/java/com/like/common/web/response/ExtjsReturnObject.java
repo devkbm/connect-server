@@ -1,4 +1,4 @@
-package com.like.common;
+package com.like.common.web.response;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ExtjsReturnObject {
 
-	List<?> recv;
+	List<?> data;
 	
 	int total;
 	
@@ -15,8 +15,8 @@ public class ExtjsReturnObject {
 	
 	String message;
 	
-	public ExtjsReturnObject(List<?> recv,int total,boolean success,String message) {
-		this.recv = recv;
+	public ExtjsReturnObject(List<?> data,int total,boolean success,String message) {
+		this.data = data;
 		this.total = total;
 		this.success = success;
 		this.message = message;

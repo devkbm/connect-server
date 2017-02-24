@@ -1,4 +1,4 @@
-package com.like.common.exception;
+package com.like.common.web.exception;
 
 import java.io.IOException;
 
@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import com.like.common.util.WebControllerUtil;
 
 @ControllerAdvice
 public class GlobalExceptionHanlder {
