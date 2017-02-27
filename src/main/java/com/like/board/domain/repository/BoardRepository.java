@@ -21,11 +21,13 @@ public interface BoardRepository {
 	
 	void deleteBoard(Long pkBoard);
 	
+	Article getArticle(Long id);
+	
 	List<Article> getArticleList(Long fkBoard);
 	
 	Long saveArticle(Article article, Long fkBoard);
 	
-	public void deleteArticle(Article article);
+	void deleteArticle(Article article);
 	
 	Long getArticleNextSeq(Long pkBoard);
 	

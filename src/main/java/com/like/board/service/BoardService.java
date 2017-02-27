@@ -44,6 +44,11 @@ public class BoardService {
 		return boardMapper.getBoardListByTree(map);		
 	}
 	
+	public Article getAritlce(Long id) {
+		//return boardRepository.getArticleList(fkBoard);
+		return null;
+	}
+	
 	public List<Article> getAritlceList(Long fkBoard) {
 		return boardRepository.getArticleList(fkBoard);
 	}

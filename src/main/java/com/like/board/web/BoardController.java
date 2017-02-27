@@ -21,7 +21,6 @@ import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.service.BoardService;
 import com.like.common.web.exception.ControllerException;
-import com.like.common.web.response.ExtjsReturnObject;
 import com.like.common.web.util.WebControllerUtil;
 
 /**
@@ -36,7 +35,7 @@ public class BoardController {
 	@Resource(name = "boardService")
 	private BoardService boardService;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 			
 	@RequestMapping(value={"/grw/boards/{id}"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {
@@ -109,6 +108,25 @@ public class BoardController {
 				String.format("%d 건 삭제되었습니다.", 1), 
 				HttpStatus.OK); 					
 		
+		return result;
+	}
+	
+	
+	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {
+			
+		ResponseEntity<?> result = null;			
+		
+		List<Article> list = new ArrayList<Article>(); 
+		
+		list.add(boardService.getAritlce(id));
+				
+		result = WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK); 			
+				
 		return result;
 	}
 	

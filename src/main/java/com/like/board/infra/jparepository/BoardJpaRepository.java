@@ -85,8 +85,12 @@ public class BoardJpaRepository extends QueryDslRepositorySupport implements Boa
 
 	@Override
 	public void deleteBoard(Long pkBoard) {
-		// TODO Auto-generated method stub
 		jpaBoard.delete(pkBoard);
+	}
+	
+	@Override
+	public Article getArticle(Long id) {
+		return jpaArticle.findOne(id);
 	}
 	
 	@Override
