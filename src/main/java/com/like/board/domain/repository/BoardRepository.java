@@ -16,6 +16,8 @@ public interface BoardRepository {
 	List<Board> getBoardList();
 	
 	List<Board> getBoardList(String boardName);
+	
+	List getBoardByTree();
 		
 	void saveBoard(Board board);
 	
