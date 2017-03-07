@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.infra.jparepository.dto.BoardHierarchyDTO;
-import com.like.board.infra.jparepository.dto.QBoardTreeDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
@@ -76,12 +75,16 @@ public class BoardJpaRepository /*extends QueryDslRepositorySupport*/ implements
 										.when(parent.pkBoard.isNotNull()).then("True")
 										.otherwise("False");										
 		
-		return queryFactory.select(qBoard.pkBoard, qBoard.boardNm,leaf,leaf,leaf,qBoard.ppkBoard)
+		return queryFactory.select(qBoard.pkBoard, qBoard.boardNm,qBoard.ppkBoard)
+				.from(qBoard)											
+				.where(qBoard.ppkBoard.eq(0L)).fetch();			
+		
+		/*return queryFactory.select(qBoard.pkBoard, qBoard.boardNm,qBoard.ppkBoard)
 				.from(qBoard)
 				.leftJoin(parent)				
 					//.on(qBoard.pkBoard.eq(Long.parseLong(parent.ppkBoard.toString())))
 					.on(qBoard.pkBoard.eq(parent.pkBoard))
-				.where(qBoard.ppkBoard.eq("")).fetch();					
+				.where(qBoard.ppkBoard.eq(0L)).fetch();*/					
 	}
 
 	@Override
