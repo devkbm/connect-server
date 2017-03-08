@@ -35,11 +35,11 @@ public class Board extends AuditEntity implements Serializable {
     /**
      * 상위 게시판 키
      */
-	//@Column(name="ppk_board")
-    //Long ppkBoard;
+	@Column(name="ppk_board")
+    Long ppkBoard;
 	
 	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="ppk_board")
+	@JoinColumn(name="ppk_board", insertable=false, updatable=false )
 	Board parent;
 	
 	/**
@@ -117,6 +117,10 @@ public class Board extends AuditEntity implements Serializable {
     
     public void setParentRoot() {
     	//this.ppkBoard = 0L;
+    }
+    
+    public void setParent(Board board) {
+    	this.parent = board;
     }
     
 	public void setArticles(List<Article> articles) {
