@@ -36,9 +36,11 @@ public class JpaTest {
 	@Test
 	public void getBoardTree() throws Exception {
 		Map<String, Object> map = new HashMap();
+		List list = null;
 		map.put("ppkboard","root");
 		//bs.getBoardListByTree(map);
-		bs.getBoardByTree();
+		list = bs.getBoardByTree();		
+		log.info(list.toString());
 	}
 	
 	@Test

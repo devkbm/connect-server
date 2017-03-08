@@ -16,7 +16,7 @@ import com.like.common.domain.AuditEntity;
 import lombok.Getter;
 
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"articles"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
 @Getter
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
@@ -35,8 +35,12 @@ public class Board extends AuditEntity implements Serializable {
     /**
      * 상위 게시판 키
      */
-	@Column(name="ppk_board")
-    String ppkBoard;
+	//@Column(name="ppk_board")
+    //Long ppkBoard;
+	
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="ppk_board")
+	Board parent;
 	
 	/**
 	 * 게시판_타입
@@ -98,7 +102,7 @@ public class Board extends AuditEntity implements Serializable {
     
     public Board(String boardNm) {
     	this.boardNm = boardNm;
-    	this.ppkBoard = "root";
+    	
     	this.sysUser = "test";
     	this.updUser = "test";
     	this.boardType = "A1";
@@ -107,11 +111,12 @@ public class Board extends AuditEntity implements Serializable {
     }
     
     public boolean hasParentBoard() {    	    		    
-		return StringUtils.isEmpty(this.ppkBoard) ? false : true;    	
+		//return StringUtils.isEmpty(this.ppkBoard) ? false : true;
+    	return false;
 	}
     
     public void setParentRoot() {
-    	this.ppkBoard = "root";
+    	//this.ppkBoard = 0L;
     }
     
 	public void setArticles(List<Article> articles) {
@@ -125,12 +130,7 @@ public class Board extends AuditEntity implements Serializable {
 		}*;	*/
 	}
 
-	@Override
-	public String toString() {
-		return "Board [pkBoard=" + pkBoard + ", ppkBoard=" + ppkBoard + ", boardType=" + boardType + ", boardNm="
-				+ boardNm + ", boardDesc=" + boardDesc + ", fromDt=" + fromDt + ", toDt=" + toDt + ", useYn=" + useYn
-				+ ", articleCnt=" + articleCnt + ", seq=" + seq + "]";
-	}	
+	
 	
 	
 }

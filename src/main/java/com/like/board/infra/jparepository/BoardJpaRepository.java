@@ -73,11 +73,21 @@ public class BoardJpaRepository /*extends QueryDslRepositorySupport*/ implements
 		
 		Expression<String> leaf = new CaseBuilder()
 										.when(parent.pkBoard.isNotNull()).then("True")
-										.otherwise("False");										
+										.otherwise("False").as("leaf");													
 		
-		return queryFactory.select(qBoard.pkBoard, qBoard.boardNm,qBoard.ppkBoard)
-				.from(qBoard)											
-				.where(qBoard.ppkBoard.eq(0L)).fetch();			
+		
+		return queryFactory.select(Projections.constructor(BoardHierarchyDTO.class, qBoard.pkBoard, qBoard.boardNm, qBoard.boardNm, qBoard.boardNm, qBoard.boardNm, qBoard.boardNm))
+				.from(qBoard)
+				.leftJoin(qBoard.parent, parent).fetch();
+		
+		/*return queryFactory.select(qBoard.pkBoard.as("id"), qBoard.boardNm, leaf)
+				.from(qBoard)
+				.leftJoin(qBoard.parent, parent).fetch();*/
+		
+		
+				
+					//.on(qBoard.parent.eq(parent)).fetch();
+				//.where(qBoard.ppkBoard.eq(0L)).fetch();			
 		
 		/*return queryFactory.select(qBoard.pkBoard, qBoard.boardNm,qBoard.ppkBoard)
 				.from(qBoard)
