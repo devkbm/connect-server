@@ -45,7 +45,7 @@ public class BoardController {
 		List<Board> list = new ArrayList<Board>(); 
 			
 		list.add(boardService.getBoard(id));
-			
+		log.debug("sdf");	
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
 				true, 
@@ -54,6 +54,7 @@ public class BoardController {
 		
 		return result;
 	}	
+
 	
 	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getBoardList() {
@@ -61,6 +62,29 @@ public class BoardController {
 		ResponseEntity<?> result = null;			
 				
 		List<Board> list = boardService.getBoardList();
+		
+		result = WebControllerUtil.getResponse(list,
+				list.size(), 
+				true,
+				String.format("%d 건 조회되었습니다.", list.size()),
+				HttpStatus.OK); 					
+		
+		return result;
+	}
+	
+	@RequestMapping(value={"/grw/boardHierarchy"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
+			
+		ResponseEntity<?> result = null;			
+		Long id;
+		
+		if ("root".equals(parentId) || parentId == null) {		
+			id = null;
+		} else {
+			id = Long.parseLong(parentId);
+		}
+		
+		List list = boardService.getBoardHierarchy(id);
 		
 		result = WebControllerUtil.getResponse(list,
 				list.size(), 

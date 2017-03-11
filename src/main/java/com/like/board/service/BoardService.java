@@ -44,8 +44,8 @@ public class BoardService {
 		return boardMapper.getBoardListByTree(map);		
 	}
 	
-	public List getBoardByTree() {
-		return boardRepository.getBoardByTree();
+	public List getBoardHierarchy(Long parentId) {
+		return boardRepository.getBoardHierarchy(parentId);
 	}
 	
 	public Article getAritlce(Long id) {

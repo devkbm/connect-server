@@ -34,12 +34,12 @@ public class JpaTest {
 	}
 	
 	@Test
-	public void getBoardTree() throws Exception {
+	public void getBoardHierarchy() throws Exception {
 		Map<String, Object> map = new HashMap();
 		List list = null;
 		map.put("ppkboard","root");
 		//bs.getBoardListByTree(map);
-		list = bs.getBoardByTree();		
+		list = bs.getBoardHierarchy(2L);		
 		log.info(list.toString());
 	}
 	

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.ArticleCheck;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 
 @Repository
 public interface BoardRepository {
@@ -17,7 +18,7 @@ public interface BoardRepository {
 	
 	List<Board> getBoardList(String boardName);
 	
-	List getBoardByTree();
+	List<BoardHierarchyDTO> getBoardHierarchy(Long parentId);
 		
 	void saveBoard(Board board);
 	

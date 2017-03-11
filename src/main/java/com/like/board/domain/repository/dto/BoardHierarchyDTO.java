@@ -1,4 +1,4 @@
-package com.like.board.infra.jparepository.dto;
+package com.like.board.domain.repository.dto;
 
 import java.io.Serializable;
 
@@ -19,16 +19,16 @@ public class BoardHierarchyDTO implements Serializable{
 	
 	String qtip;
 	
-	String parent_id;	
+	Long parentId;	
 	
 	@QueryProjection
-	public BoardHierarchyDTO(Long id, String text, String leaf, String qtitle, String qtip, String parent_id) {
+	public BoardHierarchyDTO(Long id, String text, String leaf, String qtitle, String qtip, Long parentId) {
 		this.id = id;
 		this.text = text;
 		this.leaf = leaf;
 		this.qtitle = qtitle;
 		this.qtip = qtip;
-		this.parent_id = parent_id;
+		this.parentId = parentId;
 	}
 	
 }

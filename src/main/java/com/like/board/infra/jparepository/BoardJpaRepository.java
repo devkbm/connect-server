@@ -1,28 +1,24 @@
 package com.like.board.infra.jparepository;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
-import com.like.board.infra.jparepository.dto.BoardHierarchyDTO;
+import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.like.board.domain.model.*;
 
 @Repository
-public class BoardJpaRepository /*extends QueryDslRepositorySupport*/ implements BoardRepository {
-	
-	/*public BoardJpaRepository() {
-		super(Board.class);
-	}*/
+public class BoardJpaRepository implements BoardRepository {
 				
 	@Autowired
 	private JPAQueryFactory  queryFactory;
@@ -67,7 +63,7 @@ public class BoardJpaRepository /*extends QueryDslRepositorySupport*/ implements
 					.fetch();				
 	}
 	
-	public List getBoardByTree() {
+	public List<BoardHierarchyDTO> getBoardHierarchy(Long parentId) {
 				
 		QBoard parent = new QBoard("parent");								
 		
@@ -75,26 +71,20 @@ public class BoardJpaRepository /*extends QueryDslRepositorySupport*/ implements
 										.when(parent.pkBoard.isNotNull()).then("True")
 										.otherwise("False").as("leaf");													
 		
+		JPAQuery<BoardHierarchyDTO> query = queryFactory
+													.select(Projections.constructor(BoardHierarchyDTO.class
+																				, qBoard.pkBoard, qBoard.boardNm, leaf
+																				, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
+													.from(qBoard)
+													.leftJoin(qBoard.parent, parent);
+		if ( parentId == null ) {
+			query.where(parent.isNull());
+		} else {
+			query.where(parent.pkBoard.eq(parentId));
+		}
 		
-		return queryFactory.select(Projections.constructor(BoardHierarchyDTO.class, qBoard.pkBoard, qBoard.boardNm, qBoard.boardNm, qBoard.boardNm, qBoard.boardNm, qBoard.boardNm))
-				.from(qBoard)
-				.leftJoin(qBoard.parent, parent).fetch();
 		
-		/*return queryFactory.select(qBoard.pkBoard.as("id"), qBoard.boardNm, leaf)
-				.from(qBoard)
-				.leftJoin(qBoard.parent, parent).fetch();*/
-		
-		
-				
-					//.on(qBoard.parent.eq(parent)).fetch();
-				//.where(qBoard.ppkBoard.eq(0L)).fetch();			
-		
-		/*return queryFactory.select(qBoard.pkBoard, qBoard.boardNm,qBoard.ppkBoard)
-				.from(qBoard)
-				.leftJoin(parent)				
-					//.on(qBoard.pkBoard.eq(Long.parseLong(parent.ppkBoard.toString())))
-					.on(qBoard.pkBoard.eq(parent.pkBoard))
-				.where(qBoard.ppkBoard.eq(0L)).fetch();*/					
+		return query.fetch();					
 	}
 
 	@Override
