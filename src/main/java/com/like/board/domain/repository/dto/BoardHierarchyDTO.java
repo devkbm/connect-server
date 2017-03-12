@@ -7,7 +7,9 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
-public class BoardHierarchyDTO implements Serializable{
+public class BoardHierarchyDTO implements Serializable {
+
+	private static final long serialVersionUID = -4534626900084055780L;
 
 	Long id;
 	
