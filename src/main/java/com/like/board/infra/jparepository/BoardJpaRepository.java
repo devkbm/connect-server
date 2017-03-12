@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
+import com.like.board.domain.repository.dto.BoardDTO;
 import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
@@ -61,6 +62,18 @@ public class BoardJpaRepository implements BoardRepository {
 		return queryFactory.selectFrom(qBoard)
 					.where(qBoard.boardNm.like(likeBoardName))
 					.fetch();				
+	}
+	
+	public List<BoardDTO> getBoardList2(String s) {
+		
+		/*JPAQuery<BoardHierarchyDTO> query = queryFactory
+				.select(Projections.constructor(BoardHierarchyDTO.class
+											, qBoard.pkBoard, qBoard.boardNm, leaf
+											, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
+				.from(qBoard)
+				.leftJoin(qBoard.parent, parent);*/
+		
+		return null;
 	}
 	
 	public List<BoardHierarchyDTO> getBoardHierarchy(Long parentId) {
