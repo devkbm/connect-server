@@ -146,25 +146,6 @@ public class FileRepository {
 		return FileUtil.deleteFile(path, uuid);
 	}
 	
-	public String getFileToBase64String(String path, String uuid) throws Exception {			
-		/*byte[] buffer;
-		byte[] byteArray;
-		int bytesRead = -1;
-		
-		try (InputStream is = new FileInputStream(new File(path, uuid));
-			 BufferedInputStream bis = new BufferedInputStream(is);
-			 ByteArrayOutputStream bos = new ByteArrayOutputStream();) {
-						
-			buffer = new byte[this.BUFFER_SIZE];		
-			while ((bytesRead = is.read(buffer)) != -1) {
-				bos.write(buffer, 0, bytesRead);
-			}
-			byteArray = bos.toByteArray();					
-		} 
-		
-		return Base64.encodeBase64String(byteArray);*/
-		return null;
-	}
 		
 }
 

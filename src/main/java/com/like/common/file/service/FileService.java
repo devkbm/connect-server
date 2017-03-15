@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.like.common.file.domain.FileInfo;
+import com.like.common.file.domain.model.FileInfo;
 import com.like.common.file.infra.FileRepository;
 import com.like.common.file.infra.jparepository.FileInfoRepository;
 import com.like.common.file.infra.mapper.FileMapper;
@@ -95,7 +95,8 @@ public class FileService {
 	public String downloadBase64(Long pk) throws Exception {
 		FileInfo info = fileInfoRepository.findOne(pk);
 					
-		return repository.getFileToBase64String(info.getPath(), info.getUuid());
+		//return repository.getFileToBase64String(info.getPath(), info.getUuid());
+		return null;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.like.common.file.domain;
+package com.like.common.file.domain.model;
 
 import java.io.Serializable;
 
