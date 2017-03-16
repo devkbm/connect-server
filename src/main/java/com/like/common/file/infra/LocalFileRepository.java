@@ -1,5 +1,7 @@
 package com.like.common.file.infra;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,16 +15,20 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.web.multipart.MultipartFile;
 
 public class LocalFileRepository {
 
-	private String path;	
+	private String path;
 	
-	public String saveFileNio(MultipartFile sourceFile)	throws Exception {
-		
-		this.path = "C:/test";
-		
+	private int BUFFER_SIZE = 4096;
+	
+	public LocalFileRepository() {		
+	}
+	
+	public String fileTransfer(MultipartFile sourceFile, String path, String fileName)	throws Exception {
+						
 		if(sourceFile == null || sourceFile.isEmpty()){
 			return null;
 		}
@@ -31,7 +37,7 @@ public class LocalFileRepository {
 		
 		try (InputStream is = sourceFile.getInputStream();
 			 ReadableByteChannel  cin = Channels.newChannel(is);	
-			 FileOutputStream fos = new FileOutputStream(new File(this.path, key));
+			 FileOutputStream fos = new FileOutputStream(new File(path, fileName));
 			 FileChannel cout = fos.getChannel();) {			
 					
 			 cout.transferFrom(cin, 0, is.available());						 				
@@ -40,7 +46,7 @@ public class LocalFileRepository {
 		return key;		
 	}
 	
-	public void downloadFile(OutputStream os, File file) throws Exception {
+	public void fileToStream(File file, OutputStream os) throws Exception {
 			
 		try (
 			FileInputStream fis = new FileInputStream(file);
@@ -54,6 +60,27 @@ public class LocalFileRepository {
 		
 		//return response;		
 	}
+	
+	public String fileToBase64String(String path, String fileName) throws Exception {
+		
+		byte[] buffer;
+		byte[] byteArray;
+		int bytesRead = -1;
+		
+		try (InputStream is = new FileInputStream(new File(path, fileName));
+			 BufferedInputStream bis = new BufferedInputStream(is);
+			 ByteArrayOutputStream bos = new ByteArrayOutputStream();) {
+						
+			buffer = new byte[this.BUFFER_SIZE];		
+			while ((bytesRead = is.read(buffer)) != -1) {
+				bos.write(buffer, 0, bytesRead);
+			}
+			byteArray = bos.toByteArray();					
+		} 
+		
+		return Base64.encodeBase64String(byteArray);		
+	}
+	
 	
 	public HttpServletResponse setResponse(HttpServletResponse response, File file, String fileName) throws Exception {
 		
