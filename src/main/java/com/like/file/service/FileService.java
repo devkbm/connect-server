@@ -1,6 +1,7 @@
-package com.like.common.file.service;
+package com.like.file.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -9,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.like.common.file.domain.model.FileInfo;
 import com.like.common.file.infra.FileRepository;
-import com.like.common.file.infra.jparepository.FileInfoRepository;
 import com.like.common.file.infra.mapper.FileMapper;
+import com.like.file.domain.model.FileInfo;
+import com.like.file.infra.LocalFileRepository;
+import com.like.file.infra.jparepository.FileInfoRepository;
 
 @Service
 public class FileService {
@@ -26,22 +28,22 @@ public class FileService {
 	@Resource(name="fileMapper")
 	private FileMapper fileMapper;
 	
+	@Resource(name="localFileRepository")
+	private LocalFileRepository localFileRepository;
+	
 	@Transactional
-	public FileInfo uploadFile(MultipartFile multiPartFile, String userId, String pgmId, String fk) throws Exception {
-			
-		String key = repository.saveFile(multiPartFile);						
-		
-		if (key == null) {
-			return null;
-		}				
-		
-		FileInfo file = new FileInfo();
+	public FileInfo uploadFile(MultipartFile sourceFile, String userId, String pgmId, Long fk) throws Exception {
 				
-		file.setUuid(key);		
-		file.setPath(repository.getPath());
-		file.setFileNm(multiPartFile.getOriginalFilename());		
-		file.setSize(multiPartFile.getSize());
-		file.setContentType(multiPartFile.getContentType());		
+		String uuid = UUID.randomUUID().toString();
+		
+		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), sourceFile.getOriginalFilename());
+																
+		FileInfo file = new FileInfo();			
+		file.setUuid(uuid);		
+		file.setPath(localFileRepository.getPath());
+		file.setFileNm(sourceFile.getOriginalFilename());		
+		file.setSize(sourceFile.getSize());
+		file.setContentType(sourceFile.getContentType());		
 		file.setDownloadCnt(0);
 		file.setUserId(userId);
 		file.setPgmId(pgmId);		
@@ -49,6 +51,7 @@ public class FileService {
 													
 		return fileInfoRepository.save(file);		
 	}
+		
 	
 	public void downloadFile(HttpServletResponse response,
 				String uuid,

@@ -1,9 +1,10 @@
-package com.like.common.file.infra;
+package com.like.file.infra;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,23 +28,22 @@ public class LocalFileRepository {
 	public LocalFileRepository() {		
 	}
 	
-	public String fileTransfer(MultipartFile sourceFile, String path, String fileName)	throws Exception {
+	public String getPath() {
+		return "C:\\temp";
+	}
+	public void fileTransfer(MultipartFile sourceFile, String path, String fileName) throws Exception {
 						
-		if(sourceFile == null || sourceFile.isEmpty()){
-			return null;
+		if(sourceFile == null || sourceFile.isEmpty()){			
+			throw new FileNotFoundException();
 		}
-		
-		String key = UUID.randomUUID().toString();
-		
+					
 		try (InputStream is = sourceFile.getInputStream();
 			 ReadableByteChannel  cin = Channels.newChannel(is);	
 			 FileOutputStream fos = new FileOutputStream(new File(path, fileName));
 			 FileChannel cout = fos.getChannel();) {			
 					
 			 cout.transferFrom(cin, 0, is.available());						 				
-		}			
-		
-		return key;		
+		}							
 	}
 	
 	public void fileToStream(File file, OutputStream os) throws Exception {
