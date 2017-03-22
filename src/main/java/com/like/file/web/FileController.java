@@ -2,7 +2,10 @@ package com.like.file.web;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.like.board.domain.model.Board;
 import com.like.board.service.BoardService;
@@ -49,23 +54,24 @@ public class FileController {
 	}	
 	
 	@RequestMapping(value={"/grw/boardHierarchy"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
-			
-		ResponseEntity<?> result = null;			
-		Long id;
-		
-		if ("root".equals(parentId) || parentId == null) {		
-			id = null;
-		} else {
-			id = Long.parseLong(parentId);
+	public ResponseEntity<?> getBoardHierarchyList(final MultipartHttpServletRequest request,
+			@RequestParam(value="pgmId", required=false) String pgmId ) throws Exception {
+				
+		ResponseEntity<?> result = null;		
+		List<FileInfo> list = new ArrayList<FileInfo>();
+		final Map<String, MultipartFile> files = request.getFileMap();
+		Iterator<Entry<String,MultipartFile>> itr = files.entrySet().iterator();		
+				
+		while ( itr.hasNext() ) {			
+			Entry<String,MultipartFile> entry = itr.next(); 			
+			MultipartFile file = entry.getValue();					
+			list.add(fileService.uploadFile(file, "kbm", pgmId));																
 		}
-		
-		List list = boardService.getBoardHierarchy(id);
 		
 		result = WebControllerUtil.getResponse(list,
 				list.size(), 
 				true,
-				String.format("%d 건 조회되었습니다.", list.size()),
+				String.format("%d 건 저장되었습니다.", list.size()),
 				HttpStatus.OK); 					
 		
 		return result;
