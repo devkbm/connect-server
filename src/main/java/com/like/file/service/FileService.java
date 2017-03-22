@@ -1,5 +1,7 @@
 package com.like.file.service;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +34,7 @@ public class FileService {
 	private LocalFileRepository localFileRepository;
 	
 	@Transactional
-	public FileInfo uploadFile(MultipartFile sourceFile, String userId, String pgmId, Long fk) throws Exception {
+	public FileInfo uploadFile(MultipartFile sourceFile, String userId, String pgmId) throws Exception {
 				
 		String uuid = UUID.randomUUID().toString();
 		
@@ -47,8 +49,7 @@ public class FileService {
 		file.setDownloadCnt(0);
 		file.setUserId(userId);
 		file.setPgmId(pgmId);		
-		file.setFk(fk);
-													
+														
 		return fileInfoRepository.save(file);		
 	}
 		
@@ -61,14 +62,28 @@ public class FileService {
 		repository.downloadFileNio(response,uuid,path,name);
 	}	
 		
-	public void downloadFile(HttpServletResponse response, Long pk)
+	public FileInfo downloadFile(HttpServletResponse response, Long pk)
 			throws Exception {
 		
 		FileInfo file = getFileInfo(pk);
 		
-		repository.downloadFileNio(response, file.getUuid(), file.getPath(), file.getFileNm());
+		localFileRepository.fileToStream(new File(file.getPath(), file.getUuid()), response.getOutputStream());
 		
+		//repository.downloadFileNio(response, file.getUuid(), file.getPath(), file.getFileNm());
+		return file;
 	}
+	
+	
+	public FileInfo downloadFile(Long id, OutputStream os)
+			throws Exception {
+		
+		FileInfo file = getFileInfo(id);
+		
+		localFileRepository.fileToStream(new File(file.getPath(), file.getUuid()), os);
+		
+		return file;
+	}
+	
 		
 	public FileInfo getFileInfo(Long pkFile) {
 		return fileInfoRepository.findOne(pkFile);

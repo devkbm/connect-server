@@ -61,8 +61,5 @@ public class FileInfo extends AuditEntity implements Serializable {
 	
 	@Column(name="download_cnt")
 	long downloadCnt;	
-	
-	@Column(name="fk")
-	Long fk;
 		
 }

@@ -12,9 +12,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,31 +76,6 @@ public class LocalFileRepository {
 		} 
 		
 		return Base64.encodeBase64String(byteArray);		
-	}
-	
-	
-	public HttpServletResponse setResponse(HttpServletResponse response, File file, String fileName) throws Exception {
-		
-		// get MIME type of the file
-		String mimeType= null;
-		if (mimeType == null) {
-		// set to binary type if MIME mapping not found
-		mimeType = "application/octet-stream";	         
-		}
-		
-		// set content attributes for the response
-		response.setContentType(mimeType);
-		response.setContentLengthLong(file.length());
-		response.setCharacterEncoding("UTF-8");
-		
-		// set headers for the response
-		String headerKey = "Content-Disposition";
-		//String headerValue = String.format("attachment;filename=\"%s\"", new String(name.getBytes("EUC-KR"), "8859_1"));
-		String headerValue = String.format("attachment;filename=\"%s\"", new String(fileName.getBytes("EUC-KR"), "8859_1"));
-		response.setHeader(headerKey, headerValue);
-		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");	
-		
-		return response;
-	}
+	}	
 	
 }
