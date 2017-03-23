@@ -14,24 +14,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.like.board.domain.model.Board;
+
 import com.like.board.service.BoardService;
-import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
-@RestController
+@Controller
 public class FileController {
 
 	@Resource(name = "boardService")
@@ -46,15 +43,17 @@ public class FileController {
 	public HttpServletResponse fileDownLoad(HttpServletResponse response,
 			@PathVariable(value="id") Long id) throws Exception {
 								
-		FileInfo fileInfo = fileService.downloadFile(id, response.getOutputStream());
+		FileInfo fileInfo = fileService.getFileInfo(id);
 		
 		response = this.setResponse(response, fileInfo.getSize(), fileInfo.getFileNm());
+		
+		fileService.downloadFile(new File(fileInfo.getPath(), fileInfo.getUuid()), response.getOutputStream());		
 		
 		return response;
 	}	
 	
-	@RequestMapping(value={"/grw/boardHierarchy"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getBoardHierarchyList(final MultipartHttpServletRequest request,
+	@RequestMapping(value={"/file"}, method=RequestMethod.POST) 
+	public ResponseEntity<?> fileUpload(final MultipartHttpServletRequest request,
 			@RequestParam(value="pgmId", required=false) String pgmId ) throws Exception {
 				
 		ResponseEntity<?> result = null;		
@@ -76,6 +75,13 @@ public class FileController {
 		
 		return result;
 	}
+	
+	@RequestMapping(value={"/file2"}, method=RequestMethod.POST) 
+	public void handleFileUpload(@RequestParam("file") MultipartFile file) throws Exception {
+
+		fileService.uploadFile(file, "kbm", "test");
+	}
+				
 		
 		
 	private HttpServletResponse setResponse(HttpServletResponse response, long fileSize, String fileName) throws Exception {

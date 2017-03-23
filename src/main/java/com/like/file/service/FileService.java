@@ -16,19 +16,14 @@ import com.like.common.file.infra.FileRepository;
 import com.like.common.file.infra.mapper.FileMapper;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.infra.LocalFileRepository;
-import com.like.file.infra.jparepository.FileInfoRepository;
+import com.like.file.infra.jparepository.FileInfoJpaRepository;
+import com.like.file.infra.jparepository.springdata.JpaFileInfo;
 
 @Service
 public class FileService {
-	
-	@Resource(name="fileRepository")
-	private FileRepository repository;
-	
-	@Resource(name="fileInfoRepository")
-	private FileInfoRepository fileInfoRepository;
-	
-	@Resource(name="fileMapper")
-	private FileMapper fileMapper;
+		
+	@Resource(name="fileInfoJpaRepository")
+	private FileInfoJpaRepository fileInfoRepository;	
 	
 	@Resource(name="localFileRepository")
 	private LocalFileRepository localFileRepository;
@@ -38,7 +33,7 @@ public class FileService {
 				
 		String uuid = UUID.randomUUID().toString();
 		
-		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), sourceFile.getOriginalFilename());
+		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), uuid);
 																
 		FileInfo file = new FileInfo();			
 		file.setUuid(uuid);		
@@ -49,18 +44,10 @@ public class FileService {
 		file.setDownloadCnt(0);
 		file.setUserId(userId);
 		file.setPgmId(pgmId);		
-														
-		return fileInfoRepository.save(file);		
+												
+		return fileInfoRepository.saveFile(file);		
 	}
 		
-	
-	public void downloadFile(HttpServletResponse response,
-				String uuid,
-				String path,
-				String name) throws Exception {
-	
-		repository.downloadFileNio(response,uuid,path,name);
-	}	
 		
 	public FileInfo downloadFile(HttpServletResponse response, Long pk)
 			throws Exception {
@@ -69,49 +56,33 @@ public class FileService {
 		
 		localFileRepository.fileToStream(new File(file.getPath(), file.getUuid()), response.getOutputStream());
 		
-		//repository.downloadFileNio(response, file.getUuid(), file.getPath(), file.getFileNm());
 		return file;
 	}
 	
-	
-	public FileInfo downloadFile(Long id, OutputStream os)
-			throws Exception {
-		
-		FileInfo file = getFileInfo(id);
-		
-		localFileRepository.fileToStream(new File(file.getPath(), file.getUuid()), os);
-		
-		return file;
-	}
-	
-		
-	public FileInfo getFileInfo(Long pkFile) {
-		return fileInfoRepository.findOne(pkFile);
-	}
-
-	public List<FileInfo> getFileInfoList(String pgmId, String fk)
+	@Transactional	
+	public void downloadFile(FileInfo fileInfo, OutputStream os)
 			throws Exception {		
-		return fileInfoRepository.findByPgmIdAndFk(pgmId,fk);
-		/*Map<String, Object> map = new HashMap<String, Object>();
-		map.put("pgmId", pgmId);
-		map.put("fk", fk);
 		
-		return fileMapper.getFileList(map);*/
+		localFileRepository.fileToStream(new File(fileInfo.getPath(), fileInfo.getUuid()), os);
+		
+		// 다운로드 카운트 + 1
+	}
+	
+		
+	public FileInfo getFileInfo(Long id) {
+		return fileInfoRepository.getFileInfo(id);
 	}
 	
 	@Transactional
-	public boolean deleteFile(FileInfo fileInfo) throws Exception {
-		boolean rtn = false;
+	public void deleteFile(FileInfo fileInfo) throws Exception {
+				
+		rtn = fileInfoRepository.deleteFile(fileInfo.getPkFile());
 		
-		rtn = repository.deleteFile(fileInfo.getUuid());
-		
-		fileInfoRepository.delete(fileInfo);
-							
-		return rtn;
+		localFileRepository.delete(fileInfo);								
 	}
 	
-	public String downloadBase64(Long pk) throws Exception {
-		FileInfo info = fileInfoRepository.findOne(pk);
+	public String downloadBase64(Long id) throws Exception {
+		FileInfo info = fileInfoRepository.getFileInfo(id);
 					
 		//return repository.getFileToBase64String(info.getPath(), info.getUuid());
 		return null;

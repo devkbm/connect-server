@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "cmfileinfo")
 @EntityListeners(AuditingEntityListener.class)
@@ -62,4 +61,8 @@ public class FileInfo extends AuditEntity implements Serializable {
 	@Column(name="download_cnt")
 	long downloadCnt;	
 		
+	public FileInfo() {
+		this.sysUser = "kbm";
+		this.updUser = "kbm";
+	}
 }

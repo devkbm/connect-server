@@ -14,8 +14,10 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+@Repository
 public class LocalFileRepository {
 
 	private String path;
