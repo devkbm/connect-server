@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.Article;
 import com.like.board.service.BoardService;
+import com.like.file.domain.model.FileInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,19 +28,10 @@ public class JpaTest {
 	
 	@Autowired
 	BoardService bs;
-	 
+	 	
 	@Test
-	public void contextLoads() {		
-		System.out.println(bs.getBoardList());			
-	}
-	
-	@Test
-	public void getBoardHierarchy() throws Exception {
-		Map<String, Object> map = new HashMap();
-		List list = null;
-		map.put("ppkboard","root");
-		//bs.getBoardListByTree(map);
-		list = bs.getBoardHierarchy(2L);		
+	public void getBoardHierarchy() throws Exception {		
+		List list = bs.getBoardHierarchy(2L);		
 		log.info(list.toString());
 	}
 	
@@ -49,8 +41,16 @@ public class JpaTest {
 		List<Article> articles = new ArrayList<Article>();
 		Article article = new Article();
 		
+		FileInfo file= new FileInfo();
+		file.setFileNm("test");
+		article.addAttachedFile(file);
+		
 		articles.add(article);
 		board.setArticles(articles);
-		bs.saveBoard(board);							
+		bs.saveBoard(board);		
+		
+		bs.getBoardList();
 	}
+	
+	
 }

@@ -17,9 +17,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.like.common.domain.AuditEntity;
+import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"articleChecks","board"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @Getter
 @Entity
 @Table(name = "grarticle")
@@ -103,6 +104,12 @@ public class Article extends AuditEntity implements Serializable {
     @OneToMany(mappedBy = "article")
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
     
+    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinTable(name="grarticle_files",
+    		joinColumns= @JoinColumn(name="pk_article"),
+    		inverseJoinColumns=@JoinColumn(name="pk_file"))
+    private List<FileInfo> files;       
+    
 	public Article() {}    
 	
 	public boolean hasParentArticle() {		
@@ -132,6 +139,12 @@ public class Article extends AuditEntity implements Serializable {
 	
 	public void updateHitCnt() {
 		this.hitCnt = this.hitCnt + 1;	
+	}
+	
+	public boolean addAttachedFile(FileInfo file) {
+		if (files == null)
+			files = new ArrayList<>();
+		return files.add(file);
 	}
 	
 }

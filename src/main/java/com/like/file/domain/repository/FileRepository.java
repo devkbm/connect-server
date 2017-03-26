@@ -10,7 +10,7 @@ public interface FileRepository {
 	
 	List<FileInfo> getFileInfoList();
 	
-	void deleteFile(Long id);
+	void delete(Long id);
 	
-	FileInfo saveFile(FileInfo fileInfo);
+	FileInfo save(FileInfo fileInfo);
 }

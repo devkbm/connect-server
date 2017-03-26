@@ -45,7 +45,7 @@ public class FileService {
 		file.setUserId(userId);
 		file.setPgmId(pgmId);		
 												
-		return fileInfoRepository.saveFile(file);		
+		return fileInfoRepository.save(file);		
 	}
 		
 		
@@ -66,6 +66,8 @@ public class FileService {
 		localFileRepository.fileToStream(new File(fileInfo.getPath(), fileInfo.getUuid()), os);
 		
 		// 다운로드 카운트 + 1
+		fileInfo.plusDownloadCount();
+		fileInfoRepository.save(fileInfo);
 	}
 	
 		
@@ -75,17 +77,16 @@ public class FileService {
 	
 	@Transactional
 	public void deleteFile(FileInfo fileInfo) throws Exception {
-				
-		rtn = fileInfoRepository.deleteFile(fileInfo.getPkFile());
 		
-		localFileRepository.delete(fileInfo);								
+		localFileRepository.deleteFile(fileInfo.getPath(), fileInfo.getUuid());
+		
+		fileInfoRepository.delete(fileInfo.getPkFile());											
 	}
-	
+
 	public String downloadBase64(Long id) throws Exception {
 		FileInfo info = fileInfoRepository.getFileInfo(id);
 					
-		//return repository.getFileToBase64String(info.getPath(), info.getUuid());
-		return null;
+		return localFileRepository.fileToBase64String(info.getPath(), info.getUuid());		
 	}
 	
 }

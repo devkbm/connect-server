@@ -8,6 +8,7 @@ import com.like.board.domain.model.Article;
 import com.like.board.domain.model.ArticleCheck;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.dto.BoardHierarchyDTO;
+import com.like.file.domain.model.FileInfo;
 
 @Repository
 public interface BoardRepository {
@@ -22,7 +23,8 @@ public interface BoardRepository {
 		
 	void saveBoard(Board board);
 	
-	void deleteBoard(Long pkBoard);
+	void deleteBoard(Long id);
+	
 	
 	Article getArticle(Long id);
 	
@@ -35,6 +37,8 @@ public interface BoardRepository {
 	Long getArticleNextSeq(Long pkBoard);
 	
 	int updateArticleHitCnt(Long pkAriticle, String userId);
+	
+	List<FileInfo> getFileInfoList(Long pkArticle);
 		
 	ArticleCheck getArticleCheck(Long fkarticle, String userId);
 	

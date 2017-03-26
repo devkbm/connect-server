@@ -11,6 +11,7 @@ import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
+import com.like.file.domain.model.FileInfo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -212,20 +213,11 @@ public class BoardJpaRepository implements BoardRepository {
 			 		
 		return article.getHitCnt();		
 	}
-/*
+
 	@Override
-	public List<BookmarkVO> getBookmarkList(String userId) {		
-		return boardDAO.getBoardBookmarkList(userId);
+	public List<FileInfo> getFileInfoList(Long pkArticle) {
+
+		return jpaArticle.findOne(pkArticle).getFiles();
 	}
-	@Override
-	public Long saveBookmark(Bookmark bookmark, Long fkBoard) {
-		Board board = jpaBoard.findOne(fkBoard);
-		
-		bookmark.setNextSeq();
-		bookmark.setBoard(board);
-				
-		return bookmark.getPkBookmark();
-	}
-	*/
 	
 }

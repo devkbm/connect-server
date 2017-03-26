@@ -30,6 +30,7 @@ public class LocalFileRepository {
 	public String getPath() {
 		return "C:\\temp";
 	}
+	
 	public void fileTransfer(MultipartFile sourceFile, String path, String fileName) throws Exception {
 						
 		if(sourceFile == null || sourceFile.isEmpty()){			
@@ -50,14 +51,26 @@ public class LocalFileRepository {
 		try (
 			FileInputStream fis = new FileInputStream(file);
 			FileChannel inChannel = fis.getChannel();
-			WritableByteChannel outChannel = Channels.newChannel(os);) {							
-			
-			//response = this.setResponse(response, downloadFile, name);
+			WritableByteChannel outChannel = Channels.newChannel(os);) {										
 			
 			inChannel.transferTo(0, fis.available(), outChannel);			
+		}		
+	}
+	
+	/**
+	 * 파일을 삭제한다.
+	 * @param path 파일 경로
+	 * @param name 파일명
+	 * @return 삭제 여부
+	 * @throws Exception
+	 */
+	public Boolean deleteFile(String path, String name) throws Exception {
+		File file = new File(path, name);
+		Boolean result = false;
+		if(file.isFile()){
+			result = file.delete();
 		}
-		
-		//return response;		
+		return result;
 	}
 	
 	public String fileToBase64String(String path, String fileName) throws Exception {

@@ -1,6 +1,5 @@
 package com.like.file.web;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +46,7 @@ public class FileController {
 		
 		response = this.setResponse(response, fileInfo.getSize(), fileInfo.getFileNm());
 		
-		fileService.downloadFile(new File(fileInfo.getPath(), fileInfo.getUuid()), response.getOutputStream());		
+		fileService.downloadFile(fileInfo, response.getOutputStream());		
 		
 		return response;
 	}	
