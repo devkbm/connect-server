@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
@@ -34,6 +36,9 @@ public class BoardController {
 
 	@Resource(name = "boardService")
 	private BoardService boardService;
+	
+	@Autowired 
+	RestTemplate restTemplate;	
 	
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 			
@@ -108,7 +113,7 @@ public class BoardController {
 			for (Board board : boardList ) {
 				boardService.saveBoard(board);
 			}
-			
+				
 			res = WebControllerUtil.getResponse(null,
 					boardList.size(), 
 					true, 
@@ -180,6 +185,11 @@ public class BoardController {
 		for (Article article : articleList ) {			
 			boardService.saveArticle(article, fkBoard);
 		}
+		
+		/*ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8090/file", 
+																			request, 
+																			responseType, 
+																			uriVariables);*/
 						
 		result = WebControllerUtil.getResponse(null, 
 				articleList.size(), 
