@@ -2,6 +2,7 @@ package com.like.board.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +111,16 @@ public class Article extends AuditEntity implements Serializable {
     		inverseJoinColumns=@JoinColumn(name="pk_file"))
     private List<FileInfo> files;       
     
-	public Article() {}    
+	protected Article() {}
+	
+	public Article(String title, String contents) {
+		this.sysUser = "test";
+		this.updUser = "test";
+		this.title = title;
+		this.contents = contents;
+		this.fromDt = LocalDate.now();
+		this.toDt = LocalDate.of(9999, Month.DECEMBER, 31);				
+	}
 	
 	public boolean hasParentArticle() {		
 		return this.ppkArticle != null ? true : false;

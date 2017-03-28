@@ -1,7 +1,10 @@
 package com.like.board.web;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
@@ -10,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
@@ -37,8 +43,8 @@ public class BoardController {
 	@Resource(name = "boardService")
 	private BoardService boardService;
 	
-	@Autowired 
-	RestTemplate restTemplate;	
+	/*@Autowired 
+	RestTemplate restTemplate;*/	
 	
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 			
@@ -50,7 +56,7 @@ public class BoardController {
 		List<Board> list = new ArrayList<Board>(); 
 			
 		list.add(boardService.getBoard(id));
-		log.debug("sdf");	
+			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
 				true, 
@@ -231,8 +237,6 @@ public class BoardController {
 				HttpStatus.OK); 					
 		
 		return result;
-	}
-	
-	
+	}	
 	
 }

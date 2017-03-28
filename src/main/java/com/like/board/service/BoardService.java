@@ -49,8 +49,7 @@ public class BoardService {
 	}
 	
 	public Article getAritlce(Long id) {
-		//return boardRepository.getArticleList(fkBoard);
-		return null;
+		return boardRepository.getArticle(id);		
 	}
 	
 	public List<Article> getAritlceList(Long fkBoard) {
