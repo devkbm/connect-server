@@ -36,7 +36,7 @@ public interface BoardRepository {
 	
 	Long getArticleNextSeq(Long pkBoard);
 	
-	int updateArticleHitCnt(Long pkAriticle, String userId);
+	Article updateArticleHitCnt(Long pkAriticle, String userId);
 	
 	List<FileInfo> getFileInfoList(Long pkArticle);
 		

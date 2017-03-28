@@ -64,7 +64,7 @@ public class BoardService {
 		boardRepository.deleteArticle(article);
 	}
 	
-	public int updateArticleHitCnt(Long pkAriticle, String userId) {		
+	public Article updateArticleHitCnt(Long pkAriticle, String userId) {		
 		return boardRepository.updateArticleHitCnt(pkAriticle, userId);
 	}	
 		

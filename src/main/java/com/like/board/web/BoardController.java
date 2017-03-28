@@ -222,15 +222,18 @@ public class BoardController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/grw/boards/articles/hitcnt"}, method=RequestMethod.PUT) 
+	@RequestMapping(value={"/grw/boards/articles/hitcnt"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,
 			@RequestParam(value="userid", required=true) String userId) {
 			
 		ResponseEntity<?> result = null;			
-												
-		boardService.updateArticleHitCnt(id, userId);
+		List<Article> list = new ArrayList<>();
+				
+		Article aritlce = boardService.updateArticleHitCnt(id, userId);
+		
+		list.add(aritlce);
 						
-		result = WebControllerUtil.getResponse(null, 
+		result = WebControllerUtil.getResponse(list, 
 				1, 
 				true, 
 				String.format("%d건 업데이트 하였습니다.", 1), 

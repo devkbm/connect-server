@@ -82,8 +82,8 @@ public class BoardJpaRepository implements BoardRepository {
 		QBoard parent = new QBoard("parent");								
 		
 		Expression<String> leaf = new CaseBuilder()
-										.when(parent.pkBoard.isNotNull()).then("True")
-										.otherwise("False").as("leaf");													
+										.when(parent.pkBoard.isNotNull()).then("true")
+										.otherwise("false").as("leaf");													
 		
 		JPAQuery<BoardHierarchyDTO> query = queryFactory
 													.select(Projections.constructor(BoardHierarchyDTO.class
@@ -188,7 +188,7 @@ public class BoardJpaRepository implements BoardRepository {
 	}
 
 	@Override
-	public int updateArticleHitCnt(Long pkAriticle, String userId) {				
+	public Article updateArticleHitCnt(Long pkAriticle, String userId) {				
 				
 		Article article = jpaArticle.findOne(pkAriticle);		
 				
@@ -211,7 +211,7 @@ public class BoardJpaRepository implements BoardRepository {
 		
 		jpaArticleCheck.save(check);
 			 		
-		return article.getHitCnt();		
+		return article;		
 	}
 
 	@Override
