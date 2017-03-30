@@ -11,4 +11,8 @@ public interface UserRepository {
 	
 	List<Authority> readAuthority(String userName);
 	
+	void createUser(User user);
+	void createAuthority(Authority user);
+	void deleteUser(String userName);
+	void deleteAuthority(String userName);
 }

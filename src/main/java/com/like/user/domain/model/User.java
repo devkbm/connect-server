@@ -11,7 +11,10 @@ import javax.persistence.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Setter;
+
 @Entity
+@Setter
 @Table(name = "user")
 public class User implements UserDetails {
 
