@@ -1,19 +1,16 @@
 package com.like.board.web;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
@@ -47,15 +41,27 @@ public class BoardController {
 	RestTemplate restTemplate;*/	
 	
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
-			
-	@RequestMapping(value={"/grw/boards/{id}"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {
+	
+	private boolean validId(Long id) {				
+		return ( id != null && id > 0 ) ? true : false;
+	}
+	
+	//private Long
+	
+	
+	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getBoard(@RequestParam(value="id", required=false) Long id) {
 			
 		ResponseEntity<?> result = null;
 				
-		List<Board> list = new ArrayList<Board>(); 
-			
-		list.add(boardService.getBoard(id));
+		List<Board> list; 
+		
+		if ( validId(id) ) {
+			list = new ArrayList<Board>();
+			list.add(boardService.getBoard(id));			
+		} else {
+			list = boardService.getBoardList();
+		}			
 			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -65,23 +71,6 @@ public class BoardController {
 		
 		return result;
 	}	
-
-	
-	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getBoardList() {
-			
-		ResponseEntity<?> result = null;			
-				
-		List<Board> list = boardService.getBoardList();
-		
-		result = WebControllerUtil.getResponse(list,
-				list.size(), 
-				true,
-				String.format("%d 건 조회되었습니다.", list.size()),
-				HttpStatus.OK); 					
-		
-		return result;
-	}
 	
 	@RequestMapping(value={"/grw/boardHierarchy"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
@@ -95,7 +84,7 @@ public class BoardController {
 			id = Long.parseLong(parentId);
 		}
 		
-		List list = boardService.getBoardHierarchy(id);
+		List<?> list = boardService.getBoardHierarchy(id);
 		
 		result = WebControllerUtil.getResponse(list,
 				list.size(), 
@@ -106,7 +95,7 @@ public class BoardController {
 		return result;
 	}
 		
-	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.POST) 
+	@RequestMapping(value={"/grw/boards"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveBoard(@RequestBody List<Board> boardList, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
@@ -128,7 +117,7 @@ public class BoardController {
 		}
 								 					
 		return res;
-	}
+	}	
 	
 	@RequestMapping(value={"/grw/boards/{id}"}, method=RequestMethod.DELETE) 
 	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {
@@ -144,34 +133,22 @@ public class BoardController {
 				HttpStatus.OK); 					
 		
 		return result;
-	}
-	
-	
-	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {
-			
-		ResponseEntity<?> result = null;			
-		
-		List<Article> list = new ArrayList<Article>(); 
-		
-		list.add(boardService.getAritlce(id));
-				
-		result = WebControllerUtil.getResponse(list, 
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 			
-				
-		return result;
-	}
-	
+	}	
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard) {
+	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,
+			@RequestParam(value="id", required=false) Long id) {
 			
 		ResponseEntity<?> result = null;			
-												
-		List<Article> list = boardService.getAritlceList(fkBoard);
+		
+		List<Article> list;
+		
+		if ( validId(id) ) {
+			list = new ArrayList<>(); 			
+			list.add(boardService.getAritlce(id));
+		} else {
+			list = boardService.getAritlceList(fkBoard);
+		}			
 			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -182,7 +159,7 @@ public class BoardController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.POST) 
+	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveArticle(@RequestBody List<Article> articleList,
 			@RequestParam(value="fkBoard", required=true) Long fkBoard) {
 			
@@ -206,8 +183,8 @@ public class BoardController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<?> delArticle(@PathVariable(value="id") Long id) {
+	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.DELETE) 
+	public ResponseEntity<?> delArticle(@RequestParam(value="id", required=true) Long id) {
 			
 		ResponseEntity<?> result = null;			
 												

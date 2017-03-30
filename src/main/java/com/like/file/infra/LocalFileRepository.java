@@ -12,8 +12,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.util.Base64;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,7 +90,7 @@ public class LocalFileRepository {
 			byteArray = bos.toByteArray();					
 		} 
 		
-		return Base64.encodeBase64String(byteArray);		
+		return Base64.getEncoder().encodeToString(byteArray);		
 	}	
 	
 }
