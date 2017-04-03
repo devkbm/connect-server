@@ -30,7 +30,7 @@ public class AuditEntity {
 	 */
 	@CreatedBy
 	@Column(name = "sys_user", nullable = false, updatable = false)
-	protected String sysUser;
+	protected String sysUser = "test";
 	
 	/**
 	 * 수정일자			
@@ -44,7 +44,7 @@ public class AuditEntity {
 	 */
 	@LastModifiedBy
 	@Column(name = "upd_user")
-	protected String updUser;
+	protected String updUser = "test";
 
 	public LocalDateTime getSysDt() {
 		return sysDt;

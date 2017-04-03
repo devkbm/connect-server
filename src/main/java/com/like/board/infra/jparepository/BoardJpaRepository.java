@@ -82,7 +82,7 @@ public class BoardJpaRepository implements BoardRepository {
 		QBoard parent = new QBoard("parent");								
 		
 		Expression<String> leaf = new CaseBuilder()
-										.when(parent.pkBoard.isNotNull()).then("true")
+										.when(parent.pkBoard.isNull()).then("true")
 										.otherwise("false").as("leaf");													
 		
 		JPAQuery<BoardHierarchyDTO> query = queryFactory
