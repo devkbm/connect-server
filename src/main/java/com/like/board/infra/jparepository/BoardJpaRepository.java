@@ -11,6 +11,7 @@ import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
+import com.like.board.infra.mapper.dto.ArticleListDTO;
 import com.like.file.domain.model.FileInfo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
@@ -126,6 +127,18 @@ public class BoardJpaRepository implements BoardRepository {
 		return queryFactory.selectFrom(qArticle)
 							.where(qArticle.board.pkBoard.eq(fkBoard))
 							.fetch();				
+	}
+	
+	public List<ArticleListDTO> getArticleListDTO(Long fkBoard) {
+		
+		/*JPAQuery<BoardHierarchyDTO> query = queryFactory
+				.select(Projections.constructor(ArticleListDTO.class
+											, qBoard.pkBoard, qBoard.boardNm, leaf
+											, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
+				.from(qArticle)
+				.leftJoin(qBoard.parent, parent);
+		*/
+		return null;
 	}
 
 	@Override

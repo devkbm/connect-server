@@ -3,6 +3,8 @@ package com.like.board.infra.mapper.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.querydsl.core.annotations.QueryProjection;
+
 import lombok.Data;
 
 @Data
@@ -103,5 +105,30 @@ public class ArticleListDTO implements Serializable {
 	 * 게시판 외래키
 	 */
 	String fkBoard;
+	
+	@QueryProjection
+	public ArticleListDTO(Date sysDt, String sysUser, String sysUsernm, Date updDt, String updUser, String pkArticle,
+			String ppkArticle, String title, String contents, String pwd, String hitCnt, String fromDt, String toDt,
+			String seq, String checkYn, String fileYn, String fileInfo, String fkBoard) {
+		super();
+		this.sysDt = sysDt;
+		this.sysUser = sysUser;
+		this.sysUsernm = sysUsernm;
+		this.updDt = updDt;
+		this.updUser = updUser;
+		this.pkArticle = pkArticle;
+		this.ppkArticle = ppkArticle;
+		this.title = title;
+		this.contents = contents;
+		this.pwd = pwd;
+		this.hitCnt = hitCnt;
+		this.fromDt = fromDt;
+		this.toDt = toDt;
+		this.seq = seq;
+		this.checkYn = checkYn;
+		this.fileYn = fileYn;
+		this.fileInfo = fileInfo;
+		this.fkBoard = fkBoard;
+	}
 		               
 }

@@ -37,14 +37,9 @@ public class BoardService {
 	
 	public void deleteBoard(Long id) {
 		boardRepository.deleteBoard(id);
-	}
+	}	
 	
-	
-	public List<Map<String,Object>> getBoardListByTree(Map<String,Object> map) {
-		return boardMapper.getBoardListByTree(map);		
-	}
-	
-	public List getBoardHierarchy(Long parentId) {
+	public List<?> getBoardHierarchy(Long parentId) {
 		return boardRepository.getBoardHierarchy(parentId);
 	}
 	
