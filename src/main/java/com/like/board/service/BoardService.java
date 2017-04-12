@@ -1,7 +1,6 @@
 package com.like.board.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -10,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.infra.mapper.BoardMapper;
 
@@ -19,6 +19,9 @@ public class BoardService {
 	
     @Resource(name="boardJpaRepository")
 	private BoardRepository boardRepository;
+    
+    @Resource(name="articleJpaRepository")
+	private ArticleRepository articleRepository;
     
     @Resource(name="boardMapper")
     private BoardMapper boardMapper;
@@ -44,23 +47,27 @@ public class BoardService {
 	}
 	
 	public Article getAritlce(Long id) {
-		return boardRepository.getArticle(id);		
+		return articleRepository.getArticle(id);		
 	}
 	
 	public List<Article> getAritlceList(Long fkBoard) {
-		return boardRepository.getArticleList(fkBoard);
+		return articleRepository.getArticleList(fkBoard);
+	}
+	
+	public List<Article> getAritlceList(Long fkBoard, String title, String contents) {
+		return articleRepository.getArticleList(fkBoard,title,contents);
 	}
 	
 	public String saveArticle(Article article, Long fkBoard) {										
-		return boardRepository.saveArticle(article, fkBoard).toString();
+		return articleRepository.saveArticle(article, fkBoard).toString();
 	}
 
 	public void deleteArticle(Article article) throws Exception {					
-		boardRepository.deleteArticle(article);
+		articleRepository.deleteArticle(article);
 	}
 	
 	public Article updateArticleHitCnt(Long pkAriticle, String userId) {		
-		return boardRepository.updateArticleHitCnt(pkAriticle, userId);
+		return articleRepository.updateArticleHitCnt(pkAriticle, userId);
 	}	
 		
 }

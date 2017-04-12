@@ -137,18 +137,22 @@ public class BoardController {
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,
-			@RequestParam(value="id", required=false) Long id) {
+			@RequestParam(value="id", required=false) Long id,
+			@RequestParam(value="title", required=false) String title,
+			@RequestParam(value="contents", required=false) String contents) {
 			
 		ResponseEntity<?> result = null;			
 		
 		List<Article> list;
+		//log.info(id.toString());
 		
 		if ( validId(id) ) {
 			list = new ArrayList<>(); 			
 			list.add(boardService.getAritlce(id));
 		} else {
-			list = boardService.getAritlceList(fkBoard);
-		}			
+			list = boardService.getAritlceList(fkBoard,title,contents);
+			log.info(title);
+		}
 			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 

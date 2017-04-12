@@ -9,15 +9,7 @@ import com.like.board.infra.mapper.dto.ArticleListDTO;
 
 @Mapper
 public interface BoardMapper {
-				
-	/**
-	 * 게시판 정보를 트리형태로 조회한다.
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	List<Map<String, Object>> getBoardListByTree(Map<String, Object> map);
-	
+					
 	/**
 	 * 게시글 리스트 조회
 	 * @param map

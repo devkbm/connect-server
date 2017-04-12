@@ -23,4 +23,20 @@
   	    WHERE A.PPK_BOARD = #{ppkboard}
 	ORDER BY A.SEQ
 	</select>	
+	
+	<select id="getArticleList" parameterType="map" resultType="com.like.board.infra.mapper.dto.ArticleListDTO">
+		SELECT A.PK_BOARD		 						AS id 		    
+		     , A.BOARD_NAME								AS text
+		     , IF ( B.PK_BOARD IS NULL, TRUE, FALSE)	AS leaf
+		     , A.BOARD_TYPE	 							AS qtitle
+		     , A.BOARD_NAME								AS qtip		     
+		     , A.PPK_BOARD								AS parent_id
+		     , A.FROM_DT								AS fromdd
+		     , A.TO_DT									AS todd
+		     , A.SEQ									AS seq
+  		  FROM GRBOARD A
+  	 LEFT JOIN GRBOARD AS B ON ( B.PPK_BOARD = A.PK_BOARD )
+  	    WHERE A.PPK_BOARD = #{ppkboard}
+	ORDER BY A.SEQ
+	</select>
 </mapper>

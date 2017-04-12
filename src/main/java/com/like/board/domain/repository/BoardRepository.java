@@ -17,29 +17,12 @@ public interface BoardRepository {
 	
 	List<Board> getBoardList();
 	
-	List<Board> getBoardList(String boardName);
+	List<Board> getBoardList(String likeBoardName);
 	
 	List<BoardHierarchyDTO> getBoardHierarchy(Long parentId);
 		
 	void saveBoard(Board board);
 	
 	void deleteBoard(Long id);
-	
-	
-	Article getArticle(Long id);
-	
-	List<Article> getArticleList(Long fkBoard);
-	
-	Long saveArticle(Article article, Long fkBoard);
-	
-	void deleteArticle(Article article);
-	
-	Long getArticleNextSeq(Long pkBoard);
-	
-	Article updateArticleHitCnt(Long pkAriticle, String userId);
-	
-	List<FileInfo> getFileInfoList(Long pkArticle);
-		
-	ArticleCheck getArticleCheck(Long fkarticle, String userId);
-	
+			
 }
