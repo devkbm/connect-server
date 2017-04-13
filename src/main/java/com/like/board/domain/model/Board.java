@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.*;
 import com.like.common.domain.AuditEntity;
