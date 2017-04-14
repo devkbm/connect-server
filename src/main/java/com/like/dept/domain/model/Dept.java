@@ -27,7 +27,7 @@ public class Dept extends AuditEntity implements Serializable {
 	@Column(name="dept_nm")
 	private String deptName;
 		
-	@Column(name="dept_nm")
+	@Column(name="use_yn")
 	private Boolean isUse;
 	
 	@Column(name="from_dt")
