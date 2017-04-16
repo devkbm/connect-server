@@ -29,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
+		http.csrf().disable()
+		    .headers().frameOptions().disable();
 		/*http
 			.csrf().disable()				
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
