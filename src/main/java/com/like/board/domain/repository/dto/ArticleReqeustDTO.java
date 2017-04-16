@@ -12,7 +12,12 @@ import lombok.Data;
 @Data
 public class ArticleReqeustDTO implements Serializable {
 
-	Long pkArticle;	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6844786437530688768L;
+
+	/*Long pkArticle;	
 		
 	Long ppkArticle;		
 	
@@ -31,6 +36,31 @@ public class ArticleReqeustDTO implements Serializable {
     Long seq;
     
     long depth;
+    	
+    Long fkBoard;
+    
+    @JsonIgnore
+    MultipartFile file;*/
+    
+    String pkArticle;	
+	
+    String ppkArticle;		
+	
+	String title;
+    
+    String contents;
+     
+    String pwd;
+    
+    String hitCnt;
+        
+    String fromDt;
+    
+    String toDt;
+    
+    String seq;
+    
+    String depth;
     	
     Long fkBoard;
     

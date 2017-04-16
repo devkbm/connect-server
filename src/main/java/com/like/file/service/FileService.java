@@ -19,7 +19,7 @@ import com.like.file.infra.LocalFileRepository;
 import com.like.file.infra.jparepository.FileInfoJpaRepository;
 import com.like.file.infra.jparepository.springdata.JpaFileInfo;
 
-@Service
+@Service("fileService")
 public class FileService {
 		
 	@Resource(name="fileInfoJpaRepository")

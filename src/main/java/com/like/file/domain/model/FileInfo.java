@@ -66,6 +66,12 @@ public class FileInfo extends AuditEntity implements Serializable {
 		this.updUser = "kbm";
 	}
 	
+	public FileInfo(String pgmId) {
+		this.pgmId = pgmId;
+		this.sysUser = "kbm";
+		this.updUser = "kbm";
+	}
+	
 	public void plusDownloadCount() {
 		this.downloadCnt = this.downloadCnt + 1;
 	}
