@@ -15,13 +15,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="pkArticle")
 @Getter
 @Entity
 @Table(name = "grarticle")

@@ -16,6 +16,7 @@ import lombok.Getter;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="pkBoard")
 @Getter
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
