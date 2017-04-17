@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.like.board.domain.repository.ArticleRepository;
+import com.like.board.domain.repository.dto.ArticleListDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
-import com.like.board.infra.mapper.dto.ArticleListDTO;
 import com.like.file.domain.model.FileInfo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -95,10 +95,10 @@ public class ArticleJpaRepository implements ArticleRepository {
 			article.setParentRoot();
 		}
 		
-		if (article.getSeq() == null ) {							
+		if (article.getSeq() == 0 ) {							
 			article.setSeq(getArticleNextSeq(fkBoard));
 		} else if (article.getSeq() == 0 ) {
-			article.setSeq(1L);
+			article.setSeq(1);
 		}
 						
 		article.setBoard(board);
@@ -131,18 +131,19 @@ public class ArticleJpaRepository implements ArticleRepository {
 	}
 	
 	@Override
-	public Long getArticleNextSeq(Long pkboard) {
+	public int getArticleNextSeq(Long pkboard) {
 							
-		Long rtn = queryFactory
+		Integer rtn = queryFactory
 						.select(qArticle.seq.max())
 			  			.from(qArticle)
 			  			.where(qArticle.board.pkBoard.eq(pkboard))				  
 			  			.fetchOne();
+		
 		if ( rtn == null) {
-			rtn = 0L;
+			rtn = 0;
 		}
 		
-		return rtn + 1;		
+		return rtn.intValue() + 1;		
 	}
 
 	@Override

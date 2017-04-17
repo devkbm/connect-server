@@ -21,7 +21,7 @@ public interface ArticleRepository {
 	
 	void deleteArticle(Article article);
 	
-	Long getArticleNextSeq(Long pkBoard);
+	int getArticleNextSeq(Long pkBoard);
 	
 	Article updateArticleHitCnt(Long pkAriticle, String userId);
 	

@@ -16,31 +16,6 @@ public class ArticleReqeustDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6844786437530688768L;
-
-	/*Long pkArticle;	
-		
-	Long ppkArticle;		
-	
-	String title;
-    
-    String contents;
-     
-    String pwd;
-    
-    int hitCnt;
-        
-    LocalDate fromDt;
-    
-    LocalDate toDt;
-    
-    Long seq;
-    
-    long depth;
-    	
-    Long fkBoard;
-    
-    @JsonIgnore
-    MultipartFile file;*/
     
     String pkArticle;	
 	
@@ -58,9 +33,9 @@ public class ArticleReqeustDTO implements Serializable {
     
     String toDt;
     
-    String seq;
+    Integer seq;
     
-    String depth;
+    Integer depth;
     	
     Long fkBoard;
     

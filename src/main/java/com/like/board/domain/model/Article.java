@@ -88,13 +88,13 @@ public class Article extends AuditEntity implements Serializable {
      * 출력순서
      */
 	@Column(name="seq")
-    Long seq;
+    int seq;
     
     /**
      * 게층 횟수
      */
 	@Column(name="depth")
-    long depth;
+    int depth;
     
 	/**
 	 * 게시판 외래키
@@ -146,7 +146,7 @@ public class Article extends AuditEntity implements Serializable {
 		this.ppkArticle = 0L;	
 	}
 	
-	public void setSeq(Long seq) {
+	public void setSeq(int seq) {
 		this.seq = seq;
 	}
 	

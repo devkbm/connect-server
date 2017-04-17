@@ -1,4 +1,4 @@
-package com.like.board.infra.mapper.dto;
+package com.like.board.domain.repository.dto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,9 +10,6 @@ import lombok.Data;
 @Data
 public class ArticleListDTO implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6343198961752805944L;
 
 	/**
