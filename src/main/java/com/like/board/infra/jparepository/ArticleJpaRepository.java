@@ -133,17 +133,20 @@ public class ArticleJpaRepository implements ArticleRepository {
 	@Override
 	public int getArticleNextSeq(Long pkboard) {
 							
-		Integer rtn = queryFactory
+		/*Integer rtn = queryFactory
 						.select(qArticle.seq.max())
 			  			.from(qArticle)
 			  			.where(qArticle.board.pkBoard.eq(pkboard))				  
-			  			.fetchOne();
+			  			.fetchOne();*/
+		int rtn = 0;
 		
-		if ( rtn == null) {
-			rtn = 0;
-		}
-		
-		return rtn.intValue() + 1;		
+		rtn = queryFactory
+		    .select(qArticle.seq.max())
+			.from(qArticle)
+			.where(qArticle.board.pkBoard.eq(pkboard))				  
+			.fetchOne();
+					
+		return rtn + 1;		
 	}
 
 	@Override
