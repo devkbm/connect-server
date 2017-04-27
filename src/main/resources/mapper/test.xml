@@ -24,7 +24,7 @@
 	ORDER BY A.SEQ
 	</select>	
 	
-	<select id="getArticleList" parameterType="map" resultType="com.like.board.domain.repository.dto.ArticleListDTO">
+	<select id="getArticleList" parameterType="map" resultType="com.like.board.domain.repository.dto.ArticleListDTO"><![CDATA[
 		select b.SYS_DT		as sysDt
 		     , b.SYS_USER	as sysUser
 		     , 'test' 		as sysUsernm
@@ -44,7 +44,11 @@
 		            then 'Y' 
 		            else 'N' 
 		       end 			as fileYn
-		     , ''			as fileInfo		-- uuid | path | name | size
+		     , (select group_concat(z.UUID, '|',z.PATH, '|', z.FILE_NM,'|',z.size order by z.PK_FILE SEPARATOR '|')     
+		          from grarticle_files x
+		         inner join cmfileinfo z
+		               on (x.PK_FILE = z.PK_FILE)
+		         where x.PK_ARTICLE = b.PK_ARTICLE )	as fileInfo		-- uuid | path | name | size
 		     , b.FK_BOARD	as fkBoard
    		  from grboard a
    			inner join grarticle b
@@ -53,5 +57,7 @@
    	        	on (b.PK_ARTICLE = c.PK_ARTICLE)
     		left outer join cmfileinfo d
             	on (c.pk_file = d.PK_FILE)
+       where a.PK_BOARD = #{pkBoard}
+    ]]>          	
 	</select>
 </mapper>
