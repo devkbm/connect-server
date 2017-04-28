@@ -6,8 +6,10 @@ import java.util.Date;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ArticleListDTO implements Serializable {
 	
 	private static final long serialVersionUID = 6343198961752805944L;

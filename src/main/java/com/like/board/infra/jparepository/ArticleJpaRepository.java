@@ -95,9 +95,9 @@ public class ArticleJpaRepository implements ArticleRepository {
 			article.setParentRoot();
 		}
 		
-		if (article.getSeq() == 0 ) {							
+		if (article.getSeq() != null ) {							
 			article.setSeq(getArticleNextSeq(fkBoard));
-		} else if (article.getSeq() == 0 ) {
+		} else if (article.getSeq() == null ) {
 			article.setSeq(1);
 		}
 						
@@ -131,20 +131,13 @@ public class ArticleJpaRepository implements ArticleRepository {
 	}
 	
 	@Override
-	public int getArticleNextSeq(Long pkboard) {
+	public Integer getArticleNextSeq(Long pkboard) {
 							
-		/*Integer rtn = queryFactory
+		Integer rtn = queryFactory
 						.select(qArticle.seq.max())
 			  			.from(qArticle)
 			  			.where(qArticle.board.pkBoard.eq(pkboard))				  
-			  			.fetchOne();*/
-		int rtn = 0;
-		
-		rtn = queryFactory
-		    .select(qArticle.seq.max())
-			.from(qArticle)
-			.where(qArticle.board.pkBoard.eq(pkboard))				  
-			.fetchOne();
+			  			.fetchOne();		
 					
 		return rtn + 1;		
 	}

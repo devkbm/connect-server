@@ -57,7 +57,13 @@
    	        	on (b.PK_ARTICLE = c.PK_ARTICLE)
     		left outer join cmfileinfo d
             	on (c.pk_file = d.PK_FILE)
-       where a.PK_BOARD = #{pkBoard}
+       where a.PK_BOARD = #{pkBoard}      
     ]]>          	
+    	<if test="title != null"><![CDATA[
+    	and b.title like #{title}
+    	]]></if>
+    	<if test="contents != null"><![CDATA[
+    	and b.contents like #{contents}
+    	]]></if>
 	</select>
 </mapper>

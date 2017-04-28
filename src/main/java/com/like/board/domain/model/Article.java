@@ -88,7 +88,7 @@ public class Article extends AuditEntity implements Serializable {
      * 출력순서
      */
 	@Column(name="seq")
-    int seq;
+    Integer seq;
     
     /**
      * 게층 횟수

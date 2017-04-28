@@ -16,6 +16,6 @@ public interface BoardMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	List<ArticleListDTO> getArticleList(Map<String, Object> map) throws Exception;
+	List<ArticleListDTO> getArticleList(Map<String, Object> map);
 			
 }

@@ -1,6 +1,7 @@
 package com.like.board.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,6 +12,7 @@ import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
+import com.like.board.domain.repository.dto.ArticleListDTO;
 import com.like.board.infra.mapper.BoardMapper;
 
 @Service("boardService")
@@ -49,14 +51,15 @@ public class BoardService {
 	public Article getAritlce(Long id) {
 		return articleRepository.getArticle(id);		
 	}
-	
-	public List<Article> getAritlceList(Long fkBoard) {
-		return articleRepository.getArticleList(fkBoard);
-	}
-	
+			
 	public List<Article> getAritlceList(Long fkBoard, String title, String contents) {
 		return articleRepository.getArticleList(fkBoard,title,contents);
 	}
+	
+	public List<ArticleListDTO> getArticleList(Map<String, Object> map) {
+		return boardMapper.getArticleList(map);
+	}
+	
 	
 	public String saveArticle(Article article, Long fkBoard) {										
 		return articleRepository.saveArticle(article, fkBoard).toString();
