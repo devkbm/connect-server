@@ -38,8 +38,7 @@ public class ArticleCheck extends AuditEntity implements Serializable {
         
 	/**
 	 * 게시판 외래키
-	 */    
-    @JsonBackReference
+	 */        
     @JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_article", nullable=false, updatable=false)

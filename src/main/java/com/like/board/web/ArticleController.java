@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,7 +43,41 @@ public class ArticleController {
 		return ( id != null && id > 0 ) ? true : false;
 	}
 	
-	@RequestMapping(value={"/grw/boards/articles2"}, method=RequestMethod.GET) 
+	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getArticleList(@PathVariable(value="id") Long id) {
+			
+		ResponseEntity<?> result = null;			
+		
+		List<Article> list = new ArrayList<Article>();
+		
+		list.add(boardService.getAritlce(id));		
+		
+		result = WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK); 			
+				
+		return result;
+	}
+	
+	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.DELETE) 
+	public ResponseEntity<?> deleteArticle(@PathVariable(value="id") Long id) {
+			
+		ResponseEntity<?> result = null;	
+		
+		boardService.deleteArticle(id);
+						
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK); 					
+		
+		return result;
+	}
+	
+	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,			
 			@RequestParam(value="title", required=false) String title,
 			@RequestParam(value="contents", required=false) String contents) {
@@ -51,7 +86,9 @@ public class ArticleController {
 		
 		List<ArticleListDTO> list;
 		Map<String,Object> map = new HashMap<>();		
-		map.put("pkBoard", fkBoard);
+		map.put("pkBoard", 	fkBoard);
+		map.put("title", 	title);
+		map.put("contents", contents);
 				
 		list = boardService.getArticleList(map);
 						
@@ -63,10 +100,8 @@ public class ArticleController {
 				
 		return result;
 	}
-	
-	
-	
-	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
+		
+	@RequestMapping(value={"/grw/boards/articles_temp"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,
 			@RequestParam(value="id", required=false) Long id,
 			@RequestParam(value="title", required=false) String title,
@@ -117,53 +152,14 @@ public class ArticleController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/grw/boards/articles2"}, method={RequestMethod.POST,RequestMethod.PUT})
-	@ResponseBody
-	public ResponseEntity<?> saveArticleFile(@ModelAttribute ArticleReqeustDTO articleDTO
-			//@RequestBody ArticleReqeustDTO article,
-			//@RequestParam(value="file", required=false)MultipartFile file,
-			//@RequestParam(value="fkBoard", required=true) Long fkBoard
-			) {
-			
-		ResponseEntity<?> result = null;			
-		
-		log.info(articleDTO.toString());
-		
-		Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
-		FileInfo file;
-		try {
-			file = fileService.uploadFile(articleDTO.getFile(), "test", "board");
-			article.addAttachedFile(file);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}					
-		boardService.saveArticle(article, articleDTO.getFkBoard());
-			
-		/*for (Article article : articleList ) {			
-			boardService.saveArticle(article, fkBoard);
-		}*/
-		
-		/*ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8090/file", 
-																			request, 
-																			responseType, 
-																			uriVariables);*/
-						
-		result = WebControllerUtil.getResponse(null, 
-				0,//articleList.size(), 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK); 					
-		
-		return result;
-	}
-	
-	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<?> delArticle(@RequestParam(value="id", required=true) Long id) {
+	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {
 			
 		ResponseEntity<?> result = null;			
-												
-		boardService.deleteBoard(id);
+								
+		for (Article article : articleList ) {			
+			boardService.deleteArticle(article);
+		}
 						
 		result = WebControllerUtil.getResponse(null, 
 				1, 
@@ -172,7 +168,36 @@ public class ArticleController {
 				HttpStatus.OK); 					
 		
 		return result;
+	}	
+	
+	@RequestMapping(value={"/grw/boards/articles2"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@ResponseBody
+	public ResponseEntity<?> saveArticleWithFile(@ModelAttribute ArticleReqeustDTO articleDTO) {
+			
+		ResponseEntity<?> result = null;				
+		
+		Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
+		FileInfo file;
+		
+		try {
+			if (!articleDTO.getFile().isEmpty()) {
+				file = fileService.uploadFile(articleDTO.getFile(), "test", "board");
+				article.addAttachedFile(file);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}					
+		boardService.saveArticle(article, articleDTO.getFkBoard());				
+						
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 저장되었습니다.", 1), 
+				HttpStatus.OK); 					
+		
+		return result;
 	}
+		
 	
 	@RequestMapping(value={"/grw/boards/articles/hitcnt"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,

@@ -98,13 +98,11 @@ public class Article extends AuditEntity implements Serializable {
     
 	/**
 	 * 게시판 외래키
-	 */    
-    @JsonBackReference    
+	 */           
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_board", nullable=false, updatable=false)
 	Board board;
-
-    @JsonManagedReference
+    
     @OneToMany(mappedBy = "article")
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
     

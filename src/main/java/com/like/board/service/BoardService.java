@@ -65,8 +65,12 @@ public class BoardService {
 		return articleRepository.saveArticle(article, fkBoard).toString();
 	}
 
-	public void deleteArticle(Article article) throws Exception {					
+	public void deleteArticle(Article article) {					
 		articleRepository.deleteArticle(article);
+	}
+	
+	public void deleteArticle(Long id) {					
+		articleRepository.deleteArticle(id);
 	}
 	
 	public Article updateArticleHitCnt(Long pkAriticle, String userId) {		

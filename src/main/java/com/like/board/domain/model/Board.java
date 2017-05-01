@@ -93,9 +93,7 @@ public class Board extends AuditEntity implements Serializable {
 	@Column(name="seq")
     long seq;
 
-    @OneToMany(mappedBy = "board")    
-    @JsonManagedReference
-    //@JsonInclude(JsonInclude.Include.NON_EMPTY)        
+    @OneToMany(mappedBy = "board")          
     List<Article> articles = new ArrayList<Article>();
     
     public Board() {}

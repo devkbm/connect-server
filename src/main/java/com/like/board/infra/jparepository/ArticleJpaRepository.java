@@ -13,6 +13,8 @@ import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
 import com.like.file.domain.model.FileInfo;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.like.board.domain.model.*;
@@ -95,9 +97,9 @@ public class ArticleJpaRepository implements ArticleRepository {
 			article.setParentRoot();
 		}
 		
-		if (article.getSeq() != null ) {							
+		if (article.getSeq() == null ) {							
 			article.setSeq(getArticleNextSeq(fkBoard));
-		} else if (article.getSeq() == null ) {
+		} else if (article.getSeq() == 0 ) {
 			article.setSeq(1);
 		}
 						
@@ -111,6 +113,10 @@ public class ArticleJpaRepository implements ArticleRepository {
 	public void deleteArticle(Article article) {		
 		
 		jpaArticle.delete(article);
+	}
+	
+	public void deleteArticle(Long id) {				
+		jpaArticle.delete(id);
 	}
 	
 	private void deleteArticleCheck(Long fkArticle) {
@@ -132,13 +138,17 @@ public class ArticleJpaRepository implements ArticleRepository {
 	
 	@Override
 	public Integer getArticleNextSeq(Long pkboard) {
-							
+		
+		Expression<Integer> seq = new CaseBuilder()				
+										.when(qArticle.seq.max().isNull()).then(0)
+										.otherwise(qArticle.seq.max()).as("seq");
+		
 		Integer rtn = queryFactory
-						.select(qArticle.seq.max())
+						.select(seq)
 			  			.from(qArticle)
 			  			.where(qArticle.board.pkBoard.eq(pkboard))				  
-			  			.fetchOne();		
-					
+			  			.fetchOne();					
+		
 		return rtn + 1;		
 	}
 
