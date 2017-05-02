@@ -10,9 +10,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 
+import com.like.common.security.AuthFailureHandler;
+import com.like.common.security.AuthSuccessHandler;
+import com.like.common.security.HttpAuthenticationEntryPoint;
+import com.like.common.security.HttpLogoutSuccessHandler;
 import com.like.user.service.UserService;
 
 @Configuration
@@ -22,6 +27,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	private HttpAuthenticationEntryPoint authenticationEntryPoint;
+	
+	@Autowired
+	private AuthSuccessHandler authSuccessHandler;
+	
+	@Autowired
+	private AuthFailureHandler authFailureHandler;
+	
+	@Autowired
+	private HttpLogoutSuccessHandler logoutSuccessHandler;
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService);
@@ -29,21 +46,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-		    .headers().frameOptions().disable();
-		/*http
-			.csrf().disable()				
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-            .and()
-			.authorizeRequests()
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.anyRequest().authenticated()			
-				.and()							
-				.formLogin();
-			//.logout();
-			
-		*/
-		//super.configure(http);
+		//http.csrf().disable()
+		//    .headers().frameOptions().disable();
+		//
+		
+		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+		
+		http.csrf().disable();
+		http.formLogin()
+		 	.permitAll()
+		 	.loginProcessingUrl("login")
+		 	.usernameParameter("USERNAME")
+		 	.passwordParameter("PASSWROD")
+		 	.successHandler(authSuccessHandler)
+		 	.failureHandler(authFailureHandler)
+		 	.and()
+		 .logout()
+		 	.permitAll()
+		 	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		 	.logoutSuccessHandler(logoutSuccessHandler)
+		 	.and()
+		 .sessionManagement()
+		 .maximumSessions(1);
+		
+		http.authorizeRequests()
+			.antMatchers(HttpMethod.GET,"/grw/boards").permitAll()
+			.antMatchers(HttpMethod.GET,"/grw/boards/articles").permitAll()
+			.anyRequest().authenticated();		
 	}
 	
 	@Bean
