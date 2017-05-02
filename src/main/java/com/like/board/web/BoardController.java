@@ -54,7 +54,7 @@ public class BoardController {
 			
 		ResponseEntity<?> result = null;
 				
-		List<Board> list; 
+		List<Board> list; 		
 		
 		if ( validId(id) ) {
 			list = new ArrayList<Board>();
