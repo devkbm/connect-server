@@ -46,11 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//http.csrf().disable()
-		//    .headers().frameOptions().disable();
+		http.csrf().disable()
+		    .headers().frameOptions().disable();
 		//
 		
-		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+		/*http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 		
 		http.csrf().disable();
 		http.formLogin()
@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET,"/grw/boards").permitAll()
 			.antMatchers(HttpMethod.GET,"/grw/boards/articles").permitAll()
-			.anyRequest().authenticated();		
+			.anyRequest().authenticated();		*/
 	}
 	
 	@Bean

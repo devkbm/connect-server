@@ -175,10 +175,17 @@ public class ArticleController {
 	public ResponseEntity<?> saveArticleWithFile(@ModelAttribute ArticleReqeustDTO articleDTO) {
 			
 		ResponseEntity<?> result = null;				
+							
+		Article article = null;
+		FileInfo file = null;
 		
-		Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
-		FileInfo file;
-		
+		if ( articleDTO.hasId() ) {
+			article = boardService.getAritlce(articleDTO.getId());			
+			article.setArticleDTO(articleDTO);
+		} else {
+			article = new Article(articleDTO.getTitle(), articleDTO.getContents());
+		}
+							
 		try {
 			if (!articleDTO.getFile().isEmpty()) {
 				file = fileService.uploadFile(articleDTO.getFile(), "test", "board");

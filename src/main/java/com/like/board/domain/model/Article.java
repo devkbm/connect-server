@@ -12,13 +12,11 @@ import lombok.Getter;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.like.board.domain.repository.dto.ArticleReqeustDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
@@ -156,6 +154,20 @@ public class Article extends AuditEntity implements Serializable {
 		if (files == null)
 			files = new ArrayList<>();
 		return files.add(file);
+	}
+	
+	public void setArticleDTO(ArticleReqeustDTO dto) {
+		this.ppkArticle = Long.parseLong(dto.getPpkArticle());
+		this.title = dto.getTitle();
+		this.contents = dto.getContents();
+		this.pwd = dto.getPwd();
+		this.hitCnt = Integer.parseInt(dto.getHitCnt());
+		if (StringUtils.hasText(dto.getFromDt()))
+			this.fromDt = LocalDate.parse(dto.getFromDt());
+		if (StringUtils.hasText(dto.getToDt()))
+			this.toDt = LocalDate.parse(dto.getToDt());
+		this.seq = dto.getSeq();
+		//this.depth = dto.getDepth();		
 	}
 	
 }

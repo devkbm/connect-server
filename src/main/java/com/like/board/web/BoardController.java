@@ -53,7 +53,7 @@ public class BoardController {
 	public ResponseEntity<?> getBoard(@RequestParam(value="id", required=false) Long id) {
 			
 		ResponseEntity<?> result = null;
-				
+		
 		List<Board> list; 		
 		
 		if ( validId(id) ) {
