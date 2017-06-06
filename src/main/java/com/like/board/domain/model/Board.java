@@ -92,6 +92,12 @@ public class Board extends AuditEntity implements Serializable {
      */
 	@Column(name="seq")
     long seq;
+	
+	@Column(name="pwd_yn")
+	String pwdYn;
+	
+	@Column(name="pwd_method")
+	String pwdMethod;
 
     @OneToMany(mappedBy = "board")          
     List<Article> articles = new ArrayList<Article>();
