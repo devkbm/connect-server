@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
+import com.like.board.domain.model.enums.PasswordType;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
@@ -96,8 +97,10 @@ public class Board extends AuditEntity implements Serializable {
 	@Column(name="pwd_yn")
 	String pwdYn;
 	
+	@Enumerated(EnumType.STRING)
+	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="pwd_method")
-	String pwdMethod;
+	PasswordType pwdMethod;
 
     @OneToMany(mappedBy = "board")          
     List<Article> articles = new ArrayList<Article>();
