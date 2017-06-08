@@ -51,19 +51,27 @@ public class BoardJpaRepository implements BoardRepository {
 		QBoard parent = new QBoard("parent");								
 		
 		Expression<String> leaf = new CaseBuilder()
-										.when(parent.pkBoard.isNull()).then("true")
+										.when(qBoard.ppkBoard.isNull()).then("true")
 										.otherwise("false").as("leaf");													
 		
 		JPAQuery<BoardHierarchyDTO> query = queryFactory
 													.select(Projections.constructor(BoardHierarchyDTO.class
-																				, qBoard.pkBoard, qBoard.boardNm, leaf
-																				, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
+																				, parent.pkBoard, parent.boardNm, leaf
+																				, parent.boardNm, parent.boardNm, parent.ppkBoard))
 													.from(qBoard)
-													.leftJoin(qBoard.parent, parent);
+													.rightJoin(qBoard.parent, parent);
+		
+		/*JPAQuery<BoardHierarchyDTO> query = queryFactory
+				.select(Projections.constructor(BoardHierarchyDTO.class
+											, qBoard.pkBoard, qBoard.boardNm, leaf
+											, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
+				.from(qBoard)
+				.rightJoin(qBoard.parent, parent);*/
+													
 		if ( parentId == null ) {
-			query.where(parent.isNull());
+			query.where(parent.ppkBoard.isNull());
 		} else {
-			query.where(parent.pkBoard.eq(parentId));
+			query.where(parent.ppkBoard.eq(parentId));
 		}		
 		
 		return query.fetch();					
