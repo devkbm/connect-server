@@ -3,10 +3,10 @@ package com.like.board.domain.model.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PasswordType {
-	SHA224("SHA224","SHA-224"),
-	SHA256("SHA256","SHA-256"),
-	SHA384("SHA384","SHA-384"),
-	SHA512("SHA512","SHA-512");
+	SHA224("SHA224","SHA2-224BIT"),
+	SHA256("SHA256","SHA2-256BIT"),
+	SHA384("SHA384","SHA2-384BIT"),
+	SHA512("SHA512","SHA2-512BIT");
 	
 	private String code;
 	private String name;

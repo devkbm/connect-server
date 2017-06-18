@@ -60,13 +60,6 @@ public class BoardJpaRepository implements BoardRepository {
 																				, parent.boardNm, parent.boardNm, parent.ppkBoard))
 													.from(qBoard)
 													.rightJoin(qBoard.parent, parent);
-		
-		/*JPAQuery<BoardHierarchyDTO> query = queryFactory
-				.select(Projections.constructor(BoardHierarchyDTO.class
-											, qBoard.pkBoard, qBoard.boardNm, leaf
-											, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
-				.from(qBoard)
-				.rightJoin(qBoard.parent, parent);*/
 													
 		if ( parentId == null ) {
 			query.where(parent.ppkBoard.isNull());
