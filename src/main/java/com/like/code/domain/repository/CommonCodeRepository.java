@@ -6,24 +6,27 @@ import org.springframework.stereotype.Repository;
 
 import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
+import com.like.code.domain.model.id.CommonCodeId;
 
 @Repository
 public interface CommonCodeRepository {
-
-	CommonCodeGroup getCodeGroup(Long pkCodeGroup);
+	
+	CommonCodeGroup getCodeGroup(String codeGroup);
 	
 	List<CommonCodeGroup> getCodeGroupList();
 	
+	List<CommonCodeGroup> getCodeGroupList(String codeGroupName);
+	
 	void saveCodeGroup(CommonCodeGroup codeGroup);
 	
-	void deleteCodeGroup(Long pkCodeGroup);
+	void deleteCodeGroup(String codeGroup);
 	
 	
-	CommonCode getCode(Long pkCode);
+	CommonCode getCode(CommonCodeId commonCodeId);
 	
-	List<CommonCode> getCodeList(Long fkCodeGroup);
+	List<CommonCode> getCodeList(String codeGroup);
 	
-	void saveCode(CommonCode code, Long fkCodeGroup);
+	void saveCode(CommonCode code);
 	
-	void deleteCode(Long pkCode);	
+	void deleteCode(CommonCodeId commonCodeId);	
 }

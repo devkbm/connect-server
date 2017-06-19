@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.like.code.domain.model.CommonCodeGroup;
 
 @Repository
-public interface JpaCommonCodeGroup extends JpaRepository<CommonCodeGroup, Long> {
+public interface JpaCommonCodeGroup extends JpaRepository<CommonCodeGroup, String> {
 
 }

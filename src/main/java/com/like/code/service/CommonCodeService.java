@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
+import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.infra.jparepository.CodeJpaRepository;
 
 @Service("commonCodeService")
@@ -17,46 +18,40 @@ public class CommonCodeService {
 
 	@Resource(name="codeJpaRepository")
 	private CodeJpaRepository codeJpaRepository;
-	
-	public CommonCodeGroup getCodeGroup(Long pkCodeGroup) {
 		
-		return codeJpaRepository.getCodeGroup(pkCodeGroup);
+	public CommonCodeGroup getCodeGroup(String codeGroup) {
+		return codeJpaRepository.getCodeGroup(codeGroup);
 	}
 
+	public List<CommonCodeGroup> getCodeGroupList(String likeCodeGroupName) {
+		return codeJpaRepository.getCodeGroupList(likeCodeGroupName);
+	}
+	
 	public List<CommonCodeGroup> getCodeGroupList() {
-
 		return codeJpaRepository.getCodeGroupList();
 	}
-
 	
 	public void saveCodeGroup(CommonCodeGroup codeGroup) {
-		codeJpaRepository.saveCodeGroup(codeGroup);;
-		
+		codeJpaRepository.saveCodeGroup(codeGroup);		
 	}
 
-	
-	public void deleteCodeGroup(Long pkCodeGroup) {
-		codeJpaRepository.deleteCodeGroup(pkCodeGroup);		
+	public void deleteCodeGroup(String codeGroup) {
+		codeJpaRepository.deleteCodeGroup(codeGroup);		
 	}
 
-	
-	public CommonCode getCode(Long pkCode) {
-		return codeJpaRepository.getCode(pkCode);
+	public CommonCode getCode(CommonCodeId commonCodeId) {
+		return codeJpaRepository.getCode(commonCodeId);
 	}
 
-	
-	public List<CommonCode> getCodeList(Long fkCodeGroup) {
-		
-		return codeJpaRepository.getCodeList(fkCodeGroup);
+	public List<CommonCode> getCodeList(String codeGroup) {		
+		return codeJpaRepository.getCodeList(codeGroup);
 	}
 
-	
-	public void saveCode(CommonCode code, Long fkCodeGroup) {
-		codeJpaRepository.saveCode(code, fkCodeGroup);		
+	public void saveCode(CommonCode code) {		
+		codeJpaRepository.saveCode(code);		
 	}
 
-	
-	public void deleteCode(Long pkCode) {
-		codeJpaRepository.deleteCode(pkCode);		
+	public void deleteCode(CommonCodeId commonCodeId) {
+		codeJpaRepository.deleteCode(commonCodeId);		
 	}
 }

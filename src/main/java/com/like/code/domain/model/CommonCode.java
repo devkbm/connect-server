@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.like.code.domain.model.id.CommonCodeId;
 import com.like.common.domain.AuditEntity;
 
 @Entity
@@ -28,10 +30,8 @@ public class CommonCode extends AuditEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1122730947003822818L;
 
-	@Id	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="pk_code")
-	private Long pkCode;
+	@EmbeddedId		
+	private CommonCodeId id;
 	
 	@Column(name="code")
 	private String code;
@@ -58,7 +58,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 	private String cmt;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_code_group", nullable=false, updatable=false)
+	@JoinColumn(name = "code_group", nullable=false, updatable=false)
 	CommonCodeGroup codeGroup;
 	
 	public void setCommonCodeGroup(CommonCodeGroup commonCodeGroup) {

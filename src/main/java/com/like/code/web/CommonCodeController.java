@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.service.CommonCodeService;
 import com.like.common.web.util.WebControllerUtil;
@@ -27,13 +28,13 @@ public class CommonCodeController {
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeController.class);
 	
 	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodeGroups(@RequestParam(value="id", required=false) Long id) {
+	public ResponseEntity<?> getCodeGroups(@RequestParam(value="id", required=false) String codeGroup) {
 			
 		ResponseEntity<?> result = null;
 		
 		List<CommonCodeGroup> list = new ArrayList<>(); 		
 		
-		list.add(commonCodeService.getCodeGroup(id)); 			
+		list.add(commonCodeService.getCodeGroup(codeGroup)); 			
 			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -42,5 +43,23 @@ public class CommonCodeController {
 				HttpStatus.OK); 					
 		
 		return result;
-	}	
+	}
+	
+	@RequestMapping(value={"/common/codegroups/codes"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getCodes(@RequestParam(value="codegroup", required=true) String codeGroup) {
+			
+		ResponseEntity<?> result = null;
+		
+		List<CommonCode> list = null; 				
+			
+		result = WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK); 					
+		
+		return result;
+	}
+	
+	
 }

@@ -9,6 +9,7 @@ import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.QCommonCode;
 import com.like.code.domain.model.QCommonCodeGroup;
+import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.CommonCodeRepository;
 import com.like.code.infra.jparepository.springdata.JpaCommonCode;
 import com.like.code.infra.jparepository.springdata.JpaCommonCodeGroup;
@@ -28,56 +29,59 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	
 	private final QCommonCodeGroup qCommonCodeGroup = QCommonCodeGroup.commonCodeGroup;	
 	private final QCommonCode qCommonCode = QCommonCode.commonCode;
+	
+	@Override
+	public CommonCodeGroup getCodeGroup(String codeGroup) {
+		return queryFactory				
+				.selectFrom(qCommonCodeGroup)
+				.where(qCommonCodeGroup.codeGroupName.eq(codeGroup))
+				.fetchOne();				
+	}
 
 	@Override
-	public CommonCodeGroup getCodeGroup(Long pkCodeGroup) {
-		
-		return jpaCommonCodeGroup.findOne(pkCodeGroup);
+	public List<CommonCodeGroup> getCodeGroupList(String likeCodeGroupName) {
+		return queryFactory				
+				.selectFrom(qCommonCodeGroup)
+				.where(qCommonCodeGroup.codeGroupName.like("%"+likeCodeGroupName+"%"))
+				.fetch();
 	}
 
 	@Override
 	public List<CommonCodeGroup> getCodeGroupList() {
-
 		return jpaCommonCodeGroup.findAll();
 	}
 
 	@Override
 	public void saveCodeGroup(CommonCodeGroup codeGroup) {
-		jpaCommonCodeGroup.save(codeGroup);
-		
+		jpaCommonCodeGroup.save(codeGroup);		
 	}
 
 	@Override
-	public void deleteCodeGroup(Long pkCodeGroup) {
-		jpaCommonCodeGroup.delete(pkCodeGroup);		
+	public void deleteCodeGroup(String codeGroup) {
+		jpaCommonCodeGroup.delete(codeGroup);		
 	}
 
 	@Override
-	public CommonCode getCode(Long pkCode) {
-		return jpaCommonCode.findOne(pkCode);
+	public CommonCode getCode(CommonCodeId commonCodeId) {
+		return jpaCommonCode.findOne(commonCodeId);
 	}
 
 	@Override
-	public List<CommonCode> getCodeList(Long fkCodeGroup) {
-		
+	public List<CommonCode> getCodeList(String codeGroup) {		
 		return queryFactory
 				.selectFrom(qCommonCode)
-				.where(qCommonCode.codeGroup.pkCodeGroup.eq(fkCodeGroup))
+				.where(qCommonCode.codeGroup.codeGroup.eq(codeGroup))
 				.fetch();
 	}
 
 	@Override
-	public void saveCode(CommonCode code, Long fkCodeGroup) {
-		CommonCodeGroup codeGroup = jpaCommonCodeGroup.findOne(fkCodeGroup);
-		
-		code.setCommonCodeGroup(codeGroup);
-		
+	public void saveCode(CommonCode code) {		
 		jpaCommonCode.save(code);		
 	}
 
 	@Override
-	public void deleteCode(Long pkCode) {
-		jpaCommonCode.delete(pkCode);		
+	public void deleteCode(CommonCodeId commonCodeId) {
+		jpaCommonCode.delete(commonCodeId);		
 	}
 					
 	
