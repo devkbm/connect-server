@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -57,6 +58,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 	@Column(name="cmt")
 	private String cmt;
 	
+	@MapsId("codeGroup")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "code_group", nullable=false, updatable=false)
 	CommonCodeGroup codeGroup;

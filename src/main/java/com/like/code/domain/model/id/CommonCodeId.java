@@ -10,8 +10,7 @@ import lombok.Data;
 @Data
 @Embeddable
 public class CommonCodeId implements Serializable {
-
-	@Column(name = "code_group")
+	
 	private String codeGroup;
 	
 	@Column(name = "code")
