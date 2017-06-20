@@ -12,6 +12,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString(callSuper=true, includeFieldNames=true) 
 @Entity
 @Table(name = "cmcodegroup")
 @EntityListeners(AuditingEntityListener.class)
@@ -44,5 +49,13 @@ public class CommonCodeGroup extends AuditEntity implements Serializable {
 	@Column(name="enum_name")
 	private String enumName;
 		
+	protected CommonCodeGroup() {}
 	
+	public CommonCodeGroup(String codeGroup, String codeGroupName) {
+		this.codeGroup = codeGroup;
+		this.codeGroupName = codeGroupName;
+		
+		this.sysUser = "test";
+    	this.updUser = "test";    	    	
+	}
 }

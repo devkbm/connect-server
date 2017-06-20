@@ -21,6 +21,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.common.domain.AuditEntity;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 @Entity
 @Table(name = "cmcode")
 @EntityListeners(AuditingEntityListener.class)
@@ -34,8 +39,8 @@ public class CommonCode extends AuditEntity implements Serializable {
 	@EmbeddedId		
 	private CommonCodeId id;
 	
-	@Column(name="code")
-	private String code;
+	/*@Column(name="code")
+	private String code;*/
 	
 	@Column(name="code_name")
 	private String codeName;
@@ -58,13 +63,24 @@ public class CommonCode extends AuditEntity implements Serializable {
 	@Column(name="cmt")
 	private String cmt;
 	
-	@MapsId("codeGroup")
+	/*@MapsId("codeGroup")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "code_group", nullable=false, updatable=false)
+	@JoinColumn(name = "code_group", nullable=false, updatable=false)*/
+	@MapsId("codeGroup")
+	@ManyToOne
+	@JoinColumn(name = "code_group")
 	CommonCodeGroup codeGroup;
 	
 	public void setCommonCodeGroup(CommonCodeGroup commonCodeGroup) {
 		this.codeGroup = commonCodeGroup;
 	}
-			
+	
+	protected CommonCode() {}
+	
+	public CommonCode(CommonCodeId commonCodeId, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
+		this.id = commonCodeId;
+		this.codeName = codeName;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+	}
 }

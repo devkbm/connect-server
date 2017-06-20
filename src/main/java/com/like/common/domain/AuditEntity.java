@@ -61,5 +61,11 @@ public class AuditEntity {
 	public String getUpdUser() {
 		return updUser;
 	}
+
+	@Override
+	public String toString() {
+		return "AuditEntity [sysDt=" + sysDt + ", sysUser=" + sysUser + ", updDt=" + updDt + ", updUser=" + updUser
+				+ "]";
+	}
 		
 }
