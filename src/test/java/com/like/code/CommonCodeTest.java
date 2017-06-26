@@ -48,7 +48,7 @@ public class CommonCodeTest {
 		cs.saveCodeGroup(codeGroup);
 						
 		CommonCode code = new CommonCode(new CommonCodeId("A01", "AA"), "테스트 코드", LocalDateTime.now(), LocalDateTime.now());
-		
+		code.setCommonCodeGroup(codeGroup);
 		cs.saveCode(code);
 					
 		log.info(codeGroup.toString());

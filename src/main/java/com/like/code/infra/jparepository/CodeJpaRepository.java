@@ -34,7 +34,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	public CommonCodeGroup getCodeGroup(String codeGroup) {
 		return queryFactory				
 				.selectFrom(qCommonCodeGroup)
-				.where(qCommonCodeGroup.codeGroupName.eq(codeGroup))
+				.where(qCommonCodeGroup.codeGroup.eq(codeGroup))
 				.fetchOne();				
 	}
 

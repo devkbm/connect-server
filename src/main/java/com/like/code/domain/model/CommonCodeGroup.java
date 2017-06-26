@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
@@ -31,6 +32,7 @@ public class CommonCodeGroup extends AuditEntity implements Serializable {
 	@Column(name="code_group")
 	private String codeGroup;
 	
+	@NotEmpty(message="코드그룹명은 필수 입력 사항입니다.")
 	@Column(name="code_group_name")
 	private String codeGroupName;
 	
@@ -49,6 +51,7 @@ public class CommonCodeGroup extends AuditEntity implements Serializable {
 	@Column(name="enum_name")
 	private String enumName;
 		
+	
 	protected CommonCodeGroup() {}
 	
 	public CommonCodeGroup(String codeGroup, String codeGroupName) {
