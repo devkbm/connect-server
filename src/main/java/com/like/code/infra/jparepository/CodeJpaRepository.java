@@ -70,7 +70,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	public List<CommonCode> getCodeList(String codeGroup) {		
 		return queryFactory
 				.selectFrom(qCommonCode)
-				.where(qCommonCode.codeGroup.codeGroup.eq(codeGroup))
+				.where(qCommonCode.commonCodeGroup.codeGroup.eq(codeGroup))
 				.fetch();
 	}
 

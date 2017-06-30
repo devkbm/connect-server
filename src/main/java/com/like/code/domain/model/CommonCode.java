@@ -8,9 +8,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -18,6 +15,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.common.domain.AuditEntity;
 
@@ -26,6 +24,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"commonCodeGroup"})
 @Entity
 @Table(name = "cmcode")
 @EntityListeners(AuditingEntityListener.class)
@@ -35,7 +34,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1122730947003822818L;
-
+	
 	@EmbeddedId		
 	private CommonCodeId id;
 	
@@ -67,12 +66,12 @@ public class CommonCode extends AuditEntity implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "code_group", nullable=false, updatable=false)*/
 	@MapsId("codeGroup")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "code_group")
-	CommonCodeGroup codeGroup;
+	CommonCodeGroup commonCodeGroup;
 	
 	public void setCommonCodeGroup(CommonCodeGroup commonCodeGroup) {
-		this.codeGroup = commonCodeGroup;
+		this.commonCodeGroup = commonCodeGroup;
 	}
 	
 	protected CommonCode() {}

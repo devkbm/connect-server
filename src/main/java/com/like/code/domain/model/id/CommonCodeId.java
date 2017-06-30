@@ -5,8 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
 import lombok.Data;
 
+@JsonRootName(value = "commonCodeId")
 @Data
 @Embeddable
 public class CommonCodeId implements Serializable {
@@ -24,4 +27,5 @@ public class CommonCodeId implements Serializable {
 		this.codeGroup = codeGroup;
 		this.code = code;
 	}
+	
 }

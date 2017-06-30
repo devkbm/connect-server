@@ -71,7 +71,7 @@ public class CommonCodeController {
 		res = WebControllerUtil.getResponse(null,
 				codeGroupList.size(), 
 				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
+				String.format("%d 건 저장되었습니다.", codeGroupList.size()), 
 				HttpStatus.OK);
 		
 								 					
@@ -108,6 +108,29 @@ public class CommonCodeController {
 				HttpStatus.OK); 					
 		
 		return result;
+	}
+	
+	@RequestMapping(value={"/common/codegroups/codes"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveCode(@RequestBody List<CommonCode> codeList, BindingResult result) {
+			
+		ResponseEntity<?> res = null;
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 
+															
+		for (CommonCode code : codeList ) {
+			commonCodeService.saveCode(code);
+		}
+			
+		res = WebControllerUtil.getResponse(null,
+				codeList.size(), 
+				true, 
+				String.format("%d 건 저장되었습니다.", codeList.size()), 
+				HttpStatus.OK);
+		
+								 					
+		return res;
 	}
 	
 	
