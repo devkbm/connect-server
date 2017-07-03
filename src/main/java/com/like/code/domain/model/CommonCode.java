@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,10 +38,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 	
 	@EmbeddedId		
 	private CommonCodeId id;
-	
-	/*@Column(name="code")
-	private String code;*/
-	
+		
 	@Column(name="code_name")
 	private String codeName;
 	
@@ -61,13 +59,10 @@ public class CommonCode extends AuditEntity implements Serializable {
 	
 	@Column(name="cmt")
 	private String cmt;
-	
-	/*@MapsId("codeGroup")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "code_group", nullable=false, updatable=false)*/
+		
 	@MapsId("codeGroup")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "code_group")
+	@JoinColumn(name = "code_group", nullable=false, updatable=false)
 	CommonCodeGroup commonCodeGroup;
 	
 	public void setCommonCodeGroup(CommonCodeGroup commonCodeGroup) {
@@ -81,5 +76,19 @@ public class CommonCode extends AuditEntity implements Serializable {
 		this.codeName = codeName;
 		this.fromDate = fromDate;
 		this.toDate = toDate;
+		this.seq = 0;
+		this.useYn = true;
 	}
+		
+	public CommonCode(CommonCodeId id, String codeName, String codeNameAbbr, LocalDateTime fromDate,
+			LocalDateTime toDate, int seq, boolean useYn, String cmt) {		
+		this.id = id;
+		this.codeName = codeName;
+		this.codeNameAbbr = codeNameAbbr;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.seq = seq;
+		this.useYn = useYn;
+		this.cmt = cmt;		
+	} 
 }

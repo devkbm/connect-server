@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
+import com.like.code.domain.model.id.CommonCodeId;
+import com.like.code.domain.repository.dto.CommonCodeDTO;
 import com.like.code.service.CommonCodeService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
@@ -78,8 +80,8 @@ public class CommonCodeController {
 		return res;
 	}
 	
-	@RequestMapping(value={"/common/codegroups/{id}"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<?> delCodeGroup(@PathVariable(value="id") String codeGroup) {
+	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.DELETE) 
+	public ResponseEntity<?> delCodeGroup(@RequestParam(value="codeGroup", required=true) String codeGroup) {
 			
 		ResponseEntity<?> result = null;			
 												
@@ -95,7 +97,7 @@ public class CommonCodeController {
 	}
 	
 	@RequestMapping(value={"/common/codegroups/codes"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodes(@RequestParam(value="codegroup", required=true) String codeGroup) {
+	public ResponseEntity<?> getCodes(@RequestParam(value="codeGroup", required=true) String codeGroup) {
 			
 		ResponseEntity<?> result = null;
 		
@@ -111,7 +113,7 @@ public class CommonCodeController {
 	}
 	
 	@RequestMapping(value={"/common/codegroups/codes"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCode(@RequestBody List<CommonCode> codeList, BindingResult result) {
+	public ResponseEntity<?> saveCode(@RequestBody List<CommonCodeDTO> codeList, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
 		
@@ -119,8 +121,8 @@ public class CommonCodeController {
 			throw new ControllerException("오류");
 		} 
 															
-		for (CommonCode code : codeList ) {
-			commonCodeService.saveCode(code);
+		for (CommonCodeDTO code : codeList ) {
+			commonCodeService.saveCode(code.getCommonCode());
 		}
 			
 		res = WebControllerUtil.getResponse(null,
@@ -131,6 +133,23 @@ public class CommonCodeController {
 		
 								 					
 		return res;
+	}
+	
+	@RequestMapping(value={"/common/codegroups/codes"}, method=RequestMethod.DELETE) 
+	public ResponseEntity<?> delCode(@RequestParam(value="codeGroup", required=true) String codeGroup,
+			@RequestParam(value="code", required=true) String code) {
+			
+		ResponseEntity<?> result = null;			
+												
+		commonCodeService.deleteCode(new CommonCodeId(codeGroup, code));
+						
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK); 					
+		
+		return result;
 	}
 	
 	
