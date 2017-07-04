@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
+import com.like.code.domain.repository.dto.CommonCodeComboDTO;
 import com.like.code.infra.jparepository.CodeJpaRepository;
 
 @Service("commonCodeService")
@@ -42,9 +43,13 @@ public class CommonCodeService {
 	public CommonCode getCode(CommonCodeId commonCodeId) {
 		return codeJpaRepository.getCode(commonCodeId);
 	}
-
+		
 	public List<CommonCode> getCodeList(String codeGroup) {		
 		return codeJpaRepository.getCodeList(codeGroup);
+	}
+	
+	public List<CommonCodeComboDTO> getCodeListByComboBox(String codeGroup) {
+		return codeJpaRepository.getCodeListByComboBox(codeGroup);
 	}
 
 	public void saveCode(CommonCode code) {		

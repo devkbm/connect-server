@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
+import com.like.code.domain.repository.dto.CommonCodeComboDTO;
 import com.like.code.domain.repository.dto.CommonCodeDTO;
 import com.like.code.service.CommonCodeService;
 import com.like.common.web.exception.ControllerException;
@@ -97,11 +98,17 @@ public class CommonCodeController {
 	}
 	
 	@RequestMapping(value={"/common/codegroups/codes"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodes(@RequestParam(value="codeGroup", required=true) String codeGroup) {
+	public ResponseEntity<?> getCodes(@RequestParam(value="codeGroup", required=true) String codeGroup,
+			@RequestParam(value="qType", required=false) String qType) {
 			
 		ResponseEntity<?> result = null;
+		List<?> list = null;
 		
-		List<CommonCode> list = commonCodeService.getCodeList(codeGroup); 				
+		if (qType == null) {		
+			list = commonCodeService.getCodeList(codeGroup);
+		} else {
+			list = commonCodeService.getCodeListByComboBox(codeGroup);
+		}
 			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -120,7 +127,7 @@ public class CommonCodeController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
-															
+		
 		for (CommonCodeDTO code : codeList ) {
 			commonCodeService.saveCode(code.getCommonCode());
 		}

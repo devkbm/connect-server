@@ -11,8 +11,11 @@ import com.like.code.domain.model.QCommonCode;
 import com.like.code.domain.model.QCommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.CommonCodeRepository;
+import com.like.code.domain.repository.dto.CommonCodeComboDTO;
+import com.like.code.domain.repository.dto.CommonCodeDTO;
 import com.like.code.infra.jparepository.springdata.JpaCommonCode;
 import com.like.code.infra.jparepository.springdata.JpaCommonCodeGroup;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -71,6 +74,17 @@ public class CodeJpaRepository implements CommonCodeRepository {
 		return queryFactory
 				.selectFrom(qCommonCode)
 				.where(qCommonCode.commonCodeGroup.codeGroup.eq(codeGroup))
+				.fetch();
+	}
+	
+	
+	@Override
+	public List<CommonCodeComboDTO> getCodeListByComboBox(String codeGroup) {
+
+		return queryFactory
+				.select(Projections.constructor(CommonCodeComboDTO.class, qCommonCode.id.code,qCommonCode.codeName,qCommonCode.codeNameAbbr))
+				.from(qCommonCode)
+				.where(qCommonCode.id.codeGroup.eq(codeGroup))
 				.fetch();
 	}
 
