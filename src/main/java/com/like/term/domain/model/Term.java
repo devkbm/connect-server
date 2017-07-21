@@ -1,5 +1,7 @@
 package com.like.term.domain.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -10,18 +12,25 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.like.common.domain.AuditEntity;
+
+import lombok.Getter;
+
+@Getter
 @Entity
 @Table(name = "cmterm")
 @EntityListeners(AuditingEntityListener.class)
-public class Term {
+public class Term extends AuditEntity implements Serializable {
 	
+	private static final long serialVersionUID = -206378092418320228L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="pk_term")
 	Long pkTerm;	
 
 	@Column(name="name")
-	String name;
+	String nameKor;
 		
 	@Column(name="abbr")
 	String abbreviation;
@@ -32,9 +41,11 @@ public class Term {
 	@Column(name="abbr_eng")
 	String abbreviationEng;
 	
-	@Column(name="desc")
-	String description;
+	@Column(name="detail")
+	String detail;
 	
 	@Column(name="cmt")
 	String comment;
+	
+	protected Term() {}
 }
