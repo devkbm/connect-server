@@ -18,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.dto.ArticleListDTO;
 import com.like.board.domain.model.Article;
-import com.like.board.service.BoardService;
+import com.like.board.service.BoardCommandService;
+import com.like.board.service.BoardQueryService;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
@@ -30,7 +31,10 @@ public class ArticleTest {
 	private static final Logger log = LoggerFactory.getLogger(ArticleTest.class);
 	
 	@Autowired
-	BoardService bs;
+	BoardCommandService bcs;
+	
+	@Autowired
+	BoardQueryService bqs;
 	
 	@Autowired
 	FileService fs;
@@ -41,7 +45,7 @@ public class ArticleTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("pkBoard", 1);
 		
-		List<ArticleListDTO> list = bs.getArticleList(map);
+		List<ArticleListDTO> list = bqs.getArticleList(map);
 		
 		log.info(list.toString());		
 	}
@@ -85,13 +89,13 @@ public class ArticleTest {
 		articles.add(article);
 		board.setArticles(articles);
 		
-		bs.saveBoard(board);
-		bs.saveArticle(article, board.getPkBoard());
+		bcs.saveBoard(board);
+		bcs.saveArticle(article, board.getPkBoard());
 		
 		log.info("-------------------------------------");
 		log.info(article.getPkArticle().toString());
-		log.info(bs.getAritlce(article.getPkArticle()).toString());
-		log.info(bs.getAritlce(article.getPkArticle()).getFiles().toString());
+		log.info(bqs.getAritlce(article.getPkArticle()).toString());
+		log.info(bqs.getAritlce(article.getPkArticle()).getFiles().toString());
 	}
 	
 	

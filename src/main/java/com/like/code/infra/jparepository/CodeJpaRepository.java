@@ -82,7 +82,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	public List<CommonCodeComboDTO> getCodeListByComboBox(String codeGroup) {
 
 		return queryFactory
-				.select(Projections.constructor(CommonCodeComboDTO.class, qCommonCode.id.code,qCommonCode.codeName,qCommonCode.codeNameAbbr))
+				.select(Projections.constructor(CommonCodeComboDTO.class, qCommonCode.id.code,qCommonCode.codeName,qCommonCode.codeNameAbbreviation))
 				.from(qCommonCode)
 				.where(qCommonCode.id.codeGroup.eq(codeGroup))
 				.fetch();

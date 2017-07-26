@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
-import com.like.board.service.BoardService;
+import com.like.board.service.BoardCommandService;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
@@ -30,8 +30,8 @@ import com.like.file.service.FileService;
 @Controller
 public class FileController {
 
-	@Resource(name = "boardService")
-	private BoardService boardService;
+	@Resource(name = "boardCommandService")
+	private BoardCommandService boardCommandService;
 	
 	@Resource(name = "fileService")
 	private FileService fileService;

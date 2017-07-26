@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
-import com.like.board.service.BoardService;
+import com.like.board.service.BoardCommandService;
+import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 
@@ -34,20 +34,16 @@ import com.like.common.web.util.WebControllerUtil;
 @RestController
 public class BoardController {
 
-	@Resource(name = "boardService")
-	private BoardService boardService;
+	@Resource(name = "boardCommandService")
+	private BoardCommandService boardCommandService;
+	
+	@Resource(name = "boardQueryService")
+	private BoardQueryService boardQueryService;
 	
 	/*@Autowired 
 	RestTemplate restTemplate;*/	
 	
-	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
-	
-	private boolean validId(Long id) {				
-		return ( id != null && id > 0 ) ? true : false;
-	}
-	
-	//private Long
-	
+	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
 	
 	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getBoard(@RequestParam(value="id", required=false) Long id) {
@@ -58,9 +54,9 @@ public class BoardController {
 		
 		if ( validId(id) ) {
 			list = new ArrayList<Board>();
-			list.add(boardService.getBoard(id));			
+			list.add(boardQueryService.getBoard(id));			
 		} else {
-			list = boardService.getBoardList();
+			list = boardQueryService.getBoardList();
 		}			
 			
 		result = WebControllerUtil.getResponse(list, 
@@ -84,7 +80,7 @@ public class BoardController {
 			id = Long.parseLong(parentId);
 		}
 		
-		List<?> list = boardService.getBoardHierarchy(id);
+		List<?> list = boardQueryService.getBoardHierarchy(id);
 		
 		result = WebControllerUtil.getResponse(list,
 				list.size(), 
@@ -106,7 +102,7 @@ public class BoardController {
 		} else {
 															
 			for (Board board : boardList ) {
-				boardService.saveBoard(board);
+				boardCommandService.saveBoard(board);
 			}
 				
 			res = WebControllerUtil.getResponse(null,
@@ -124,7 +120,7 @@ public class BoardController {
 			
 		ResponseEntity<?> result = null;			
 												
-		boardService.deleteBoard(id);
+		boardCommandService.deleteBoard(id);
 						
 		result = WebControllerUtil.getResponse(null, 
 				1, 
@@ -134,5 +130,9 @@ public class BoardController {
 		
 		return result;
 	}		
+	
+	private boolean validId(Long id) {				
+		return ( id != null && id > 0 ) ? true : false;
+	}
 	
 }

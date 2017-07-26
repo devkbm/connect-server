@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.repository.dto.ArticleListDTO;
 import com.like.board.domain.repository.dto.ArticleReqeustDTO;
-import com.like.board.service.BoardService;
+import com.like.board.service.BoardCommandService;
+import com.like.board.service.BoardQueryService;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
@@ -33,8 +34,11 @@ public class ArticleController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
 	
-	@Resource(name = "boardService")
-	private BoardService boardService;
+	@Resource(name = "boardCommandService")
+	private BoardCommandService boardCommandService;
+	
+	@Resource(name = "boardQueryService")
+	private BoardQueryService boardQueryService;
 	
 	@Resource(name = "fileService")
 	private FileService fileService;
@@ -50,7 +54,7 @@ public class ArticleController {
 		
 		List<Article> list = new ArrayList<Article>();
 		
-		list.add(boardService.getAritlce(id));		
+		list.add(boardQueryService.getAritlce(id));		
 		
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -66,7 +70,7 @@ public class ArticleController {
 			
 		ResponseEntity<?> result = null;	
 		
-		boardService.deleteArticle(id);
+		boardCommandService.deleteArticle(id);
 						
 		result = WebControllerUtil.getResponse(null, 
 				1, 
@@ -90,7 +94,7 @@ public class ArticleController {
 		map.put("title", 	title);
 		map.put("contents", contents);
 				
-		list = boardService.getArticleList(map);
+		list = boardQueryService.getArticleList(map);
 						
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -113,9 +117,9 @@ public class ArticleController {
 		
 		if ( validId(id) ) {
 			list = new ArrayList<>(); 			
-			list.add(boardService.getAritlce(id));
+			list.add(boardQueryService.getAritlce(id));
 		} else {
-			list = boardService.getAritlceList(fkBoard,title,contents);
+			list = boardQueryService.getAritlceList(fkBoard,title,contents);
 			log.info(title);
 		}
 			
@@ -135,7 +139,7 @@ public class ArticleController {
 		ResponseEntity<?> result = null;			
 								
 		for (Article article : articleList ) {			
-			boardService.saveArticle(article, fkBoard);
+			boardCommandService.saveArticle(article, fkBoard);
 		}
 		
 		/*ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8090/file", 
@@ -158,7 +162,7 @@ public class ArticleController {
 		ResponseEntity<?> result = null;			
 								
 		for (Article article : articleList ) {			
-			boardService.deleteArticle(article);
+			boardCommandService.deleteArticle(article);
 		}
 						
 		result = WebControllerUtil.getResponse(null, 
@@ -180,7 +184,7 @@ public class ArticleController {
 		FileInfo file = null;
 		
 		if ( articleDTO.hasId() ) {
-			article = boardService.getAritlce(articleDTO.getId());			
+			article = boardQueryService.getAritlce(articleDTO.getId());			
 			article.setArticleDTO(articleDTO);
 		} else {
 			article = new Article(articleDTO.getTitle(), articleDTO.getContents());
@@ -194,7 +198,7 @@ public class ArticleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}					
-		boardService.saveArticle(article, articleDTO.getFkBoard());				
+		boardCommandService.saveArticle(article, articleDTO.getFkBoard());				
 						
 		result = WebControllerUtil.getResponse(null, 
 				1, 
@@ -213,7 +217,7 @@ public class ArticleController {
 		ResponseEntity<?> result = null;			
 		List<Article> list = new ArrayList<>();
 				
-		Article aritlce = boardService.updateArticleHitCnt(id, userId);
+		Article aritlce = boardCommandService.updateArticleHitCnt(id, userId);
 		
 		list.add(aritlce);
 						

@@ -43,7 +43,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 	private String codeName;
 	
 	@Column(name="code_name_abbr")
-	private String codeNameAbbr;		
+	private String codeNameAbbreviation;	
 	
 	@Column(name="from_dt")
 	private LocalDateTime fromDate;
@@ -80,11 +80,11 @@ public class CommonCode extends AuditEntity implements Serializable {
 		this.useYn = true;
 	}
 		
-	public CommonCode(CommonCodeId id, String codeName, String codeNameAbbr, LocalDateTime fromDate,
+	public CommonCode(CommonCodeId id, String codeName, String codeNameAbbreviation, LocalDateTime fromDate,
 			LocalDateTime toDate, int seq, boolean useYn, String cmt) {		
 		this.id = id;
 		this.codeName = codeName;
-		this.codeNameAbbr = codeNameAbbr;
+		this.codeNameAbbreviation = codeNameAbbreviation;
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 		this.seq = seq;

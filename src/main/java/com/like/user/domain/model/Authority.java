@@ -11,6 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 @Table(name = "authority")
 public class Authority implements GrantedAuthority {
 
+	private static final long serialVersionUID = 5255280527856714047L;
+
 	@Id
 	@Column(name="username")
 	String userName;

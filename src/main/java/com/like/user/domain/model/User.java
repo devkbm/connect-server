@@ -17,6 +17,8 @@ import lombok.Setter;
 @Setter
 @Table(name = "user")
 public class User implements UserDetails {
+	
+	private static final long serialVersionUID = 2601682947639908458L;
 
 	@Id	
 	@Column(name="username")
