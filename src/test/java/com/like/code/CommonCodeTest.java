@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
-import com.like.code.service.CommonCodeService;
+import com.like.code.service.CommonCodeCommandService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,7 +30,7 @@ public class CommonCodeTest {
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeTest.class);
 	
 	@Autowired
-	CommonCodeService cs;
+	CommonCodeCommandService cs;
 			
 	@Test
 	public void 코드그룹추가() {

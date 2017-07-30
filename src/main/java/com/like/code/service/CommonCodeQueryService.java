@@ -13,9 +13,9 @@ import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.dto.CommonCodeComboDTO;
 import com.like.code.infra.jparepository.CodeJpaRepository;
 
-@Service("commonCodeService")
-@Transactional
-public class CommonCodeService {
+@Service
+@Transactional(readOnly=true)
+public class CommonCodeQueryService {
 
 	@Resource(name="codeJpaRepository")
 	private CodeJpaRepository codeJpaRepository;
@@ -32,14 +32,6 @@ public class CommonCodeService {
 		return codeJpaRepository.getCodeGroupList();
 	}
 	
-	public void saveCodeGroup(CommonCodeGroup codeGroup) {
-		codeJpaRepository.saveCodeGroup(codeGroup);		
-	}
-
-	public void deleteCodeGroup(String codeGroup) {
-		codeJpaRepository.deleteCodeGroup(codeGroup);		
-	}
-
 	public CommonCode getCode(CommonCodeId commonCodeId) {
 		return codeJpaRepository.getCode(commonCodeId);
 	}
@@ -51,12 +43,5 @@ public class CommonCodeService {
 	public List<CommonCodeComboDTO> getCodeListByComboBox(String codeGroup) {
 		return codeJpaRepository.getCodeListByComboBox(codeGroup);
 	}
-
-	public void saveCode(CommonCode code) {		
-		codeJpaRepository.saveCode(code);		
-	}
-
-	public void deleteCode(CommonCodeId commonCodeId) {
-		codeJpaRepository.deleteCode(commonCodeId);		
-	}
+	
 }

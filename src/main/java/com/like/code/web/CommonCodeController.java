@@ -10,27 +10,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
-import com.like.code.domain.repository.dto.CommonCodeComboDTO;
 import com.like.code.domain.repository.dto.CommonCodeDTO;
-import com.like.code.service.CommonCodeService;
+import com.like.code.service.CommonCodeQueryService;
+import com.like.code.service.CommonCodeCommandService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 
 @RestController
 public class CommonCodeController {
 
-	@Resource(name = "commonCodeService")
-	private CommonCodeService commonCodeService;
+	@Resource
+	private CommonCodeCommandService commonCodeCommandService;
+	
+	@Resource
+	private CommonCodeQueryService commonCodeQueryService;
 	
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeController.class);
 	
@@ -42,8 +43,7 @@ public class CommonCodeController {
 		List<CommonCodeGroup> list = new ArrayList<>(); 		
 		
 		CommonCodeGroup commonCodeGroup = null;		
-		commonCodeGroup = commonCodeService.getCodeGroup(codeGroup); 
-		log.info(codeGroup);
+		commonCodeGroup = commonCodeQueryService.getCodeGroup(codeGroup); 		
 		
 		if ( commonCodeGroup != null)
 			list.add(commonCodeGroup); 			
@@ -68,7 +68,7 @@ public class CommonCodeController {
 		} 
 															
 		for (CommonCodeGroup codeGroup : codeGroupList ) {
-			commonCodeService.saveCodeGroup(codeGroup);
+			commonCodeCommandService.saveCodeGroup(codeGroup);
 		}
 			
 		res = WebControllerUtil.getResponse(null,
@@ -86,7 +86,7 @@ public class CommonCodeController {
 			
 		ResponseEntity<?> result = null;			
 												
-		commonCodeService.deleteCodeGroup(codeGroup);
+		commonCodeCommandService.deleteCodeGroup(codeGroup);
 						
 		result = WebControllerUtil.getResponse(null, 
 				1, 
@@ -105,9 +105,9 @@ public class CommonCodeController {
 		List<?> list = null;
 		
 		if (qType == null) {		
-			list = commonCodeService.getCodeList(codeGroup);
+			list = commonCodeQueryService.getCodeList(codeGroup);
 		} else {
-			list = commonCodeService.getCodeListByComboBox(codeGroup);
+			list = commonCodeQueryService.getCodeListByComboBox(codeGroup);
 		}
 			
 		result = WebControllerUtil.getResponse(list, 
@@ -129,7 +129,7 @@ public class CommonCodeController {
 		} 
 		
 		for (CommonCodeDTO code : codeList ) {
-			commonCodeService.saveCode(code.getCommonCode());
+			commonCodeCommandService.saveCode(code.getCommonCode());
 		}
 			
 		res = WebControllerUtil.getResponse(null,
@@ -148,7 +148,7 @@ public class CommonCodeController {
 			
 		ResponseEntity<?> result = null;			
 												
-		commonCodeService.deleteCode(new CommonCodeId(codeGroup, code));
+		commonCodeCommandService.deleteCode(new CommonCodeId(codeGroup, code));
 						
 		result = WebControllerUtil.getResponse(null, 
 				1, 
