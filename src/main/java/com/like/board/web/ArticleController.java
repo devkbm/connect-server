@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.repository.dto.ArticleListDTO;
-import com.like.board.domain.repository.dto.ArticleReqeustDTO;
+import com.like.board.domain.repository.dto.ArticleRequestDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.util.WebControllerUtil;
@@ -34,13 +34,13 @@ public class ArticleController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
 	
-	@Resource(name = "boardCommandService")
+	@Resource
 	private BoardCommandService boardCommandService;
 	
-	@Resource(name = "boardQueryService")
+	@Resource
 	private BoardQueryService boardQueryService;
 	
-	@Resource(name = "fileService")
+	@Resource
 	private FileService fileService;
 	
 	private boolean validId(Long id) {				
@@ -176,7 +176,7 @@ public class ArticleController {
 	
 	@RequestMapping(value={"/grw/boards/articles2"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
-	public ResponseEntity<?> saveArticleWithFile(@ModelAttribute ArticleReqeustDTO articleDTO) {
+	public ResponseEntity<?> saveArticleWithFile(@ModelAttribute ArticleRequestDTO articleDTO) {
 			
 		ResponseEntity<?> result = null;				
 							

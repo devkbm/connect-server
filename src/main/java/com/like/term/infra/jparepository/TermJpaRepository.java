@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.like.term.domain.model.Term;
 import com.like.term.domain.repository.TermRepository;
+import com.like.term.domain.repository.dto.TermQueryDTO;
 import com.like.term.infra.jparepository.springdata.JpaTerm;
 import com.like.term.domain.model.QTerm;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -30,6 +32,13 @@ public class TermJpaRepository implements TermRepository {
 	@Override
 	public List<Term> getTermList() {
 		return jpaTerm.findAll();
+	}
+	
+	@Override
+	public List<Term> getTermList(TermQueryDTO requestDTO) {									
+		return queryFactory.selectFrom(qTerm)
+				.where(requestDTO.getQuerySpec())
+				.fetch();
 	}
 
 	@Override

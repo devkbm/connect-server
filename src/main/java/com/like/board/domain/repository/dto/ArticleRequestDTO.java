@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
-public class ArticleReqeustDTO implements Serializable {
+public class ArticleRequestDTO implements Serializable {
 
 	/**
 	 * 

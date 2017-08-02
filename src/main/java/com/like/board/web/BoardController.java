@@ -34,10 +34,10 @@ import com.like.common.web.util.WebControllerUtil;
 @RestController
 public class BoardController {
 
-	@Resource(name = "boardCommandService")
+	@Resource
 	private BoardCommandService boardCommandService;
 	
-	@Resource(name = "boardQueryService")
+	@Resource
 	private BoardQueryService boardQueryService;
 	
 	/*@Autowired 
@@ -133,6 +133,5 @@ public class BoardController {
 	
 	private boolean validId(Long id) {				
 		return ( id != null && id > 0 ) ? true : false;
-	}
-	
+	}		
 }

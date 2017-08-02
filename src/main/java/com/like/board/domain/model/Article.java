@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.like.board.domain.repository.dto.ArticleReqeustDTO;
+import com.like.board.domain.repository.dto.ArticleRequestDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
@@ -156,7 +156,7 @@ public class Article extends AuditEntity implements Serializable {
 		return files.add(file);
 	}
 	
-	public void setArticleDTO(ArticleReqeustDTO dto) {
+	public void setArticleDTO(ArticleRequestDTO dto) {
 		this.ppkArticle = Long.parseLong(dto.getPpkArticle());
 		this.title = dto.getTitle();
 		this.contents = dto.getContents();
