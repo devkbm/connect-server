@@ -81,7 +81,30 @@ public class TermController {
 		return result;
 	}	
 	
-	@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
+	public ResponseEntity<?> saveTerm(@ModelAttribute Term term, BindingResult result) {
+			
+		ResponseEntity<?> res = null;
+		
+		if ( result.hasErrors()) {
+			//throw new IllegalArgumentException();
+			throw new ControllerException("오류");
+		} else {
+			
+			termService.saveTerm(term);
+									
+			res = WebControllerUtil.getResponse(null,
+					1, 
+					true, 
+					String.format("%d 건 저장되었습니다.", 1), 
+					HttpStatus.OK);
+		}
+								 					
+		return res;
+	}
+	
+	
+	/*@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
 	public ResponseEntity<?> saveTerm(@RequestBody List<Term> termList, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
@@ -101,7 +124,7 @@ public class TermController {
 		}
 								 					
 		return res;
-	}	
+	}*/	
 	
 	@RequestMapping(value={"/common/terms/{id}"}, method=RequestMethod.DELETE) 
 	public ResponseEntity<?> delTerm(@PathVariable(value="id") Long id) {
