@@ -81,16 +81,16 @@ public class TermController {
 		return result;
 	}	
 	
-	@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
+	/*@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
 	public ResponseEntity<?> saveTerm(@ModelAttribute Term term, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
-		
+		log.info("asdf");
 		if ( result.hasErrors()) {
 			//throw new IllegalArgumentException();
 			throw new ControllerException("오류");
 		} else {
-			
+			log.info(term.toString());
 			termService.saveTerm(term);
 									
 			res = WebControllerUtil.getResponse(null,
@@ -101,14 +101,14 @@ public class TermController {
 		}
 								 					
 		return res;
-	}
+	}*/
 	
 	
-	/*@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
 	public ResponseEntity<?> saveTerm(@RequestBody List<Term> termList, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
-		
+		log.info(termList.toString());
 		if ( result.hasErrors()) {
 			//throw new IllegalArgumentException();
 			throw new ControllerException("오류");
@@ -124,10 +124,32 @@ public class TermController {
 		}
 								 					
 		return res;
-	}*/	
+	}	
 	
-	@RequestMapping(value={"/common/terms/{id}"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<?> delTerm(@PathVariable(value="id") Long id) {
+	@RequestMapping(value={"/common/terms"}, method={RequestMethod.DELETE})
+	public ResponseEntity<?> deleteTerm(@RequestBody List<Term> termList, BindingResult result) {
+			
+		ResponseEntity<?> res = null;
+		log.info(termList.toString());
+		if ( result.hasErrors()) {
+			//throw new IllegalArgumentException();
+			throw new ControllerException("오류");
+		} else {
+			
+			termService.deleteTerm(termList);
+									
+			res = WebControllerUtil.getResponse(null,
+					termList.size(), 
+					true, 
+					String.format("%d 건 저장되었습니다.", 1), 
+					HttpStatus.OK);
+		}
+								 					
+		return res;
+	}
+	
+	/*@RequestMapping(value={"/common/terms/{id}"}, method=RequestMethod.DELETE) 
+	public ResponseEntity<?> delTerm(@RequestParam(value="id", required=false) Long id) {
 			
 		ResponseEntity<?> result = null;			
 		
@@ -140,6 +162,6 @@ public class TermController {
 				HttpStatus.OK); 					
 		
 		return result;
-	}		
+	}*/		
 	
 }

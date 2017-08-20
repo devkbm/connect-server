@@ -15,8 +15,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "cmterm")
 @EntityListeners(AuditingEntityListener.class)
@@ -48,4 +50,12 @@ public class Term extends AuditEntity implements Serializable {
 	String comment;
 	
 	protected Term() {}
+
+	@Override
+	public String toString() {
+		return "Term [pkTerm=" + pkTerm + ", nameKor=" + nameKor + ", abbreviation=" + abbreviation + ", nameEng="
+				+ nameEng + ", abbreviationEng=" + abbreviationEng + ", detail=" + detail + ", comment=" + comment
+				+ "]";
+	}
+	
 }

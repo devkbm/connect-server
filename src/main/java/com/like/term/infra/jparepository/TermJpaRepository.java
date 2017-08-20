@@ -55,5 +55,11 @@ public class TermJpaRepository implements TermRepository {
 	public void deleteTerm(Long pkTerm) {
 		jpaTerm.delete(pkTerm);		
 	}
-						
+
+	@Override
+	public void deleteTerm(List<Term> termList) {
+		jpaTerm.delete(termList);
+	}
+				
+	
 }

@@ -18,4 +18,6 @@ public interface TermRepository {
 	void saveTerm(List<Term> termList);
 	
 	void deleteTerm(Long pkTerm);
+	
+	void deleteTerm(List<Term> termList);
 }

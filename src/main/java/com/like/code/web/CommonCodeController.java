@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.dto.CommonCodeDTO;
+import com.like.code.domain.repository.dto.CommonCodeGroupQueryDTO;
 import com.like.code.service.CommonCodeQueryService;
 import com.like.code.service.CommonCodeCommandService;
 import com.like.common.web.exception.ControllerException;
@@ -36,18 +38,12 @@ public class CommonCodeController {
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeController.class);
 	
 	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodeGroups(@RequestParam(value="id", required=false) String codeGroup) {
+	public ResponseEntity<?> getCodeGroups(@ModelAttribute CommonCodeGroupQueryDTO commonCodeGroupQueryDTO) {
 			
 		ResponseEntity<?> result = null;
 		
-		List<CommonCodeGroup> list = new ArrayList<>(); 		
-		
-		CommonCodeGroup commonCodeGroup = null;		
-		commonCodeGroup = commonCodeQueryService.getCodeGroup(codeGroup); 		
-		
-		if ( commonCodeGroup != null)
-			list.add(commonCodeGroup); 			
-			
+		List<CommonCodeGroup> list = commonCodeQueryService.getCodeGroupList(commonCodeGroupQueryDTO); 		
+				
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
 				true, 

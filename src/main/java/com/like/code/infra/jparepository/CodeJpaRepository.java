@@ -13,6 +13,7 @@ import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.CommonCodeRepository;
 import com.like.code.domain.repository.dto.CommonCodeComboDTO;
 import com.like.code.domain.repository.dto.CommonCodeDTO;
+import com.like.code.domain.repository.dto.CommonCodeGroupQueryDTO;
 import com.like.code.infra.jparepository.springdata.JpaCommonCode;
 import com.like.code.infra.jparepository.springdata.JpaCommonCodeGroup;
 import com.querydsl.core.types.Projections;
@@ -41,11 +42,11 @@ public class CodeJpaRepository implements CommonCodeRepository {
 				.fetchOne();				
 	}
 
-	@Override
-	public List<CommonCodeGroup> getCodeGroupList(String likeCodeGroupName) {
+	@Override	
+	public List<CommonCodeGroup> getCodeGroupList(CommonCodeGroupQueryDTO commonCodeGroupQueryDTO) {
 		return queryFactory				
-				.selectFrom(qCommonCodeGroup)
-				.where(qCommonCodeGroup.codeGroupName.like("%"+likeCodeGroupName+"%"))
+				.selectFrom(qCommonCodeGroup)				
+				.where(commonCodeGroupQueryDTO.getQuerySpec())
 				.fetch();
 	}
 

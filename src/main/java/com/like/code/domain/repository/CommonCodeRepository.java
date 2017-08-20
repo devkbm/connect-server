@@ -8,6 +8,7 @@ import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.dto.CommonCodeComboDTO;
+import com.like.code.domain.repository.dto.CommonCodeGroupQueryDTO;
 
 @Repository
 public interface CommonCodeRepository {
@@ -16,7 +17,7 @@ public interface CommonCodeRepository {
 	
 	List<CommonCodeGroup> getCodeGroupList();
 	
-	List<CommonCodeGroup> getCodeGroupList(String codeGroupName);
+	List<CommonCodeGroup> getCodeGroupList(CommonCodeGroupQueryDTO commonCodeGroupQueryDTO);
 	
 	void saveCodeGroup(CommonCodeGroup codeGroup);
 	

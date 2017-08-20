@@ -11,6 +11,7 @@ import com.like.code.domain.model.CommonCode;
 import com.like.code.domain.model.CommonCodeGroup;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.code.domain.repository.dto.CommonCodeComboDTO;
+import com.like.code.domain.repository.dto.CommonCodeGroupQueryDTO;
 import com.like.code.infra.jparepository.CodeJpaRepository;
 
 @Service
@@ -24,8 +25,8 @@ public class CommonCodeQueryService {
 		return codeJpaRepository.getCodeGroup(codeGroup);
 	}
 
-	public List<CommonCodeGroup> getCodeGroupList(String likeCodeGroupName) {
-		return codeJpaRepository.getCodeGroupList(likeCodeGroupName);
+	public List<CommonCodeGroup> getCodeGroupList(CommonCodeGroupQueryDTO commonCodeGroupQueryDTO) {
+		return codeJpaRepository.getCodeGroupList(commonCodeGroupQueryDTO);
 	}
 	
 	public List<CommonCodeGroup> getCodeGroupList() {

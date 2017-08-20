@@ -39,10 +39,7 @@ public class BoardController {
 	
 	@Resource
 	private BoardQueryService boardQueryService;
-	
-	/*@Autowired 
-	RestTemplate restTemplate;*/	
-	
+		
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
 	
 	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 

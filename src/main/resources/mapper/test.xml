@@ -49,5 +49,6 @@
     	<if test="contents != null"><![CDATA[
     	and b.contents like #{contents}
     	]]></if>
+   order by b.PK_ARTICLE desc 	
 	</select>
 </mapper>

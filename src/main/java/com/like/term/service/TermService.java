@@ -41,5 +41,9 @@ public class TermService {
 	public void deleteTerm(Long pkTerm) {
 		termRepository.deleteTerm(pkTerm);		
 	}
+	
+	public void deleteTerm(List<Term> termList) {
+		termRepository.deleteTerm(termList);	
+	}
 		
 }
