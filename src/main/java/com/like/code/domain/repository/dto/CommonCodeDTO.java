@@ -18,7 +18,7 @@ public class CommonCodeDTO implements Serializable {
 		
 	private String codeName;
 		
-	private String codeNameAbbr;		
+	private String codeNameAbbreviation;		
 		
 	private LocalDateTime fromDate;
 		
@@ -31,7 +31,7 @@ public class CommonCodeDTO implements Serializable {
 	private String cmt;
 	
 	public CommonCode getCommonCode() {						
-		return new CommonCode(new CommonCodeId(this.codeGroup, this.code), this.codeName, this.codeNameAbbr, 
+		return new CommonCode(new CommonCodeId(this.codeGroup, this.code), this.codeName, this.codeNameAbbreviation, 
 						this.fromDate, this.toDate,	this.seq, this.useYn, this.cmt);
 	}
 }

@@ -92,6 +92,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	@Override
 	public void saveCode(CommonCode code) {		
 		if (code.getCommonCodeGroup() == null ) {
+			
 			CommonCodeGroup codeGroup =jpaCommonCodeGroup.findOne(code.getId().getCodeGroup());
 			code.setCommonCodeGroup(codeGroup);
 		}

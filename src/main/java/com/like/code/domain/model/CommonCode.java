@@ -16,14 +16,16 @@ import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.like.code.domain.model.id.CommonCodeId;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"commonCodeGroup"})
 @Entity
@@ -36,6 +38,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1122730947003822818L;
 	
+	@JsonUnwrapped
 	@EmbeddedId		
 	private CommonCodeId id;
 		
@@ -90,5 +93,13 @@ public class CommonCode extends AuditEntity implements Serializable {
 		this.seq = seq;
 		this.useYn = useYn;
 		this.cmt = cmt;		
-	} 
+	}
+
+	public CommonCodeGroup getCommonCodeGroup() {
+		return commonCodeGroup;
+	}
+
+	public CommonCodeId getId() {
+		return id;
+	} 	
 }

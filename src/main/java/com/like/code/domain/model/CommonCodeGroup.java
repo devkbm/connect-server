@@ -11,12 +11,13 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @ToString(callSuper=true, includeFieldNames=true) 
 @Entity
 @Table(name = "cmcodegroup")
