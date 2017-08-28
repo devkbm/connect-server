@@ -1,4 +1,4 @@
-package com.like.code.web;
+package com.like.commoncode.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.code.domain.model.CommonCodeGroup;
-import com.like.code.domain.model.id.CommonCodeId;
-import com.like.code.domain.repository.dto.CommonCodeDTO;
-import com.like.code.domain.repository.dto.CommonCodeGroupQueryDTO;
-import com.like.code.service.CommonCodeQueryService;
-import com.like.code.service.CommonCodeCommandService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.commoncode.domain.model.CodeGroup;
+import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.commoncode.domain.repository.dto.CodeDTO;
+import com.like.commoncode.domain.repository.dto.CodeGroupQueryDTO;
+import com.like.commoncode.service.CommonCodeCommandService;
+import com.like.commoncode.service.CommonCodeQueryService;
 
 @RestController
 public class CommonCodeController {
@@ -38,11 +39,11 @@ public class CommonCodeController {
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeController.class);
 	
 	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodeGroups(@ModelAttribute CommonCodeGroupQueryDTO commonCodeGroupQueryDTO) {
+	public ResponseEntity<?> getCodeGroups(@ModelAttribute CodeGroupQueryDTO commonCodeGroupQueryDTO) {
 			
 		ResponseEntity<?> result = null;
 		
-		List<CommonCodeGroup> list = commonCodeQueryService.getCodeGroupList(commonCodeGroupQueryDTO); 		
+		List<CodeGroup> list = commonCodeQueryService.getCodeGroupList(commonCodeGroupQueryDTO); 		
 				
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -54,7 +55,7 @@ public class CommonCodeController {
 	}
 	
 	@RequestMapping(value={"/common/codegroups"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCodeGroup(@RequestBody List<CommonCodeGroup> codeGroupList, BindingResult result) {
+	public ResponseEntity<?> saveCodeGroup(@RequestBody List<CodeGroup> codeGroupList, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
 		
@@ -63,7 +64,7 @@ public class CommonCodeController {
 			throw new ControllerException("오류");
 		} 
 															
-		for (CommonCodeGroup codeGroup : codeGroupList ) {
+		for (CodeGroup codeGroup : codeGroupList ) {
 			commonCodeCommandService.saveCodeGroup(codeGroup);
 		}
 			
@@ -98,12 +99,13 @@ public class CommonCodeController {
 			@RequestParam(value="qType", required=false) String qType) {
 			
 		ResponseEntity<?> result = null;
-		List<?> list = null;
+		List<?> list = null;			
 		
-		if (qType == null) {		
-			list = commonCodeQueryService.getCodeList(codeGroup);
+		if (StringUtils.hasText(qType)) { 
+			if (qType.equals("combo")) 
+				list = commonCodeQueryService.getCodeListByComboBox(codeGroup);			
 		} else {
-			list = commonCodeQueryService.getCodeListByComboBox(codeGroup);
+			list = commonCodeQueryService.getCodeList(codeGroup);
 		}
 			
 		result = WebControllerUtil.getResponse(list, 
@@ -116,7 +118,7 @@ public class CommonCodeController {
 	}
 	
 	@RequestMapping(value={"/common/codegroups/codes"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCode(@RequestBody List<CommonCodeDTO> codeList, BindingResult result) {
+	public ResponseEntity<?> saveCode(@RequestBody List<CodeDTO> codeList, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
 		
@@ -124,7 +126,7 @@ public class CommonCodeController {
 			throw new ControllerException("오류");
 		} 
 		
-		for (CommonCodeDTO code : codeList ) {
+		for (CodeDTO code : codeList ) {
 			commonCodeCommandService.saveCode(code.getCommonCode());
 		}
 			

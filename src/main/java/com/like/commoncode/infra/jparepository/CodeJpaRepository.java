@@ -1,21 +1,21 @@
-package com.like.code.infra.jparepository;
+package com.like.commoncode.infra.jparepository;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.like.code.domain.model.CommonCode;
-import com.like.code.domain.model.CommonCodeGroup;
-import com.like.code.domain.model.QCommonCode;
-import com.like.code.domain.model.QCommonCodeGroup;
-import com.like.code.domain.model.id.CommonCodeId;
-import com.like.code.domain.repository.CommonCodeRepository;
-import com.like.code.domain.repository.dto.CommonCodeComboDTO;
-import com.like.code.domain.repository.dto.CommonCodeDTO;
-import com.like.code.domain.repository.dto.CommonCodeGroupQueryDTO;
-import com.like.code.infra.jparepository.springdata.JpaCommonCode;
-import com.like.code.infra.jparepository.springdata.JpaCommonCodeGroup;
+import com.like.commoncode.domain.model.Code;
+import com.like.commoncode.domain.model.CodeGroup;
+import com.like.commoncode.domain.model.QCode;
+import com.like.commoncode.domain.model.QCodeGroup;
+import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.commoncode.domain.repository.CommonCodeRepository;
+import com.like.commoncode.domain.repository.dto.CodeComboDTO;
+import com.like.commoncode.domain.repository.dto.CodeDTO;
+import com.like.commoncode.domain.repository.dto.CodeGroupQueryDTO;
+import com.like.commoncode.infra.jparepository.springdata.JpaCommonCode;
+import com.like.commoncode.infra.jparepository.springdata.JpaCommonCodeGroup;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -31,11 +31,11 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	@Autowired
 	private JpaCommonCode jpaCommonCode;
 	
-	private final QCommonCodeGroup qCommonCodeGroup = QCommonCodeGroup.commonCodeGroup;	
-	private final QCommonCode qCommonCode = QCommonCode.commonCode;
+	private final QCodeGroup qCommonCodeGroup = QCodeGroup.codeGroup1;	
+	private final QCode qCommonCode = QCode.code;
 	
 	@Override
-	public CommonCodeGroup getCodeGroup(String codeGroup) {
+	public CodeGroup getCodeGroup(String codeGroup) {
 		return queryFactory				
 				.selectFrom(qCommonCodeGroup)
 				.where(qCommonCodeGroup.codeGroup.eq(codeGroup))
@@ -43,7 +43,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	}
 
 	@Override	
-	public List<CommonCodeGroup> getCodeGroupList(CommonCodeGroupQueryDTO commonCodeGroupQueryDTO) {
+	public List<CodeGroup> getCodeGroupList(CodeGroupQueryDTO commonCodeGroupQueryDTO) {
 		return queryFactory				
 				.selectFrom(qCommonCodeGroup)				
 				.where(commonCodeGroupQueryDTO.getQuerySpec())
@@ -51,12 +51,12 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	}
 
 	@Override
-	public List<CommonCodeGroup> getCodeGroupList() {
+	public List<CodeGroup> getCodeGroupList() {
 		return jpaCommonCodeGroup.findAll();
 	}
 
 	@Override
-	public void saveCodeGroup(CommonCodeGroup codeGroup) {
+	public void saveCodeGroup(CodeGroup codeGroup) {
 		jpaCommonCodeGroup.save(codeGroup);		
 	}
 
@@ -66,12 +66,12 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	}
 
 	@Override
-	public CommonCode getCode(CommonCodeId commonCodeId) {
+	public Code getCode(CommonCodeId commonCodeId) {
 		return jpaCommonCode.findOne(commonCodeId);
 	}
 
 	@Override
-	public List<CommonCode> getCodeList(String codeGroup) {		
+	public List<Code> getCodeList(String codeGroup) {		
 		return queryFactory
 				.selectFrom(qCommonCode)
 				.where(qCommonCode.commonCodeGroup.codeGroup.eq(codeGroup))
@@ -80,20 +80,20 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	
 	
 	@Override
-	public List<CommonCodeComboDTO> getCodeListByComboBox(String codeGroup) {
+	public List<CodeComboDTO> getCodeListByComboBox(String codeGroup) {
 
 		return queryFactory
-				.select(Projections.constructor(CommonCodeComboDTO.class, qCommonCode.id.code,qCommonCode.codeName,qCommonCode.codeNameAbbreviation))
+				.select(Projections.constructor(CodeComboDTO.class, qCommonCode.id.code,qCommonCode.codeName,qCommonCode.codeNameAbbreviation))
 				.from(qCommonCode)
 				.where(qCommonCode.id.codeGroup.eq(codeGroup))
 				.fetch();
 	}
 
 	@Override
-	public void saveCode(CommonCode code) {		
+	public void saveCode(Code code) {		
 		if (code.getCommonCodeGroup() == null ) {
 			
-			CommonCodeGroup codeGroup =jpaCommonCodeGroup.findOne(code.getId().getCodeGroup());
+			CodeGroup codeGroup =jpaCommonCodeGroup.findOne(code.getId().getCodeGroup());
 			code.setCommonCodeGroup(codeGroup);
 		}
 			 

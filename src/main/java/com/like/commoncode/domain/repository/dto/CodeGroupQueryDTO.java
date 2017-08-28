@@ -1,16 +1,16 @@
-package com.like.code.domain.repository.dto;
+package com.like.commoncode.domain.repository.dto;
 
 import org.springframework.util.StringUtils;
 
-import com.like.code.domain.model.QCommonCodeGroup;
+import com.like.commoncode.domain.model.QCodeGroup;
 import com.querydsl.core.BooleanBuilder;
 
 import lombok.Data;
 
 @Data
-public class CommonCodeGroupQueryDTO {
+public class CodeGroupQueryDTO {
 	
-	private final QCommonCodeGroup qCommonCodeGroup = QCommonCodeGroup.commonCodeGroup;
+	private final QCodeGroup qCodeGroup = QCodeGroup.codeGroup1;
 	
 	private String codeGroup;
 	
@@ -20,10 +20,10 @@ public class CommonCodeGroupQueryDTO {
 		BooleanBuilder builder = new BooleanBuilder();
 					
 		if (StringUtils.hasText(this.codeGroup))
-			builder.and(qCommonCodeGroup.codeGroup.like("%"+codeGroup+"%"));
+			builder.and(qCodeGroup.codeGroup.like("%"+codeGroup+"%"));
 		
 		if (StringUtils.hasText(this.codeGroupName))
-			builder.and(qCommonCodeGroup.codeGroupName.like("%"+codeGroupName+"%"));			
+			builder.and(qCodeGroup.codeGroupName.like("%"+codeGroupName+"%"));			
 		
 		return builder;
 	}

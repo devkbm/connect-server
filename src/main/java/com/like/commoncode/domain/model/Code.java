@@ -1,4 +1,4 @@
-package com.like.code.domain.model;
+package com.like.commoncode.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,8 +19,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.like.code.domain.model.id.CommonCodeId;
 import com.like.common.domain.AuditEntity;
+import com.like.commoncode.domain.model.id.CommonCodeId;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -31,7 +31,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "cmcode")
 @EntityListeners(AuditingEntityListener.class)
-public class CommonCode extends AuditEntity implements Serializable {
+public class Code extends AuditEntity implements Serializable {
 		
 	/**
 	 * 
@@ -66,15 +66,15 @@ public class CommonCode extends AuditEntity implements Serializable {
 	@MapsId("codeGroup")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "code_group", nullable=false, updatable=false)
-	CommonCodeGroup commonCodeGroup;
+	CodeGroup commonCodeGroup;
 	
-	public void setCommonCodeGroup(CommonCodeGroup commonCodeGroup) {
+	public void setCommonCodeGroup(CodeGroup commonCodeGroup) {
 		this.commonCodeGroup = commonCodeGroup;
 	}
 	
-	protected CommonCode() {}
+	protected Code() {}
 	
-	public CommonCode(CommonCodeId commonCodeId, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
+	public Code(CommonCodeId commonCodeId, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
 		this.id = commonCodeId;
 		this.codeName = codeName;
 		this.fromDate = fromDate;
@@ -83,7 +83,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 		this.useYn = true;
 	}
 		
-	public CommonCode(CommonCodeId id, String codeName, String codeNameAbbreviation, LocalDateTime fromDate,
+	public Code(CommonCodeId id, String codeName, String codeNameAbbreviation, LocalDateTime fromDate,
 			LocalDateTime toDate, int seq, boolean useYn, String cmt) {		
 		this.id = id;
 		this.codeName = codeName;
@@ -95,7 +95,7 @@ public class CommonCode extends AuditEntity implements Serializable {
 		this.cmt = cmt;		
 	}
 
-	public CommonCodeGroup getCommonCodeGroup() {
+	public CodeGroup getCommonCodeGroup() {
 		return commonCodeGroup;
 	}
 

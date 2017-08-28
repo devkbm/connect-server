@@ -1,4 +1,4 @@
-package com.like.code.domain.model;
+package com.like.commoncode.domain.model;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "cmcodegroup")
 @EntityListeners(AuditingEntityListener.class)
-public class CommonCodeGroup extends AuditEntity implements Serializable {
+public class CodeGroup extends AuditEntity implements Serializable {
 	
 	/**
 	 * 
@@ -53,9 +53,9 @@ public class CommonCodeGroup extends AuditEntity implements Serializable {
 	private String enumName;
 		
 	
-	protected CommonCodeGroup() {}
+	protected CodeGroup() {}
 	
-	public CommonCodeGroup(String codeGroup, String codeGroupName) {
+	public CodeGroup(String codeGroup, String codeGroupName) {
 		this.codeGroup = codeGroup;
 		this.codeGroupName = codeGroupName;
 		

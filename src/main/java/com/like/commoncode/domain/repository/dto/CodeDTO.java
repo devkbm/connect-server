@@ -1,15 +1,15 @@
-package com.like.code.domain.repository.dto;
+package com.like.commoncode.domain.repository.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.like.code.domain.model.CommonCode;
-import com.like.code.domain.model.id.CommonCodeId;
+import com.like.commoncode.domain.model.Code;
+import com.like.commoncode.domain.model.id.CommonCodeId;
 
 import lombok.Data;
 
 @Data
-public class CommonCodeDTO implements Serializable {
+public class CodeDTO implements Serializable {
 
 	
 	private String codeGroup;
@@ -30,8 +30,8 @@ public class CommonCodeDTO implements Serializable {
 	
 	private String cmt;
 	
-	public CommonCode getCommonCode() {						
-		return new CommonCode(new CommonCodeId(this.codeGroup, this.code), this.codeName, this.codeNameAbbreviation, 
+	public Code getCommonCode() {						
+		return new Code(new CommonCodeId(this.codeGroup, this.code), this.codeName, this.codeNameAbbreviation, 
 						this.fromDate, this.toDate,	this.seq, this.useYn, this.cmt);
 	}
 }

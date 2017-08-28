@@ -1,4 +1,4 @@
-package com.like.code.domain.model.id;
+package com.like.commoncode.domain.model.id;
 
 import java.io.Serializable;
 

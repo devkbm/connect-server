@@ -1,4 +1,4 @@
-package com.like.code.domain.repository.dto;
+package com.like.commoncode.domain.repository.dto;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
-public class CommonCodeComboDTO implements Serializable {
+public class CodeComboDTO implements Serializable {
 			
 	private static final long serialVersionUID = 1396114277976142701L;
 
@@ -18,7 +18,7 @@ public class CommonCodeComboDTO implements Serializable {
 	private String codeNameAbbr;
 
 	@QueryProjection
-	public CommonCodeComboDTO(String code, String codeName, String codeNameAbbr) {
+	public CodeComboDTO(String code, String codeName, String codeNameAbbr) {
 		super();
 		this.code = code;
 		this.codeName = codeName;

@@ -1,4 +1,4 @@
-package com.like.code.service;
+package com.like.commoncode.service;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.code.domain.model.CommonCode;
-import com.like.code.domain.model.CommonCodeGroup;
-import com.like.code.domain.model.id.CommonCodeId;
-import com.like.code.domain.repository.dto.CommonCodeComboDTO;
-import com.like.code.infra.jparepository.CodeJpaRepository;
+import com.like.commoncode.domain.model.Code;
+import com.like.commoncode.domain.model.CodeGroup;
+import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.commoncode.domain.repository.dto.CodeComboDTO;
+import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 
 @Service
 @Transactional
@@ -20,7 +20,7 @@ public class CommonCodeCommandService {
 	@Resource(name="codeJpaRepository")
 	private CodeJpaRepository codeJpaRepository;
 			
-	public void saveCodeGroup(CommonCodeGroup codeGroup) {
+	public void saveCodeGroup(CodeGroup codeGroup) {
 		codeJpaRepository.saveCodeGroup(codeGroup);		
 	}
 
@@ -28,7 +28,7 @@ public class CommonCodeCommandService {
 		codeJpaRepository.deleteCodeGroup(codeGroup);		
 	}
 	
-	public void saveCode(CommonCode code) {		
+	public void saveCode(Code code) {		
 		codeJpaRepository.saveCode(code);		
 	}
 
