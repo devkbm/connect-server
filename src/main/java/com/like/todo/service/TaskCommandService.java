@@ -1,0 +1,37 @@
+package com.like.todo.service;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.like.todo.domain.model.Task;
+import com.like.todo.domain.model.TaskGroup;
+import com.like.todo.domain.repository.TaskRepository;
+
+@Service
+@Transactional
+public class TaskCommandService {
+	
+	@Resource(name="articleJpaRepository")
+	private TaskRepository taskRepository;
+		
+	public void saveTaskGroup(TaskGroup taskGroup) {
+		taskRepository.saveTaskGroup(taskGroup);
+	}
+	
+	public void deleteTaskGroup(Long pkTaskGroup) {
+		taskRepository.deleteTaskGroup(pkTaskGroup);
+	}
+
+	public void saveTask(Task task) {
+		taskRepository.saveTask(task);
+	}
+	
+	public void deleteTask(Long pkTask) {
+		taskRepository.deleteTask(pkTask);
+	}
+
+}
