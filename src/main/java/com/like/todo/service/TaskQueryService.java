@@ -15,7 +15,7 @@ import com.like.todo.domain.repository.TaskRepository;
 @Transactional(readOnly=true)
 public class TaskQueryService {
 	
-	@Resource(name="articleJpaRepository")
+	@Resource(name="taskJpaRepository")
 	private TaskRepository taskRepository;
 	
 	

@@ -15,7 +15,7 @@ import com.like.todo.domain.repository.TaskRepository;
 @Transactional
 public class TaskCommandService {
 	
-	@Resource(name="articleJpaRepository")
+	@Resource(name="taskJpaRepository")
 	private TaskRepository taskRepository;
 		
 	public void saveTaskGroup(TaskGroup taskGroup) {

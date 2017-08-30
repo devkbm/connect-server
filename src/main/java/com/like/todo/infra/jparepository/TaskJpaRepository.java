@@ -3,6 +3,7 @@ package com.like.todo.infra.jparepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.like.todo.domain.model.Task;
 import com.like.todo.domain.model.TaskGroup;
@@ -11,6 +12,7 @@ import com.like.todo.infra.jparepository.springdata.JpaTask;
 import com.like.todo.infra.jparepository.springdata.JpaTaskGroup;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+@Repository
 public class TaskJpaRepository implements TaskRepository {
 
 	@Autowired
