@@ -11,6 +11,8 @@ public interface TaskRepository {
 	
 	List<TaskGroup> getTaskGroupList();
 	
+	List<TaskGroup> getTaskGroupList(String userId);
+	
 	void saveTaskGroup(TaskGroup taskGroup);
 	
 	void deleteTaskGroup(Long pkTaskGroup);

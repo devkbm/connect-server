@@ -27,6 +27,10 @@ public class TaskQueryService {
 		return taskRepository.getTaskGroupList();
 	}
 	
+	public List<TaskGroup> getTaskGroupList(String userId) {
+		return taskRepository.getTaskGroupList(userId);
+	}
+	
 	public Task getTask(Long pkTask) {
 		return taskRepository.getTask(pkTask);
 	}

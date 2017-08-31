@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.todo.domain.model.QTaskGroup;
 import com.like.todo.domain.model.Task;
 import com.like.todo.domain.model.TaskGroup;
 import com.like.todo.domain.repository.TaskRepository;
@@ -24,6 +25,8 @@ public class TaskJpaRepository implements TaskRepository {
 	@Autowired
 	private JpaTask jpaTask;
 	
+	private final QTaskGroup qTaskGroup = QTaskGroup.taskGroup;
+	
 	@Override
 	public TaskGroup getTaskGroup(Long pkTaskGroup) {		
 		return jpaTaskGroup.findOne(pkTaskGroup);
@@ -32,6 +35,13 @@ public class TaskJpaRepository implements TaskRepository {
 	@Override
 	public List<TaskGroup> getTaskGroupList() {
 		return jpaTaskGroup.findAll();
+	}
+	
+	@Override
+	public List<TaskGroup> getTaskGroupList(String userId) {		
+		return queryFactory.selectFrom(qTaskGroup)
+				.where(qTaskGroup.userId.like(userId))
+				.fetch();				
 	}
 
 	@Override
@@ -64,5 +74,6 @@ public class TaskJpaRepository implements TaskRepository {
 	public void deleteTask(Long pkTask) {
 		jpaTask.delete(pkTask);
 	}
+	
 
 }
