@@ -26,7 +26,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"taskGroup"})
 @ToString(callSuper=true, includeFieldNames=true)
 @Entity
-@Table(name = "cmtask")
+@Table(name = "grtask")
 @EntityListeners(AuditingEntityListener.class)
 public class Task extends AuditEntity implements Serializable {	
 	
@@ -54,5 +54,12 @@ public class Task extends AuditEntity implements Serializable {
 	TaskGroup taskGroup;
 	
 	protected Task() {}
+	
+	public Task(TaskGroup taskGroup, String task, LocalDate dueDate, String comments) {
+		this.taskGroup = taskGroup;
+		this.task = task;
+		this.dueDate = dueDate;
+		this.comments = comments;
+	}
 	
 }

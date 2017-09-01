@@ -22,8 +22,16 @@ public class TaskCommandService {
 		taskRepository.saveTaskGroup(taskGroup);
 	}
 	
+	public void saveTaskGroup(List<TaskGroup> taskGroupList) {
+		taskRepository.saveTaskGroup(taskGroupList);
+	}
+	
 	public void deleteTaskGroup(Long pkTaskGroup) {
 		taskRepository.deleteTaskGroup(pkTaskGroup);
+	}
+	
+	public void deleteTaskGroup(List<TaskGroup> taskGroupList) {
+		taskRepository.deleteTaskGroup(taskGroupList);
 	}
 
 	public void saveTask(Task task) {

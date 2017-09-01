@@ -24,7 +24,7 @@ import lombok.ToString;
 @ToString(callSuper=true, includeFieldNames=true)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"taskList"})
 @Entity
-@Table(name = "cmtaskgroup")
+@Table(name = "grtaskgroup")
 @EntityListeners(AuditingEntityListener.class)
 public class TaskGroup extends AuditEntity implements Serializable {	
 	
@@ -34,9 +34,6 @@ public class TaskGroup extends AuditEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="pk_task_group")
 	Long pkTaskGroup;	
-
-	@Column(name="user_id")
-	String userId;
 	
 	@Column(name="task_group_name")
 	String taskGroupName;		
@@ -45,4 +42,8 @@ public class TaskGroup extends AuditEntity implements Serializable {
 	List<Task> taskList;
 	
 	protected TaskGroup() {}
+	
+	public TaskGroup(String taskGroupName) {
+		this.taskGroupName = taskGroupName;
+	}
 }

@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.todo.domain.model.Task;
 import com.like.todo.domain.model.TaskGroup;
 import com.like.todo.domain.repository.TaskRepository;
+import com.like.todo.domain.repository.dto.TaskQueryDTO;
+import com.like.todo.domain.repository.dto.TaskResultListDTO;
 
 @Service
 @Transactional(readOnly=true)
@@ -37,6 +39,10 @@ public class TaskQueryService {
 	
 	public List<Task> getTaskList() {
 		return taskRepository.getTaskList();
+	}
+	
+	public List<TaskResultListDTO> getTaskList(TaskQueryDTO taskQueryDTO) {
+		return taskRepository.getTaskList(taskQueryDTO);
 	}
 
 }
