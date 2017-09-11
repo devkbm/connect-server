@@ -15,31 +15,31 @@ import lombok.Setter;
 
 @Entity
 @Setter
-@Table(name = "user")
+@Table(name = "cmuser")
 public class User implements UserDetails {
 	
 	private static final long serialVersionUID = 2601682947639908458L;
 
 	@Id	
-	@Column(name="username")
+	@Column(name="user_id")
 	private String userName;
 	
 	@Column(name="password")
 	private String password;
 	
-	@Column(name="name")
+	@Column(name="user_name")
 	private String name;
 	
-	@Column(name="isaccountnonexpired")
+	@Column(name="non_expired_yn")
 	private boolean isAccountNonExpired;
 	
-	@Column(name="isaccountnonlocked")
+	@Column(name="non_locked_yn")
 	private boolean isAccountNonLocked;
 	
-	@Column(name="iscredentialsnonexpired")
+	@Column(name="pass_non_expried_yn")
 	private boolean isCredentialsNonExpired;
 	
-	@Column(name="isenabled")
+	@Column(name="enabled_yn")
 	private boolean isEnabled;
 
 	@Transient

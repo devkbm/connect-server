@@ -25,17 +25,15 @@ public class UserJpaRepository implements UserRepository {
 	
 	@Autowired
 	private JpaAuthority jpaAuthority;
-	
-	
+		
 	private final QUser qUser = QUser.user;
-	private final QAuthority qAuthority = QAuthority.authority;
+	private final QAuthority qAuthority = QAuthority.authority;	
 	
 	@Override
-	public User readUser(String userName) {
-		
-		return queryFactory.selectFrom(qUser)
-				.where(qUser.userName.eq(userName)).fetchOne();
+	public User getUser(String userName) {
+		return jpaUser.findOne(userName);
 	}
+	
 
 	@Override
 	public List<Authority> readAuthority(String userName) {
@@ -63,5 +61,4 @@ public class UserJpaRepository implements UserRepository {
 	public void deleteAuthority(String userName) {
 		jpaAuthority.delete(userName);		
 	}
-
 }

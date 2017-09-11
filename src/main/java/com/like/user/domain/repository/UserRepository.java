@@ -6,8 +6,8 @@ import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 
 public interface UserRepository {
-	
-	User readUser(String userName);
+			
+	User getUser(String userName);
 	
 	List<Authority> readAuthority(String userName);
 	

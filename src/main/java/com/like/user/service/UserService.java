@@ -24,7 +24,7 @@ public class UserService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = userRepository.readUser(userName);
+		User user = userRepository.getUser(userName);
 		
 		return user;
 	}
@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User readUser(String userName) {
-		User user = userRepository.readUser(userName);
+		User user = userRepository.getUser(userName);
 		// user.setAuthorities(userMapper.readAuthority(username));
 		return user;
 	}
