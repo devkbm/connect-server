@@ -28,16 +28,16 @@ public class User implements UserDetails {
 	private String password;	
 	
 	@Column(name="non_expired_yn")
-	private boolean isAccountNonExpired;
+	private Boolean isAccountNonExpired;
 	
 	@Column(name="non_locked_yn")
-	private boolean isAccountNonLocked;
+	private Boolean isAccountNonLocked;
 	
 	@Column(name="pass_non_expried_yn")
-	private boolean isCredentialsNonExpired;
+	private Boolean isCredentialsNonExpired;
 	
 	@Column(name="enabled_yn")
-	private boolean isEnabled;
+	private Boolean isEnabled;
 	
 	@Column(name="user_name")
 	private String name;
