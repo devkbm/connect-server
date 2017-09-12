@@ -25,10 +25,7 @@ public class User implements UserDetails {
 	private String userName;
 	
 	@Column(name="password")
-	private String password;
-	
-	@Column(name="user_name")
-	private String name;
+	private String password;	
 	
 	@Column(name="non_expired_yn")
 	private boolean isAccountNonExpired;
@@ -41,6 +38,9 @@ public class User implements UserDetails {
 	
 	@Column(name="enabled_yn")
 	private boolean isEnabled;
+	
+	@Column(name="user_name")
+	private String name;
 
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
@@ -58,7 +58,7 @@ public class User implements UserDetails {
 	@Override
 	public String getUsername() {
 		return userName;
-	}
+	}		
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -78,6 +78,14 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return isEnabled;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public boolean isVaild(String password) {
+		return this.password.equals(password) ? true : false;
 	}
 	
 }

@@ -29,6 +29,12 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 	
+	public boolean validPassword(User user, String password) {
+		
+		return user.isVaild(password);		
+	}
+	
+	
 	public Collection<GrantedAuthority> getAuthorities(String userName) {
 		//Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)userRepository.readAuthority(userName);
         
@@ -36,7 +42,7 @@ public class UserService implements UserDetailsService {
 		return null;
 	}
 
-	public User readUser(String userName) {
+	public User getUser(String userName) {
 		User user = userRepository.getUser(userName);
 		// user.setAuthorities(userMapper.readAuthority(username));
 		return user;
