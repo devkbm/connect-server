@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,7 +33,7 @@ public class AuditEntity {
 	 */
 	@CreatedBy
 	@Column(name = "sys_user", nullable = false, updatable = false)
-	protected String sysUser = "test";
+	protected String sysUser;
 	
 	/**
 	 * 수정일자			
@@ -44,7 +47,7 @@ public class AuditEntity {
 	 */
 	@LastModifiedBy
 	@Column(name = "upd_user")
-	protected String updUser = "test";
+	protected String updUser;
 
 	public LocalDateTime getSysDt() {
 		return sysDt;
@@ -61,7 +64,7 @@ public class AuditEntity {
 	public String getUpdUser() {
 		return updUser;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "AuditEntity [sysDt=" + sysDt + ", sysUser=" + sysUser + ", updDt=" + updDt + ", updUser=" + updUser

@@ -113,8 +113,6 @@ public class Article extends AuditEntity implements Serializable {
 	protected Article() {}
 	
 	public Article(String title, String contents) {
-		this.sysUser = "test";
-		this.updUser = "test";
 		this.title = title;
 		this.contents = contents;
 		this.fromDt = LocalDate.now();
