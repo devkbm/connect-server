@@ -46,24 +46,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-		    .headers().frameOptions().disable();
-		//			
-		/*http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+		/*http.csrf().disable()
+		    .headers().frameOptions().disable();*/
 		
-		http.csrf().disable();
-		http.formLogin()
-		 	.permitAll()
-		 	.loginProcessingUrl("login")
-		 	.usernameParameter("USERNAME")
-		 	.passwordParameter("PASSWROD")
-		 	.successHandler(authSuccessHandler)
-		 	.failureHandler(authFailureHandler)
-		 	.and()
-		 .logout()
-		 	.permitAll()
-		 	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-		 	.logoutSuccessHandler(logoutSuccessHandler)
+		http
+		.authorizeRequests()
+			.anyRequest().authenticated()
+			.and()
+		.formLogin()
+			.loginPage("/login") 
+			.permitAll(); 	
+		
+		//
+		/*http
+			.csrf().disable()
+			.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.and()			
+			.formLogin()
+		 		//.permitAll()
+		 		.loginProcessingUrl("/login")
+		 		.usernameParameter("username")
+		 		.passwordParameter("password")
+		 		.successHandler(authSuccessHandler)
+		 		.failureHandler(authFailureHandler)
+		 		.and()
+		 	.logout()
+		 		//.permitAll()
+		 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		 		.logoutSuccessHandler(logoutSuccessHandler)
 		 	.and()
 		 .sessionManagement()
 		 .maximumSessions(1);
@@ -71,7 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET,"/grw/boards").permitAll()
 			.antMatchers(HttpMethod.GET,"/grw/boards/articles").permitAll()
-			.anyRequest().authenticated();		*/
+			.antMatchers(HttpMethod.GET,"/grw/boardHierarchy").permitAll()			
+			.anyRequest().authenticated();*/
 	}
 	
 	@Bean
@@ -83,5 +95,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public HttpSessionStrategy httpSessionStrategy() {
 		return new HeaderHttpSessionStrategy();
+	}
+	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+			.inMemoryAuthentication()
+				.withUser("user").password("password").roles("USER");
 	}
 }
