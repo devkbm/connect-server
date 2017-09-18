@@ -4,11 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.like</groupId>
-	<artifactId>grw</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>grw</name>
+	<name>Connect</name>
 	<description>Groupware software</description>
 
 	<parent>
@@ -152,4 +151,5 @@
 		</plugins>
 	</build>
 
+	<artifactId>connect</artifactId>
 </project>
