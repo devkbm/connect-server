@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @SpringBootApplication
-public class GrwApplication {
+public class ConnectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GrwApplication.class, args);
+		SpringApplication.run(ConnectApplication.class, args);
 	}
 	
 	@PersistenceContext
