@@ -11,7 +11,7 @@
 	<select id="getArticleList" parameterType="map" resultType="com.like.board.domain.repository.dto.ArticleListDTO"><![CDATA[
 		select b.SYS_DT		as sysDt
 		     , b.SYS_USER	as sysUser
-		     , 'test' 		as sysUsernm
+		     , u.name 		as sysUsernm
 		     , b.UPD_DT  	as updDt
 		     , b.UPD_USER	as updUser
 		     , b.PK_ARTICLE	as pkArticle
@@ -36,11 +36,13 @@
 		     , b.FK_BOARD	as fkBoard
    		  from grboard a
    			inner join grarticle b
-   	        	on (a.PK_BOARD = b.FK_BOARD)
+   	        	on (a.PK_BOARD = b.FK_BOARD)   	        
    			left outer join grarticle_files c
    	        	on (b.PK_ARTICLE = c.PK_ARTICLE)
+   	        left outer join user u
+   	         	on (b.SYS_USER = u.USERNAME)
     		left outer join cmfileinfo d
-            	on (c.pk_file = d.PK_FILE)
+            	on (c.pk_file = d.PK_FILE)            	
        where a.PK_BOARD = #{pkBoard}      
     ]]>          	
     	<if test="title != null"><![CDATA[
