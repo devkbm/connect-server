@@ -12,7 +12,8 @@ public class TaskQueryDTO {
 
 	private final QTaskGroup qTaskGroup = QTaskGroup.taskGroup;
 	private final QTask qTask = QTask.task1;
-	
+	private BooleanBuilder builder = new BooleanBuilder();
+		
 	String userId;
 	
 	String task;		
@@ -21,11 +22,10 @@ public class TaskQueryDTO {
 		
     LocalDate dueDate;
 	
-	public BooleanBuilder getQuerySpec() {
-		BooleanBuilder builder = new BooleanBuilder();
+	public BooleanBuilder getQueryFilter() {		
 		
 		if (StringUtils.hasText(this.userId))
-			builder.and(qTaskGroup.sysUser.eq(userId));
+			builder.and(qTaskGroup.updUser.eq(userId));
 		
 		if (StringUtils.hasText(this.task))
 			builder.and(qTask.task.like("%"+task+"%"));
