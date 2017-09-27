@@ -35,13 +35,15 @@ public class TaskController {
 	public ResponseEntity<?> getTaskGroupList(@RequestParam(value="userId", required=true) String userId) {
 			
 		ResponseEntity<?> result = null;
+		int resultSize = 0;		
 		
-		List<TaskGroup> list = taskQueryService.getTaskGroupList(userId); 							
+		List<TaskGroup> list = taskQueryService.getTaskGroupList(userId);
+		resultSize = list.size();
 			
 		result = WebControllerUtil.getResponse(list, 
-				list.size(), 
+				resultSize, 
 				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
+				String.format("%d 건 조회되었습니다.", resultSize), 
 				HttpStatus.OK); 					
 		
 		return result;

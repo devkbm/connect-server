@@ -17,7 +17,12 @@ public class TaskCommandService {
 	
 	@Resource(name="taskJpaRepository")
 	private TaskRepository taskRepository;
-		
+	
+	public void newTaskGroup() {
+		TaskGroup taskGroup = new TaskGroup("기본 일정");
+		taskRepository.saveTaskGroup(taskGroup);
+	}
+	
 	public void saveTaskGroup(TaskGroup taskGroup) {
 		taskRepository.saveTaskGroup(taskGroup);
 	}
