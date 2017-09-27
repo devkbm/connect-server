@@ -49,6 +49,23 @@ public class TaskController {
 		return result;
 	}	
 	
+	@RequestMapping(value={"/todo/taskgroups/new"}, method={RequestMethod.GET})
+	public ResponseEntity<?> newTaskGroup() {
+			
+		ResponseEntity<?> res = null;
+						
+		taskCommandService.newTaskGroup();
+								
+		res = WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				"생성되었습니다.", 
+				HttpStatus.OK);
+		
+								 					
+		return res;
+	}
+	
 	@RequestMapping(value={"/todo/taskgroups"}, method={RequestMethod.POST,RequestMethod.PUT})
 	public ResponseEntity<?> saveTaskGroupList(@RequestBody List<TaskGroup> taskGroupList, BindingResult result) {
 			
