@@ -22,7 +22,10 @@ public class User implements UserDetails {
 
 	@Id	
 	@Column(name="user_id")
-	private String username;
+	private String userId;
+	
+	@Column(name="user_name")
+	private String name;
 	
 	@Column(name="password")
 	private String password;	
@@ -38,10 +41,7 @@ public class User implements UserDetails {
 	
 	@Column(name="enabled_yn")
 	private Boolean isEnabled;
-	
-	@Column(name="user_name")
-	private String name;
-
+		
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
@@ -57,7 +57,7 @@ public class User implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return username;
+		return userId;
 	}		
 
 	@Override
@@ -79,7 +79,7 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return isEnabled;
 	}
-	
+			
 	public String getName() {
 		return name;
 	}

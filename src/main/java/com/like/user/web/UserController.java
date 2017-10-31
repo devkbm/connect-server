@@ -1,7 +1,5 @@
 package com.like.user.web;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.board.web.BoardController;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
@@ -33,30 +30,23 @@ public class UserController {
 									HttpSession session) {
 		
 		ResponseEntity<?> result = null;
-		String 	msg;
-		boolean isSuccess = false;
+		String 	msg = null;		
 		boolean isValid = false;
 		
 		User user = userService.getUser(id);
 		
-		if (user == null) {			
-			isValid = false;						
-		} else {
-			isValid = userService.validPassword(user, password);
-		}
+		isValid = validLogin(user, password);
 		
 		if (isValid) {
-			setSessionInfo(session, user);			
+			setSessionInfo(session, user);						
 			msg = "로그인 처리되었습니다.";
-			isSuccess = true;
 		} else {
 			msg = "사용자 정보가 일치하지 않습니다.";
-			isSuccess = false;
 		}
 		
-		result = WebControllerUtil.getResponse(null,
-				 0, 
-				 isSuccess,
+		result = WebControllerUtil.getResponse(user,
+				 user == null ? 0 : 1, 
+				 isValid,
 				 msg,
 				 HttpStatus.OK); 					
 		
@@ -66,6 +56,10 @@ public class UserController {
 	private void setSessionInfo(HttpSession session, User user) {
 		session.setAttribute("userId", 		user.getUsername());
 		session.setAttribute("userName", 	user.getName());
+	}
+	
+	private boolean validLogin(User user, String password) {	
+		return user == null ? false : userService.validPassword(user, password);
 	}
 		
 }

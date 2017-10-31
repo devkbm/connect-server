@@ -11,30 +11,17 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.like.common.web.response.ExtjsReturnObject;
+import com.like.common.web.response.ResponseObject;
+import com.like.common.web.response.ResponseObjectList;
 
 
 public class WebControllerUtil {
-	
-	public enum ResponseBody {Extjs};
-	
+		
 	private static final ObjectMapper mapper = new ObjectMapper();
-	
-	private static final ResponseBody responseBody = ResponseBody.Extjs;
-		
-	public WebControllerUtil() {	
-								
-		//mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		//mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);						
-					
-		/*Hibernate5Module hibernateModule = new Hibernate5Module();
-		hibernateModule.configure(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS, true);			
-		mapper.registerModule(hibernateModule);*/
-		
-		//mapper.registerModule(new Hibernate4Module());				
-		//mapper.registerModule(new JavaTimeModule());		
-		//mapper.findAndRegisterModules();
-		
+			
+	public WebControllerUtil() {		
 	}
+	
 	/**
 	 * Json 스트링을 List 형태로 변환한다.
 	 * @param jsonStr
@@ -62,18 +49,26 @@ public class WebControllerUtil {
 	 * 
 	 * @todo 추후 리턴되는 객체가 변할 경우 어떻게 처리할지 고민 후 개선해 가야함
 	 */
-	public static ResponseEntity<?> getResponse(List<?> data, int size, boolean success, String message, HttpStatus httpStatus) {
-		
-		ExtjsReturnObject obj = null;
-		
-		if ( responseBody == ResponseBody.Extjs ) {
-			obj = new ExtjsReturnObject(data, size, success, message);
-		}
+	public static ResponseEntity<ResponseObjectList> getResponse(List<?> data, int size, boolean success, String message, HttpStatus httpStatus) {
+									
+		ResponseObjectList obj = new ResponseObjectList(data, size, success, message);
 		
 	    HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.add("Content-Type", "application/json;charset=UTF-8"); //인코딩을 utf-8로 설정
 	    
-	    return new ResponseEntity<ExtjsReturnObject>(obj,responseHeaders,httpStatus);	    	    	    	    	
+	    return new ResponseEntity<ResponseObjectList>(obj,responseHeaders,httpStatus);	    	    	    	    	
 	}
+	
+	public static <T> ResponseEntity<ResponseObject> getResponse(T data, int size, boolean success, String message, HttpStatus httpStatus) {
+		
+		ResponseObject<T> obj = new ResponseObject<T>(data, size, success, message);		
+				
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.add("Content-Type", "application/json;charset=UTF-8"); //인코딩을 utf-8로 설정
+	    
+	    return new ResponseEntity<ResponseObject>(obj,responseHeaders,httpStatus);	    	    	    	    	
+	}
+	
+	
 	
 }
