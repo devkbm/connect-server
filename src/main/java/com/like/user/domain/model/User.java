@@ -11,6 +11,9 @@ import javax.persistence.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Setter;
 
 @Entity
@@ -50,12 +53,14 @@ public class User implements UserDetails {
 		return authorities;
 	}
 
-	@Override
+	@Override	
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
 
 	@Override
+	@JsonProperty("userId")
 	public String getUsername() {
 		return userId;
 	}		
