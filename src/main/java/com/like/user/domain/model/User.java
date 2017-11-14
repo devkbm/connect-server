@@ -13,11 +13,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Setter
+@ToString
 @Table(name = "cmuser")
 public class User implements UserDetails {
 	
@@ -30,6 +33,7 @@ public class User implements UserDetails {
 	@Column(name="user_name")
 	private String name;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(name="password")
 	private String password;	
 	
@@ -53,8 +57,7 @@ public class User implements UserDetails {
 		return authorities;
 	}
 
-	@Override	
-	@JsonIgnore
+	@Override		
 	public String getPassword() {
 		return password;
 	}
@@ -92,5 +95,7 @@ public class User implements UserDetails {
 	public boolean isVaild(String password) {
 		return this.password.equals(password) ? true : false;
 	}
+	
+	
 	
 }
