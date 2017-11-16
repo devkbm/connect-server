@@ -7,12 +7,15 @@ import com.like.user.domain.model.User;
 
 public interface UserRepository {
 			
-	User getUser(String userName);
+	User getUser(String userId);
 	
-	List<Authority> readAuthority(String userName);
+	List<Authority> readAuthority(String userId);
 	
 	void createUser(User user);
+	
 	void createAuthority(Authority user);
-	void deleteUser(String userName);
-	void deleteAuthority(String userName);
+	
+	void deleteUser(String userId);
+	
+	void deleteAuthority(String userId);
 }

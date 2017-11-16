@@ -30,16 +30,16 @@ public class UserJpaRepository implements UserRepository {
 	private final QAuthority qAuthority = QAuthority.authority;	
 	
 	@Override
-	public User getUser(String userName) {
-		return jpaUser.findOne(userName);
+	public User getUser(String userId) {
+		return jpaUser.findOne(userId);
 	}
 	
 
 	@Override
-	public List<Authority> readAuthority(String userName) {
+	public List<Authority> readAuthority(String userId) {
 
 		return queryFactory.selectFrom(qAuthority)
-				.where(qAuthority.userName.eq(userName)).fetch();
+				.where(qAuthority.userName.eq(userId)).fetch();
 	}
 
 	@Override
@@ -53,12 +53,12 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public void deleteUser(String userName) {
-		jpaUser.delete(userName);		
+	public void deleteUser(String userId) {
+		jpaUser.delete(userId);		
 	}
 
 	@Override
-	public void deleteAuthority(String userName) {
-		jpaAuthority.delete(userName);		
+	public void deleteAuthority(String userId) {
+		jpaAuthority.delete(userId);		
 	}
 }

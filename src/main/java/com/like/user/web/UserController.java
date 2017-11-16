@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,8 +60,25 @@ public class UserController {
 		return result;
 	}
 	
+	
+	@RequestMapping(value={"/user/{id}"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) {
+		
+		ResponseEntity<?> result = null;		
+		
+		User user = userService.getUser(userId);				
+		
+		result = WebControllerUtil.getResponse(user,
+				 user == null ? 0 : 1, 
+				 user == null ? false : true,
+				 "조회 되었습니다.",
+				 HttpStatus.OK); 					
+		
+		return result;
+	}
+	
 	@RequestMapping(value={"/user"}, method={RequestMethod.POST,RequestMethod.PUT})
-	public ResponseEntity<?> saveTaskGroupList(@RequestBody User user, BindingResult result) {
+	public ResponseEntity<?> saveUser(@RequestBody User user, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
 		
@@ -76,6 +94,22 @@ public class UserController {
 					String.format("%d 건 저장되었습니다.", 1), 
 					HttpStatus.OK);
 		}
+								 					
+		return res;
+	}
+	
+	@RequestMapping(value={"/user/{id}"}, method={RequestMethod.DELETE})
+	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String userId) {
+			
+		ResponseEntity<?> res = null;
+						
+		userService.deleteUser(userId);					
+								
+		res = WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK);		
 								 					
 		return res;
 	}

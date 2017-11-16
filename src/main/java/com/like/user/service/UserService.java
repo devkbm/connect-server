@@ -23,8 +23,8 @@ public class UserService implements UserDetailsService {
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = userRepository.getUser(userName);
+	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+		User user = userRepository.getUser(userId);
 		
 		return user;
 	}
@@ -56,9 +56,9 @@ public class UserService implements UserDetailsService {
 		//userRepository.createAuthority(user);
 	}
 	
-	public void deleteUser(String userName) {
-		 userRepository.deleteUser(userName);
-         userRepository.deleteAuthority(userName);
+	public void deleteUser(String userId) {
+		 userRepository.deleteUser(userId);
+         userRepository.deleteAuthority(userId);
 	}
 	
 	public PasswordEncoder passwordEncoder(){
