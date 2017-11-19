@@ -61,6 +61,23 @@ public class UserController {
 	}
 	
 	
+	@RequestMapping(value={"/user/check/{id}"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> checkId(@PathVariable(value="id") String userId) {
+		
+		ResponseEntity<?> result = null;
+		
+		boolean isDuplication = userService.CheckDuplicationUser(userId);			
+		
+		result = WebControllerUtil.getResponse(null,
+					isDuplication ? 1 : 0, 
+					isDuplication ? false : true,
+					isDuplication ? "기존 아이디가 존재합니다." : "신규 등록 가능합니다.",
+					HttpStatus.OK); 					
+		
+		return result;
+	}
+	
+	
 	@RequestMapping(value={"/user/{id}"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) {
 		

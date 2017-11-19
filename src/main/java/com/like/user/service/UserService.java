@@ -33,8 +33,7 @@ public class UserService implements UserDetailsService {
 		
 		return user.isVaild(password);		
 	}
-	
-	
+		
 	public Collection<GrantedAuthority> getAuthorities(String userName) {
 		//Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)userRepository.readAuthority(userName);
         
@@ -42,8 +41,8 @@ public class UserService implements UserDetailsService {
 		return null;
 	}
 
-	public User getUser(String userName) {
-		User user = userRepository.getUser(userName);
+	public User getUser(String userId) {
+		User user = userRepository.getUser(userId);
 		// user.setAuthorities(userMapper.readAuthority(username));
 		return user;
 	}
@@ -63,5 +62,17 @@ public class UserService implements UserDetailsService {
 	
 	public PasswordEncoder passwordEncoder(){
 		return this.passwordEncoder;
+	}
+	
+	
+	/**
+	 * 중복 유저 검증 기능
+	 * @param userId
+	 * @return 기존 아이디가 있으면 true, 아니면 false 리턴
+	 */
+	public boolean CheckDuplicationUser(String userId) {
+		User user = userRepository.getUser(userId);
+		
+		return user != null ? true : false; 
 	}
 }
