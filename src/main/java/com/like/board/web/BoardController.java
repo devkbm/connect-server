@@ -1,6 +1,5 @@
 package com.like.board.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,20 +41,13 @@ public class BoardController {
 	private BoardQueryService boardQueryService;
 		
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
-	
-	@RequestMapping(value={"/grw/boards"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getBoard(@RequestParam(value="id", required=false) Long id) {
-			
+		
+	@GetMapping("/grw/boards")
+	public ResponseEntity<?> getBoardList() {
+		
 		ResponseEntity<?> result = null;
 		
-		List<Board> list; 		
-		
-		if ( validId(id) ) {
-			list = new ArrayList<Board>();
-			list.add(boardQueryService.getBoard(id));			
-		} else {
-			list = boardQueryService.getBoardList();
-		}			
+		List<Board> list = boardQueryService.getBoardList(); 										
 			
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -63,7 +56,23 @@ public class BoardController {
 				HttpStatus.OK); 					
 		
 		return result;
-	}	
+	}
+		
+	@GetMapping("/grw/boards/{id}")
+	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {
+			
+		ResponseEntity<?> result = null;
+				
+		Board board = boardQueryService.getBoard(id);			
+				
+		result = WebControllerUtil.getResponse(board, 
+				board != null ? 1 : 0, 
+				true, 
+				String.format("%d 건 조회되었습니다.", board != null ? 1 : 0), 
+				HttpStatus.OK); 					
+		
+		return result;
+	}
 	
 	@RequestMapping(value={"/grw/boardHierarchy"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
@@ -127,8 +136,5 @@ public class BoardController {
 		
 		return result;
 	}		
-	
-	private boolean validId(Long id) {				
-		return ( id != null && id > 0 ) ? true : false;
-	}		
+		
 }
