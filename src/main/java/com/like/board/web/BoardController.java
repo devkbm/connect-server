@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,7 +75,7 @@ public class BoardController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/grw/boardHierarchy"}, method=RequestMethod.GET) 
+	@GetMapping("/grw/boardHierarchy")
 	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
 			
 		ResponseEntity<?> result = null;			
@@ -97,6 +98,42 @@ public class BoardController {
 		return result;
 	}
 		
+	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id") Long id, @RequestBody Board board, BindingResult result) {
+			
+		ResponseEntity<?> res = null;
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} else {
+			boardCommandService.saveBoard(board);
+																						
+			res = WebControllerUtil.getResponse(board,
+					board != null ? 1 : 0, 
+					true, 
+					String.format("%d 건 저장되었습니다.", board != null ? 1 : 0), 
+					HttpStatus.OK);
+		}
+								 					
+		return res;
+	}	
+		
+	@DeleteMapping("/grw/boards/{id}")
+	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {
+			
+		ResponseEntity<?> result = null;			
+												
+		boardCommandService.deleteBoard(id);
+						
+		result = WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK); 					
+		
+		return result;
+	}		
+	
 	@RequestMapping(value={"/grw/boards"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveBoard(@RequestBody List<Board> boardList, BindingResult result) {
 			
@@ -119,22 +156,6 @@ public class BoardController {
 		}
 								 					
 		return res;
-	}	
-	
-	@RequestMapping(value={"/grw/boards/{id}"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {
-			
-		ResponseEntity<?> result = null;			
-												
-		boardCommandService.deleteBoard(id);
-						
-		result = WebControllerUtil.getResponse(null, 
-				1, 
-				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK); 					
-		
-		return result;
-	}		
+	}
 		
 }
