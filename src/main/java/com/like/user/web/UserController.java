@@ -42,7 +42,7 @@ public class UserController {
 		
 		User user = userService.getUser(id);
 		
-		isValid = validLogin(user, password);
+		isValid = userService.validPassword(user, password);
 		
 		if (isValid) {
 			setSessionInfo(session, user);						
@@ -135,9 +135,5 @@ public class UserController {
 		session.setAttribute("userId", 		user.getUsername());
 		session.setAttribute("userName", 	user.getName());
 	}
-	
-	private boolean validLogin(User user, String password) {	
-		return user == null ? false : userService.validPassword(user, password);
-	}
-		
+			
 }

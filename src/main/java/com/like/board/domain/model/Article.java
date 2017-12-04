@@ -119,6 +119,13 @@ public class Article extends AuditEntity implements Serializable {
 		this.toDt = LocalDate.of(9999, Month.DECEMBER, 31);				
 	}
 	
+	public Article(String title, String contents, LocalDate fromDt, LocalDate toDt) {
+		this.title = title;
+		this.contents = contents;
+		this.fromDt = fromDt;
+		this.toDt = toDt;				
+	}
+	
 	public boolean hasParentArticle() {		
 		return this.ppkArticle != null ? true : false;
 	}
@@ -160,12 +167,14 @@ public class Article extends AuditEntity implements Serializable {
 		this.contents = dto.getContents();
 		this.pwd = dto.getPwd();
 		this.hitCnt = Integer.parseInt(dto.getHitCnt());
+		
 		if (StringUtils.hasText(dto.getFromDt()))
 			this.fromDt = LocalDate.parse(dto.getFromDt());
+		
 		if (StringUtils.hasText(dto.getToDt()))
 			this.toDt = LocalDate.parse(dto.getToDt());
-		this.seq = dto.getSeq();
-		//this.depth = dto.getDepth();		
+		
+		this.seq = dto.getSeq();	
 	}
 	
 }
