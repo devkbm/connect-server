@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,26 +48,25 @@ public class ArticleController {
 	private boolean validId(Long id) {				
 		return ( id != null && id > 0 ) ? true : false;
 	}
-	
-	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.GET) 
+		
+	@GetMapping("/grw/boards/articles/{id}")
 	public ResponseEntity<?> getArticleList(@PathVariable(value="id") Long id) {
 			
 		ResponseEntity<?> result = null;			
 		
-		List<Article> list = new ArrayList<Article>();
+		Article article = boardQueryService.getAritlce(id);
+					
 		
-		list.add(boardQueryService.getAritlce(id));		
-		
-		result = WebControllerUtil.getResponse(list, 
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
+		result = WebControllerUtil.getResponse(article, 
+				article == null ? 0 : 1, 
+				article == null ? false : true, 
+				String.format("%d 건 조회되었습니다.", 1), 
 				HttpStatus.OK); 			
 				
 		return result;
 	}
-	
-	@RequestMapping(value={"/grw/boards/articles/{id}"}, method=RequestMethod.DELETE) 
+		
+	@DeleteMapping("/grw/boards/articles/{id}")
 	public ResponseEntity<?> deleteArticle(@PathVariable(value="id") Long id) {
 			
 		ResponseEntity<?> result = null;	
@@ -80,8 +81,8 @@ public class ArticleController {
 		
 		return result;
 	}
-	
-	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.GET) 
+		
+	@GetMapping("/grw/boards/articles")
 	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,			
 			@RequestParam(value="title", required=false) String title,
 			@RequestParam(value="contents", required=false) String contents) {
@@ -214,14 +215,11 @@ public class ArticleController {
 	public ResponseEntity<?> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,
 			@RequestParam(value="userid", required=true) String userId) {
 			
-		ResponseEntity<?> result = null;			
-		List<Article> list = new ArrayList<>();
+		ResponseEntity<?> result = null;					
 				
-		Article aritlce = boardCommandService.updateArticleHitCnt(id, userId);
-		
-		list.add(aritlce);
+		Article aritlce = boardCommandService.updateArticleHitCnt(id, userId);			
 						
-		result = WebControllerUtil.getResponse(list, 
+		result = WebControllerUtil.getResponse(aritlce, 
 				1, 
 				true, 
 				String.format("%d건 업데이트 하였습니다.", 1), 
