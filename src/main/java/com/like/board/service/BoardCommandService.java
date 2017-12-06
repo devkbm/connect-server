@@ -1,5 +1,7 @@
 package com.like.board.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -38,6 +40,10 @@ public class BoardCommandService {
 	
 	public void deleteArticle(Long id) {					
 		articleRepository.deleteArticle(id);
+	}
+	
+	public void deleteArticle(List<Article> articleList) {					
+		articleRepository.deleteArticle(articleList);
 	}
 	
 	public Article updateArticleHitCnt(Long pkAriticle, String userId) {		

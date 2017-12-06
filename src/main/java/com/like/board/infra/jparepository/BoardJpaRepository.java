@@ -26,13 +26,11 @@ public class BoardJpaRepository implements BoardRepository {
 	private JpaBoard jpaBoard;
 				
 	private final QBoard qBoard = QBoard.board;		
-	
-	@Override
+		
 	public Board getBoard(Long id) {
 		return jpaBoard.findOne(id);
 	}
-
-	@Override
+	
 	public List<Board> getBoardList() {		
 		return jpaBoard.findAll(); 		
 	}
@@ -69,16 +67,14 @@ public class BoardJpaRepository implements BoardRepository {
 		
 		return query.fetch();					
 	}
-
-	@Override
+	
 	public void saveBoard(Board board) {
 		if ( !board.hasParentBoard() ) {
 			board.setParentRoot();
 		}
 		jpaBoard.save(board);
 	}
-		
-	@Override
+			
 	public void deleteBoard(Long pkBoard) {
 		jpaBoard.delete(pkBoard);
 	}

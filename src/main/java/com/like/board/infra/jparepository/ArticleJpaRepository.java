@@ -44,13 +44,12 @@ public class ArticleJpaRepository implements ArticleRepository {
 					.and(qArticleCheck.article.pkArticle.eq(fkarticle)))
 					.fetchOne();				
 	}
-	
-	@Override
-	public Article getArticle(Long id) {
+		
+	public Article getArticle(Long id) {		
 		return jpaArticle.findOne(id);
+		
 	}
-	
-	@Override
+		
 	public List<Article> getArticleList(Long fkBoard) { 
 					
 		return queryFactory.selectFrom(qArticle)
@@ -88,7 +87,6 @@ public class ArticleJpaRepository implements ArticleRepository {
 		return null;
 	}
 
-	@Override
 	public Long saveArticle(Article article, Long fkBoard) {		
 		
 		Board board = jpaBoard.findOne(fkBoard);
@@ -119,14 +117,17 @@ public class ArticleJpaRepository implements ArticleRepository {
 		jpaArticle.delete(id);
 	}
 	
+	public void deleteArticle(List<Article> articleList) {
+		jpaArticle.delete(articleList);
+	}
+	
 	private void deleteArticleCheck(Long fkArticle) {
 		queryFactory
 			.delete(qArticleCheck)
 			.where(qArticleCheck.article.pkArticle.eq(fkArticle))
 			.execute();					
 	}
-
-	@Override
+	
 	public ArticleCheck getArticleCheck(Long fkarticle, String userId) {				
 					
 		return queryFactory
@@ -136,7 +137,6 @@ public class ArticleJpaRepository implements ArticleRepository {
 				.fetchOne();			
 	}
 	
-	@Override
 	public Integer getArticleNextSeq(Long pkboard) {
 		
 		Expression<Integer> seq = new CaseBuilder()				
@@ -151,8 +151,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 		
 		return rtn + 1;		
 	}
-
-	@Override
+	
 	public Article updateArticleHitCnt(Long pkAriticle, String userId) {				
 				
 		Article article = jpaArticle.findOne(pkAriticle);		
@@ -178,10 +177,8 @@ public class ArticleJpaRepository implements ArticleRepository {
 			 		
 		return article;		
 	}
-
-	@Override
+	
 	public List<FileInfo> getFileInfoList(Long pkArticle) {
-
 		return jpaArticle.findOne(pkArticle).getFiles();
 	}
 	

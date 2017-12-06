@@ -50,13 +50,12 @@ public class ArticleController {
 	}
 		
 	@GetMapping("/grw/boards/articles/{id}")
-	public ResponseEntity<?> getArticleList(@PathVariable(value="id") Long id) {
+	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {
 			
 		ResponseEntity<?> result = null;			
 		
 		Article article = boardQueryService.getAritlce(id);
-					
-		
+							
 		result = WebControllerUtil.getResponse(article, 
 				article == null ? 0 : 1, 
 				article == null ? false : true, 
@@ -82,8 +81,9 @@ public class ArticleController {
 		return result;
 	}
 		
-	@GetMapping("/grw/boards/articles")
-	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,			
+	@GetMapping("/grw/boards/{id}/articles")
+	public ResponseEntity<?> getArticleList(
+			@PathVariable(value="id") Long id,					
 			@RequestParam(value="title", required=false) String title,
 			@RequestParam(value="contents", required=false) String contents) {
 			
@@ -91,11 +91,11 @@ public class ArticleController {
 		
 		List<ArticleListDTO> list;
 		Map<String,Object> map = new HashMap<>();		
-		map.put("pkBoard", 	fkBoard);
+		map.put("pkBoard", 	id);
 		map.put("title", 	title);
 		map.put("contents", contents);
 				
-		list = boardQueryService.getArticleList(map);
+		list = boardQueryService.getArticleList(map);  
 						
 		result = WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -161,15 +161,13 @@ public class ArticleController {
 	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {
 			
 		ResponseEntity<?> result = null;			
-								
-		for (Article article : articleList ) {			
-			boardCommandService.deleteArticle(article);
-		}
-						
+		
+		boardCommandService.deleteArticle(articleList);
+							
 		result = WebControllerUtil.getResponse(null, 
-				1, 
+				articleList.size(), 
 				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
+				String.format("%d 건 삭제되었습니다.", articleList.size()), 
 				HttpStatus.OK); 					
 		
 		return result;
