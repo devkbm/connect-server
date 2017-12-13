@@ -99,13 +99,14 @@ public class BoardController {
 	}
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id") Long id, @RequestBody Board board, BindingResult result) {
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody Board board, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} else {
+			log.info(board.toString());
 			boardCommandService.saveBoard(board);
 																						
 			res = WebControllerUtil.getResponse(board,

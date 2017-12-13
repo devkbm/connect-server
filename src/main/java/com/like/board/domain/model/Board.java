@@ -14,11 +14,12 @@ import com.like.board.domain.model.enums.PasswordType;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="pkBoard")
 @Getter
+@ToString()
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {
@@ -80,7 +81,7 @@ public class Board extends AuditEntity implements Serializable {
      * 사용여부
      */
 	@Column(name="use_yn")
-    String useYn;
+    Boolean useYn;
     
     /**
      * 게시글 갯수

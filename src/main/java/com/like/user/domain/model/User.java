@@ -50,6 +50,7 @@ public class User implements UserDetails {
 	private Boolean isEnabled;
 		
 	@Transient
+	@JsonIgnore
 	private Collection<? extends GrantedAuthority> authorities;
 
 	@Override
