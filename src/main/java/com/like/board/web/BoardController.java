@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
+import com.like.board.domain.repository.dto.BoardRequestDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
@@ -99,15 +100,17 @@ public class BoardController {
 	}
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody Board board, BindingResult result) {
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardRequestDTO board, BindingResult result) {
 			
 		ResponseEntity<?> res = null;
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} else {
-			log.info(board.toString());
-			boardCommandService.saveBoard(board);
+			//log.info(board.toString());
+			board.toEntity();
+			
+			//boardCommandService.saveBoard(board);
 																						
 			res = WebControllerUtil.getResponse(board,
 					board != null ? 1 : 0, 
