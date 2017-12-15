@@ -3,7 +3,6 @@ package com.like.common.web.util;
 import java.io.IOException;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,9 @@ import com.like.common.web.response.ResponseObjectList;
 
 public class WebControllerUtil {
 		
-	private static final ObjectMapper mapper = new ObjectMapper();
-	private static final ModelMapper modelMapper = new ModelMapper();
+	private static final ObjectMapper mapper = new ObjectMapper();	
 	
-	public WebControllerUtil() {		
-		modelMapper.getConfiguration().setSkipNullEnabled(true);
+	public WebControllerUtil() {				
 	}
 	
 	/**
@@ -73,9 +70,6 @@ public class WebControllerUtil {
 	
 	  
 	
-	//public static <T> Object toEntityMapping(Object dto, Class<?> target) throws ClassNotFoundException {	 
-	 public static <D> D map(Object source, Class<D> destinationType) {		
-		return modelMapper.map(source, destinationType);
-	}	    
+
 	
 }

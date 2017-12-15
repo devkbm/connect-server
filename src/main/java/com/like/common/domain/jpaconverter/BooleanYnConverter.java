@@ -1,4 +1,4 @@
-package com.like.common.domain.converter;
+package com.like.common.domain.jpaconverter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

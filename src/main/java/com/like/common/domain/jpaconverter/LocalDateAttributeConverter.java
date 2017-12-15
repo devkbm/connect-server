@@ -1,4 +1,4 @@
-package com.like.common.domain.converter;
+package com.like.common.domain.jpaconverter;
 
 import java.sql.Date;
 import java.time.LocalDate;
