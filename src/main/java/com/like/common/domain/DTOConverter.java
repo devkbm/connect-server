@@ -6,13 +6,21 @@ import java.util.List;
 
 public class DTOConverter {
 
-	public <T> T toEntity(T entity) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+	/**
+	 * 도메인 엔티티를 업데이트한다.
+	 * @param entity
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 */
+	public <T> T updateEntity(T entity) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 		
 		Field[] fields = this.getClass().getDeclaredFields();
 		
 		Field destinationField = null;
 		Object copyValue = null;
-		
+		//ReflectionUtils.
 		for (Field originalField: fields) {
 			originalField.setAccessible(true);
 			copyValue = originalField.get(this);
@@ -87,4 +95,23 @@ public class DTOConverter {
 								
 		return fieldNameList;	
 	}
+	
+	
+	// 출처 : http://gracefulife.xyz/220627537434
+	public static Field findField(Class<?> clazz, String name, Class<?> type) {
+//      Assert.notNull(clazz, "Class must not be null");
+//      Assert.isTrue(name != null || type != null, "Either name or type of the field must be specified");
+      Class<?> searchType = clazz;
+      while (!Object.class.equals(searchType) && searchType != null) {
+          Field[] fields = searchType.getDeclaredFields();
+          for (Field field : fields) {
+              if ((name == null || name.equals(field.getName())) && (type == null || type.equals(field.getType()))) {
+                  return field;
+              }
+          }
+          searchType = searchType.getSuperclass();
+      }
+      return null;
+	}
+
 }
