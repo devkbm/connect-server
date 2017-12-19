@@ -7,13 +7,21 @@ import java.util.List;
 
 public class DTOConverter {
 
-	public <T> T toEntity(T entity) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+	/**
+	 * 도메인 엔티티를 업데이트한다.
+	 * @param entity
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 */
+	public <T> T updateEntity(T entity) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 		
 		Field[] fields = this.getClass().getDeclaredFields();
 		
 		Field destinationField = null;
 		Object copyValue = null;
-		
+		//ReflectionUtils.
 		for (Field originalField: fields) {
 			originalField.setAccessible(true);
 			copyValue = originalField.get(this);
@@ -148,5 +156,5 @@ public class DTOConverter {
 					
 		return entity;	
 	}
-		
+	
 }
