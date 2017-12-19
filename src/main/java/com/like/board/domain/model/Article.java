@@ -22,7 +22,6 @@ import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="pkArticle")
 @Getter
 @Entity
 @Table(name = "grarticle")
@@ -74,13 +73,13 @@ public class Article extends AuditEntity implements Serializable {
      * 시작일자
      */
 	@Column(name="from_dt")
-    LocalDate fromDt;
+    LocalDate fromDate;
     
     /**
      * 종료일자
      */
 	@Column(name="to_dt")
-    LocalDate toDt;
+    LocalDate toDate;
     
     /**
      * 출력순서
@@ -115,15 +114,15 @@ public class Article extends AuditEntity implements Serializable {
 	public Article(String title, String contents) {
 		this.title = title;
 		this.contents = contents;
-		this.fromDt = LocalDate.now();
-		this.toDt = LocalDate.of(9999, Month.DECEMBER, 31);				
+		this.fromDate = LocalDate.now();
+		this.toDate = LocalDate.of(9999, Month.DECEMBER, 31);				
 	}
 	
-	public Article(String title, String contents, LocalDate fromDt, LocalDate toDt) {
+	public Article(String title, String contents, LocalDate fromDate, LocalDate toDate) {
 		this.title = title;
 		this.contents = contents;
-		this.fromDt = fromDt;
-		this.toDt = toDt;				
+		this.fromDate = fromDate;
+		this.toDate = toDate;				
 	}
 	
 	public boolean hasParentArticle() {		
@@ -156,9 +155,16 @@ public class Article extends AuditEntity implements Serializable {
 	}
 	
 	public boolean addAttachedFile(FileInfo file) {
-		if (files == null)
-			files = new ArrayList<>();
-		return files.add(file);
+		boolean rtn = false;
+					
+		if (this.files == null)
+			this.files = new ArrayList<>();
+		
+		if (file != null) {
+			rtn = files.add(file);			
+		}			
+			
+		return rtn;
 	}
 	
 	public void setArticleDTO(ArticleRequestDTO dto) {
@@ -169,10 +175,10 @@ public class Article extends AuditEntity implements Serializable {
 		this.hitCnt = Integer.parseInt(dto.getHitCnt());
 		
 		if (StringUtils.hasText(dto.getFromDt()))
-			this.fromDt = LocalDate.parse(dto.getFromDt());
+			this.fromDate = LocalDate.parse(dto.getFromDt());
 		
 		if (StringUtils.hasText(dto.getToDt()))
-			this.toDt = LocalDate.parse(dto.getToDt());
+			this.toDate = LocalDate.parse(dto.getToDt());
 		
 		this.seq = dto.getSeq();	
 	}

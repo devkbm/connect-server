@@ -24,6 +24,7 @@ import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.dto.BoardRequestDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
+import com.like.common.domain.DTOConverter;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 
@@ -109,9 +110,10 @@ public class BoardController {
 		} else {
 			
 			Board board = boardQueryService.getBoard(id);			
-
-			boardDTO.updateEntity(board);		
-									
+			
+			log.info(board.toString());
+			board = DTOConverter.convertEntity(board, boardDTO);						
+			log.info(board.toString());
 			boardCommandService.saveBoard(board);
 																						
 			res = WebControllerUtil.getResponse(board,
