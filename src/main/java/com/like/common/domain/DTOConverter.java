@@ -35,6 +35,7 @@ public class DTOConverter {
 	
 	/**
 	 * DTO -> Entity 변환, 특정 엔티티의 필드 변환 기능 (DTOInfo 어노테이션 활용)
+	 * 필드에 클래스, 컬렉션이 있을 경우 테스트해보아야함
 	 * @param entity
 	 * @param dto
 	 * @param entityName
@@ -49,14 +50,17 @@ public class DTOConverter {
 		
 		for (Field dtoField: dtoFields) {			
 			DTOInfo dtoInfo = getAnnotation(dtoField);
-			String entityName = dtoInfo.entityName();							
 			
-			if ( entity.getClass().getTypeName().equals(entityName) ) {					
-				for (Field entityField : entityFields ) {									
-					if ( vaildationField(dtoField,entityField) ) {
-						entityField.set(entity, dtoField.get(dto));
-					}
-				}					
+			if (dtoInfo != null) {
+				String entityName = dtoInfo.entityName();																									
+				
+				if ( entity.getClass().getSimpleName().equals(entityName) ) {					
+					for (Field entityField : entityFields ) {									
+						if ( vaildationField(dtoField,entityField) ) {
+							entityField.set(entity, dtoField.get(dto));
+						}
+					}					
+				}
 			}
 		}
 					

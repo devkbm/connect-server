@@ -9,10 +9,12 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.like.common.domain.annotation.DTOInfo;
+
 import lombok.Data;
 
 @Data
-public class BoardRequestDTO implements Serializable {
+public class BoardRequestDTO2 implements Serializable {
 	
 	LocalDateTime sysDt;	
 		
@@ -22,57 +24,27 @@ public class BoardRequestDTO implements Serializable {
 		
 	String updUser;
 	
-	@Id
+	@DTOInfo(entityName="Board",fieldName="pkBoard")
 	Long pkBoard;
 	
     /**
      * 상위 게시판 키
      */	
+	@DTOInfo(entityName="Board",fieldName="ppkBoard")
     Long ppkBoard;
 		
 	/**
 	 * 게시판_타입
 	 */	
+	@DTOInfo(entityName="Board",fieldName="boardType")
     String boardType;
 	
 	/**
      * 게시판 명
      */
+    @DTOInfo(entityName="Board",fieldName="boardNm")
 	@NotEmpty(message="게시판명은 필수 입력사항입니다.")	
-    String boardName;             
-    
-    /**
-     * 게시판_설명
-     */	
-    String boardDescription;
-    
-    /**
-     * 시작일자
-     */	
-	LocalDate fromDate;
-    
-    /**
-     * 종료일자
-     */	
-    LocalDate toDate;    
-    
-    /**
-     * 사용여부
-     */	
-    Boolean useYn;
-    
-    /**
-     * 게시글 갯수
-     */	
-    long articleCount;
-    
-    /**
-     * 출력순서
-     */	
-    long sequence;
-		
-	String pwdYn;
-		
-	String pwdMethod;
-			
+    String boardNm;             
+        
+    BoardRequestDTO3 group;			
 }

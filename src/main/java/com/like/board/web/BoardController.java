@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.dto.BoardRequestDTO;
+import com.like.board.domain.repository.dto.BoardRequestDTO2;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.domain.DTOConverter;
@@ -111,8 +112,10 @@ public class BoardController {
 			
 			Board board = boardQueryService.getBoard(id);			
 			
+			log.info(boardDTO.toString());
 			log.info(board.toString());
 			board = DTOConverter.convertEntity(board, boardDTO);						
+			//board = DTOConverter.convertEntityByAnnotation(board, boardDTO);
 			log.info(board.toString());
 			boardCommandService.saveBoard(board);
 																						

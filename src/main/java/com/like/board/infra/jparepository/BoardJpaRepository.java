@@ -40,7 +40,7 @@ public class BoardJpaRepository implements BoardRepository {
 		//query = (JPAQuery) super.getQuerydsl().applyPagination(pageable, query);
 		
 		return queryFactory.selectFrom(qBoard)
-					.where(qBoard.boardNm.like(likeBoardName))
+					.where(qBoard.boardName.like(likeBoardName))
 					.fetch();				
 	}
 	
@@ -54,8 +54,8 @@ public class BoardJpaRepository implements BoardRepository {
 		
 		JPAQuery<BoardHierarchyDTO> query = queryFactory
 													.select(Projections.constructor(BoardHierarchyDTO.class
-																				, parent.pkBoard, parent.boardNm, leaf
-																				, parent.boardNm, parent.boardNm, parent.ppkBoard))
+																				, parent.pkBoard, parent.boardName, leaf
+																				, parent.boardName, parent.boardName, parent.ppkBoard))
 													.from(qBoard)
 													.rightJoin(qBoard.parent, parent);
 													

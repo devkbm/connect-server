@@ -52,30 +52,29 @@ public class Board extends AuditEntity implements Serializable {
 	
 	/**
      * 게시판 명
-     */
-	@NotEmpty(message="게시판명은 필수 입력사항입니다.")
+     */	
 	@Column(name="board_name")
-    String boardNm;             
+    String boardName;             
     
     /**
      * 게시판_설명
      */
 	@Column(name="board_desc")
-    String boardDesc;
+    String boardDescription;
     
     /**
      * 시작일자
      */	
 	@Column(name="from_dt")
 	//@JsonFormat(pattern = "dd::MM::yyyy")
-	LocalDate fromDt;
+	LocalDate fromDate;
     
     /**
      * 종료일자
      */	
 	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")	
 	@Column(name="to_dt")
-    LocalDate toDt;    
+    LocalDate toDate;    
     
     /**
      * 사용여부
@@ -87,13 +86,13 @@ public class Board extends AuditEntity implements Serializable {
      * 게시글 갯수
      */
 	@Column(name="article_cnt")
-    long articleCnt;
+    long articleCount;
     
     /**
      * 출력순서
      */
 	@Column(name="seq")
-    long seq;
+    long sequence;
 	
 	@Column(name="pwd_yn")
 	String pwdYn;
@@ -109,13 +108,13 @@ public class Board extends AuditEntity implements Serializable {
     public Board() {}
     
     public Board(String boardNm) {
-    	this.boardNm = boardNm;
+    	this.boardName = boardNm;
     	
     	this.sysUser = "test";
     	this.updUser = "test";
     	this.boardType = "A1";
-    	this.fromDt = LocalDate.now();
-    	this.toDt = LocalDate.now();    	    	
+    	this.fromDate = LocalDate.now();
+    	this.toDate = LocalDate.now();    	    	
     }
     
     public boolean hasParentBoard() {    	    		    
@@ -141,8 +140,5 @@ public class Board extends AuditEntity implements Serializable {
 			article.setBoard(this);
 		}*;	*/
 	}
-
-	
-	
 	
 }
