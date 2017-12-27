@@ -102,7 +102,7 @@ public class BoardController {
 	}
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardRequestDTO boardDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardRequestDTO2 boardDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 			
 		ResponseEntity<?> res = null;
 		
@@ -113,9 +113,9 @@ public class BoardController {
 			Board board = boardQueryService.getBoard(id);			
 			
 			log.info(boardDTO.toString());
-			log.info(board.toString());
-			board = DTOConverter.convertEntity(board, boardDTO);						
-			//board = DTOConverter.convertEntityByAnnotation(board, boardDTO);
+			//log.info(board.toString());
+			//board = DTOConverter.convertEntity(board, boardDTO);						
+			board = DTOConverter.convertEntityByAnnotation(board, boardDTO);
 			log.info(board.toString());
 			boardCommandService.saveBoard(board);
 																						

@@ -10,15 +10,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DTOInfo {
+	
 	/**
-	 * 매핑될 엔티티명
+	 * 매핑될 Class
 	 * @return
 	 */
-	String entityName(); // default "디폴트"
+	Class<?> classInstance();
 	
 	/**
 	 * 매핑될 필드명
 	 * @return
 	 */
 	String fieldName();
+	
+	
 }

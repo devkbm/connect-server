@@ -5,9 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.like.board.web.BoardController;
 import com.like.common.domain.annotation.DTOInfo;
 
 public class DTOConverter {
+	
+	private static final Logger log = LoggerFactory.getLogger(DTOConverter.class);
 	
 	/**
 	 * DTO -> Entity 변환, 동일 필드명에 대한 값 복사
@@ -51,10 +57,10 @@ public class DTOConverter {
 		for (Field dtoField: dtoFields) {			
 			DTOInfo dtoInfo = getAnnotation(dtoField);
 			
-			if (dtoInfo != null) {
-				String entityName = dtoInfo.entityName();																									
+			if (dtoInfo != null) {																												
+				Class<?> cls = dtoInfo.classInstance();									
 				
-				if ( entity.getClass().getSimpleName().equals(entityName) ) {					
+				if ( entity.getClass().equals(cls) ) {
 					for (Field entityField : entityFields ) {									
 						if ( vaildationField(dtoField,entityField) ) {
 							entityField.set(entity, dtoField.get(dto));
