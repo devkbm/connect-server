@@ -8,7 +8,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.like.board.web.BoardController;
 import com.like.common.domain.annotation.DTOInfo;
 
 public class DTOConverter {
@@ -30,7 +29,7 @@ public class DTOConverter {
 		
 		for (Field dtoField: dtoFields) {								
 			for (Field entityField : entityFields ) {				
-				if ( vaildationField(dtoField,entityField) ) {
+				if ( vaildationField(dtoField, entityField) ) {
 					entityField.set(entity, dtoField.get(dto));
 				}
 			}					
@@ -99,22 +98,14 @@ public class DTOConverter {
 	 */
 	private static boolean vaildationField(Field originalField, Field destinationField) throws IllegalArgumentException, IllegalAccessException {
 		boolean rtn = false;
-		String originalFieldName = null;
-		DTOInfo dtoInfo = null;
+		String originalFieldName = null;		
 		
 		originalField.setAccessible(true);
-		destinationField.setAccessible(true);
+		destinationField.setAccessible(true);			
+								
+		originalFieldName = getFieldNameByAnnotation(originalField);		
 		
-		dtoInfo = getAnnotation(originalField);
-		
-		// 어노테이션이 있을 경우 필드명 확인
-		if (dtoInfo != null) {					
-			originalFieldName = dtoInfo.fieldName();
-		} else {
-			originalFieldName = originalField.getName(); 
-		}
-		
-		if ( vaildationFieldType(originalField, destinationField) && destinationField.getName().equals(originalFieldName) ) {							
+		if ( vaildationFieldType(originalField, destinationField) && validationFieldName(originalFieldName, destinationField) ) {							
 			rtn = true;				
 		}			
 		return rtn;
@@ -124,10 +115,31 @@ public class DTOConverter {
 		return destinationField.getType().equals(originalField.getType());
 	}
 	
+	private static boolean validationFieldName(Field originalField, Field destinationField) {
+		return destinationField.getName().equals(originalField.getName());
+	}
+	
+	private static boolean validationFieldName(String originalFieldName, Field destinationField) {
+		return destinationField.getName().equals(originalFieldName);
+	}
+	
 	private static DTOInfo getAnnotation(Field field) {			
 		return field.isAnnotationPresent(DTOInfo.class) ? field.getAnnotation(DTOInfo.class) : null;
 	}
 	
-	
+	private static String getFieldNameByAnnotation(Field field) {		
+		DTOInfo dtoInfo = null;
+		String fieldName = null;
+		
+		if (field.isAnnotationPresent(DTOInfo.class)) {
+			dtoInfo = field.getAnnotation(DTOInfo.class);
+						
+			fieldName = dtoInfo.fieldName().length() > 0 ? dtoInfo.fieldName() : field.getName();			
+		} else {
+			fieldName = field.getName();
+		}
+		
+		return fieldName;
+	}
 	
 }

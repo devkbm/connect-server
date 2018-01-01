@@ -55,7 +55,8 @@ public class ArticleController {
 		ResponseEntity<?> result = null;			
 		
 		Article article = boardQueryService.getAritlce(id);
-							
+		
+		log.info(article.getArticleChecks().toString());
 		result = WebControllerUtil.getResponse(article, 
 				article == null ? 0 : 1, 
 				article == null ? false : true, 
@@ -182,12 +183,12 @@ public class ArticleController {
 		Article article = null;
 		FileInfo file = null;
 		
-		if ( articleDTO.hasId() ) {
+		/*if ( articleDTO.hasId() ) {
 			article = boardQueryService.getAritlce(articleDTO.getId());			
 			article.setArticleDTO(articleDTO);
 		} else {
 			article = new Article(articleDTO.getTitle(), articleDTO.getContents());
-		}
+		}*/
 							
 		try {
 			if (!articleDTO.getFile().isEmpty()) {

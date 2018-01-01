@@ -21,7 +21,5 @@ public @interface DTOInfo {
 	 * 매핑될 필드명
 	 * @return
 	 */
-	String fieldName();
-	
-	
+	String fieldName() default "";	
 }

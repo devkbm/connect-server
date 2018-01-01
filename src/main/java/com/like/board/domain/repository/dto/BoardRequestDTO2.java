@@ -1,11 +1,8 @@
 package com.like.board.domain.repository.dto;
 
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -38,22 +35,26 @@ public class BoardRequestDTO2 implements Serializable {
 	/**
 	 * 게시판_타입
 	 */	
-	@DTOInfo(classInstance=Board.class,fieldName="boardType")
+	@DTOInfo(classInstance=Board.class)
     String boardType;
 	
 	/**
      * 게시판 명
      */
-    @DTOInfo(classInstance=Board.class,fieldName="boardName")
+    @DTOInfo(classInstance=Board.class)
 	@NotEmpty(message="게시판명은 필수 입력사항입니다.")	
     String boardName;    
     
+    @DTOInfo(classInstance=Board.class)
     String boardDescription;
     
+    @DTOInfo(classInstance=Board.class)
     LocalDate fromDate;
     
+    @DTOInfo(classInstance=Board.class)
     LocalDate toDate;
     
+    @DTOInfo(classInstance=Board.class)
     Boolean useYn;
     
     long articleCount;

@@ -21,7 +21,8 @@ import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
+//@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","files"})
 @Getter
 @Entity
 @Table(name = "grarticle")
@@ -67,7 +68,7 @@ public class Article extends AuditEntity implements Serializable {
      * 조회 수
      */
 	@Column(name="hit_cnt")
-    int hitCnt;
+    int hitCount;
         
     /**
      * 시작일자
@@ -151,7 +152,7 @@ public class Article extends AuditEntity implements Serializable {
 	}
 	
 	public void updateHitCnt() {
-		this.hitCnt = this.hitCnt + 1;	
+		this.hitCount = this.hitCount + 1;	
 	}
 	
 	public boolean addAttachedFile(FileInfo file) {
@@ -165,22 +166,5 @@ public class Article extends AuditEntity implements Serializable {
 		}			
 			
 		return rtn;
-	}
-	
-	public void setArticleDTO(ArticleRequestDTO dto) {
-		this.ppkArticle = Long.parseLong(dto.getPpkArticle());
-		this.title = dto.getTitle();
-		this.contents = dto.getContents();
-		this.pwd = dto.getPwd();
-		this.hitCnt = Integer.parseInt(dto.getHitCnt());
-		
-		if (StringUtils.hasText(dto.getFromDt()))
-			this.fromDate = LocalDate.parse(dto.getFromDt());
-		
-		if (StringUtils.hasText(dto.getToDt()))
-			this.toDate = LocalDate.parse(dto.getToDt());
-		
-		this.seq = dto.getSeq();	
-	}
-	
+	}	
 }
