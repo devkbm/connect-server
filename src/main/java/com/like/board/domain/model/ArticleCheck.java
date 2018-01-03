@@ -34,7 +34,7 @@ public class ArticleCheck extends AuditEntity implements Serializable {
 	 * 조회수
 	 */
 	@Column(name="hit_cnt")
-	int hitCnt;
+	int hitCount;
         
 	/**
 	 * 게시판 외래키
@@ -50,7 +50,7 @@ public class ArticleCheck extends AuditEntity implements Serializable {
 	}
 			
 	public void updateHitCnt() {
-		this.hitCnt = this.hitCnt + 1;
+		this.hitCount = this.hitCount + 1;
 	}
 	
 	public void setArticle(Article article) {
@@ -59,7 +59,7 @@ public class ArticleCheck extends AuditEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ArticleCheck [pkArticleCheck=" + pkArticleCheck + ", hitCnt=" + hitCnt + ", article=" + article + "]";
+		return "ArticleCheck [pkArticleCheck=" + pkArticleCheck + ", hitCount=" + hitCount + ", article=" + article + "]";
 	}
 	
 		

@@ -1,5 +1,7 @@
 package com.like.board.infra.jparepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,16 @@ import org.springframework.util.StringUtils;
 
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.dto.ArticleListDTO;
+import com.like.board.domain.repository.dto.ArticleResponseDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
 import com.like.file.domain.model.FileInfo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.like.board.domain.model.*;
@@ -49,7 +54,21 @@ public class ArticleJpaRepository implements ArticleRepository {
 		return jpaArticle.findOne(id);
 		
 	}
-		
+			
+	@Override
+	public ArticleResponseDTO getArticleDTO(Long id) {
+
+		JPAQuery<ArticleResponseDTO> query = queryFactory
+				.select(Projections.constructor(ArticleResponseDTO.class, 
+												qArticle._super.sysDt, qArticle._super.sysUser, qArticle._super.updDt, qArticle._super.updUser,
+												qArticle.pkArticle, qArticle.ppkArticle, qArticle.title, qArticle.contents, 
+												qArticle.pwd, qArticle.hitCount, qArticle.fromDate, qArticle.toDate,
+												qArticle.seq, qArticle.depth, qArticle.board.pkBoard
+												))
+				.from(qArticle);					
+		return query.fetchOne();
+	}
+
 	public List<Article> getArticleList(Long fkBoard) { 
 					
 		return queryFactory.selectFrom(qArticle)

@@ -12,17 +12,14 @@ import lombok.Getter;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.like.board.domain.repository.dto.ArticleRequestDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
-//@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","files"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @Getter
 @Entity
 @Table(name = "grarticle")

@@ -117,9 +117,8 @@ public class Board extends AuditEntity implements Serializable {
     	this.toDate = LocalDate.now();    	    	
     }
     
-    public boolean hasParentBoard() {    	    		    
-		//return StringUtils.isEmpty(this.ppkBoard) ? false : true;
-    	return false;
+    public boolean hasParentBoard() {    	    		    		
+    	return this.parent != null ? true : false;
 	}
     
     public void setParentRoot() {
