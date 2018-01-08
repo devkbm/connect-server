@@ -30,6 +30,10 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(id);
 	}			
 	
+	public void deleteBoard(Board board) {
+		boardRepository.deleteBoard(board);
+	}
+	
 	public String saveArticle(Article article, Long fkBoard) {										
 		return articleRepository.saveArticle(article, fkBoard).toString();
 	}

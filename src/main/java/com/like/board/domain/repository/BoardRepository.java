@@ -51,5 +51,7 @@ public interface BoardRepository {
 	 * @param id	게시판 도메인 PK
 	 */
 	void deleteBoard(Long id);
+	
+	void deleteBoard(Board board);
 			
 }

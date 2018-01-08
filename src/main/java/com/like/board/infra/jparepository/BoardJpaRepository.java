@@ -76,7 +76,11 @@ public class BoardJpaRepository implements BoardRepository {
 	}
 			
 	public void deleteBoard(Long pkBoard) {
-		jpaBoard.delete(pkBoard);
+		jpaBoard.delete(pkBoard);			
+	}
+	
+	public void deleteBoard(Board board) {
+		jpaBoard.delete(board);
 	}
 	
 	

@@ -1,6 +1,8 @@
 package com.like.board;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -10,64 +12,79 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.domain.model.Board;
-import com.like.board.domain.repository.dto.ArticleListDTO;
-import com.like.board.domain.model.Article;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
-import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
 public class BoardServiceTest {
 
 	private static final Logger log = LoggerFactory.getLogger(BoardServiceTest.class);
-	
-	 
-	
+		 
 	@Autowired
 	BoardCommandService bcs;
 	
 	@Autowired
-	BoardQueryService bqs;
-	
-	private String user;
+	BoardQueryService bqs;	
 	
 	@Autowired
 	FileService fs;
 	
+	Long key;
+	
 	@Before 
     public void setUp() { 
-		       
+
     } 
 	
-	@Test
-	@Transactional
-	public void 게시판등록() {
+	@Test	
+	public void test01_게시판등록() {
 		Board board = new Board("테스트 게시판"); 
 		
 		bcs.saveBoard(board);
 		
 		Board confirmBoard = bqs.getBoard(board.getPkBoard());
 		
-		assertThat(confirmBoard.getPkBoard(), is(board.getPkBoard()));			
+		assertEquals(confirmBoard, board);
+		
+		//assertThat(confirmBoard.getPkBoard(), is(board.getPkBoard()));			
 	}
 	
-	/*@Test
+		
+	/**
+	 * 삭제 테스트 확인해봐야함
+	 */
+	@Test
+	public void test02_게시판삭제() {		
+
+		Board board = new Board("삭제 테스트 게시판");
+		bcs.saveBoard(board);				
+		
+		bcs.deleteBoard(board);
+		
+		//board = null;
+		
+		//assertNull(board);			
+	}
+		
+	
+	/*@Testf
 	public void 게시글명단조회() {
 		Map<String, Object> map = new HashMap<>();
 		map.put("pkBoard", 1);
