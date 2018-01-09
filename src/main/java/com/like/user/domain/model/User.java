@@ -66,6 +66,7 @@ public class User implements UserDetails {
 	@Override
 	@JsonProperty("userId")
 	public String getUsername() {
+		System.out.println(userId);
 		return userId;
 	}		
 

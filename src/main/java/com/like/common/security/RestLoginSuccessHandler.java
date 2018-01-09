@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -21,6 +23,8 @@ import com.like.user.service.UserService;
 @Component
 public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+	private static final Logger log = LoggerFactory.getLogger(RestLoginSuccessHandler.class);
+	
 	/*@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws ServletException, IOException {
@@ -41,7 +45,7 @@ public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
     	handle(request, response, authentication);
-
+    	log.info(request.toString());
     	// Get Current User Info
 		/*String userId = authentication.getName();
 		UserVo currentUser = loginService.getUser(userId);
