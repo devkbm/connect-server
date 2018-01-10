@@ -1,5 +1,7 @@
 package com.like.common.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.like.common.security.RestLoginFailureHandler;
 import com.like.common.security.RestLoginSuccessHandler;
@@ -55,11 +61,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//    .headers().frameOptions().disable();
 		
 		http.csrf().disable()
+			.cors().and()			
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 			.authorizeRequests()
-				//.antMatchers("/grw/**").permitAll()
-				.antMatchers("/grw/**").hasRole("USER")
-				.anyRequest().authenticated().and()
+			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+				//.antMatchers("/auth/**").permitAll()
+				.antMatchers("/grw/**").permitAll()//hasRole("USER")
+				.anyRequest().authenticated().and()				
 			// 모든 연결을 HTTPS로 강제 전환
 			//.requiresChannel().anyRequest().requiresSecure().and()
 			.formLogin()
@@ -83,6 +91,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET,"/grw/boards/articles").permitAll()
 			.antMatchers(HttpMethod.GET,"/grw/boardHierarchy").permitAll()			
 			.anyRequest().authenticated();*/
+	}
+	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+       CorsConfiguration configuration = new CorsConfiguration();
+              
+       configuration.setAllowedOrigins(Arrays.asList("*"));
+       configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+       configuration.setAllowedHeaders(Arrays.asList("origin","Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token"));       
+       configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
+       configuration.setAllowCredentials(true);
+       configuration.setMaxAge(3600L);
+       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+       source.registerCorsConfiguration("/**", configuration);
+       
+       
+       /*
+         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "origin, Content-Type, Accept, X-Requested-With, remember-me, x-auth-token");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin,Access-Control-Allow-Credentials");
+        */
+       
+       return source;
 	}
 	
 	@Bean

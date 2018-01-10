@@ -17,7 +17,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		// 인증 없이 Request 수신시 "Unauthorized(401)" 응답
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());		
 	}
 
 }

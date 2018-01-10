@@ -15,9 +15,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
  
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CORSFilter implements Filter{
+/*@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)*/
+/*public class CORSFilter implements Filter{
  
 	@Override
     public void init(FilterConfig filterConfig) {    	
@@ -42,4 +42,4 @@ public class CORSFilter implements Filter{
          
         filterChain.doFilter(req, res);
     }       
-}
+}*/
