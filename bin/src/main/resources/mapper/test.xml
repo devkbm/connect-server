@@ -7,20 +7,47 @@
 		SELECT 1 as num 
 	]]>     	  
 	</select>	   
-	
-	<select id="getBoardListByTree" parameterType="map" resultType="map">
-		SELECT A.PK_BOARD		 						AS id 		    
-		     , A.BOARD_NAME								AS text
-		     , IF ( B.PK_BOARD IS NULL, TRUE, FALSE)	AS leaf
-		     , A.BOARD_TYPE	 							AS qtitle
-		     , A.BOARD_NAME								AS qtip		     
-		     , A.PPK_BOARD								AS parent_id
-		     , A.FROM_DT								AS fromdd
-		     , A.TO_DT									AS todd
-		     , A.SEQ									AS seq
-  		  FROM GRBOARD A
-  	 LEFT JOIN GRBOARD AS B ON ( B.PPK_BOARD = A.PK_BOARD )
-  	    WHERE A.PPK_BOARD = #{ppkboard}
-	ORDER BY A.SEQ
-	</select>	
+		
+	<select id="getArticleList" parameterType="map" resultType="com.like.board.domain.repository.dto.ArticleListDTO"><![CDATA[
+		select b.SYS_DT		as sysDt
+		     , b.SYS_USER	as sysUser
+		     , 'test' 		as sysUsernm
+		     , b.UPD_DT  	as updDt
+		     , b.UPD_USER	as updUser
+		     , b.PK_ARTICLE	as pkArticle
+		     , b.PPK_ARTICLE as ppkArticle
+		     , b.TITLE 		as title
+		     , b.CONTENTS	as contents
+		     , b.PWD 		as pwd
+		     , b.HIT_CNT	as hitCnt
+		     , b.FROM_DT	as fromDt
+		     , b.TO_DT		as toDt
+		     , b.seq		as seq
+		     , 'Y'			as checkYn		     
+		     , case when d.PK_FILE is not null 
+		            then 'Y' 
+		            else 'N' 
+		       end 			as fileYn
+		     , (select group_concat(z.PK_FILE,'|',z.FILE_NM,'|',z.size order by z.PK_FILE SEPARATOR ',')     
+		          from grarticle_files x
+		         inner join cmfileinfo z
+		               on (x.PK_FILE = z.PK_FILE)
+		         where x.PK_ARTICLE = b.PK_ARTICLE )	as fileInfo		-- uuid | path | name | size
+		     , b.FK_BOARD	as fkBoard
+   		  from grboard a
+   			inner join grarticle b
+   	        	on (a.PK_BOARD = b.FK_BOARD)
+   			left outer join grarticle_files c
+   	        	on (b.PK_ARTICLE = c.PK_ARTICLE)
+    		left outer join cmfileinfo d
+            	on (c.pk_file = d.PK_FILE)
+       where a.PK_BOARD = #{pkBoard}      
+    ]]>          	
+    	<if test="title != null"><![CDATA[
+    	and b.title like #{title}
+    	]]></if>
+    	<if test="contents != null"><![CDATA[
+    	and b.contents like #{contents}
+    	]]></if>
+	</select>
 </mapper>
