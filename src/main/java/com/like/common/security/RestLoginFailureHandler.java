@@ -1,6 +1,8 @@
 package com.like.common.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,16 @@ public class RestLoginFailureHandler implements AuthenticationFailureHandler  {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-		log.info(request.toString());
+		
+		/*Enumeration<String> params = request.getParameterNames();
+		
+		while(params.hasMoreElements()){
+		  String names = (String)params.nextElement();
+		  log.info(names);
+		 }*/
+		
+		
+		
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");		
 	}
 }

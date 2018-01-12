@@ -1,6 +1,7 @@
 package com.like.common.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -44,8 +45,19 @@ public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-    	handle(request, response, authentication);
-    	log.info(request.toString());
+    	
+		Enumeration<String> params = request.getParameterNames();
+		
+		log.info("RestLoginSuccessHandler");
+		
+		while(params.hasMoreElements()){
+		  String names = (String)params.nextElement();
+		  log.info(names);
+		 }
+		
+		
+		handle(request, response, authentication);
+    	
     	// Get Current User Info
 		/*String userId = authentication.getName();
 		UserVo currentUser = loginService.getUser(userId);

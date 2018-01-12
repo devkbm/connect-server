@@ -1,9 +1,14 @@
 package com.like.user.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,12 +16,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.like.common.security.RestLoginSuccessHandler;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
+	
 	@Autowired
 	UserRepository userRepository;
 	
@@ -24,6 +32,9 @@ public class UserService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+		
+		log.info("login userId : " + userId);		
+		
 		User user = userRepository.getUser(userId);
 		
 		return user;
@@ -36,9 +47,11 @@ public class UserService implements UserDetailsService {
 		
 	public Collection<GrantedAuthority> getAuthorities(String userName) {
 		//Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)userRepository.readAuthority(userName);
-        
-        //return authorities;
-		return null;
+        							
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		
+        return authorities;
 	}
 
 	public User getUser(String userId) {

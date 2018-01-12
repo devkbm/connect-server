@@ -1,16 +1,25 @@
 package com.like.common.config;
 
+import java.io.IOException;
 import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.like.common.security.RestLoginFailureHandler;
 import com.like.common.security.RestLoginSuccessHandler;
 import com.like.common.security.RestLogoutSuccessHandler;
+import com.like.common.security.RequestBodyReaderAuthenticationFilter;
 import com.like.common.security.RestAuthenticationEntryPoint;
 import com.like.user.service.UserService;
 
@@ -49,72 +59,56 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private RestLoginFailureHandler authFailureHandler;
 	
-	/**
-	 * 로그아웃 처리(Session 제거) 후 Success Url로 redirect(302) 시키지 않고 Http Status(200) 리턴
-	 */
-	@Autowired
-	private RestLogoutSuccessHandler logoutSuccessHandler;	
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		//http.csrf().disable()
-		//    .headers().frameOptions().disable();
+		//    .headers().frameOptions().disable();			
 		
 		http.csrf().disable()
 			.cors().and()			
-			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+			//.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()			
 			.authorizeRequests()
-			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-				//.antMatchers("/auth/**").permitAll()
-				.antMatchers("/grw/**").permitAll()//hasRole("USER")
+			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()			
+				.antMatchers("/auth/login").permitAll()
+				.antMatchers("/user/**").permitAll()
+				//.antMatchers("/grw/**").permitAll()//hasRole("USER")							
 				.anyRequest().authenticated().and()				
 			// 모든 연결을 HTTPS로 강제 전환
 			//.requiresChannel().anyRequest().requiresSecure().and()
-			.formLogin()
+			/*.formLogin()
 				.loginProcessingUrl("/auth/login")
 				.usernameParameter("username")
-				.passwordParameter("password")
-				.successHandler(authSuccessHandler)
-				.failureHandler(authFailureHandler)
-				.permitAll().and()
+				.passwordParameter("password")*/
+				//.successHandler(authSuccessHandler)
+				//.failureHandler(authFailureHandler)
+				//.successHandler(this::loginSuccessHandler)
+				//.failureHandler(this::loginFailureHandler)
+				//.permitAll().and()
 			.logout()
 				.logoutUrl("/auth/logout")
-				.logoutSuccessHandler(logoutSuccessHandler)
+				//.logoutSuccessHandler(logoutSuccessHandler)
+				.logoutSuccessHandler(this::logoutSuccessHandler)
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
-				.permitAll();
+				.permitAll();		
 			//http.portMapper().http(8080).mapsTo(8443);
+		//http.addFilterBefore(myAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);	
 		
-									
-		/*http.authorizeRequests()
-			.antMatchers(HttpMethod.GET,"/grw/boards").permitAll()
-			.antMatchers(HttpMethod.GET,"/grw/boards/articles").permitAll()
-			.antMatchers(HttpMethod.GET,"/grw/boardHierarchy").permitAll()			
-			.anyRequest().authenticated();*/
 	}
 	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
-       CorsConfiguration configuration = new CorsConfiguration();
-              
+       CorsConfiguration configuration = new CorsConfiguration();              
        configuration.setAllowedOrigins(Arrays.asList("*"));
        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
        configuration.setAllowedHeaders(Arrays.asList("origin","Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token"));       
        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
        configuration.setAllowCredentials(true);
        configuration.setMaxAge(3600L);
+       
        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
        source.registerCorsConfiguration("/**", configuration);
-       
-       
-       /*
-         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "origin, Content-Type, Accept, X-Requested-With, remember-me, x-auth-token");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin,Access-Control-Allow-Credentials");
-        */
        
        return source;
 	}
@@ -132,6 +126,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService);
+		auth.userDetailsService(userService);		
 	}
+	
+	@Bean
+	public RequestBodyReaderAuthenticationFilter myAuthenticationFilter() throws Exception {
+		RequestBodyReaderAuthenticationFilter authenticationFilter = new RequestBodyReaderAuthenticationFilter();
+		authenticationFilter.setAuthenticationManager(this.authenticationManagerBean());		
+		// 여기서 직접 만든 authenticationManagerBean을 설정 해도 됨
+		authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/auth/login", "POST"));
+		// loginProcessingUrl에 설정한 주소로 했을 때 오류가 생겨서 그냥 default 값으로 지정함
+		return authenticationFilter;
+	}
+	
+	
+	private void loginSuccessHandler(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication) { 
+		
+        response.setStatus(HttpStatus.OK.value());
+    }
+ 
+    private void loginFailureHandler(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AuthenticationException e) throws IOException {
+         
+        response.sendError(HttpStatus.UNAUTHORIZED.value());        
+    }
+ 
+    private void logoutSuccessHandler(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication) throws IOException {
+ 
+        response.setStatus(HttpStatus.OK.value());
+    }   
+    
 }

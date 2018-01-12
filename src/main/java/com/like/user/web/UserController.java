@@ -1,5 +1,6 @@
 package com.like.user.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,8 +8,17 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.todo.domain.model.TaskGroup;
+import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.User;
+import com.like.user.domain.repository.dto.LoginRequestDTO;
 import com.like.user.service.UserService;
 
 @RestController
@@ -28,36 +40,39 @@ public class UserController {
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	
+	@Autowired 
+	AuthenticationManager authenticationManager;
+	
 	@Resource
 	UserService userService;
 	
-	@RequestMapping(value={"/user/login"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> login(@RequestParam(value="id", required=true) String id,
-									@RequestParam(value="pwd", required=true) String password,
-									HttpSession session) {
+	@RequestMapping(value={"/user/login"}, method=RequestMethod.POST) 
+	public AuthenticationToken login(@RequestBody LoginRequestDTO dto, HttpSession session) {
 		
-		ResponseEntity<?> result = null;
-		String 	msg = null;		
-		boolean isValid = false;
+		String username = dto.getUsername();
+		String password = dto.getPassword();
+
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		
-		User user = userService.getUser(id);
 		
-		isValid = userService.validPassword(user, password);
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
 		
-		if (isValid) {
-			setSessionInfo(session, user);						
-			msg = "로그인 처리되었습니다.";
-		} else {
-			msg = "사용자 정보가 일치하지 않습니다.";
-		}
+		Authentication authentication = authenticationManager.authenticate(token); 
+				
+		log.info(token.isAuthenticated() == true ? "Authenticated true" : "Authenticated false");
 		
-		result = WebControllerUtil.getResponse(user,
-				 user == null ? 0 : 1, 
-				 isValid,
-				 msg,
-				 HttpStatus.OK); 					
+		SecurityContextHolder.getContext().setAuthentication(authentication); 			
 		
-		return result;
+		log.info(authentication.isAuthenticated() == true ? "Authenticated2 true" : "Authenticated false");
+		
+		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()); 
+		
+		UserDetails user = userService.loadUserByUsername(username); 
+		
+		log.info(user.getUsername());
+		
+		return new AuthenticationToken(user.getUsername(), user.getAuthorities(), session.getId());
 	}
 	
 	
@@ -135,5 +150,12 @@ public class UserController {
 		session.setAttribute("userId", 		user.getUsername());
 		session.setAttribute("userName", 	user.getName());
 	}
+	
+	
+	@RequestMapping(value={"/auth/login"}, method={RequestMethod.POST})
+	public ResponseEntity<?> loing() {													 			
+		return null;
+	}
+	
 			
 }
