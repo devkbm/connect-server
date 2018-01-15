@@ -46,6 +46,16 @@ public class UserController {
 	@Resource
 	UserService userService;
 	
+	private void authentication(String username, String password, List<GrantedAuthority> authorities, HttpSession session) {
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
+		
+		Authentication authentication = authenticationManager.authenticate(token); 
+							
+		SecurityContextHolder.getContext().setAuthentication(authentication); 						
+		
+		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+	}
+	
 	@RequestMapping(value={"/user/login"}, method=RequestMethod.POST) 
 	public AuthenticationToken login(@RequestBody LoginRequestDTO dto, HttpSession session) {
 		
@@ -53,26 +63,13 @@ public class UserController {
 		String password = dto.getPassword();
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));					
 		
+        authentication(username, password, authorities, session);
+        
+		User user = userService.getUser(username); 			
 		
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
-		
-		Authentication authentication = authenticationManager.authenticate(token); 
-				
-		log.info(token.isAuthenticated() == true ? "Authenticated true" : "Authenticated false");
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication); 			
-		
-		log.info(authentication.isAuthenticated() == true ? "Authenticated2 true" : "Authenticated false");
-		
-		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()); 
-		
-		UserDetails user = userService.loadUserByUsername(username); 
-		
-		log.info(user.getUsername());
-		
-		return new AuthenticationToken(user.getUsername(), user.getAuthorities(), session.getId());
+		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), session.getId());
 	}
 	
 	
