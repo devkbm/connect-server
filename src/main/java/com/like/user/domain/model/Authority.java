@@ -8,20 +8,17 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
-@Table(name = "authority")
+@Table(name = "cmauthority")
 public class Authority implements GrantedAuthority {
 
 	private static final long serialVersionUID = 5255280527856714047L;
-
-	@Id
-	@Column(name="username")
-	String userName;
 	
+	@Id
 	@Column(name="authority_name")
 	String authorityName;
-
+	
 	@Override
 	public String getAuthority() {
-		return this.userName;
+		return this.authorityName;
 	}
 }

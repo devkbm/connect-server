@@ -1,25 +1,31 @@
 package com.like.user.domain.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Setter
 @ToString
 @Table(name = "cmuser")
 public class User implements UserDetails {
@@ -48,25 +54,33 @@ public class User implements UserDetails {
 	
 	@Column(name="enabled_yn")
 	private Boolean isEnabled;
-		
-	@Transient
-	@JsonIgnore
-	private Collection<? extends GrantedAuthority> authorities;
+			
+	/*@OneToMany(mappedBy = "authority")*/
+	/*@Transient*/
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinTable(name="cmuserauthority",
+    		joinColumns= @JoinColumn(name="user_id"),
+    		inverseJoinColumns=@JoinColumn(name="authority_name"))
+	private List<Authority> authorities = new ArrayList<Authority>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
-
-	@Override		
-	public String getPassword() {
-		return password;
+	
+	public List<Authority> getAuthorities2() {
+		return authorities;
 	}
-
+	
 	@Override
 	@JsonProperty("userId")
 	public String getUsername() {		
 		return userId;
+	}
+
+	@Override		
+	public String getPassword() {
+		return password;
 	}		
 
 	@Override
@@ -95,8 +109,14 @@ public class User implements UserDetails {
 	
 	public boolean isVaild(String password) {
 		return this.password.equals(password) ? true : false;
+	}		
+	
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;		
 	}
 	
-	
+	public void addAuthoritiy(Authority authority) {
+		this.authorities.add(authority);
+	}	
 	
 }
