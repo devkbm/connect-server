@@ -106,6 +106,22 @@ public class UserController {
 		return result;
 	}
 	
+	@RequestMapping(value={"/user"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getUserList() {
+		
+		ResponseEntity<?> result = null;		
+		
+		List<User> userList = userService.getUserList();				
+		
+		result = WebControllerUtil.getResponse(userList,
+				 userList.size(), 
+				 userList.size() > 0 ? true : false ,
+				 "조회 되었습니다.",
+				 HttpStatus.OK); 					
+		
+		return result;
+	}
+	
 	@RequestMapping(value={"/user"}, method={RequestMethod.POST,RequestMethod.PUT})
 	public ResponseEntity<?> saveUser(@RequestBody User user, BindingResult result) {
 			
@@ -149,10 +165,10 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value={"/auth/login"}, method={RequestMethod.POST})
+	/*@RequestMapping(value={"/auth/login"}, method={RequestMethod.POST})
 	public ResponseEntity<?> loing() {													 			
 		return null;
-	}
+	}*/
 	
 			
 }

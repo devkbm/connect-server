@@ -68,7 +68,7 @@ public class User implements UserDetails {
 		return authorities;
 	}
 	
-	public List<Authority> getAuthorities2() {
+	public List<Authority> getAuthorityList() {
 		return authorities;
 	}
 	

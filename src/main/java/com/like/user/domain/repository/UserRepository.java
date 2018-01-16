@@ -9,6 +9,8 @@ public interface UserRepository {
 			
 	User getUser(String userId);
 	
+	List<User> getUserList();
+	
 	List<Authority> readAuthority(String userId);
 	
 	void createUser(User user);

@@ -82,4 +82,8 @@ public class UserService implements UserDetailsService {
 		
 		return user != null ? true : false; 
 	}
+	
+	public List<User> getUserList() {
+		return userRepository.getUserList();
+	}
 }

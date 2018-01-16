@@ -1,6 +1,5 @@
 package com.like.user.infra.jparepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +36,14 @@ public class UserJpaRepository implements UserRepository {
 	
 
 	@Override
+	public List<User> getUserList() {
+		return jpaUser.findAll();
+	}
+
+
+	@Override
 	public List<Authority> readAuthority(String userId) {			
-		return jpaUser.findOne(userId).getAuthorities2();
+		return jpaUser.findOne(userId).getAuthorityList();
 	}
 
 	@Override
