@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.like.common.security.RestLoginSuccessHandler;
+import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 
@@ -26,15 +26,14 @@ public class UserService implements UserDetailsService {
 	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
-	UserRepository userRepository;
+	UserRepository userRepository;	
 	
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
 	
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		
-		log.info("login userId : " + userId);		
-		
+						
 		User user = userRepository.getUser(userId);
 		
 		return user;
@@ -45,18 +44,13 @@ public class UserService implements UserDetailsService {
 		return user.isVaild(password);		
 	}
 		
-	public Collection<GrantedAuthority> getAuthorities(String userName) {
-		//Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)userRepository.readAuthority(userName);
-        							
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		
-        return authorities;
+	public List<Authority> getAuthorities(String userName) {        									
+        return userRepository.readAuthority(userName);
 	}
 
 	public User getUser(String userId) {
 		User user = userRepository.getUser(userId);
-		// user.setAuthorities(userMapper.readAuthority(username));
+		
 		return user;
 	}
 	
@@ -65,7 +59,7 @@ public class UserService implements UserDetailsService {
 		//String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
 		//user.setPassword(encodedPassword);
 		userRepository.createUser(user);
-		//userRepository.createAuthority(user);
+		//userRepository.createAuthority(user);			
 	}
 	
 	public void deleteUser(String userId) {
