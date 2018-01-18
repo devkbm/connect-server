@@ -119,4 +119,8 @@ public class User implements UserDetails {
 		this.authorities.add(authority);
 	}	
 	
+	public void changePassword(String password) {
+		this.password = password;
+	}
+	
 }

@@ -33,6 +33,7 @@ import com.like.todo.domain.model.TaskGroup;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.dto.LoginRequestDTO;
+import com.like.user.domain.repository.dto.PasswordRequestDTO;
 import com.like.user.service.UserService;
 
 @RestController
@@ -139,6 +140,22 @@ public class UserController {
 					String.format("%d 건 저장되었습니다.", 1), 
 					HttpStatus.OK);
 		}
+								 					
+		return res;
+	}
+	
+	@RequestMapping(value={"/user/changePassword"}, method={RequestMethod.POST})
+	public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDTO dto) {
+			
+		ResponseEntity<?> res = null;
+						
+		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());					
+								
+		res = WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK);		
 								 					
 		return res;
 	}

@@ -62,6 +62,16 @@ public class UserService implements UserDetailsService {
 		//userRepository.createAuthority(user);			
 	}
 	
+	public void changePassword(String userId, String beforePassword, String afterPassword) {
+		User user = userRepository.getUser(userId);
+		
+		if ( user.isVaild(beforePassword) ) { 		
+			user.changePassword(afterPassword);
+		} else {
+			// 익셉션 발생
+		}
+	}
+	
 	public void deleteUser(String userId) {
 		 userRepository.deleteUser(userId);
          userRepository.deleteAuthority(userId);
