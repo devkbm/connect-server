@@ -12,14 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -54,9 +52,7 @@ public class User implements UserDetails {
 	
 	@Column(name="enabled_yn")
 	private Boolean isEnabled;
-			
-	/*@OneToMany(mappedBy = "authority")*/
-	/*@Transient*/
+				
 	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable(name="cmuserauthority",
     		joinColumns= @JoinColumn(name="user_id"),
@@ -64,6 +60,7 @@ public class User implements UserDetails {
 	private List<Authority> authorities = new ArrayList<Authority>();
 
 	@Override
+	@JsonIgnore	
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
@@ -121,6 +118,10 @@ public class User implements UserDetails {
 	
 	public void changePassword(String password) {
 		this.password = password;
+	}
+	
+	public void initPassword() {
+		this.password = "12345678";	
 	}
 	
 }

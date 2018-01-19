@@ -34,12 +34,27 @@ public class UserJpaRepository implements UserRepository {
 		return jpaUser.findOne(userId);
 	}
 	
-
 	@Override
 	public List<User> getUserList() {
 		return jpaUser.findAll();
 	}
 
+	@Override
+	public void createUser(User user) {
+		jpaUser.save(user);
+	}
+	
+	@Override
+	public void deleteUser(String userId) {
+		jpaUser.delete(userId);		
+	}
+		
+	@Override
+	public void addUserAuthority(String userId, Authority authority) { 
+		User user = jpaUser.findOne(userId);
+		
+		user.addAuthoritiy(authority);
+	}
 
 	@Override
 	public List<Authority> readAuthority(String userId) {			
@@ -47,22 +62,18 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public void createUser(User user) {
-		jpaUser.save(user);
+	public List<Authority> getAllAuthorities() {
+		return jpaAuthority.findAll();
 	}
-
+	
 	@Override
 	public void createAuthority(Authority authority) {
 		jpaAuthority.save(authority);
 	}
 
 	@Override
-	public void deleteUser(String userId) {
-		jpaUser.delete(userId);		
-	}
-
-	@Override
 	public void deleteAuthority(String userId) {
 		jpaAuthority.delete(userId);		
 	}
+	
 }

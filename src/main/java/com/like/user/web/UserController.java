@@ -142,6 +142,22 @@ public class UserController {
 		}
 								 					
 		return res;
+	}	
+	
+	@RequestMapping(value={"/user/{id}"}, method={RequestMethod.DELETE})
+	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String userId) {
+			
+		ResponseEntity<?> res = null;
+						
+		userService.deleteUser(userId);					
+								
+		res = WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK);		
+								 					
+		return res;
 	}
 	
 	@RequestMapping(value={"/user/changePassword"}, method={RequestMethod.POST})
@@ -160,12 +176,13 @@ public class UserController {
 		return res;
 	}
 	
-	@RequestMapping(value={"/user/{id}"}, method={RequestMethod.DELETE})
-	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String userId) {
+	
+	@RequestMapping(value={"/user/{id}/initPassword"}, method={RequestMethod.POST})
+	public ResponseEntity<?> initializePassword(@RequestBody PasswordRequestDTO dto) {
 			
 		ResponseEntity<?> res = null;
 						
-		userService.deleteUser(userId);					
+		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());					
 								
 		res = WebControllerUtil.getResponse(null,
 				1, 
@@ -175,17 +192,5 @@ public class UserController {
 								 					
 		return res;
 	}
-	
-	private void setSessionInfo(HttpSession session, User user) {
-		session.setAttribute("userId", 		user.getUsername());
-		session.setAttribute("userName", 	user.getName());
-	}
-	
-	
-	/*@RequestMapping(value={"/auth/login"}, method={RequestMethod.POST})
-	public ResponseEntity<?> loing() {													 			
-		return null;
-	}*/
-	
 			
 }
