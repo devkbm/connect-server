@@ -123,6 +123,14 @@ public class UserService implements UserDetailsService {
         return userRepository.readAuthority(userId);
 	}
 	
+	/**
+	 * 전체 권한 도메인 리스트를 조회한다.
+	 * @return	권한 도메인 리스트
+	 */
+	public List<Authority> getAllAuthorities() {        									
+        return userRepository.getAllAuthorities();
+	}
+	
 	public PasswordEncoder passwordEncoder(){
 		return this.passwordEncoder;
 	}

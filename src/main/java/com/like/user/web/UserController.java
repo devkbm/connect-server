@@ -31,6 +31,7 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.todo.domain.model.TaskGroup;
 import com.like.user.domain.model.AuthenticationToken;
+import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.dto.LoginRequestDTO;
 import com.like.user.domain.repository.dto.PasswordRequestDTO;
@@ -170,7 +171,7 @@ public class UserController {
 		res = WebControllerUtil.getResponse(null,
 				1, 
 				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
+				"비밀번호가 변경되었습니다.", 
 				HttpStatus.OK);		
 								 					
 		return res;
@@ -187,10 +188,26 @@ public class UserController {
 		res = WebControllerUtil.getResponse(null,
 				1, 
 				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
+				"비밀번호가 초기화되었습니다.", 
 				HttpStatus.OK);		
 								 					
 		return res;
+	}
+	
+	@RequestMapping(value={"/authority"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getAuthorityList() {
+		
+		ResponseEntity<?> result = null;		
+		
+		List<Authority> authorityList = userService.getAllAuthorities();				
+		
+		result = WebControllerUtil.getResponse(authorityList,
+				authorityList.size(), 
+				authorityList.size() > 0 ? true : false ,
+				 "조회 되었습니다.",
+				 HttpStatus.OK); 					
+		
+		return result;
 	}
 			
 }

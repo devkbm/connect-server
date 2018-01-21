@@ -17,6 +17,9 @@ public class Authority implements GrantedAuthority {
 	@Column(name="authority_name")
 	String authorityName;
 	
+	@Column(name="desc")
+	String description;
+	
 	@Override
 	public String getAuthority() {
 		return this.authorityName;
