@@ -123,6 +123,10 @@ public class UserService implements UserDetailsService {
         return userRepository.readAuthority(userId);
 	}
 	
+	public Authority getAuthority(String authorityName) {
+		return userRepository.getAuthority(authorityName);
+	}
+	
 	/**
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트

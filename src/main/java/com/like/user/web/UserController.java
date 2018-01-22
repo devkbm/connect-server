@@ -209,5 +209,21 @@ public class UserController {
 		
 		return result;
 	}
+	
+	@RequestMapping(value={"/authority/{id}"}, method=RequestMethod.GET) 
+	public ResponseEntity<?> getAuthority(@PathVariable(value="id") String authorityName) {
+		
+		ResponseEntity<?> result = null;		
+		
+		Authority authority = userService.getAuthority(authorityName);				
+		
+		result = WebControllerUtil.getResponse(authority,
+				 authority == null ? 0 : 1, 
+				 authority == null ? false : true,
+				 "조회 되었습니다.",
+				 HttpStatus.OK); 					
+		
+		return result;
+	}
 			
 }

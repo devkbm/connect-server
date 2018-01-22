@@ -52,6 +52,14 @@ public interface UserRepository {
 	 */
 	List<Authority> getAllAuthorities();
 	
+	
+	/**
+	 * 권한 도메인을 조회한다.
+	 * @param authorityName	권한
+	 * @return 권한 도메인
+	 */
+	Authority getAuthority(String authorityName);
+	
 	/**
 	 * 신규 권한을 등록한다.
 	 * @param authority	권한 도메인

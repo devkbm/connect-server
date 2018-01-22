@@ -65,7 +65,13 @@ public class UserJpaRepository implements UserRepository {
 	public List<Authority> getAllAuthorities() {
 		return jpaAuthority.findAll();
 	}
+		
 	
+	@Override
+	public Authority getAuthority(String authorityName) {
+		return jpaAuthority.findOne(authorityName);
+	}
+
 	@Override
 	public void createAuthority(Authority authority) {
 		jpaAuthority.save(authority);
