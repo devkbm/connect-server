@@ -223,7 +223,7 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/authority/{id}"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
 	public ResponseEntity<?> saveAuthority(@RequestBody Authority authority, BindingResult result) {
 			
 		ResponseEntity<?> res = null;

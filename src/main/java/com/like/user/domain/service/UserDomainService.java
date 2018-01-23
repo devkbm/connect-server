@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 
+@Service
 public class UserDomainService {
 	
 	@Autowired
