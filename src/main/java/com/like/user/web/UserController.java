@@ -17,19 +17,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.todo.domain.model.TaskGroup;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
@@ -225,5 +222,25 @@ public class UserController {
 		
 		return result;
 	}
+	
+	@RequestMapping(value={"/authority/{id}"}, method={RequestMethod.POST,RequestMethod.PUT})
+	public ResponseEntity<?> saveAuthority(@RequestBody Authority authority, BindingResult result) {
+			
+		ResponseEntity<?> res = null;
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} else {			
+			userService.createAuthority(authority);					
+									
+			res = WebControllerUtil.getResponse(null,
+					1, 
+					true, 
+					String.format("%d 건 저장되었습니다.", 1), 
+					HttpStatus.OK);
+		}
+								 					
+		return res;
+	}	
 			
 }

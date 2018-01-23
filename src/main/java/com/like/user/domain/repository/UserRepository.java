@@ -2,6 +2,8 @@ package com.like.user.domain.repository;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 
@@ -12,7 +14,7 @@ public interface UserRepository {
 	 * @param userId	사용자 아이디
 	 * @return	유저 도메인
 	 */
-	User getUser(String userId);
+	User getUser(String userId) throws UsernameNotFoundException;
 	
 	/**
 	 * 유저 도메인 리스트를 조회한다.
@@ -21,10 +23,10 @@ public interface UserRepository {
 	List<User> getUserList();
 
 	/**
-	 * 신규 유저를 등록한다.
+	 * 유저 도메인을  저장한다.
 	 * @param user	유저 도메인
 	 */
-	void createUser(User user);
+	void saveUser(User user);
 
 	/**
 	 * 유저를 삭제한다.

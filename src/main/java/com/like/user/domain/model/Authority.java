@@ -20,6 +20,13 @@ public class Authority implements GrantedAuthority {
 	@Column(name="desc")
 	String description;
 	
+	protected Authority() {}
+	
+	public Authority(String authorityName, String description) {		
+		this.authorityName = authorityName;
+		this.description = description;
+	}	
+	
 	@Override
 	public String getAuthority() {
 		return this.authorityName;
@@ -27,5 +34,8 @@ public class Authority implements GrantedAuthority {
 
 	public String getDescription() {
 		return description;
-	}	
+	}
+
+	
+	
 }

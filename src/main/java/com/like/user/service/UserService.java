@@ -11,11 +11,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
+import com.like.user.domain.service.UserDomainService;
 
+@Transactional
 @Service
 public class UserService implements UserDetailsService {
 	
@@ -23,6 +26,9 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	UserRepository userRepository;	
+	
+	@Autowired
+	UserDomainService userDomainService;
 	
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			
@@ -63,9 +69,8 @@ public class UserService implements UserDetailsService {
 	public void createUser(User user) {
 		//String rawPassword = user.getPassword();
 		//String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
-		//user.setPassword(encodedPassword);
-		userRepository.createUser(user);
-		//userRepository.createAuthority(user);							
+		//user.setPassword(encodedPassword);		
+		userDomainService.createUser(user);						
 	}
 	
 	/**
@@ -95,10 +100,7 @@ public class UserService implements UserDetailsService {
 	 * @param afterPassword		변경후 비밀번호
 	 */
 	public void changePassword(String userId, String beforePassword, String afterPassword) {
-		User user = userRepository.getUser(userId);
-		
-		if (user == null)
-			throw new UsernameNotFoundException(userId + " is Not Found");
+		User user = userRepository.getUser(userId);			
 		
 		if ( user.isVaild(beforePassword) ) {
 			user.changePassword(afterPassword);
@@ -111,6 +113,7 @@ public class UserService implements UserDetailsService {
 	 */
 	public void initPassword(String userId) {
 		User user = userRepository.getUser(userId);
+				
 		user.initPassword();		
 	}			
 	
@@ -123,10 +126,6 @@ public class UserService implements UserDetailsService {
         return userRepository.readAuthority(userId);
 	}
 	
-	public Authority getAuthority(String authorityName) {
-		return userRepository.getAuthority(authorityName);
-	}
-	
 	/**
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
@@ -135,19 +134,41 @@ public class UserService implements UserDetailsService {
         return userRepository.getAllAuthorities();
 	}
 	
-	public PasswordEncoder passwordEncoder(){
-		return this.passwordEncoder;
+	/**
+	 * 권한 도메인을 조회한다.
+	 * @param authorityName	권한명
+	 * @return	권한 도메인
+	 */
+	public Authority getAuthority(String authorityName) {
+		return userRepository.getAuthority(authorityName);
 	}
+	
+	/**
+	 * 권한 도메인을 등록한다.
+	 * @param authority	권한 도메인
+	 */
+	public void createAuthority(Authority authority) {
+		userRepository.createAuthority(authority);
+	}		
 		
 	/**
 	 * 중복 유저 검증 기능
 	 * @param userId
 	 * @return 기존 아이디가 있으면 true, 아니면 false 리턴
 	 */
-	public boolean CheckDuplicationUser(String userId) {
-		User user = userRepository.getUser(userId);
+	public boolean CheckDuplicationUser(String userId) {		
+		boolean rtn = false;		
 		
-		return user != null ? true : false; 
-	}
+		try {			
+			rtn = userRepository.getUser(userId) != null ? true : false;					
+		} catch (UsernameNotFoundException ex) {
+			rtn = false;		
+		}
+		
+		return rtn; 
+	}	
 	
+	public PasswordEncoder passwordEncoder(){
+		return this.passwordEncoder;
+	}	
 }

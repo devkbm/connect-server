@@ -3,6 +3,7 @@ package com.like.user.infra.jparepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.like.user.domain.model.Authority;
@@ -30,8 +31,12 @@ public class UserJpaRepository implements UserRepository {
 	private final QAuthority qAuthority = QAuthority.authority;	
 	
 	@Override
-	public User getUser(String userId) {
-		return jpaUser.findOne(userId);
+	public User getUser(String userId) throws UsernameNotFoundException {
+		User user = jpaUser.findOne(userId);
+		if (user == null) {
+			throw new UsernameNotFoundException(userId + " is Not Found");
+		}
+		return user;
 	}
 	
 	@Override
@@ -40,7 +45,7 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public void createUser(User user) {
+	public void saveUser(User user) {
 		jpaUser.save(user);
 	}
 	
