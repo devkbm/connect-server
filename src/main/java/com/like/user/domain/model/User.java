@@ -20,13 +20,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.like.common.domain.AuditEntity;
 
 import lombok.ToString;
 
 @Entity
 @ToString
 @Table(name = "cmuser")
-public class User implements UserDetails {
+public class User extends AuditEntity implements UserDetails {
 	
 	private static final long serialVersionUID = 2601682947639908458L;
 

@@ -7,9 +7,11 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.like.common.domain.AuditEntity;
+
 @Entity
 @Table(name = "cmauthority")
-public class Authority implements GrantedAuthority {
+public class Authority extends AuditEntity implements GrantedAuthority {
 
 	private static final long serialVersionUID = 5255280527856714047L;
 	
@@ -17,7 +19,7 @@ public class Authority implements GrantedAuthority {
 	@Column(name="authority_name")
 	String authorityName;
 	
-	@Column(name="desc")
+	@Column(name="description")
 	String description;
 	
 	protected Authority() {}

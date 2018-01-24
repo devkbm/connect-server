@@ -45,8 +45,8 @@ public class ArticleCheck extends AuditEntity implements Serializable {
 	Article article;
 
 	public ArticleCheck() {
-		this.sysUser = "test";
-		this.updUser = "test";
+		this.createdUser = "test";
+		this.modifiedUser = "test";
 	}
 			
 	public void updateHitCnt() {

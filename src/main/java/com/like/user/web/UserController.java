@@ -25,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.common.domain.DTOConverter;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
+import com.like.user.domain.repository.dto.AuthoritySaveDTO;
 import com.like.user.domain.repository.dto.LoginRequestDTO;
 import com.like.user.domain.repository.dto.PasswordRequestDTO;
 import com.like.user.service.UserService;
@@ -224,13 +226,19 @@ public class UserController {
 	}
 	
 	@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
-	public ResponseEntity<?> saveAuthority(@RequestBody Authority authority, BindingResult result) {
+	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO authorityDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 			
 		ResponseEntity<?> res = null;
-		
+		Authority authority = userService.getAuthority(authorityDTO.getAuthority());
+		log.info(authorityDTO.toString());
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} else {			
+		} else {
+			if (authority == null) {
+				authority = new Authority(authorityDTO.getAuthority(), authorityDTO.getDescription());
+			} else {
+				DTOConverter.convertEntityByAnnotation(authority, authorityDTO);
+			}
 			userService.createAuthority(authority);					
 									
 			res = WebControllerUtil.getResponse(null,

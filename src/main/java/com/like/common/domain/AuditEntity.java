@@ -23,49 +23,48 @@ public class AuditEntity {
 	 */
 	@CreatedDate
 	@Column(name = "sys_dt", nullable = false, updatable = false)	
-	protected LocalDateTime sysDt;	
+	protected LocalDateTime createdDt;	
 	
 	/**
 	 * 생성유저		
 	 */
 	@CreatedBy
 	@Column(name = "sys_user", nullable = false, updatable = false)
-	protected String sysUser;
+	protected String createdUser;
 	
 	/**
 	 * 수정일자			
 	 */
 	@LastModifiedDate
 	@Column(name = "upd_dt")
-	protected LocalDateTime updDt;
+	protected LocalDateTime modifiedDt;
 	
 	/**
 	 * 수정유저
 	 */
 	@LastModifiedBy
 	@Column(name = "upd_user")
-	protected String updUser;
+	protected String modifiedUser;
 
-	public LocalDateTime getSysDt() {
-		return sysDt;
-	}
-
-	public String getSysUser() {
-		return sysUser;
-	}
-
-	public LocalDateTime getUpdDt() {
-		return updDt;
-	}
-
-	public String getUpdUser() {
-		return updUser;
+	public LocalDateTime getCreatedDt() {
+		return createdDt;
 	}
 	
+	public String getCreatedUser() {
+		return createdUser;
+	}
+	
+	public LocalDateTime getModifiedDt() {
+		return modifiedDt;
+	}
+
+	public String getModifiedUser() {
+		return modifiedUser;
+	}
+
 	@Override
 	public String toString() {
-		return "AuditEntity [sysDt=" + sysDt + ", sysUser=" + sysUser + ", updDt=" + updDt + ", updUser=" + updUser
-				+ "]";
-	}
-		
+		return "AuditEntity [createdDt=" + createdDt + ", createdUser=" + createdUser + ", modifiedDt=" + modifiedDt
+				+ ", modifiedUser=" + modifiedUser + "]";
+	}	
 }
