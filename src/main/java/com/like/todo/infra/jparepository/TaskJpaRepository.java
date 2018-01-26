@@ -46,7 +46,7 @@ public class TaskJpaRepository implements TaskRepository {
 	@Override
 	public List<TaskGroup> getTaskGroupList(String userId) {		
 		return queryFactory.selectFrom(qTaskGroup)
-				.where(qTaskGroup.updUser.eq(userId))
+				.where(qTaskGroup.modifiedBy.eq(userId))
 				.fetch();				
 	}
 
@@ -84,7 +84,7 @@ public class TaskJpaRepository implements TaskRepository {
 	public List<TaskResultListDTO> getTaskList(TaskQueryDTO taskQueryDTO) {
 		
 		return queryFactory.select(Projections.constructor(TaskResultListDTO.class, 
-													qTask.sysDt, qTask.sysUser, qTask.updDt, qTask.updUser,
+													qTask.createdDt, qTask.createdBy, qTask.modifiedDt, qTask.modifiedBy,
 													qTaskGroup.pkTaskGroup, qTaskGroup.taskGroupName,
 													qTask.task, qTask.isCompleted, qTask.dueDate, qTask.comments))
 							.from(qTaskGroup)

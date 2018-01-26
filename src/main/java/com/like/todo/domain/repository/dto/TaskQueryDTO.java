@@ -25,7 +25,7 @@ public class TaskQueryDTO {
 	public BooleanBuilder getQueryFilter() {		
 		
 		if (StringUtils.hasText(this.userId))
-			builder.and(qTaskGroup.updUser.eq(userId));
+			builder.and(qTaskGroup.modifiedBy.eq(userId));
 		
 		if (StringUtils.hasText(this.task))
 			builder.and(qTask.task.like("%"+task+"%"));

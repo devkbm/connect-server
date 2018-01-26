@@ -28,34 +28,34 @@ public class ArticleRequestDTO implements Serializable {
 		
 	String updUser;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     Long pkArticle;	
 	
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
 	Long ppkArticle;		
 	
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
 	String title;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     String contents;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     String pwd;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     String hitCount;
         
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     String fromDt;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     String toDt;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     Integer seq;
     
-	@DTOInfo(classInstance=Article.class)
+	@DTOInfo(targetEntity=Article.class)
     Integer depth;
     	
     Long fkBoard;

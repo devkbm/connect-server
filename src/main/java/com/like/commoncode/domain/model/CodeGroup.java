@@ -57,9 +57,6 @@ public class CodeGroup extends AuditEntity implements Serializable {
 	
 	public CodeGroup(String codeGroup, String codeGroupName) {
 		this.codeGroup = codeGroup;
-		this.codeGroupName = codeGroupName;
-		
-		this.sysUser = "test";
-    	this.updUser = "test";    	    	
+		this.codeGroupName = codeGroupName;				    	   
 	}
 }

@@ -19,52 +19,53 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 @EntityListeners(AuditingEntityListener.class)
 public class AuditEntity {
 	/**
-	 * 생성일자
+	 * 최초 등록 일시
 	 */
 	@CreatedDate
 	@Column(name = "sys_dt", nullable = false, updatable = false)	
 	protected LocalDateTime createdDt;	
 	
 	/**
-	 * 생성유저		
+	 * 최초 등록 유저	
 	 */
 	@CreatedBy
 	@Column(name = "sys_user", nullable = false, updatable = false)
-	protected String createdUser;
+	protected String createdBy;
 	
 	/**
-	 * 수정일자			
+	 * 최종 수정 일시		
 	 */
 	@LastModifiedDate
 	@Column(name = "upd_dt")
 	protected LocalDateTime modifiedDt;
 	
 	/**
-	 * 수정유저
+	 * 최종 수정 유저
 	 */
 	@LastModifiedBy
 	@Column(name = "upd_user")
-	protected String modifiedUser;
+	protected String modifiedBy;
 
 	public LocalDateTime getCreatedDt() {
 		return createdDt;
 	}
-	
-	public String getCreatedUser() {
-		return createdUser;
+
+	public String getCreatedBy() {
+		return createdBy;
 	}
-	
+
 	public LocalDateTime getModifiedDt() {
 		return modifiedDt;
 	}
 
-	public String getModifiedUser() {
-		return modifiedUser;
+	public String getModifiedBy() {
+		return modifiedBy;
 	}
 
 	@Override
 	public String toString() {
-		return "AuditEntity [createdDt=" + createdDt + ", createdUser=" + createdUser + ", modifiedDt=" + modifiedDt
-				+ ", modifiedUser=" + modifiedUser + "]";
-	}	
+		return "AuditEntity [createdDt=" + createdDt + ", createdBy=" + createdBy + ", modifiedDt=" + modifiedDt
+				+ ", modifiedBy=" + modifiedBy + "]";
+	}
+		
 }

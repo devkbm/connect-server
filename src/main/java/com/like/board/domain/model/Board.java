@@ -109,9 +109,7 @@ public class Board extends AuditEntity implements Serializable {
     
     public Board(String boardNm) {
     	this.boardName = boardNm;
-    	
-    	this.createdUser = "test";
-    	this.modifiedUser = "test";
+    	    	
     	this.boardType = "A1";
     	this.fromDate = LocalDate.now();
     	this.toDate = LocalDate.now();    	    	

@@ -12,10 +12,10 @@ import java.lang.annotation.Target;
 public @interface DTOInfo {
 	
 	/**
-	 * 매핑될 Class
+	 * 매핑될 Class 인스턴스
 	 * @return
 	 */
-	Class<?> classInstance();
+	Class<?> targetEntity();
 	
 	/**
 	 * 매핑될 필드명

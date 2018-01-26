@@ -35,15 +35,14 @@ public class FileService {
 		
 		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), uuid);
 																
-		FileInfo file = new FileInfo();			
+		FileInfo file = new FileInfo(pgmId);			
 		file.setUuid(uuid);		
 		file.setPath(localFileRepository.getPath());
 		file.setFileNm(sourceFile.getOriginalFilename());		
 		file.setSize(sourceFile.getSize());
 		file.setContentType(sourceFile.getContentType());		
 		file.setDownloadCnt(0);
-		file.setUserId(userId);
-		file.setPgmId(pgmId);		
+		file.setUserId(userId);		
 												
 		return fileInfoRepository.save(file);		
 	}

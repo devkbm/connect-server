@@ -45,7 +45,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 	public ArticleCheck findFkarticleAndSysuser(Long fkarticle, String userId) {
 									
 		return queryFactory.selectFrom(qArticleCheck)
-					.where(qArticleCheck.createdUser.eq(userId)
+					.where(qArticleCheck.createdBy.eq(userId)
 					.and(qArticleCheck.article.pkArticle.eq(fkarticle)))
 					.fetchOne();				
 	}
@@ -60,7 +60,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 
 		JPAQuery<ArticleResponseDTO> query = queryFactory
 				.select(Projections.constructor(ArticleResponseDTO.class, 
-												qArticle._super.createdDt, qArticle._super.createdUser, qArticle._super.modifiedDt, qArticle._super.modifiedUser,
+												qArticle._super.createdDt, qArticle._super.createdBy, qArticle._super.modifiedDt, qArticle._super.modifiedBy,
 												qArticle.pkArticle, qArticle.ppkArticle, qArticle.title, qArticle.contents, 
 												qArticle.pwd, qArticle.hitCount, qArticle.fromDate, qArticle.toDate,
 												qArticle.seq, qArticle.depth, qArticle.board.pkBoard
@@ -151,7 +151,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 					
 		return queryFactory
 				.selectFrom(qArticleCheck)
-				.where(qArticleCheck.createdUser.eq(userId)
+				.where(qArticleCheck.createdBy.eq(userId)
 				  .and(qArticleCheck.article.pkArticle.eq(fkarticle)))
 				.fetchOne();			
 	}
@@ -182,16 +182,15 @@ public class ArticleJpaRepository implements ArticleRepository {
 		ArticleCheck check = queryFactory
 									.selectFrom(qArticleCheck)
 									.where(qArticleCheck.article.pkArticle.eq(pkAriticle)
-									  .and(qArticleCheck.createdUser.eq(userId)))
+									  .and(qArticleCheck.createdBy.eq(userId)))
 									.fetchOne();
 		
 		if ( check == null) {
-			check = new ArticleCheck();				
-			check.setArticle(article);			
-		} else {
-			check.updateHitCnt();
-		}
+			check = new ArticleCheck(article);				
+		}				
 		
+		check.updateHitCnt();
+				
 		jpaArticleCheck.save(check);
 			 		
 		return article;		

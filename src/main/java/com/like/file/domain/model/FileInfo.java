@@ -61,15 +61,10 @@ public class FileInfo extends AuditEntity implements Serializable {
 	@Column(name="download_cnt")
 	long downloadCnt;	
 		
-	public FileInfo() {
-		this.sysUser = "kbm";
-		this.updUser = "kbm";
-	}
+	protected FileInfo() { }
 	
 	public FileInfo(String pgmId) {
-		this.pgmId = pgmId;
-		this.sysUser = "kbm";
-		this.updUser = "kbm";
+		this.pgmId = pgmId;		
 	}
 	
 	public void plusDownloadCount() {
