@@ -34,6 +34,7 @@ import com.like.user.domain.model.User;
 import com.like.user.domain.repository.dto.AuthoritySaveDTO;
 import com.like.user.domain.repository.dto.LoginRequestDTO;
 import com.like.user.domain.repository.dto.PasswordRequestDTO;
+import com.like.user.domain.repository.dto.UserSaveDTO;
 import com.like.user.service.UserService;
 
 @RestController
@@ -124,14 +125,19 @@ public class UserController {
 	}
 	
 	@RequestMapping(value={"/user"}, method={RequestMethod.POST,RequestMethod.PUT})
-	public ResponseEntity<?> saveUser(@RequestBody User user, BindingResult result) {
+	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 			
 		ResponseEntity<?> res = null;
+		User user = null;
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} else {
+			user = userService.getUser(userDTO.getUserId());
 			log.info(user.toString());
+			
+			DTOConverter.convertEntityByAnnotation(user, userDTO);
+			
 			userService.createUser(user);					
 									
 			res = WebControllerUtil.getResponse(null,

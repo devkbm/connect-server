@@ -38,7 +38,8 @@ public class User extends AuditEntity implements UserDetails {
 	@Column(name="user_name")
 	private String name;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
+	@JsonIgnore
 	@Column(name="password")
 	private String password;	
 	
