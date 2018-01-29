@@ -38,8 +38,7 @@ public class User extends AuditEntity implements UserDetails {
 	@Column(name="user_name")
 	private String name;
 	
-	//@JsonProperty(access = Access.WRITE_ONLY)
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)	
 	@Column(name="password")
 	private String password;	
 	
@@ -60,7 +59,18 @@ public class User extends AuditEntity implements UserDetails {
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="authority_name"))
 	private List<Authority> authorities = new ArrayList<Authority>();
-
+	
+	protected User() {}
+	
+	public User(String userId, String userName) {
+		this.userId = userId;
+		this.name = userName;
+		this.isEnabled = true;
+		this.isAccountNonExpired = true;
+		this.isAccountNonLocked = true;
+		this.isCredentialsNonExpired = true;
+	}
+	
 	@Override
 	@JsonIgnore	
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -122,6 +132,10 @@ public class User extends AuditEntity implements UserDetails {
 		this.password = password;
 	}
 	
+	/**
+	 * 비밀번호를 초기화한다. 
+	 * 초기화 비밀번호 : 12345678
+	 */
 	public void initPassword() {
 		this.password = "12345678";	
 	}

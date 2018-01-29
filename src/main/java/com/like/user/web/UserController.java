@@ -19,7 +19,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,8 +60,8 @@ public class UserController {
 		
 		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 	}
-	
-	@RequestMapping(value={"/user/login"}, method=RequestMethod.POST) 
+		 
+	@PostMapping(value={"/user/login"})
 	public AuthenticationToken login(@RequestBody LoginRequestDTO dto, HttpSession session) {
 		
 		String username = dto.getUsername();
@@ -73,9 +76,8 @@ public class UserController {
 		
 		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), session.getId());
 	}
-	
-	
-	@RequestMapping(value={"/user/check/{id}"}, method=RequestMethod.GET) 
+		
+	@GetMapping(value={"/user/{id}/check"})
 	public ResponseEntity<?> checkId(@PathVariable(value="id") String userId) {
 		
 		ResponseEntity<?> result = null;
@@ -90,9 +92,8 @@ public class UserController {
 		
 		return result;
 	}
-	
-	
-	@RequestMapping(value={"/user/{id}"}, method=RequestMethod.GET) 
+		
+	@GetMapping(value={"/user/{id}"})
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) {
 		
 		ResponseEntity<?> result = null;		
@@ -107,8 +108,8 @@ public class UserController {
 		
 		return result;
 	}
-	
-	@RequestMapping(value={"/user"}, method=RequestMethod.GET) 
+		
+	@GetMapping(value={"/user"})
 	public ResponseEntity<?> getUserList() {
 		
 		ResponseEntity<?> result = null;		
@@ -124,7 +125,7 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/user"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@PostMapping(value={"/user/{id}"})
 	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 			
 		ResponseEntity<?> res = null;
@@ -133,8 +134,7 @@ public class UserController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} else {
-			user = userService.getUser(userDTO.getUserId());
-			log.info(user.toString());
+			user = new User(userDTO.getUserId(), userDTO.getName());			
 			
 			DTOConverter.convertEntityByAnnotation(user, userDTO);
 			
@@ -150,7 +150,7 @@ public class UserController {
 		return res;
 	}	
 	
-	@RequestMapping(value={"/user/{id}"}, method={RequestMethod.DELETE})
+	@DeleteMapping(value={"/user/{id}"})
 	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String userId) {
 			
 		ResponseEntity<?> res = null;
@@ -165,8 +165,8 @@ public class UserController {
 								 					
 		return res;
 	}
-	
-	@RequestMapping(value={"/user/changePassword"}, method={RequestMethod.POST})
+		
+	@PostMapping(value={"/user/{id}/changePassword"})
 	public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDTO dto) {
 			
 		ResponseEntity<?> res = null;
@@ -181,15 +181,14 @@ public class UserController {
 								 					
 		return res;
 	}
-	
-	
-	@RequestMapping(value={"/user/{id}/initPassword"}, method={RequestMethod.POST})
-	public ResponseEntity<?> initializePassword(@RequestBody PasswordRequestDTO dto) {
+			
+	@PostMapping(value={"/user/{id}/initPassword"})
+	public ResponseEntity<?> initializePassword(@PathVariable(value="id") String userId) {
 			
 		ResponseEntity<?> res = null;
-						
-		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());					
-								
+				
+		userService.initPassword(userId);
+													
 		res = WebControllerUtil.getResponse(null,
 				1, 
 				true, 
@@ -235,16 +234,19 @@ public class UserController {
 	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO authorityDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 			
 		ResponseEntity<?> res = null;
-		Authority authority = userService.getAuthority(authorityDTO.getAuthority());
-		log.info(authorityDTO.toString());
+		Authority authority = null;
+				
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} else {
+			authority = userService.getAuthority(authorityDTO.getAuthority());
+			
 			if (authority == null) {
 				authority = new Authority(authorityDTO.getAuthority(), authorityDTO.getDescription());
 			} else {
 				DTOConverter.convertEntityByAnnotation(authority, authorityDTO);
 			}
+			
 			userService.createAuthority(authority);					
 									
 			res = WebControllerUtil.getResponse(null,
