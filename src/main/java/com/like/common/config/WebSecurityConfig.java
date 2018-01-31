@@ -69,9 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()			
 			.authorizeRequests()
-			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()			
-				.antMatchers("/auth/login").permitAll()
-				.antMatchers("/user/**").permitAll()
+			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()							
+				.antMatchers("/user/login").permitAll()
 				//.antMatchers("/grw/**").permitAll()//hasRole("USER")							
 				.anyRequest().authenticated().and()				
 			// 모든 연결을 HTTPS로 강제 전환
