@@ -58,14 +58,14 @@ public class WebControllerUtil {
 	    return new ResponseEntity<ResponseObjectList>(obj,responseHeaders,httpStatus);	    	    	    	    	
 	}
 	
-	public static <T> ResponseEntity<ResponseObject> getResponse(T data, int size, boolean success, String message, HttpStatus httpStatus) {
+	public static <T> ResponseEntity<ResponseObject<T>> getResponse(T data, int size, boolean success, String message, HttpStatus httpStatus) {
 		
 		ResponseObject<T> obj = new ResponseObject<T>(data, size, success, message);		
 				
 	    HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.add("Content-Type", "application/json;charset=UTF-8"); //인코딩을 utf-8로 설정
 	    
-	    return new ResponseEntity<ResponseObject>(obj,responseHeaders,httpStatus);	    	    	    	    	
+	    return new ResponseEntity<ResponseObject<T>>(obj,responseHeaders,httpStatus);	    	    	    	    	
 	}
 	
 	  

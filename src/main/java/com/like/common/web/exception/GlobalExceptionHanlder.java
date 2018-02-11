@@ -2,22 +2,21 @@ package com.like.common.web.exception;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHanlder {
+public class GlobalExceptionHanlder extends ResponseEntityExceptionHandler {
 	
-	//@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason ="오류")
 	@ExceptionHandler(value = ControllerException.class)  
-    public void handleException(Exception e, HttpServletResponse response) throws IOException{		
-		
-		response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());;
-		
-		//WebControllerUtil.getResponse(null, 0, false, "조회시 오류가 발생하였습니다.", HttpStatus.OK);
+    protected ResponseEntity<Object> handleException(RuntimeException e, WebRequest request) throws IOException{		
+				
+		return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);  		
 	}
 	
 }
