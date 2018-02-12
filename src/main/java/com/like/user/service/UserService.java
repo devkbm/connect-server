@@ -163,7 +163,7 @@ public class UserService implements UserDetailsService {
 			rtn = userRepository.getUser(userId) != null ? true : false;					
 		} catch (UsernameNotFoundException ex) {
 			rtn = false;		
-		}
+		}		
 		
 		return rtn; 
 	}	
