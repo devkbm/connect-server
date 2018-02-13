@@ -1,10 +1,10 @@
 package com.like.user.domain.repository.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.like.common.domain.annotation.DTOInfo;
-import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 
 import lombok.Data;
@@ -41,5 +41,5 @@ public class UserSaveDTO {
 	@DTOInfo(targetEntity=User.class, fieldName="isEnabled")
 	Boolean enabled;
 					
-	List<Authority> authorityList = null;
+	List<String> authorityList = new ArrayList<String>();
 }

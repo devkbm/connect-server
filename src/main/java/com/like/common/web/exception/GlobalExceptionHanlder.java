@@ -11,12 +11,12 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHanlder extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHanlder /*extends ResponseEntityExceptionHandler*/ {
 	
-	@ExceptionHandler(value = ControllerException.class)  
+	/*@ExceptionHandler(value = ControllerException.class)  
     protected ResponseEntity<Object> handleException(RuntimeException e, WebRequest request) throws IOException{		
 				
 		return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);  		
-	}
+	}*/
 	
 }

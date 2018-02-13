@@ -80,18 +80,7 @@ public class UserService implements UserDetailsService {
 	public void deleteUser(String userId) {
 		 userRepository.deleteUser(userId);
          userRepository.deleteAuthority(userId);
-	}
-	
-	/**
-	 * 패스워드가 맞는지 검증한다.
-	 * @param user
-	 * @param password
-	 * @return 검증 여부
-	 */
-	public boolean validPassword(User user, String password) {
-		
-		return user.isVaild(password);		
-	}
+	}	
 	
 	/**
 	 * 사용자 비밀번호를 변경한다.
@@ -134,6 +123,15 @@ public class UserService implements UserDetailsService {
         return userRepository.getAllAuthorities();
 	}
 	
+	/**
+	 * 
+	 * @param authorityNameList
+	 * @return
+	 */
+	public List<Authority> getAllAuthorityList(List<String> authorityNameList) {        									
+        return userRepository.getAuthorityList(authorityNameList);
+	}
+		
 	/**
 	 * 권한 도메인을 조회한다.
 	 * @param authorityName	권한명

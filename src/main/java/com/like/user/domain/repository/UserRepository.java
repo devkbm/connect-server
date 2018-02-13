@@ -49,15 +49,21 @@ public interface UserRepository {
 	List<Authority> readAuthority(String userId);	
 	
 	/**
-	 * 전체 권한 리스트를 조회한다.
+	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
 	 */
 	List<Authority> getAllAuthorities();
 	
+	/**
+	 * 
+	 * @param authorityNameList 권한 명칭 리스트
+	 * @return	권한 도메인 리스트
+	 */
+	List<Authority> getAuthorityList(List<String> authorityNameList);
 	
 	/**
 	 * 권한 도메인을 조회한다.
-	 * @param authorityName	권한
+	 * @param authorityName	권한명칭
 	 * @return 권한 도메인
 	 */
 	Authority getAuthority(String authorityName);

@@ -70,8 +70,12 @@ public class UserJpaRepository implements UserRepository {
 	public List<Authority> getAllAuthorities() {
 		return jpaAuthority.findAll();
 	}
-		
-	
+			
+	@Override
+	public List<Authority> getAuthorityList(List<String> authorityNameList) {
+		return jpaAuthority.findAll(authorityNameList);
+	}
+
 	@Override
 	public Authority getAuthority(String authorityName) {
 		return jpaAuthority.findOne(authorityName);

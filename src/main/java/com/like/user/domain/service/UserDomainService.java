@@ -16,12 +16,23 @@ public class UserDomainService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public void createUser(User user) {
-		List<Authority> authorities = new ArrayList<Authority>();   		
-        authorities.add(new Authority("ROLE_USER","기본 로그인 권한"));
-				
-		user.setAuthorities(authorities);
+	public void createUser(User user) {		
+		if ( user.getAuthorityList().isEmpty() ) {
+			initAuthority(user);
+		}
+		
 		userRepository.saveUser(user);
+	}
+	
+	/**
+	 * 사용자 신규등록시 권한이 없을 경우 기본 권한을 추가한다.
+	 * @param user	사용자 도메인
+	 */
+	private void initAuthority(User user) {							
+		List<Authority> authorities = new ArrayList<Authority>();
+		
+		authorities.add(userRepository.getAuthority("ROLE_USER"));			
+		user.setAuthorities(authorities);
 	}
 		
 }

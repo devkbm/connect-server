@@ -124,18 +124,22 @@ public class UserController {
 		return result;
 	}
 	
-	@PostMapping(value={"/user/{id}"})
+	@PostMapping(value={"/user/{id}"})	
 	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 			
 		ResponseEntity<?> res = null;
 		User user = null;
+		List<Authority> authList = null;
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} else {
 			user = new User(userDTO.getUserId(), userDTO.getName());			
 			
-			DTOConverter.convertEntityByAnnotation(user, userDTO);
+			user = DTOConverter.convertEntityByAnnotation(user, userDTO);
+			authList = userService.getAllAuthorityList(userDTO.getAuthorityList());
+			
+			user.setAuthorities(authList);
 			
 			userService.createUser(user);					
 									
@@ -229,7 +233,8 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
+	//@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@PostMapping("/authority")
 	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO authorityDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
 			
 		ResponseEntity<?> res = null;
