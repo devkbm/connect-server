@@ -62,5 +62,5 @@ public class ArticleRequestDTO implements Serializable {
             
     @JsonIgnore
     MultipartFile file;
-    
+        
 }

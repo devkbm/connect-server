@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.apache.ibatis.annotations.Case;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -54,10 +56,10 @@ public class User extends AuditEntity implements UserDetails {
 	@Column(name="enabled_yn")
 	private Boolean isEnabled;
 				
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="cmuserauthority",
     		joinColumns= @JoinColumn(name="user_id"),
-    		inverseJoinColumns=@JoinColumn(name="authority_name"))
+    		inverseJoinColumns=@JoinColumn(name="authority_name"))	
 	private List<Authority> authorities = new ArrayList<Authority>();
 	
 	protected User() {}

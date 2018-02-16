@@ -78,8 +78,7 @@ public class UserService implements UserDetailsService {
 	 * @param userId	사용자 아이디
 	 */
 	public void deleteUser(String userId) {
-		 userRepository.deleteUser(userId);
-         userRepository.deleteAuthority(userId);
+		 userRepository.deleteUser(userId);         
 	}	
 	
 	/**
