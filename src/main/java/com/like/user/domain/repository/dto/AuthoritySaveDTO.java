@@ -23,4 +23,8 @@ public class AuthoritySaveDTO {
 		
 	@DTOInfo(targetEntity=Authority.class, fieldName="description")
 	String description;
+	
+	public Authority createAuthority() {
+		return new Authority(this.authority, this.description);
+	}
 }

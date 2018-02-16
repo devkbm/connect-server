@@ -99,7 +99,9 @@ public class UserController {
 		
 		User user = userService.getUser(userId);				
 		
-		result = WebControllerUtil.getResponse(user,
+		UserSaveDTO dto = new UserSaveDTO(user);		
+		
+		result = WebControllerUtil.getResponse(dto,
 				 user == null ? 0 : 1, 
 				 user == null ? false : true,
 				 "조회 되었습니다.",

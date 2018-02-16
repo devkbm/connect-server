@@ -154,16 +154,8 @@ public class UserService implements UserDetailsService {
 	 * @param userId
 	 * @return 기존 아이디가 있으면 true, 아니면 false 리턴
 	 */
-	public boolean CheckDuplicationUser(String userId) {		
-		boolean rtn = false;		
-		
-		try {			
-			rtn = userRepository.getUser(userId) != null ? true : false;					
-		} catch (UsernameNotFoundException ex) {
-			rtn = false;		
-		}		
-		
-		return rtn; 
+	public boolean CheckDuplicationUser(String userId) {						
+		return userRepository.getUser(userId) != null ? true : false; 
 	}	
 	
 	public PasswordEncoder passwordEncoder(){

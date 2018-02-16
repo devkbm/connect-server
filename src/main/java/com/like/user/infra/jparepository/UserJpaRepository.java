@@ -32,11 +32,7 @@ public class UserJpaRepository implements UserRepository {
 	
 	@Override
 	public User getUser(String userId) throws UsernameNotFoundException {
-		User user = jpaUser.findOne(userId);
-		if (user == null) {
-			throw new UsernameNotFoundException(userId + " is Not Found");
-		}
-		return user;
+		return jpaUser.findOne(userId);
 	}
 	
 	@Override
