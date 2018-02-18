@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.domain.DTOConverter;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
@@ -49,6 +51,9 @@ public class UserController {
 	
 	@Resource
 	UserService userService;
+	
+	@Resource
+	MenuQueryService menuQueryService;
 	
 	private void authentication(String username, String password, List<GrantedAuthority> authorities, HttpSession session) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
@@ -73,7 +78,7 @@ public class UserController {
         
 		User user = userService.getUser(username); 			
 		
-		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), session.getId());
+		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
 	}
 		
 	@GetMapping(value={"/user/{id}/check"})
@@ -99,6 +104,7 @@ public class UserController {
 		
 		User user = userService.getUser(userId);				
 		
+		log.info(user.toString());
 		UserSaveDTO dto = new UserSaveDTO(user);		
 		
 		result = WebControllerUtil.getResponse(dto,
@@ -132,6 +138,7 @@ public class UserController {
 		ResponseEntity<?> res = null;
 		User user = null;
 		List<Authority> authList = null;
+		List<MenuGroup> menuGroupList = null;
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
@@ -139,9 +146,12 @@ public class UserController {
 			user = new User(userDTO.getUserId(), userDTO.getName());			
 			
 			user = DTOConverter.convertEntityByAnnotation(user, userDTO);
-			authList = userService.getAllAuthorityList(userDTO.getAuthorityList());
 			
+			authList = userService.getAllAuthorityList(userDTO.getAuthorityList());			
 			user.setAuthorities(authList);
+			
+			menuGroupList = menuQueryService.getMenuGroupList(userDTO.getMenuGroupList());
+			user.setMenuGroupList(menuGroupList);
 			
 			userService.createUser(user);					
 									

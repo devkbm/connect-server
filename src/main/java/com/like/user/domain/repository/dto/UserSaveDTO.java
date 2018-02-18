@@ -44,6 +44,8 @@ public class UserSaveDTO {
 					
 	List<String> authorityList = new ArrayList<String>();
 
+	List<String> menuGroupList = new ArrayList<String>(); 
+	
 	public UserSaveDTO() {}
 	
 	public UserSaveDTO(User user) {
@@ -61,6 +63,10 @@ public class UserSaveDTO {
 		this.authorityList = user.getAuthorityList()
 								.stream()
 								.map(auth -> auth.getAuthority())
+								.collect(Collectors.toList());
+		this.menuGroupList = user.getMenuGroupList()
+								.stream()
+								.map(menuGroup -> menuGroup.getMenuGroupCode())
 								.collect(Collectors.toList());
 	}
 	

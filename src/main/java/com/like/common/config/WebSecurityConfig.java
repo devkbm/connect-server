@@ -72,7 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()							
 				.antMatchers("/user/login").permitAll()
 				//.antMatchers("/grw/**").permitAll()//hasRole("USER")							
-				.anyRequest().authenticated().and()				
+				//.anyRequest().authenticated().and()		// 인증된 요청만 허용
+				.anyRequest().permitAll().and()				// 모든 요청 허용(테스트용도)
 			// 모든 연결을 HTTPS로 강제 전환
 			//.requiresChannel().anyRequest().requiresSecure().and()
 			/*.formLogin()

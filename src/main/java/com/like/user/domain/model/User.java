@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
+import com.like.menu.domain.model.MenuGroup;
 
 import lombok.ToString;
 
@@ -62,6 +63,12 @@ public class User extends AuditEntity implements UserDetails {
     		inverseJoinColumns=@JoinColumn(name="authority_name"))	
 	private List<Authority> authorities = new ArrayList<Authority>();
 	
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name="cmusermenugroup",
+    		joinColumns= @JoinColumn(name="user_id"),
+    		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
+	private List<MenuGroup> menuGroupList = new ArrayList<MenuGroup>();
+	
 	protected User() {}
 	
 	public User(String userId, String userName) {
@@ -78,11 +85,7 @@ public class User extends AuditEntity implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
-	
-	public List<Authority> getAuthorityList() {
-		return authorities;
-	}
-	
+			
 	@Override
 	@JsonProperty("userId")
 	public String getUsername() {		
@@ -122,6 +125,10 @@ public class User extends AuditEntity implements UserDetails {
 		return this.password.equals(password) ? true : false;
 	}		
 	
+	public List<Authority> getAuthorityList() {
+		return authorities;
+	}
+	
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;		
 	}
@@ -129,6 +136,18 @@ public class User extends AuditEntity implements UserDetails {
 	public void addAuthoritiy(Authority authority) {
 		this.authorities.add(authority);
 	}	
+			
+	public List<MenuGroup> getMenuGroupList() {
+		return menuGroupList;
+	}
+			
+	public void getMenuGroupList(List<MenuGroup> menuGroupList) {
+		this.menuGroupList = menuGroupList;
+	}
+	
+	public void setMenuGroupList(List<MenuGroup> menuGroupList) {
+		this.menuGroupList = menuGroupList;
+	}
 	
 	public void changePassword(String password) {
 		this.password = password;
