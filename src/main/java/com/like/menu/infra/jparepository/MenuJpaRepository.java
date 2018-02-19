@@ -92,6 +92,9 @@ public class MenuJpaRepository implements MenuRepository {
 		QMenu parent = new QMenu("parent");
 		
 		Expression<Boolean> isLeaf = new CaseBuilder()
+											.when(qMenu.id.menuCode.eq("MENU1")).then(false)
+											.when(qMenu.id.menuCode.eq("MENU2")).then(false)
+											.when(qMenu.id.menuCode.eq("MENU3")).then(false)
 											.when(qMenu.parentMenuCode.isNull()).then(true)
 											.otherwise(false).as("isLeaf");
 				
