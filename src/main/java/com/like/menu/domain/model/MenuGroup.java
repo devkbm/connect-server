@@ -1,5 +1,6 @@
 package com.like.menu.domain.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Table(name = "cmmenugroup")
 @EntityListeners(AuditingEntityListener.class)
-public class MenuGroup extends AuditEntity {
+public class MenuGroup extends AuditEntity implements Serializable {
 	
 	@Id
 	@Column(name="menu_group_code")

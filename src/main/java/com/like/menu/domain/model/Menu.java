@@ -38,10 +38,10 @@ import lombok.ToString;
 @Table(name = "cmmenu")
 @EntityListeners(AuditingEntityListener.class)
 public class Menu extends AuditEntity implements Serializable {
-	
-	@JsonUnwrapped
-	@EmbeddedId
-	private MenuId id;
+		
+	@Id
+	@Column(name = "menu_code")
+	private String menuCode;
 	
 	@Column(name="menu_name")
 	private String menuName; 		
@@ -49,9 +49,9 @@ public class Menu extends AuditEntity implements Serializable {
 	@Column(name="p_menu_code")
 	private String parentMenuCode;
 	
-	/*@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="p_menu_code", insertable=false, updatable=false )
-	Menu parent;*/
+	Menu parent;
 	
 	@Column(name="seq")
 	private long sequence;
@@ -61,28 +61,18 @@ public class Menu extends AuditEntity implements Serializable {
 			
 	@Column(name="url")
 	private String url;
-			 			
-	@JsonIgnore
-	@MapsId("menuGroupCode")
+			 				
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)
 	private MenuGroup menuGroup;
 	
 	protected Menu() {}
 	
-	public Menu(MenuId id, String menuName, MenuGroup menugGRoup) {
-		this.id = id;
+	public Menu(String menuCode, String menuName, MenuGroup menugGroup) {
+		this.menuCode = menuCode;
 		this.menuName = menuName;
 	}
-	
-	public void setMenu(MenuGroup menuGroup) {
-		this.menuGroup = menuGroup;		
-	}
-	
-	public MenuId getId() {
-		return this.id;
-	}
-	
+				
 	public Menu setMenuInfo(String menuName, String parentMenuCode, long sequence, long level, String url) {		
 		this.menuName = menuName;
 		this.parentMenuCode = parentMenuCode;
@@ -91,6 +81,10 @@ public class Menu extends AuditEntity implements Serializable {
 		this.url = url;
 		
 		return this;
+	}
+	
+	public void setMenuGroup(MenuGroup menuGroup) {
+		this.menuGroup = menuGroup;
 	}
 	
 }

@@ -74,8 +74,8 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public Menu getMenu(MenuId menuId) {
-		return jpaMenu.findOne(menuId);
+	public Menu getMenu(String menuCode) {
+		return jpaMenu.findOne(menuCode);
 	}
 
 	@Override
@@ -92,20 +92,20 @@ public class MenuJpaRepository implements MenuRepository {
 		QMenu parent = new QMenu("parent");
 		
 		Expression<Boolean> isLeaf = new CaseBuilder()
-											.when(qMenu.id.menuCode.eq("MENU1")).then(false)
-											.when(qMenu.id.menuCode.eq("MENU2")).then(false)
-											.when(qMenu.id.menuCode.eq("MENU3")).then(false)
+											/*.when(qMenu.menuCode.eq("MENU1")).then(false)
+											.when(qMenu.menuCode.eq("MENU2")).then(false)
+											.when(qMenu..menuCode.eq("MENU3")).then(false)*/
 											.when(qMenu.parentMenuCode.isNull()).then(true)
 											.otherwise(false).as("isLeaf");
 				
 		
 		JPAQuery<MenuHierarchyDTO> query = queryFactory
 				.select(Projections.constructor(MenuHierarchyDTO.class
-											, qMenu.id.menuGroupCode, qMenu.id.menuCode, qMenu.menuName
+											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
 											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level
 											, qMenu.url, isLeaf))
 				.from(qMenu)								
-				.where(qMenu.id.menuGroupCode.eq(menuGroupCode));
+				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode));
 										
 		if (parentMenuCode == null) {
 			builder.and(qMenu.parentMenuCode.isNull());
@@ -143,8 +143,8 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public void deleteMenu(MenuId menuId) {
-		jpaMenu.delete(menuId);
+	public void deleteMenu(String menuCode) {
+		jpaMenu.delete(menuCode);
 	}					
 	
 }

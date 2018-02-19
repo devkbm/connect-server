@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.id.MenuId;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
 @Service
@@ -27,15 +26,15 @@ public class MenuCommandService {
 		menuJpaRepository.deleteMenuGroup(menuGroupCode);
 	}
 	
-	public void saveMenu(Menu menu) {
-		MenuGroup menuGroup = menuJpaRepository.getMenuGroup(menu.getId().getMenuGroupCode());
-		menu.setMenu(menuGroup);
+	public void saveMenu(Menu menu, String menuGroupCode) {
+		MenuGroup menuGroup = menuJpaRepository.getMenuGroup(menuGroupCode);
+		menu.setMenuGroup(menuGroup);
 				
 		menuJpaRepository.saveMenu(menu);		
 	}
 	
-	public void deleteMenu(MenuId menuId) {
-		menuJpaRepository.deleteMenu(menuId);
+	public void deleteMenu(String menuCode) {
+		menuJpaRepository.deleteMenu(menuCode);
 	}
 	
 }

@@ -37,7 +37,7 @@ public class MenuDTO implements Serializable {
 					
 	public Menu setMenu(Menu menu) {		
 		if (menu == null) {
-			menu = new Menu(new MenuId(this.getMenuGroupCode(), this.getMenuCode()),this.getMenuName(), null);
+			menu = new Menu(this.getMenuCode(),this.getMenuName(), null);
 		} else {
 			menu.setMenuInfo(this.getMenuName(), this.getParentMenuCode(), this.getSequence(), this.getLevel(), this.getUrl());
 		}

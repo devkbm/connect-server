@@ -136,8 +136,10 @@ public class MenuController {
 			
 		ResponseEntity<?> result = null;
 		
-		Menu menu = menuQueryService.getMenu(new MenuId(menuGroupCode, menuCode)); 		
+		Menu menu = menuQueryService.getMenu(menuCode); 		
+		
 		log.info(menu.toString());
+		
 		result = WebControllerUtil.getResponse(menu, 
 				menu != null ? 1 : 0, 
 				true, 
@@ -176,13 +178,11 @@ public class MenuController {
 			throw new ControllerException("오류");
 		} 
 		
-		Menu menu = menuQueryService.getMenu(new MenuId(menuDTO.getMenuGroupCode(),menuDTO.getMenuCode()));
+		Menu menu = menuQueryService.getMenu(menuDTO.getMenuCode());
 		
 		menu = menuDTO.setMenu(menu);
-		
-		log.info(menu.toString());
-		
-		menuCommandService.saveMenu(menu);																			
+					
+		menuCommandService.saveMenu(menu,menuDTO.getMenuGroupCode());																			
 		
 		res = WebControllerUtil.getResponse(null,
 				menu != null ? 1 : 0, 

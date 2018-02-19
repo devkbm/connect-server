@@ -39,8 +39,8 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenuGroupList(menuGroupCodeList);
 	}
 	
-	public Menu getMenu(MenuId menuId) {
-		return menuJpaRepository.getMenu(menuId);
+	public Menu getMenu(String menuCode) {
+		return menuJpaRepository.getMenu(menuCode);
 	}
 	
 	public List<Menu> getMenuList(String likeMenuName) {

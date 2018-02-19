@@ -7,6 +7,6 @@ import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.id.MenuId;
 
 @Repository
-public interface JpaMenu extends JpaRepository<Menu, MenuId> {
+public interface JpaMenu extends JpaRepository<Menu, String> {
 
 }

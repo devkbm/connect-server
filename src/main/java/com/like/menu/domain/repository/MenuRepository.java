@@ -24,11 +24,11 @@ public interface MenuRepository {
 	void deleteMenuGroup(String menuGroupCode);
 	
 	
-	Menu getMenu(MenuId menuId);
+	Menu getMenu(String menuCode);
 	
 	List<Menu> getMenuList(String likeMenuName);
 			
 	void saveMenu(Menu menu);
 	
-	void deleteMenu(MenuId menuId);	
+	void deleteMenu(String menuCode);	
 }
