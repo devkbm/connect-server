@@ -1,9 +1,11 @@
 package com.like.menu.web;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.common.domain.DTOConverter;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
@@ -89,7 +92,7 @@ public class MenuController {
 	}
 	
 	@RequestMapping(value={"/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenuGroup(@RequestBody MenuGroupDTO menuGroupDTO, BindingResult result) {
+	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO menuGroupDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
 			
 		ResponseEntity<?> res = null;
 		
@@ -99,7 +102,7 @@ public class MenuController {
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupDTO.getMenuGroupCode());
 															
-		menuGroup = menuGroupDTO.setMenuGroup(menuGroup);
+		menuGroup = DTOConverter.convertEntityByAnnotation(menuGroupDTO, menuGroup, MenuGroup.class);
 			
 		menuCommandService.saveMenuGroup(menuGroup);
 		
@@ -138,12 +141,12 @@ public class MenuController {
 		
 		Menu menu = menuQueryService.getMenu(menuCode); 		
 		
-		log.info(menu.toString());
+		MenuDTO dto = new MenuDTO(menu);
 		
-		result = WebControllerUtil.getResponse(menu, 
-				menu != null ? 1 : 0, 
+		result = WebControllerUtil.getResponse(dto, 
+				dto != null ? 1 : 0, 
 				true, 
-				String.format("%d 건 조회되었습니다.", menu != null ? 1 : 0), 
+				String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0), 
 				HttpStatus.OK); 					
 		
 		return result;
@@ -168,21 +171,19 @@ public class MenuController {
 	
 	
 	@RequestMapping(value={"/menugroup/{groupcode}/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenu(@RequestBody MenuDTO menuDTO, BindingResult result) {
+	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO menuDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException, InvocationTargetException {
 			
 		ResponseEntity<?> res = null;
-		
-		log.info(menuDTO.toString());
-		
+						
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
 		
-		Menu menu = menuQueryService.getMenu(menuDTO.getMenuCode());
-		
-		menu = menuDTO.setMenu(menu);
+		Menu menu = menuQueryService.getMenu(menuDTO.getMenuCode());			
+				
+		menu = DTOConverter.convertEntityByAnnotation(menuDTO, menu, Menu.class);		
 					
-		menuCommandService.saveMenu(menu,menuDTO.getMenuGroupCode());																			
+		menuCommandService.saveMenu(menu, menuDTO.getMenuGroupCode());																			
 		
 		res = WebControllerUtil.getResponse(null,
 				menu != null ? 1 : 0, 

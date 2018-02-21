@@ -39,19 +39,6 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	@OneToMany(mappedBy = "menuGroup")          
     List<Menu> menuList = new ArrayList<Menu>();
 	
-	protected MenuGroup() {}
-
-	public MenuGroup(String menuGroupCode, String menuGroupName, String description) {		
-		this.menuGroupCode = menuGroupCode;
-		this.menuGroupName = menuGroupName;
-		this.description = description;		
-	}
+	public MenuGroup() {}
 	
-	public MenuGroup setMenuGroupInfo(String menuGroupName, String description) {
-		this.menuGroupName = menuGroupName;
-		this.description = description;
-		
-		return this;
-	}
-		
 }

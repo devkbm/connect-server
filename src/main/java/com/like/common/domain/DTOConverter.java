@@ -1,6 +1,8 @@
 package com.like.common.domain;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,18 +38,23 @@ public class DTOConverter {
 		}
 					
 		return entity;	
-	}
-		
+	}		
+	
 	/**
 	 * DTO -> Entity 값 복사, 특정 엔티티의 필드 변환 기능 (DTOInfo 어노테이션 활용)
-	 * @param entity	복사 대상 Entity 클래스
-	 * @param dto		원본 DTO 클래스
+	 * @param dto			원본 DTO 클래스
+	 * @param entity		복사 대상 Entity 클래스
+	 * @param entityClass	entity 클래스 정보
 	 * @return	Entity 클래스
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
-	 * @throws SecurityException
+	 * @throws InstantiationException
 	 */
-	public static <T extends Object, Y extends Object> Y convertEntityByAnnotation(Y entity, T dto) throws IllegalArgumentException, IllegalAccessException, SecurityException {		
+	public static <T extends Object, Y extends Object> Y convertEntityByAnnotation(T dto, Y entity, Class<?> entityClass) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+		
+		if (entity == null)				
+			entity = (Y) entityClass.newInstance();		
+		
 		List<Field> dtoFields = getAllFields(dto.getClass());
 		List<Field> entityFields = getAllFields(entity.getClass());									
 		

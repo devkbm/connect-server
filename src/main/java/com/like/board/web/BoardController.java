@@ -1,5 +1,6 @@
 package com.like.board.web;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -103,7 +104,7 @@ public class BoardController {
 	}
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardRequestDTO2 boardDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardRequestDTO2 boardDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InstantiationException, InvocationTargetException {
 			
 		ResponseEntity<?> res = null;
 		
@@ -120,7 +121,7 @@ public class BoardController {
 			log.info(boardDTO.toString());
 			//log.info(board.toString());
 			//board = DTOConverter.convertEntity(board, boardDTO);						
-			board = DTOConverter.convertEntityByAnnotation(board, boardDTO);
+			board = DTOConverter.convertEntityByAnnotation(boardDTO, board, Board.class);
 			log.info(board.toString());
 			boardCommandService.saveBoard(board);
 																						

@@ -5,8 +5,11 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.like.common.domain.annotation.DTOInfo;
 import com.like.menu.domain.model.Menu;
-import com.like.menu.domain.model.id.MenuId;
+
 
 import lombok.Data;
 
@@ -20,21 +23,44 @@ public class MenuDTO implements Serializable {
 	LocalDateTime modifiedDt;
 	
 	String modifiedBy;
-	
+		
 	private String menuGroupCode;
 		
+	@DTOInfo(targetEntity=Menu.class,fieldName="menuCode")
 	private String menuCode;
 	
+	@DTOInfo(targetEntity=Menu.class,fieldName="menuName")
 	private String menuName;
 	
+	@NotEmpty
+	@DTOInfo(targetEntity=Menu.class,fieldName="parentMenuCode")
 	private String parentMenuCode;
+	
+	@DTOInfo(targetEntity=Menu.class,fieldName="sequence")
+	private long sequence;
 		
-	private Long sequence;
-		
-	private Long level;
+	@DTOInfo(targetEntity=Menu.class,fieldName="level")
+	private long level;
 				
+	@DTOInfo(targetEntity=Menu.class,fieldName="url")
 	private String url;
-					
+	
+	public MenuDTO() {}
+	
+	public MenuDTO(Menu menu) {		
+		this.createdDt = menu.getCreatedDt();
+		this.createdBy = menu.getCreatedBy();
+		this.modifiedDt = menu.getModifiedDt();
+		this.modifiedBy = menu.getModifiedBy();
+		this.menuGroupCode = menu.getMenuGroup().getMenuGroupCode();
+		this.menuCode = menu.getMenuCode();
+		this.menuName = menu.getMenuName();
+		this.parentMenuCode = menu.getParentMenuCode();
+		this.sequence = menu.getSequence();
+		this.level = menu.getLevel();
+		this.url = menu.getUrl();
+	}
+	
 	public Menu setMenu(Menu menu) {		
 		if (menu == null) {
 			menu = new Menu(this.getMenuCode(),this.getMenuName(), null);
@@ -44,4 +70,6 @@ public class MenuDTO implements Serializable {
 			
 		return menu;
 	}
+
+	
 }

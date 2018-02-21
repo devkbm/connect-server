@@ -1,5 +1,6 @@
 package com.like.user.web;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value={"/user/{id}"})	
-	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException, InvocationTargetException {
 			
 		ResponseEntity<?> res = null;
 		User user = null;
@@ -145,7 +146,7 @@ public class UserController {
 		} else {
 			user = new User(userDTO.getUserId(), userDTO.getName());			
 			
-			user = DTOConverter.convertEntityByAnnotation(user, userDTO);
+			user = DTOConverter.convertEntityByAnnotation(userDTO, user, User.class);
 			
 			authList = userService.getAllAuthorityList(userDTO.getAuthorityList());			
 			user.setAuthorities(authList);
@@ -247,7 +248,7 @@ public class UserController {
 	
 	//@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@PostMapping("/authority")
-	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO authorityDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO authorityDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
 			
 		ResponseEntity<?> res = null;
 		Authority authority = null;
@@ -260,7 +261,7 @@ public class UserController {
 			if (authority == null) {
 				authority = new Authority(authorityDTO.getAuthority(), authorityDTO.getDescription());
 			} else {
-				DTOConverter.convertEntityByAnnotation(authority, authorityDTO);
+				DTOConverter.convertEntityByAnnotation(authorityDTO, authority, authority.getClass());
 			}
 			
 			userService.createAuthority(authority);					

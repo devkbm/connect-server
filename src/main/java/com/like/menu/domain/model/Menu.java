@@ -66,9 +66,9 @@ public class Menu extends AuditEntity implements Serializable {
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)
 	private MenuGroup menuGroup;
 	
-	protected Menu() {}
+	public Menu() {}
 	
-	public Menu(String menuCode, String menuName, MenuGroup menugGroup) {
+	public Menu(String menuCode, String menuName, MenuGroup menuGroup) {
 		this.menuCode = menuCode;
 		this.menuName = menuName;
 	}
