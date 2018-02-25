@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.id.MenuId;
 
 @Repository
 public interface MenuRepository {
@@ -19,7 +18,7 @@ public interface MenuRepository {
 	
 	List<MenuGroup> getMenuGroupList(List<String> menuGroupNameList);
 	
-	void saveMenuGroup(MenuGroup codeGroup);
+	void saveMenuGroup(MenuGroup menuGroup);
 	
 	void deleteMenuGroup(String menuGroupCode);
 	

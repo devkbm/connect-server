@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.Column;
 
 import com.like.menu.domain.model.Menu;
-import com.like.menu.domain.model.id.MenuId;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;

@@ -41,10 +41,7 @@ public class MenuDTO implements Serializable {
 		
 	@DTOInfo(targetEntity=Menu.class,fieldName="level")
 	private long level;
-				
-	@DTOInfo(targetEntity=Menu.class,fieldName="url")
-	private String url;
-	
+						
 	public MenuDTO() {}
 	
 	public MenuDTO(Menu menu) {		
@@ -57,19 +54,7 @@ public class MenuDTO implements Serializable {
 		this.menuName = menu.getMenuName();
 		this.parentMenuCode = menu.getParentMenuCode();
 		this.sequence = menu.getSequence();
-		this.level = menu.getLevel();
-		this.url = menu.getUrl();
-	}
-	
-	public Menu setMenu(Menu menu) {		
-		if (menu == null) {
-			menu = new Menu(this.getMenuCode(),this.getMenuName(), null);
-		} else {
-			menu.setMenuInfo(this.getMenuName(), this.getParentMenuCode(), this.getSequence(), this.getLevel(), this.getUrl());
-		}
-			
-		return menu;
-	}
-
+		this.level = menu.getLevel();		
+	}		
 	
 }

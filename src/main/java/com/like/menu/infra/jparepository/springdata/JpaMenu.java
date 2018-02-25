@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.like.menu.domain.model.Menu;
-import com.like.menu.domain.model.id.MenuId;
 
 @Repository
 public interface JpaMenu extends JpaRepository<Menu, String> {

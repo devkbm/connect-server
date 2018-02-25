@@ -10,7 +10,6 @@ import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.QMenu;
 import com.like.menu.domain.model.QMenuGroup;
-import com.like.menu.domain.model.id.MenuId;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
 import com.like.menu.infra.jparepository.springdata.JpaMenu;
@@ -102,8 +101,7 @@ public class MenuJpaRepository implements MenuRepository {
 		JPAQuery<MenuHierarchyDTO> query = queryFactory
 				.select(Projections.constructor(MenuHierarchyDTO.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level
-											, qMenu.url, isLeaf))
+											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level, isLeaf))
 				.from(qMenu)								
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode));
 										

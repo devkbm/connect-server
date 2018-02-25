@@ -16,39 +16,25 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
 
-import lombok.Getter;
-import lombok.ToString;
-
 @Entity
-@Getter
-@Table(name = "cmmenugroup")
+@Table(name = "cmprogram")
 @EntityListeners(AuditingEntityListener.class)
-public class MenuGroup extends AuditEntity implements Serializable {
-	
+public class Program extends AuditEntity implements Serializable{
+
 	@Id
-	@Column(name="menu_group_code")
-	private String menuGroupCode;
+	@Column(name="program_code")
+	private String programCode;
 	
-	@Column(name="menu_group_name")
-	private String menuGroupName; 
+	@Column(name="program_name")
+	private String programName; 
 		
+	@Column(name="url")
+	private String url;
+	
 	@Column(name="description")
 	private String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "menuGroup")          
+	@OneToMany(mappedBy = "program")          
     List<Menu> menuList = new ArrayList<Menu>();
-	
-	public MenuGroup() {}			
-
-	public MenuGroup(String menuGroupCode, String menuGroupName, String description) {	
-		this.menuGroupCode = menuGroupCode;
-		this.menuGroupName = menuGroupName;
-		this.description = description;
-	}
-	
-	public void setMenuList(List<Menu> menuList) {
-		this.menuList = menuList;
-	}
-	
 }

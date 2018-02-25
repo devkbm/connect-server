@@ -6,28 +6,19 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.like.board.domain.model.Article;
-import com.like.board.domain.model.Board;
 import com.like.common.domain.AuditEntity;
 import com.like.commoncode.domain.model.CodeGroup;
-import com.like.menu.domain.model.id.MenuId;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -57,34 +48,31 @@ public class Menu extends AuditEntity implements Serializable {
 	private long sequence;
 	
 	@Column(name="level")
-	private long level;
-			
-	@Column(name="url")
-	private String url;
+	private long level;			
 			 				
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)
 	private MenuGroup menuGroup;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "program_code", nullable=false, updatable=false)
+	private Program program;
+	
 	public Menu() {}
 	
-	public Menu(String menuCode, String menuName, MenuGroup menuGroup) {
+	public Menu(String menuCode, String menuName, long sequence, long level) {
 		this.menuCode = menuCode;
-		this.menuName = menuName;
-	}
-				
-	public Menu setMenuInfo(String menuName, String parentMenuCode, long sequence, long level, String url) {		
-		this.menuName = menuName;
-		this.parentMenuCode = parentMenuCode;
+		this.menuName = menuName;		
 		this.sequence = sequence;
 		this.level = level;
-		this.url = url;
-		
-		return this;
 	}
-	
+							
 	public void setMenuGroup(MenuGroup menuGroup) {
 		this.menuGroup = menuGroup;
 	}
 	
+	public void setProgram(Program program) {
+		this.program = program;
+	}
+
 }

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.id.MenuId;
 import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
