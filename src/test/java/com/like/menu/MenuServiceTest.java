@@ -28,6 +28,7 @@ import com.like.board.domain.model.Board;
 import com.like.file.service.FileService;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.model.Program;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -47,12 +48,18 @@ public class MenuServiceTest {
 	
 	@Autowired
 	FileService fs;
-	
-	Long key;
-	
+		
 	@Before 
-    public void setUp() { 
-
+    public void setUp() throws Exception { 
+		//테스트 데이터 입력
+		MenuGroup menuGroup = new MenuGroup("GROUP","테스트메뉴그룹","테스트메뉴그룹");				
+		cs.saveMenuGroup(menuGroup);
+		
+		Menu menu = new Menu("MENU","테스트메뉴", 0, 0);		
+		cs.saveMenu(menu, menuGroup.getMenuGroupCode());
+					
+		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");		
+		cs.saveProgram(program, menu.getMenuCode());		
     } 
 	
 	@Test	
@@ -60,22 +67,40 @@ public class MenuServiceTest {
 		
 		MenuGroup menuGroup = new MenuGroup("Test","테스트메뉴그룹","테스트메뉴그룹");		
 		
-		cs.saveMenuGroup(menuGroup);									
+		cs.saveMenuGroup(menuGroup);
+		
+		assertThat(menuGroup.getMenuGroupCode(), is("Test"));
+		assertThat(menuGroup.getMenuGroupName(), is("테스트메뉴그룹"));
+		assertThat(menuGroup.getDescription(), is("테스트메뉴그룹"));
 	}
 	
 	@Test	
-	public void test02_메뉴그룹조회() {
+	public void test02_메뉴그룹조회() {			
 		
-		MenuGroup menuGroup = qs.getMenuGroup("Test");		
+		MenuGroup menuGroup = qs.getMenuGroup("GROUP");					
 		
-		assertThat(menuGroup.getMenuGroupName(), is("테스트메뉴그룹"));				
+		assertThat(menuGroup.getMenuGroupCode(), is("GROUP"));
+		assertThat(menuGroup.getMenuGroupName(), is("테스트메뉴그룹"));
+		assertThat(menuGroup.getDescription(), is("테스트메뉴그룹"));		
 	}
 	
 	@Test
-	public void test03_메뉴등록() {
-		Menu menu = new Menu("testmenu","테스트메뉴",0,0);
+	public void test03_메뉴등록() throws Exception {
+		Menu menu = new Menu("testmenu","테스트메뉴", 0, 0);
 		
-		cs.saveMenu(menu, "Test");		
+		cs.saveMenu(menu, "GROUP");		
+		
+		assertThat(menu.getMenuCode(), is("testmenu"));
+		assertThat(menu.getMenuName(), is("테스트메뉴"));
+		assertThat(menu.getSequence(), is(0L));
+		assertThat(menu.getLevel(), is(0L));		
+	}
+	
+	@Test
+	public void test04_프로그램등록() throws Exception {	
+		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");
+		
+		cs.saveProgram(program, "MENU");				
 	}
 	
 }

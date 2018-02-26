@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
+import com.like.menu.domain.repository.dto.ProgramSaveDTO;
 
 @Entity
 @Table(name = "cmprogram")
@@ -37,4 +38,39 @@ public class Program extends AuditEntity implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "program")          
     List<Menu> menuList = new ArrayList<Menu>();
+	
+	public Program() {}
+
+	public Program(String programCode, String programName, String url, String description) {		
+		this.programCode = programCode;
+		this.programName = programName;
+		this.url = url;
+		this.description = description;
+	}
+	
+	public void setMenuList(List<Menu> menuList) {
+		this.menuList = menuList;
+	}
+	
+	public void registerMenu(Menu menu) {
+		this.menuList.add(menu);
+	}
+	
+	public static Program toEntity(ProgramSaveDTO source, Program target) {
+		if (target == null) {
+			target = new Program(
+							source.getProgramCode(), 
+							source.getProgramName(), 
+							source.getUrl(), 
+							source.getDescription());
+		} else {
+			target.programCode 	= source.getProgramCode();
+			target.programName 	= source.getProgramName();
+			target.url			= source.getUrl();
+			target.description	= source.getDescription();
+		}
+				
+		return target;
+	}
+			
 }

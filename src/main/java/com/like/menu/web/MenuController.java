@@ -1,6 +1,5 @@
 package com.like.menu.web;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.domain.DTOConverter;
@@ -59,7 +57,7 @@ public class MenuController {
 	}
 	
 	@GetMapping("/menutest/{menuGroupCode}")
-	public ResponseEntity<?> getMenuGroupHier(@PathVariable(value="menuGroupCode") String menuGroupCode) {
+	public ResponseEntity<?> getMenuGroupHierachy(@PathVariable(value="menuGroupCode") String menuGroupCode) {
 			
 		ResponseEntity<?> result = null;
 		
@@ -100,9 +98,9 @@ public class MenuController {
 		} 
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupDTO.getMenuGroupCode());
-															
-		menuGroup = DTOConverter.convertEntityByAnnotation(menuGroupDTO, menuGroup, MenuGroup.class);
-			
+		
+		menuGroup = MenuGroup.toEntity(menuGroupDTO, menuGroup);
+																			
 		menuCommandService.saveMenuGroup(menuGroup);
 		
 		res = WebControllerUtil.getResponse(null,
@@ -170,7 +168,7 @@ public class MenuController {
 	
 	
 	@RequestMapping(value={"/menugroup/{groupcode}/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO menuDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException, InvocationTargetException {
+	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO menuDTO, BindingResult result) throws Exception {
 			
 		ResponseEntity<?> res = null;
 						

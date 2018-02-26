@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.model.Program;
 import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
@@ -52,5 +53,9 @@ public class MenuQueryService {
 		List<MenuHierarchyDTO> list = menuJpaRepository.getMenuHierarchyDTO(rootList);
 		
 		return list;
+	}
+	
+	public Program getProgram(String programCode) {
+		return menuJpaRepository.getProgram(programCode);
 	}
 }

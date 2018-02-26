@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
 import com.like.commoncode.domain.model.CodeGroup;
+import com.like.menu.domain.repository.dto.MenuDTO;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -73,6 +74,24 @@ public class Menu extends AuditEntity implements Serializable {
 	
 	public void setProgram(Program program) {
 		this.program = program;
+	}
+	
+	public static Menu toEntity(MenuDTO source, Menu target) {
+		
+		if (target == null) {
+			target = new Menu(
+						source.getMenuCode(),
+						source.getMenuName(), 
+						source.getSequence(), 
+						source.getLevel());
+		} else {
+			target.menuCode	= source.getMenuCode();
+			target.menuName = source.getMenuName();
+			target.sequence = source.getSequence();
+			target.level 	= source.getLevel();
+		}
+		
+		return target;
 	}
 
 }

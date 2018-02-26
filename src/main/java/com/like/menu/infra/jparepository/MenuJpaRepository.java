@@ -8,12 +8,15 @@ import org.springframework.stereotype.Repository;
 import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.model.Program;
 import com.like.menu.domain.model.QMenu;
 import com.like.menu.domain.model.QMenuGroup;
+import com.like.menu.domain.model.QProgram;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
 import com.like.menu.infra.jparepository.springdata.JpaMenu;
 import com.like.menu.infra.jparepository.springdata.JpaMenuGroup;
+import com.like.menu.infra.jparepository.springdata.JpaProgram;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
@@ -36,8 +39,12 @@ public class MenuJpaRepository implements MenuRepository {
 	@Autowired
 	private JpaMenu jpaMenu;
 	
+	@Autowired
+	private JpaProgram jpaProgram;
+	
 	private final QMenuGroup qMenuGroup = QMenuGroup.menuGroup;	
 	private final QMenu qMenu = QMenu.menu;	
+	private final QProgram qProgram = QProgram.program;
 
 	@Override
 	public MenuGroup getMenuGroup(String menuGroupCode) {
@@ -136,13 +143,35 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public void saveMenu(Menu menu) {
+	public void saveMenu(Menu menu, MenuGroup menuGroup) {
+		menu.setMenuGroup(menuGroup);		
 		jpaMenu.save(menu);		
 	}
 
 	@Override
 	public void deleteMenu(String menuCode) {
 		jpaMenu.delete(menuCode);
+	}
+
+	@Override
+	public Program getProgram(String programCode) {		
+		return jpaProgram.findOne(programCode);
+	}
+
+	@Override
+	public List<Program> getProgramList() {
+		return jpaProgram.findAll();
+	}
+
+	@Override
+	public void saveProgram(Program program, Menu menu) {
+		menu.setProgram(program);
+		jpaProgram.save(program);		
+	}
+
+	@Override
+	public void deleteProgram(String programCode) {
+		jpaProgram.delete(programCode);		
 	}					
 	
 }

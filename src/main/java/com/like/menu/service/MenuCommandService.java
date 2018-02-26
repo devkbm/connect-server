@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.model.Program;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
 @Service
@@ -26,15 +27,28 @@ public class MenuCommandService {
 		menuJpaRepository.deleteMenuGroup(menuGroupCode);
 	}
 	
-	public void saveMenu(Menu menu, String menuGroupCode) {
-		MenuGroup menuGroup = menuJpaRepository.getMenuGroup(menuGroupCode);
-		menu.setMenuGroup(menuGroup);
-				
-		menuJpaRepository.saveMenu(menu);		
+	public void saveMenu(Menu menu, String menuGroupCode) throws Exception {
+		MenuGroup menuGroup = menuJpaRepository.getMenuGroup(menuGroupCode);		
+		
+		if ( menuGroup == null ) {
+			throw new IllegalArgumentException(" MenuGroup Entity(" + menuGroupCode + ") is not exist");			
+		}
+		
+		menuJpaRepository.saveMenu(menu,menuGroup);		
 	}
 	
 	public void deleteMenu(String menuCode) {
 		menuJpaRepository.deleteMenu(menuCode);
+	}
+	
+	public void saveProgram(Program program, String menuCode) {
+		Menu menu = menuJpaRepository.getMenu(menuCode);
+		
+		if ( menu == null ) {
+			throw new IllegalArgumentException(" Menu Entity(" + menu + ") is not exist");			
+		}
+		
+		menuJpaRepository.saveProgram(program, menu);
 	}
 	
 }
