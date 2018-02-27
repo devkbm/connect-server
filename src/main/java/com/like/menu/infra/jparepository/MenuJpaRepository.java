@@ -164,8 +164,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public void saveProgram(Program program, Menu menu) {
-		menu.setProgram(program);
+	public void saveProgram(Program program) {		
 		jpaProgram.save(program);		
 	}
 

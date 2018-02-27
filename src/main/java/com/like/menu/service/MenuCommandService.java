@@ -41,14 +41,8 @@ public class MenuCommandService {
 		menuJpaRepository.deleteMenu(menuCode);
 	}
 	
-	public void saveProgram(Program program, String menuCode) {
-		Menu menu = menuJpaRepository.getMenu(menuCode);
-		
-		if ( menu == null ) {
-			throw new IllegalArgumentException(" Menu Entity(" + menu + ") is not exist");			
-		}
-		
-		menuJpaRepository.saveProgram(program, menu);
+	public void saveProgram(Program program) {				
+		menuJpaRepository.saveProgram(program);
 	}
 	
 }

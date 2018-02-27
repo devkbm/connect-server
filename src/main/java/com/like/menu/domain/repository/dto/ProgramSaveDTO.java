@@ -23,10 +23,13 @@ public class ProgramSaveDTO implements Serializable {
 	
 	String modifiedBy;
 	
+	@NotEmpty
 	String programCode;
 		
+	@NotEmpty
 	String programName; 
 			
+	@NotEmpty
 	String url;
 		
 	String description;		

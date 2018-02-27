@@ -1,8 +1,6 @@
 package com.like.menu.domain.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +16,6 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
-import com.like.commoncode.domain.model.CodeGroup;
 import com.like.menu.domain.repository.dto.MenuDTO;
 
 import lombok.Getter;
@@ -72,7 +69,7 @@ public class Menu extends AuditEntity implements Serializable {
 		this.menuGroup = menuGroup;
 	}
 	
-	public void setProgram(Program program) {
+	public void registerProgram(Program program) {
 		this.program = program;
 	}
 	

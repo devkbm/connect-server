@@ -22,9 +22,11 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.model.Program;
 import com.like.menu.domain.repository.dto.MenuDTO;
 import com.like.menu.domain.repository.dto.MenuGroupDTO;
 import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
+import com.like.menu.domain.repository.dto.ProgramSaveDTO;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -186,6 +188,47 @@ public class MenuController {
 				menu != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 저장되었습니다.", menu != null ? 1 : 0), 
+				HttpStatus.OK);
+										 					
+		return res;
+	}
+	
+	@GetMapping("/program/{code}")
+	public ResponseEntity<?> getProgram(
+			@PathVariable(value="code") String programCode) {
+			
+		ResponseEntity<?> result = null;
+		
+		Program program = menuQueryService.getProgram(programCode); 		
+				
+		result = WebControllerUtil.getResponse(program, 
+				program != null ? 1 : 0, 
+				true, 
+				String.format("%d 건 조회되었습니다.", program != null ? 1 : 0), 
+				HttpStatus.OK); 					
+		
+		return result;
+	}
+	
+	@RequestMapping(value={"/program/{code}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramSaveDTO programSaveDTO, BindingResult result) throws Exception {
+			
+		ResponseEntity<?> res = null;
+						
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 
+		
+		Program program = menuQueryService.getProgram(programSaveDTO.getProgramCode());			
+				
+		program = Program.toEntity(programSaveDTO, program);		
+					
+		menuCommandService.saveProgram(program);																			
+		
+		res = WebControllerUtil.getResponse(null,
+				program != null ? 1 : 0, 
+				true, 
+				String.format("%d 건 저장되었습니다.", program != null ? 1 : 0), 
 				HttpStatus.OK);
 										 					
 		return res;

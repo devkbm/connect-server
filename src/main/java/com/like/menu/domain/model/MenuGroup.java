@@ -64,9 +64,9 @@ public class MenuGroup extends AuditEntity implements Serializable {
 						source.getMenuGroupName(),
 						source.getDescription());
 		} else {
-			target.menuGroupCode 	= source.getMenuGroupCode();
-			target.menuGroupName 	= source.getMenuGroupName();
-			target.description 		= source.getDescription();
+			target.menuGroupCode 	= source.getMenuGroupCode() != null ? source.getMenuGroupCode() : target.menuGroupCode;
+			target.menuGroupName 	= source.getMenuGroupName() != null ? source.getMenuGroupName() : target.menuGroupName;
+			target.description 		= source.getDescription() != null 	? source.getDescription() : target.description;
 		}
 		
 		return target;

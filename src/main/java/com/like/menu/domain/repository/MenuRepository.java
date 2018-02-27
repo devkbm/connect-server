@@ -37,7 +37,7 @@ public interface MenuRepository {
 	
 	List<Program> getProgramList();
 	
-	void saveProgram(Program program, Menu menu);
+	void saveProgram(Program program);
 	
 	void deleteProgram(String programCode);
 	
