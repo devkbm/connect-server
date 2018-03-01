@@ -59,7 +59,7 @@ public class MenuServiceTest {
 		cs.saveMenu(menu, menuGroup.getMenuGroupCode());
 					
 		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");		
-		cs.saveProgram(program, menu.getMenuCode());		
+		cs.saveProgram(program);		
     } 
 	
 	@Test	
@@ -100,7 +100,7 @@ public class MenuServiceTest {
 	public void test04_프로그램등록() throws Exception {	
 		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");
 		
-		cs.saveProgram(program, "MENU");				
+		cs.saveProgram(program);				
 	}
 	
 }

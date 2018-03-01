@@ -17,6 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
 import com.like.menu.domain.repository.dto.ProgramSaveDTO;
 
+import lombok.Getter;
+
+@Getter
 @Entity
 @Table(name = "cmprogram")
 @EntityListeners(AuditingEntityListener.class)
@@ -56,7 +59,7 @@ public class Program extends AuditEntity implements Serializable{
 		this.menuList.add(menu);
 	}
 	
-	public static Program toEntity(ProgramSaveDTO source, Program target) {
+	public static Program updateEntity(ProgramSaveDTO source, Program target) {
 		if (target == null) {
 			target = new Program(
 							source.getProgramCode(), 

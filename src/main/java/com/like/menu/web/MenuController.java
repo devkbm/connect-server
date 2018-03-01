@@ -193,6 +193,19 @@ public class MenuController {
 		return res;
 	}
 	
+	
+	@GetMapping("/program")
+	public ResponseEntity<?> getProgramList() {
+							 		
+		List<Program> list = menuQueryService.getProgramList();
+										
+		return WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK); 
+	}
+	
 	@GetMapping("/program/{code}")
 	public ResponseEntity<?> getProgram(
 			@PathVariable(value="code") String programCode) {
@@ -221,7 +234,7 @@ public class MenuController {
 		
 		Program program = menuQueryService.getProgram(programSaveDTO.getProgramCode());			
 				
-		program = Program.toEntity(programSaveDTO, program);		
+		program = Program.updateEntity(programSaveDTO, program);		
 					
 		menuCommandService.saveProgram(program);																			
 		

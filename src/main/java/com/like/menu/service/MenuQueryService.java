@@ -58,4 +58,8 @@ public class MenuQueryService {
 	public Program getProgram(String programCode) {
 		return menuJpaRepository.getProgram(programCode);
 	}
+	
+	public List<Program> getProgramList() {
+		return menuJpaRepository.getProgramList();
+	}
 }
