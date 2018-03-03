@@ -23,24 +23,23 @@ public class MenuDTO implements Serializable {
 	LocalDateTime modifiedDt;
 	
 	String modifiedBy;
-		
-	private String menuGroupCode;
-		
-	@DTOInfo(targetEntity=Menu.class,fieldName="menuCode")
-	private String menuCode;
-	
-	@DTOInfo(targetEntity=Menu.class,fieldName="menuName")
-	private String menuName;
 	
 	@NotEmpty
-	@DTOInfo(targetEntity=Menu.class,fieldName="parentMenuCode")
-	private String parentMenuCode;
-	
-	@DTOInfo(targetEntity=Menu.class,fieldName="sequence")
-	private long sequence;
+	private String menuGroupCode;
+			
+	@NotEmpty
+	private String menuCode;
 		
-	@DTOInfo(targetEntity=Menu.class,fieldName="level")
+	@NotEmpty
+	private String menuName;
+		
+	private String parentMenuCode;
+		
+	private long sequence;
+			
 	private long level;
+	
+	private String program;
 						
 	public MenuDTO() {}
 	
@@ -55,6 +54,7 @@ public class MenuDTO implements Serializable {
 		this.parentMenuCode = menu.getParentMenuCode();
 		this.sequence = menu.getSequence();
 		this.level = menu.getLevel();		
+		this.program = menu.getProgram().getProgramCode();
 	}		
 	
 }

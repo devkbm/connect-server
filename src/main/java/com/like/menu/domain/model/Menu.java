@@ -53,7 +53,7 @@ public class Menu extends AuditEntity implements Serializable {
 	private MenuGroup menuGroup;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "program_code", nullable=false, updatable=false)
+	@JoinColumn(name = "program_code")
 	private Program program;
 	
 	public Menu() {}
@@ -73,7 +73,7 @@ public class Menu extends AuditEntity implements Serializable {
 		this.program = program;
 	}
 	
-	public static Menu toEntity(MenuDTO source, Menu target) {
+	public static Menu updateEntity(MenuDTO source, Menu target) {
 		
 		if (target == null) {
 			target = new Menu(
@@ -86,6 +86,7 @@ public class Menu extends AuditEntity implements Serializable {
 			target.menuName = source.getMenuName();
 			target.sequence = source.getSequence();
 			target.level 	= source.getLevel();
+			target.parentMenuCode = source.getParentMenuCode();					
 		}
 		
 		return target;

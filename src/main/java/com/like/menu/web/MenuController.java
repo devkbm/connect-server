@@ -1,6 +1,5 @@
 package com.like.menu.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.domain.DTOConverter;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
@@ -43,57 +41,43 @@ public class MenuController {
 	private MenuQueryService menuQueryService;
 			
 	@GetMapping("/menugroup/{id}")
-	public ResponseEntity<?> getMenuGroup(@PathVariable(value="id") String menuGroupCode) {
-			
-		ResponseEntity<?> result = null;
+	public ResponseEntity<?> getMenuGroup(@PathVariable(value="id") String menuGroupCode) {				
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupCode); 		
-				
-		result = WebControllerUtil.getResponse(menuGroup, 
+								
+		return WebControllerUtil.getResponse(menuGroup, 
 				menuGroup != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 조회되었습니다.", menuGroup != null ? 1 : 0), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@GetMapping("/menutest/{menuGroupCode}")
-	public ResponseEntity<?> getMenuGroupHierachy(@PathVariable(value="menuGroupCode") String menuGroupCode) {
-			
-		ResponseEntity<?> result = null;
+	public ResponseEntity<?> getMenuGroupHierachy(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
 		
-		List<MenuHierarchyDTO> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 		
-				
-		result = WebControllerUtil.getResponse(menuGroup, 
+		List<MenuHierarchyDTO> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
+		
+		return WebControllerUtil.getResponse(menuGroup, 
 				menuGroup.size(), 
 				true, 
 				String.format("%d 건 조회되었습니다.", menuGroup.size()), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@GetMapping("/menugroup")
-	public ResponseEntity<?> getMenuGroupList() {
-			
-		ResponseEntity<?> result = null;
+	public ResponseEntity<?> getMenuGroupList() {				
 		
-		List<MenuGroup> list = menuQueryService.getMenuGroupList(); 		
-				
-		result = WebControllerUtil.getResponse(list, 
+		List<MenuGroup> list = menuQueryService.getMenuGroupList(); 							
+		
+		return WebControllerUtil.getResponse(list,
 				list.size(), 
 				true, 
 				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO menuGroupDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
-			
-		ResponseEntity<?> res = null;
+	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO menuGroupDTO, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
@@ -101,96 +85,83 @@ public class MenuController {
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupDTO.getMenuGroupCode());
 		
-		menuGroup = MenuGroup.toEntity(menuGroupDTO, menuGroup);
+		menuGroup = MenuGroup.updateEntity(menuGroupDTO, menuGroup);
 																			
-		menuCommandService.saveMenuGroup(menuGroup);
-		
-		res = WebControllerUtil.getResponse(null,
+		menuCommandService.saveMenuGroup(menuGroup);			
+										 					
+		return WebControllerUtil.getResponse(null,
 				menuGroup != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 저장되었습니다.", menuGroup != null ? 1 : 0), 
 				HttpStatus.OK);
-										 					
-		return res;
 	}
 		
 	@DeleteMapping("/menugroup/{id}")
-	public ResponseEntity<?> delCodeGroup(@PathVariable(value="id") String menuGroupCode) {
-			
-		ResponseEntity<?> result = null;			
+	public ResponseEntity<?> delCodeGroup(@PathVariable(value="id") String menuGroupCode) {				
 												
-		menuCommandService.deleteMenuGroup(menuGroupCode);
-						
-		result = WebControllerUtil.getResponse(null, 
+		menuCommandService.deleteMenuGroup(menuGroupCode);							
+		
+		return WebControllerUtil.getResponse(null, 
 				1, 
 				true, 
 				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	
 	@GetMapping("/menugroup/{groupcode}/menu/{menucode}")
 	public ResponseEntity<?> getMenu(
 			@PathVariable(value="groupcode") String menuGroupCode,
-			@PathVariable(value="menucode") String menuCode) {
-			
-		ResponseEntity<?> result = null;
+			@PathVariable(value="menucode") String menuCode) {				
 		
 		Menu menu = menuQueryService.getMenu(menuCode); 		
 		
-		MenuDTO dto = new MenuDTO(menu);
+		MenuDTO dto = new MenuDTO(menu);			
 		
-		result = WebControllerUtil.getResponse(dto, 
+		return WebControllerUtil.getResponse(dto, 
 				dto != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@GetMapping("/menugroup/{groupcode}/menu")
 	public ResponseEntity<?> getMenuList(
-			@PathVariable(value="groupcode") String menuGroupCode) {
-			
-		ResponseEntity<?> result = null;
+			@PathVariable(value="groupcode") String menuGroupCode) {				
 		
-		List<Menu> list = menuQueryService.getMenuList(menuGroupCode); 		
-				
-		result = WebControllerUtil.getResponse(list, 
+		List<Menu> list = menuQueryService.getMenuList(menuGroupCode); 							
+		
+		return WebControllerUtil.getResponse(list, 
 				list.size(), 
 				true, 
 				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(value={"/menugroup/{groupcode}/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO menuDTO, BindingResult result) throws Exception {
-			
-		ResponseEntity<?> res = null;
-						
+											
 		if ( result.hasErrors()) {
-			throw new ControllerException("오류");
+			//throw new ControllerException("오류");
+			log.info(result.getAllErrors().toString());
 		} 
 		
 		Menu menu = menuQueryService.getMenu(menuDTO.getMenuCode());			
-				
-		menu = DTOConverter.convertEntityByAnnotation(menuDTO, menu, Menu.class);		
+		
+		menu = Menu.updateEntity(menuDTO, menu);
+		
+		if (menuDTO.getProgram() != null) {
+			menu.registerProgram(menuQueryService.getProgram(menuDTO.getProgram()));
+		}
 					
 		menuCommandService.saveMenu(menu, menuDTO.getMenuGroupCode());																			
-		
-		res = WebControllerUtil.getResponse(null,
+														 				
+		return WebControllerUtil.getResponse(null,
 				menu != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 저장되었습니다.", menu != null ? 1 : 0), 
 				HttpStatus.OK);
-										 					
-		return res;
 	}
 	
 	
@@ -208,26 +179,20 @@ public class MenuController {
 	
 	@GetMapping("/program/{code}")
 	public ResponseEntity<?> getProgram(
-			@PathVariable(value="code") String programCode) {
-			
-		ResponseEntity<?> result = null;
+			@PathVariable(value="code") String programCode) {				
 		
-		Program program = menuQueryService.getProgram(programCode); 		
-				
-		result = WebControllerUtil.getResponse(program, 
+		Program program = menuQueryService.getProgram(programCode); 							
+		
+		return WebControllerUtil.getResponse(program, 
 				program != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 조회되었습니다.", program != null ? 1 : 0), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/program/{code}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramSaveDTO programSaveDTO, BindingResult result) throws Exception {
-			
-		ResponseEntity<?> res = null;
-						
+										
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
@@ -236,15 +201,13 @@ public class MenuController {
 				
 		program = Program.updateEntity(programSaveDTO, program);		
 					
-		menuCommandService.saveProgram(program);																			
-		
-		res = WebControllerUtil.getResponse(null,
+		menuCommandService.saveProgram(program);																						
+										 					
+		return WebControllerUtil.getResponse(null,
 				program != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 저장되었습니다.", program != null ? 1 : 0), 
 				HttpStatus.OK);
-										 					
-		return res;
 	}
 	
 	

@@ -21,16 +21,13 @@ public class MenuGroupDTO implements Serializable {
 	
 	String modifiedBy;
 	
-	@NotEmpty
-	@DTOInfo(targetEntity=MenuGroup.class,fieldName="menuGroupCode")
+	@NotEmpty	
 	private String menuGroupCode;
 	
-	@NotEmpty
-	@DTOInfo(targetEntity=MenuGroup.class,fieldName="menuGroupName")
+	@NotEmpty	
 	private String menuGroupName;
 		
-	@NotEmpty
-	@DTOInfo(targetEntity=MenuGroup.class,fieldName="description")
+	@NotEmpty	
 	private String description;		
 		
 }
