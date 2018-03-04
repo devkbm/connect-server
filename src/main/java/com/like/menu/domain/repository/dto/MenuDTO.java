@@ -2,14 +2,12 @@ package com.like.menu.domain.repository.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
+import java.util.Optional;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.like.common.domain.annotation.DTOInfo;
 import com.like.menu.domain.model.Menu;
-
+import com.like.menu.domain.model.Program;
 
 import lombok.Data;
 
@@ -43,18 +41,19 @@ public class MenuDTO implements Serializable {
 						
 	public MenuDTO() {}
 	
-	public MenuDTO(Menu menu) {		
-		this.createdDt = menu.getCreatedDt();
-		this.createdBy = menu.getCreatedBy();
-		this.modifiedDt = menu.getModifiedDt();
-		this.modifiedBy = menu.getModifiedBy();
-		this.menuGroupCode = menu.getMenuGroup().getMenuGroupCode();
-		this.menuCode = menu.getMenuCode();
-		this.menuName = menu.getMenuName();
+	public MenuDTO(Menu menu) {					
+		this.createdDt 		= menu.getCreatedDt();
+		this.createdBy 		= menu.getCreatedBy();
+		this.modifiedDt 	= menu.getModifiedDt();
+		this.modifiedBy 	= menu.getModifiedBy();
+		this.menuGroupCode 	= menu.getMenuGroup().getMenuGroupCode();
+		this.menuCode 		= menu.getMenuCode();
+		this.menuName 		= menu.getMenuName();
 		this.parentMenuCode = menu.getParentMenuCode();
-		this.sequence = menu.getSequence();
-		this.level = menu.getLevel();		
-		this.program = menu.getProgram().getProgramCode();
+		this.sequence 		= menu.getSequence();
+		this.level 			= menu.getLevel();		
+		//Optional<Program> program = menu.getProgram()
+		this.program 		= menu.getProgram() == null ? "" : menu.getProgram().getProgramCode();
 	}		
 	
 }
