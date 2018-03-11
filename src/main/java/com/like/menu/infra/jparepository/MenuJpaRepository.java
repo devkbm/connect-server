@@ -108,7 +108,7 @@ public class MenuJpaRepository implements MenuRepository {
 		JPAQuery<MenuHierarchyDTO> query = queryFactory
 				.select(Projections.constructor(MenuHierarchyDTO.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level, isLeaf))
+											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level,qMenu.menuName ,isLeaf))
 				.from(qMenu)								
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode));
 										

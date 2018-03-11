@@ -53,6 +53,18 @@ public class MenuController {
 	}
 	
 	@GetMapping("/menutest/{menuGroupCode}")
+	public ResponseEntity<?> getMenuGroupHierachyTest(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
+		
+		List<MenuHierarchyDTO> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
+		
+		return WebControllerUtil.getResponse(menuGroup, 
+				menuGroup.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", menuGroup.size()), 
+				HttpStatus.OK);
+	}
+	
+	@GetMapping("/menuhierarchy/{menuGroupCode}")
 	public ResponseEntity<?> getMenuGroupHierachy(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
 		
 		List<MenuHierarchyDTO> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							

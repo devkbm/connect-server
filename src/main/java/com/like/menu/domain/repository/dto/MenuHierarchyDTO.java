@@ -28,6 +28,10 @@ public class MenuHierarchyDTO implements Serializable {
 				
 	private String url;
 					
+	private boolean expanded;
+	
+	private boolean selected;
+	
 	private boolean isLeaf;
 	
 	private List<MenuHierarchyDTO> children;
@@ -42,7 +46,9 @@ public class MenuHierarchyDTO implements Serializable {
 		this.sequence = sequence;
 		this.level = level;
 		this.url = url;
-		this.isLeaf = isLeaf;
+		this.isLeaf = isLeaf;		
+		this.expanded = false;
+		this.selected = false;
 	}
 	
 	
