@@ -101,7 +101,7 @@ public class MenuJpaRepository implements MenuRepository {
 											/*.when(qMenu.menuCode.eq("MENU1")).then(false)
 											.when(qMenu.menuCode.eq("MENU2")).then(false)
 											.when(qMenu..menuCode.eq("MENU3")).then(false)*/
-											.when(qMenu.parentMenuCode.isNull()).then(true)
+											.when(qMenu.parentMenuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
 				
 		
