@@ -52,7 +52,7 @@ public class Menu extends AuditEntity implements Serializable {
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)
 	private MenuGroup menuGroup;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(optional=true)
 	@JoinColumn(name = "program_code")
 	private Program program;
 	

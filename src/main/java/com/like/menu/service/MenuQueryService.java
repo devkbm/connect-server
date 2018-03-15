@@ -48,11 +48,9 @@ public class MenuQueryService {
 	}
 	
 	public List<MenuHierarchyDTO> getMenuHierachy(String menuGroupCode) {
-		List<MenuHierarchyDTO> rootList = menuJpaRepository.getMenuChildrenList(menuGroupCode, null);
-		log.info(rootList.toString());
-		List<MenuHierarchyDTO> list = menuJpaRepository.getMenuHierarchyDTO(rootList);
+		List<MenuHierarchyDTO> rootList = menuJpaRepository.getMenuRootList(menuGroupCode);
 		
-		return list;
+		return menuJpaRepository.getMenuHierarchyDTO(rootList);
 	}
 	
 	public Program getProgram(String programCode) {

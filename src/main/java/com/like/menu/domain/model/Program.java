@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -39,7 +40,7 @@ public class Program extends AuditEntity implements Serializable{
 	private String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "program")          
+	@OneToMany(mappedBy="program", fetch=FetchType.LAZY)          
     List<Menu> menuList = new ArrayList<Menu>();
 	
 	public Program() {}
@@ -75,5 +76,6 @@ public class Program extends AuditEntity implements Serializable{
 				
 		return target;
 	}
+		
 			
 }

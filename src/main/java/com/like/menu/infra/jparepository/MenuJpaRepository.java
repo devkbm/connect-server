@@ -91,16 +91,11 @@ public class MenuJpaRepository implements MenuRepository {
 				.where(qMenu.menuName.like(likeMenuName+"%"))
 				.fetch();
 	}
-			
-	public List<MenuHierarchyDTO> getMenuChildrenList(String menuGroupCode, String parentMenuCode) {
-		
-		BooleanBuilder builder = new BooleanBuilder();
-		QMenu parent = new QMenu("parent");
-		
-		Expression<Boolean> isLeaf = new CaseBuilder()
-											/*.when(qMenu.menuCode.eq("MENU1")).then(false)
-											.when(qMenu.menuCode.eq("MENU2")).then(false)
-											.when(qMenu..menuCode.eq("MENU3")).then(false)*/
+	
+	
+	public List<MenuHierarchyDTO> getMenuRootList(String menuGroupCode) {
+								
+		Expression<Boolean> isLeaf = new CaseBuilder()											
 											.when(qMenu.parentMenuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
 				
@@ -108,17 +103,31 @@ public class MenuJpaRepository implements MenuRepository {
 		JPAQuery<MenuHierarchyDTO> query = queryFactory
 				.select(Projections.constructor(MenuHierarchyDTO.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level,qMenu.menuName ,isLeaf))
-				.from(qMenu)								
-				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode));
-										
-		if (parentMenuCode == null) {
-			builder.and(qMenu.parentMenuCode.isNull());
-		} else {
-			builder.and(qMenu.parentMenuCode.eq(parentMenuCode));
-		}
-		query.where(builder);
+											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
+				.from(qMenu)
+					.leftJoin(qMenu.program ,qProgram)					
+				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
+					.and(qMenu.parentMenuCode.isNull()));													
 				
+		return query.fetch();
+	}
+			
+	public List<MenuHierarchyDTO> getMenuChildrenList(String menuGroupCode, String parentMenuCode) {					
+		
+		Expression<Boolean> isLeaf = new CaseBuilder()										
+											.when(qMenu.parentMenuCode.isNotNull()).then(true)
+											.otherwise(false).as("isLeaf");
+				
+		
+		JPAQuery<MenuHierarchyDTO> query = queryFactory
+				.select(Projections.constructor(MenuHierarchyDTO.class
+											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
+											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
+				.from(qMenu)				
+					.leftJoin(qMenu.program ,qProgram)
+				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
+					.and(qMenu.parentMenuCode.eq(parentMenuCode)));
+																		
 		return query.fetch();
 	}
 	
@@ -130,8 +139,7 @@ public class MenuJpaRepository implements MenuRepository {
 		for ( MenuHierarchyDTO dto : list ) {			
 			if (dto.isLeaf()) { // leaf 노드이면 다음 리스트 검색
 				continue;
-			} else {
-				log.info(dto.getMenuGroupCode() + " : "+ dto.getMenuCode());
+			} else {				
 				children = getMenuChildrenList(dto.getMenuGroupCode(), dto.getMenuCode());
 				dto.setChildren(children);
 				
