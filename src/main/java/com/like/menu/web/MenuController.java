@@ -141,7 +141,7 @@ public class MenuController {
 	public ResponseEntity<?> getMenuList(
 			@PathVariable(value="groupcode") String menuGroupCode) {				
 		
-		List<Menu> list = menuQueryService.getMenuList(menuGroupCode); 							
+		List<Menu> list = menuQueryService.getMenuGroup(menuGroupCode).getMenuList(); 							
 		
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 

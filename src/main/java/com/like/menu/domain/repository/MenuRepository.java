@@ -25,7 +25,7 @@ public interface MenuRepository {
 	
 	
 	Menu getMenu(String menuCode);
-	
+			
 	List<Menu> getMenuList(String likeMenuName);
 			
 	void saveMenu(Menu menu, MenuGroup menuGroup);
