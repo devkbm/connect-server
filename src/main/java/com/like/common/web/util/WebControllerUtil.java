@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -49,24 +50,23 @@ public class WebControllerUtil {
 	 */
 	public static ResponseEntity<ResponseObjectList> getResponse(List<?> data, int size, boolean success, String message, HttpStatus httpStatus) {
 									
-		ResponseObjectList obj = new ResponseObjectList(data, size, success, message);
-		
-	    HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.add("Content-Type", "application/json;charset=UTF-8"); //인코딩을 utf-8로 설정
+		ResponseObjectList obj = new ResponseObjectList(data, size, success, message);			      
 	    
-	    return new ResponseEntity<ResponseObjectList>(obj,responseHeaders,httpStatus);	    	    	    	    	
+	    return new ResponseEntity<ResponseObjectList>(obj, getResponseHeaders(), httpStatus);	    	    	    	    	
 	}
 	
 	public static <T> ResponseEntity<ResponseObject<T>> getResponse(T data, int size, boolean success, String message, HttpStatus httpStatus) {
 		
 		ResponseObject<T> obj = new ResponseObject<T>(data, size, success, message);		
-				
-	    HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.add("Content-Type", "application/json;charset=UTF-8"); //인코딩을 utf-8로 설정
-	    
-	    return new ResponseEntity<ResponseObject<T>>(obj,responseHeaders,httpStatus);	    	    	    	    	
+					    	    
+	    return new ResponseEntity<ResponseObject<T>>(obj, getResponseHeaders(), httpStatus);	    	    	    	    	
 	}
 	
+	private static HttpHeaders getResponseHeaders() {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		return responseHeaders;		
+	}
 	  
 	
 
