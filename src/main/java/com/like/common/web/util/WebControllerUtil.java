@@ -38,15 +38,13 @@ public class WebControllerUtil {
 	}
 			
 	/**
-	 * 
+	 * ResponseEntity 객체를 반환한다.
 	 * @param data			결과 payload 데이터
 	 * @param size			data의 사이즈
 	 * @param success		성공 여부
 	 * @param message		결과 메세지
 	 * @param httpStatus	Http 응답 코드
 	 * @return Rest 요청 결과 
-	 * 
-	 * @todo 추후 리턴되는 객체가 변할 경우 어떻게 처리할지 고민 후 개선해 가야함
 	 */
 	public static ResponseEntity<ResponseObjectList> getResponse(List<?> data, int size, boolean success, String message, HttpStatus httpStatus) {
 									
@@ -55,6 +53,15 @@ public class WebControllerUtil {
 	    return new ResponseEntity<ResponseObjectList>(obj, getResponseHeaders(), httpStatus);	    	    	    	    	
 	}
 	
+	/**
+	 * ResponseEntity 객체를 반환한다.
+	 * @param data			결과 payload 데이터
+	 * @param size			data의 사이즈
+	 * @param success		성공 여부
+	 * @param message		결과 메세지
+	 * @param httpStatus	Http 응답 코드
+	 * @return Rest 요청 결과 
+	 */
 	public static <T> ResponseEntity<ResponseObject<T>> getResponse(T data, int size, boolean success, String message, HttpStatus httpStatus) {
 		
 		ResponseObject<T> obj = new ResponseObject<T>(data, size, success, message);		
