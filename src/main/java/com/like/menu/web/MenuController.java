@@ -91,8 +91,8 @@ public class MenuController {
 	@RequestMapping(value={"/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO menuGroupDTO, BindingResult result) {				
 		
-		if ( result.hasErrors()) {
-			throw new ControllerException("오류");
+		if ( result.hasErrors()) {			
+			throw new ControllerException(result.getAllErrors().toString());
 		} 
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupDTO.getMenuGroupCode());

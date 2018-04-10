@@ -71,6 +71,7 @@ public class UserController {
 	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) {
 		
 		if ( result.hasErrors() ) {
+			log.info(result.toString());
 			return null;
 		}
 		

@@ -1,5 +1,7 @@
 package com.like.commoncode.web;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,6 +28,9 @@ import com.like.commoncode.domain.repository.dto.CodeGroupQueryDTO;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class CommonCodeController {
 
@@ -51,8 +56,8 @@ public class CommonCodeController {
 	public ResponseEntity<?> saveCodeGroup(@RequestBody List<CodeGroup> codeGroupList, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
-			//throw new IllegalArgumentException();
-			throw new ControllerException("오류");
+			log.info(result.toString());
+			throw new ControllerException(result.toString());
 		} 
 															
 		for (CodeGroup codeGroup : codeGroupList ) {

@@ -26,8 +26,7 @@ public class MenuGroupDTO implements Serializable {
 	
 	@NotEmpty	
 	private String menuGroupName;
-		
-	@NotEmpty	
+			
 	private String description;		
 		
 }
