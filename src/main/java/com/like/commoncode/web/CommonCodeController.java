@@ -1,16 +1,15 @@
 package com.like.commoncode.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,30 +33,22 @@ public class CommonCodeController {
 	private CommonCodeCommandService commonCodeCommandService;
 	
 	@Resource
-	private CommonCodeQueryService commonCodeQueryService;
-	
-	private static final Logger log = LoggerFactory.getLogger(CommonCodeController.class);
+	private CommonCodeQueryService commonCodeQueryService;	
 	
 	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodeGroups(@ModelAttribute CodeGroupQueryDTO commonCodeGroupQueryDTO) {
-			
-		ResponseEntity<?> result = null;
+	public ResponseEntity<?> getCodeGroups(@ModelAttribute CodeGroupQueryDTO commonCodeGroupQueryDTO) {				
 		
-		List<CodeGroup> list = commonCodeQueryService.getCodeGroupList(commonCodeGroupQueryDTO); 		
-				
-		result = WebControllerUtil.getResponse(list, 
+		List<CodeGroup> list = commonCodeQueryService.getCodeGroupList(commonCodeGroupQueryDTO); 							
+		
+		return WebControllerUtil.getResponse(list, 
 				list.size(), 
 				true, 
 				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/common/codegroups"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCodeGroup(@RequestBody List<CodeGroup> codeGroupList, BindingResult result) {
-			
-		ResponseEntity<?> res = null;
+	public ResponseEntity<?> saveCodeGroup(@RequestBody List<CodeGroup> codeGroupList, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
 			//throw new IllegalArgumentException();
@@ -66,39 +57,31 @@ public class CommonCodeController {
 															
 		for (CodeGroup codeGroup : codeGroupList ) {
 			commonCodeCommandService.saveCodeGroup(codeGroup);
-		}
-			
-		res = WebControllerUtil.getResponse(null,
+		}				
+								 					
+		return WebControllerUtil.getResponse(null,
 				codeGroupList.size(), 
 				true, 
 				String.format("%d 건 저장되었습니다.", codeGroupList.size()), 
 				HttpStatus.OK);
-		
-								 					
-		return res;
 	}
-	
-	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.DELETE) 
-	public ResponseEntity<?> delCodeGroup(@RequestParam(value="codeGroup", required=true) String codeGroup) {
-			
-		ResponseEntity<?> result = null;			
+		
+	@DeleteMapping("/common/codegroups")
+	public ResponseEntity<?> delCodeGroup(@RequestParam(value="codeGroup", required=true) String codeGroup) {				
 												
-		commonCodeCommandService.deleteCodeGroup(codeGroup);
-						
-		result = WebControllerUtil.getResponse(null, 
+		commonCodeCommandService.deleteCodeGroup(codeGroup);											
+		
+		return WebControllerUtil.getResponse(null, 
 				1, 
 				true, 
 				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
-	
-	@RequestMapping(value={"/common/codegroups/codes"}, method=RequestMethod.GET) 
+		
+	@GetMapping("/common/codegroups/codes")
 	public ResponseEntity<?> getCodes(@RequestParam(value="codeGroup", required=true) String codeGroup,
 			@RequestParam(value="qType", required=false) String qType) {
-			
-		ResponseEntity<?> result = null;
+					
 		List<?> list = null;			
 		
 		if (StringUtils.hasText(qType)) { 
@@ -107,20 +90,17 @@ public class CommonCodeController {
 		} else {
 			list = commonCodeQueryService.getCodeList(codeGroup);
 		}
-			
-		result = WebControllerUtil.getResponse(list, 
+					 					
+		return WebControllerUtil.getResponse(list, 
 				list.size(), 
 				true, 
 				String.format("%d 건 조회되었습니다.", list.size()), 
 				HttpStatus.OK); 					
-		
-		return result;
+
 	}
 	
 	@RequestMapping(value={"/common/codegroups/codes"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCode(@RequestBody List<CodeDTO> codeList, BindingResult result) {
-			
-		ResponseEntity<?> res = null;
+	public ResponseEntity<?> saveCode(@RequestBody List<CodeDTO> codeList, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
@@ -129,32 +109,25 @@ public class CommonCodeController {
 		for (CodeDTO code : codeList ) {
 			commonCodeCommandService.saveCode(code.getCommonCode());
 		}
-			
-		res = WebControllerUtil.getResponse(null,
+											 				
+		return WebControllerUtil.getResponse(null,
 				codeList.size(), 
 				true, 
 				String.format("%d 건 저장되었습니다.", codeList.size()), 
 				HttpStatus.OK);
-		
-								 					
-		return res;
 	}
-	
-	@RequestMapping(value={"/common/codegroups/codes"}, method=RequestMethod.DELETE) 
+		
+	@DeleteMapping("/common/codegroups/codes")
 	public ResponseEntity<?> delCode(@RequestParam(value="codeGroup", required=true) String codeGroup,
-			@RequestParam(value="code", required=true) String code) {
-			
-		ResponseEntity<?> result = null;			
+			@RequestParam(value="code", required=true) String code) {						
 												
 		commonCodeCommandService.deleteCode(new CommonCodeId(codeGroup, code));
-						
-		result = WebControllerUtil.getResponse(null, 
+								 						
+		return WebControllerUtil.getResponse(null, 
 				1, 
 				true, 
 				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	

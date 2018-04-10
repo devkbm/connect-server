@@ -5,7 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.like.common.domain.annotation.DTOInfo;
+import com.like.common.validation.annotation.Id;
 import com.like.user.domain.model.User;
 
 import lombok.Data;
@@ -21,25 +27,22 @@ public class UserSaveDTO {
 	
 	String modifiedBy;
 	
-	@DTOInfo(targetEntity=User.class, fieldName="userId")
+	@NotBlank(message="아이디를 입력해주세요")
+	@Size(min=1, max=20, message="1자 이상 20자 이하의 아이디만 사용 가능합니다")
+	@Pattern(regexp="^[A-Za-z0-9+]*$",message="영문,숫자로 이루어진 아이디만 사용 가능합니다")
+	@Id(message="이미 가입한 아이디입니다")
 	String userId;
-	
-	@DTOInfo(targetEntity=User.class, fieldName="name")
-	String name;
-	
-	@DTOInfo(targetEntity=User.class, fieldName="password")
-	String password;	
 		
-	@DTOInfo(targetEntity=User.class, fieldName="isAccountNonExpired")
+	String name;
+		
+	String password;	
+			
 	Boolean accountNonExpired;
-	
-	@DTOInfo(targetEntity=User.class, fieldName="isAccountNonLocked")
+		
 	Boolean accountNonLocked;
-	
-	@DTOInfo(targetEntity=User.class, fieldName="isCredentialsNonExpired")
+		
 	Boolean credentialsNonExpired;
-	
-	@DTOInfo(targetEntity=User.class, fieldName="isEnabled")
+		
 	Boolean enabled;
 					
 	List<String> authorityList = new ArrayList<String>();

@@ -80,6 +80,19 @@ public class User extends AuditEntity implements UserDetails {
 		this.isCredentialsNonExpired = true;
 	}
 	
+	public User(String userId, String name, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
+			Boolean isCredentialsNonExpired, Boolean isEnabled) {
+		super();
+		this.userId = userId;
+		this.name = name;
+		this.password = password;
+		this.isAccountNonExpired = isAccountNonExpired;
+		this.isAccountNonLocked = isAccountNonLocked;
+		this.isCredentialsNonExpired = isCredentialsNonExpired;
+		this.isEnabled = isEnabled;
+	}
+	
+	
 	@Override
 	@JsonIgnore	
 	public Collection<? extends GrantedAuthority> getAuthorities() {

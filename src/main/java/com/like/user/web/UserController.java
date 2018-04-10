@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,11 @@ public class UserController {
 	}
 		 
 	@PostMapping(value={"/user/login"})
-	public AuthenticationToken login(@RequestBody LoginRequestDTO dto, HttpSession session) {
+	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) {
+		
+		if ( result.hasErrors() ) {
+			return null;
+		}
 		
 		String username = dto.getUsername();
 		String password = dto.getPassword();
@@ -84,196 +89,152 @@ public class UserController {
 		
 	@GetMapping(value={"/user/{id}/check"})
 	public ResponseEntity<?> checkId(@PathVariable(value="id") String userId) {
-		
-		ResponseEntity<?> result = null;
-		
-		boolean isDuplication = userService.CheckDuplicationUser(userId);			
-		
-		result = WebControllerUtil.getResponse(null,
-					isDuplication ? 1 : 0, 
-					isDuplication ? false : true,
-					isDuplication ? "기존 아이디가 존재합니다." : "신규 등록 가능합니다.",
-					HttpStatus.OK); 					
-		
-		return result;
+						
+		boolean isDuplicated = userService.CheckDuplicationUser(userId);					
+				
+		return WebControllerUtil.getResponse(null,
+				isDuplicated ? 1 : 0, 
+				isDuplicated ? false : true,
+				isDuplicated ? "기존 아이디가 존재합니다." : "신규 등록 가능합니다.",
+				HttpStatus.OK); 
 	}
 		
 	@GetMapping(value={"/user/{id}"})
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) {
-		
-		ResponseEntity<?> result = null;		
-		
+						
 		User user = userService.getUser(userId);				
+				
+		UserSaveDTO dto = new UserSaveDTO(user);					
 		
-		log.info(user.toString());
-		UserSaveDTO dto = new UserSaveDTO(user);		
-		
-		result = WebControllerUtil.getResponse(dto,
+		return WebControllerUtil.getResponse(dto,
 				 user == null ? 0 : 1, 
 				 user == null ? false : true,
 				 "조회 되었습니다.",
-				 HttpStatus.OK); 					
-		
-		return result;
+				 HttpStatus.OK);
 	}
 		
 	@GetMapping(value={"/user"})
 	public ResponseEntity<?> getUserList() {
+				
+		List<User> userList = userService.getUserList();						 				
 		
-		ResponseEntity<?> result = null;		
-		
-		List<User> userList = userService.getUserList();				
-		
-		result = WebControllerUtil.getResponse(userList,
-				 userList.size(), 
-				 userList.size() > 0 ? true : false ,
-				 "조회 되었습니다.",
-				 HttpStatus.OK); 					
-		
-		return result;
+		return WebControllerUtil.getResponse(userList,
+				userList.size(), 
+				userList.size() > 0 ? true : false ,
+				"조회 되었습니다.",
+				HttpStatus.OK);
 	}
 	
 	@PostMapping(value={"/user/{id}"})	
-	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException, InvocationTargetException {
-			
-		ResponseEntity<?> res = null;
-		User user = null;
-		List<Authority> authList = null;
-		List<MenuGroup> menuGroupList = null;
+	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} else {
-			user = new User(userDTO.getUserId(), userDTO.getName());			
-			
-			user = DTOConverter.convertEntityByAnnotation(userDTO, user, User.class);
-			
-			authList = userService.getAllAuthorityList(userDTO.getAuthorityList());			
-			user.setAuthorities(authList);
-			
-			menuGroupList = menuQueryService.getMenuGroupList(userDTO.getMenuGroupList());
-			user.setMenuGroupList(menuGroupList);
-			
-			userService.createUser(user);					
-									
-			res = WebControllerUtil.getResponse(null,
-					1, 
-					true, 
-					String.format("%d 건 저장되었습니다.", 1), 
-					HttpStatus.OK);
-		}
-								 					
-		return res;
+		}							
+	
+		User user = new User(userDTO.getUserId(), userDTO.getName(), userDTO.getPassword(), 
+						userDTO.getAccountNonExpired(), userDTO.getAccountNonLocked(), userDTO.getCredentialsNonExpired(),
+						userDTO.getEnabled());					
+		
+		List<Authority> authList = userService.getAllAuthorityList(userDTO.getAuthorityList());
+					
+		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(userDTO.getMenuGroupList());
+		
+		user.setAuthorities(authList);
+		user.setMenuGroupList(menuGroupList);
+		
+		userService.createUser(user);					
+																					 		
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 저장되었습니다.", 1), 
+				HttpStatus.OK);
 	}	
 	
 	@DeleteMapping(value={"/user/{id}"})
 	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String userId) {
-			
-		ResponseEntity<?> res = null;
-						
-		userService.deleteUser(userId);					
-								
-		res = WebControllerUtil.getResponse(null,
+										
+		userService.deleteUser(userId);															
+								 					
+		return WebControllerUtil.getResponse(null,
 				1, 
 				true, 
 				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK);		
-								 					
-		return res;
+				HttpStatus.OK);
 	}
 		
 	@PostMapping(value={"/user/{id}/changePassword"})
-	public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDTO dto) {
-			
-		ResponseEntity<?> res = null;
+	public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDTO dto) {				
 						
-		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());					
-								
-		res = WebControllerUtil.getResponse(null,
+		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());													
+								 					
+		return WebControllerUtil.getResponse(null,
 				1, 
 				true, 
 				"비밀번호가 변경되었습니다.", 
-				HttpStatus.OK);		
-								 					
-		return res;
+				HttpStatus.OK);
 	}
 			
 	@PostMapping(value={"/user/{id}/initPassword"})
-	public ResponseEntity<?> initializePassword(@PathVariable(value="id") String userId) {
-			
-		ResponseEntity<?> res = null;
+	public ResponseEntity<?> initializePassword(@PathVariable(value="id") String userId) {			
 				
-		userService.initPassword(userId);
-													
-		res = WebControllerUtil.getResponse(null,
+		userService.initPassword(userId);														
+								 					
+		return WebControllerUtil.getResponse(null,
 				1, 
 				true, 
 				"비밀번호가 초기화되었습니다.", 
-				HttpStatus.OK);		
-								 					
-		return res;
+				HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/authority"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getAuthorityList() {
+	public ResponseEntity<?> getAuthorityList() {				
 		
-		ResponseEntity<?> result = null;		
+		List<Authority> authorityList = userService.getAllAuthorities();								 				
 		
-		List<Authority> authorityList = userService.getAllAuthorities();				
-		
-		result = WebControllerUtil.getResponse(authorityList,
+		return WebControllerUtil.getResponse(authorityList,				
 				authorityList.size(), 
 				authorityList.size() > 0 ? true : false ,
-				 "조회 되었습니다.",
-				 HttpStatus.OK); 					
-		
-		return result;
+				"조회 되었습니다.",
+				HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/authority/{id}"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getAuthority(@PathVariable(value="id") String authorityName) {
+	public ResponseEntity<?> getAuthority(@PathVariable(value="id") String authorityName) {			
 		
-		ResponseEntity<?> result = null;		
+		Authority authority = userService.getAuthority(authorityName);										
 		
-		Authority authority = userService.getAuthority(authorityName);				
-		
-		result = WebControllerUtil.getResponse(authority,
+		return WebControllerUtil.getResponse(authority,
 				 authority == null ? 0 : 1, 
 				 authority == null ? false : true,
 				 "조회 되었습니다.",
-				 HttpStatus.OK); 					
-		
-		return result;
+				 HttpStatus.OK);
 	}
 	
 	//@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@PostMapping("/authority")
-	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO authorityDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
-			
-		ResponseEntity<?> res = null;
-		Authority authority = null;
-				
+	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO dto, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
+		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} else {
-			authority = userService.getAuthority(authorityDTO.getAuthority());
-			
-			if (authority == null) {
-				authority = new Authority(authorityDTO.getAuthority(), authorityDTO.getDescription());
-			} else {
-				DTOConverter.convertEntityByAnnotation(authorityDTO, authority, authority.getClass());
-			}
-			
-			userService.createAuthority(authority);					
-									
-			res = WebControllerUtil.getResponse(null,
-					1, 
-					true, 
-					String.format("%d 건 저장되었습니다.", 1), 
-					HttpStatus.OK);
 		}
-								 					
-		return res;
+		
+		Authority authority = userService.getAuthority(dto.getAuthority());
+		
+		if (authority == null) {
+			authority = new Authority(dto.getAuthority(), dto.getDescription());
+		} else {
+			DTOConverter.convertEntityByAnnotation(dto, authority, authority.getClass());
+		}
+		
+		userService.createAuthority(authority);					
+																				 				
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 저장되었습니다.", 1), 
+				HttpStatus.OK);
 	}	
 			
 }
