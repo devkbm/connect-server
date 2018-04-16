@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.board.domain.model.Article;
-import com.like.common.domain.annotation.DTOInfo;
+import com.like.common.domain.annotation.DtoField;
 
 import lombok.Data;
 
@@ -28,34 +28,34 @@ public class ArticleRequestDTO implements Serializable {
 		
 	String updUser;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     Long pkArticle;	
 	
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
 	Long ppkArticle;		
 	
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
 	String title;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     String contents;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     String pwd;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     String hitCount;
         
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     String fromDt;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     String toDt;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     Integer seq;
     
-	@DTOInfo(targetEntity=Article.class)
+	@DtoField(targetEntity=Article.class)
     Integer depth;
     	
     Long fkBoard;

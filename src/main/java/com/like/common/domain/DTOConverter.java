@@ -10,7 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.like.common.domain.annotation.DTOInfo;
+import com.like.common.domain.annotation.DtoField;
 
 public class DTOConverter {
 	
@@ -59,10 +59,10 @@ public class DTOConverter {
 		List<Field> entityFields = getAllFields(entity.getClass());									
 		
 		for (Field dtoField: dtoFields) {			
-			DTOInfo dtoInfo = getAnnotation(dtoField);
+			DtoField dtoAnnotation = getAnnotation(dtoField);
 			
-			if (dtoInfo != null) {																												
-				Class<?> cls = dtoInfo.targetEntity();									
+			if (dtoAnnotation != null) {																												
+				Class<?> cls = dtoAnnotation.targetEntity();									
 				
 				if ( entity.getClass().equals(cls) ) {
 					for (Field entityField : entityFields ) {									
@@ -105,8 +105,10 @@ public class DTOConverter {
 		boolean rtn = false;
 		String originalFieldName = null;		
 		
-		originalField.setAccessible(true);
-		destinationField.setAccessible(true);			
+		if ( !originalField.isAccessible() )
+			originalField.setAccessible(true);
+		if ( !destinationField.isAccessible() )
+			destinationField.setAccessible(true);			
 								
 		originalFieldName = getFieldNameByAnnotation(originalField);		
 		
@@ -151,8 +153,8 @@ public class DTOConverter {
 	 * @param field	필드
 	 * @return	DTOInfo 어노테이션 정보, 없으면 null 리턴
 	 */
-	private static DTOInfo getAnnotation(Field field) {			
-		return field.isAnnotationPresent(DTOInfo.class) ? field.getAnnotation(DTOInfo.class) : null;
+	private static DtoField getAnnotation(Field field) {			
+		return field.isAnnotationPresent(DtoField.class) ? field.getAnnotation(DtoField.class) : null;
 	}
 	
 	/**
@@ -161,13 +163,13 @@ public class DTOConverter {
 	 * @return	대상 필드의 DTOInfo의 필드명이 있을 경우 해당 필드명 리턴, 없으면 대상 필드명 리턴  
 	 */
 	private static String getFieldNameByAnnotation(Field field) {		
-		DTOInfo dtoInfo = null;
+		DtoField dtoAnnotation = null;
 		String fieldName = null;
 		
-		if (field.isAnnotationPresent(DTOInfo.class)) {
-			dtoInfo = field.getAnnotation(DTOInfo.class);
+		if (field.isAnnotationPresent(DtoField.class)) {
+			dtoAnnotation = field.getAnnotation(DtoField.class);
 						
-			fieldName = dtoInfo.fieldName().length() > 0 ? dtoInfo.fieldName() : field.getName();			
+			fieldName = dtoAnnotation.fieldName().length() > 0 ? dtoAnnotation.fieldName() : field.getName();			
 		} else {
 			fieldName = field.getName();
 		}

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface DTOInfo {
+public @interface DtoField {
 	
 	/**
 	 * 매핑될 Class 인스턴스

@@ -2,7 +2,7 @@ package com.like.user.domain.repository.dto;
 
 import java.time.LocalDateTime;
 
-import com.like.common.domain.annotation.DTOInfo;
+import com.like.common.domain.annotation.DtoField;
 import com.like.user.domain.model.Authority;
 
 import lombok.Data;
@@ -18,10 +18,10 @@ public class AuthoritySaveDTO {
 	
 	String modifiedBy;
 		
-	@DTOInfo(targetEntity=Authority.class, fieldName="authorityName")
+	@DtoField(targetEntity=Authority.class, fieldName="authorityName")
 	String authority;
 		
-	@DTOInfo(targetEntity=Authority.class, fieldName="description")
+	@DtoField(targetEntity=Authority.class, fieldName="description")
 	String description;
 	
 	public Authority createAuthority() {

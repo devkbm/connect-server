@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.like.common.domain.annotation.DTOInfo;
+import com.like.common.domain.annotation.DtoField;
 import com.like.menu.domain.model.MenuGroup;
 
 import lombok.Data;
