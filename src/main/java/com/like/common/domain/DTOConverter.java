@@ -77,6 +77,30 @@ public class DTOConverter {
 		return entity;	
 	}
 	
+	public static <T extends Object, Y extends Object> Y ConvertDtoToEntity(T dto, Y entity) throws Exception {
+					
+		List<Field> dtoFields = getAllFields(dto.getClass());
+		List<Field> entityFields = getAllFields(entity.getClass());									
+		
+		for (Field dtoField: dtoFields) {			
+			DtoField dtoAnnotation = getAnnotation(dtoField);
+			
+			if (dtoAnnotation != null) {																												
+				Class<?> cls = dtoAnnotation.targetEntity();									
+				
+				if ( entity.getClass().equals(cls) ) {
+					for (Field entityField : entityFields ) {									
+						if ( vaildationField(dtoField,entityField) ) {
+							entityField.set(entity, dtoField.get(dto));
+						}
+					}					
+				}
+			}
+		}
+					
+		return entity;	
+	}
+	
 	/**
 	 * 전체 필드 리스트를 조회한다.(부모 객체 포함)
 	 * @param objClass	대상 클래스
