@@ -7,7 +7,7 @@ import javax.persistence.Column;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.like.common.domain.annotation.DtoField;
+import com.like.common.dto.annotation.DtoField;
 import com.like.menu.domain.model.MenuGroup;
 
 import lombok.Data;

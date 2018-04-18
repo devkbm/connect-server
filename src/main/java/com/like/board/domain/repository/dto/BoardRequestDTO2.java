@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.enums.PasswordType;
-import com.like.common.domain.annotation.DtoField;
+import com.like.common.dto.annotation.DtoField;
 
 import lombok.Data;
 

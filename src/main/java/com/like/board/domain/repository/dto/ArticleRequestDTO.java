@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.board.domain.model.Article;
-import com.like.common.domain.annotation.DtoField;
+import com.like.common.dto.annotation.DtoField;
 
 import lombok.Data;
 

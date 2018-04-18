@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.domain.DTOConverter;
+import com.like.common.dto.DtoAssembler;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.MenuGroup;
@@ -226,7 +226,7 @@ public class UserController {
 		if (authority == null) {
 			authority = new Authority(dto.getAuthority(), dto.getDescription());
 		} else {
-			DTOConverter.convertEntityByAnnotation(dto, authority, authority.getClass());
+			DtoAssembler.convertEntityByAnnotation(dto, authority, authority.getClass());
 		}
 		
 		userService.createAuthority(authority);					

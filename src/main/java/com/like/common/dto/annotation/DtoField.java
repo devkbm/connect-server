@@ -1,10 +1,12 @@
-package com.like.common.domain.annotation;
+package com.like.common.dto.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.like.common.dto.Converter;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -13,13 +15,17 @@ public @interface DtoField {
 	
 	/**
 	 * 매핑될 Class 인스턴스
-	 * @return
 	 */
 	Class<?> targetEntity();
 	
 	/**
 	 * 매핑될 필드명
-	 * @return
 	 */
-	String fieldName() default "";	
+	String fieldName() default "";
+	
+	/**
+	 * Type 및 값 변경시 사용될 Class 인스턴스
+	 * Convert 함수 구현 필요
+	 */
+	Class<?> converter() default void.class;
 }

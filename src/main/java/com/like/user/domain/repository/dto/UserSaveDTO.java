@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.like.common.domain.annotation.DtoField;
+import com.like.common.dto.annotation.DtoField;
 import com.like.common.validation.annotation.Id;
 import com.like.user.domain.model.User;
 

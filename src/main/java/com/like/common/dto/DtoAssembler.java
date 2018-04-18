@@ -1,20 +1,25 @@
-package com.like.common.domain;
+package com.like.common.dto;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.like.common.domain.annotation.DtoField;
+import com.like.common.dto.annotation.DtoField;
 
-public class DTOConverter {
-	
-	private static final Logger log = LoggerFactory.getLogger(DTOConverter.class);
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 
+ * @author 김병민
+ *
+ */
+@Slf4j
+public class DtoAssembler {	
 	
 	/**
 	 * DTO -> Entity 값 복사, 동일 필드명에 대한 값 복사
@@ -86,11 +91,19 @@ public class DTOConverter {
 			DtoField dtoAnnotation = getAnnotation(dtoField);
 			
 			if (dtoAnnotation != null) {																												
-				Class<?> cls = dtoAnnotation.targetEntity();									
+				Class<?> cls = dtoAnnotation.targetEntity();													
+				Class<?> converter = dtoAnnotation.converter();
 				
 				if ( entity.getClass().equals(cls) ) {
-					for (Field entityField : entityFields ) {									
-						if ( vaildationField(dtoField,entityField) ) {
+					
+					for (Field entityField : entityFields ) {						
+						
+						if ( !converter.equals(void.class) && isEqualFieldName(dtoField,entityField)) {
+							// TODO: convert 함수 호출하여 값 변환
+							//Method method = converter.getMethod("convert", entityField.getType());
+							//method.invoke(converter.getClass(), dtoField.get(dto));
+						
+						} else if ( vaildationField(dtoField,entityField) ) {
 							entityField.set(entity, dtoField.get(dto));
 						}
 					}					
@@ -100,6 +113,7 @@ public class DTOConverter {
 					
 		return entity;	
 	}
+		
 	
 	/**
 	 * 전체 필드 리스트를 조회한다.(부모 객체 포함)
@@ -136,9 +150,11 @@ public class DTOConverter {
 								
 		originalFieldName = getFieldNameByAnnotation(originalField);		
 		
-		if ( isEqualFieldType(originalField, destinationField) && isEqualFieldName(originalFieldName, destinationField) ) {							
-			rtn = true;				
-		}			
+		if ( isEqualFieldName(originalFieldName, destinationField) ) {			
+			if ( isEqualFieldType(originalField, destinationField) )
+				rtn = true;									
+		}		
+		
 		return rtn;
 	}
 	
@@ -173,7 +189,7 @@ public class DTOConverter {
 	}
 	
 	/**
-	 * DTOInfo 어노테이션 정보를 가져온다.
+	 * DtoField 어노테이션 정보를 가져온다.
 	 * @param field	필드
 	 * @return	DTOInfo 어노테이션 정보, 없으면 null 리턴
 	 */
@@ -182,7 +198,7 @@ public class DTOConverter {
 	}
 	
 	/**
-	 * DTOInfo 어노테이션의 필드명을 가져온다.
+	 * DtoField 어노테이션의 필드명을 가져온다.
 	 * @param field	대상 필드
 	 * @return	대상 필드의 DTOInfo의 필드명이 있을 경우 해당 필드명 리턴, 없으면 대상 필드명 리턴  
 	 */

@@ -2,7 +2,7 @@ package com.like.user.domain.repository.dto;
 
 import java.time.LocalDateTime;
 
-import com.like.common.domain.annotation.DtoField;
+import com.like.common.dto.annotation.DtoField;
 import com.like.user.domain.model.Authority;
 
 import lombok.Data;
