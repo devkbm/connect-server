@@ -1,4 +1,4 @@
-package com.like.menu.domain.repository.dto;
+package com.like.menu.web.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

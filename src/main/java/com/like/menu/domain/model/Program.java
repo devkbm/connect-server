@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
-import com.like.menu.domain.repository.dto.ProgramSaveDTO;
+import com.like.menu.web.dto.ProgramSaveDTO;
 
 import lombok.Getter;
 
@@ -77,5 +77,13 @@ public class Program extends AuditEntity implements Serializable{
 		return target;
 	}
 		
+	public Program updateEntity(ProgramSaveDTO dto) {
+		this.programCode 	= dto.getProgramCode();
+		this.programName 	= dto.getProgramName();
+		this.url			= dto.getUrl();
+		this.description	= dto.getDescription();
+		
+		return this;
+	}
 			
 }

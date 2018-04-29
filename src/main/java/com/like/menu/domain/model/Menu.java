@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
-import com.like.menu.domain.repository.dto.MenuDTO;
+import com.like.menu.web.dto.MenuDTO;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -90,6 +90,16 @@ public class Menu extends AuditEntity implements Serializable {
 		}
 		
 		return target;
+	}
+	
+	public Menu updateEntity(MenuDTO dto) {
+		this.menuCode	= dto.getMenuCode() != null ? dto.getMenuCode() : this.menuCode;
+		this.menuName 	= dto.getMenuName() != null ? dto.getMenuName() : this.menuName;
+		this.sequence 	= dto.getSequence();
+		this.level 		= dto.getLevel();
+		this.parentMenuCode = dto.getParentMenuCode() != null ? dto.getParentMenuCode() : this.parentMenuCode;
+		
+		return this;
 	}
 
 }

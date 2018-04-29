@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
-import com.like.menu.domain.repository.dto.MenuGroupDTO;
+import com.like.menu.web.dto.MenuGroupDTO;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -70,6 +70,14 @@ public class MenuGroup extends AuditEntity implements Serializable {
 		}
 		
 		return target;
+	}
+	
+	public MenuGroup updateEntity(MenuGroupDTO dto) {
+		this.menuGroupCode 	= dto.getMenuGroupCode() != null ? dto.getMenuGroupCode() : this.menuGroupCode;
+		this.menuGroupName 	= dto.getMenuGroupName() != null ? dto.getMenuGroupName() : this.menuGroupName;
+		this.description 	= dto.getDescription() != null 	? dto.getDescription() : this.description;
+		
+		return this;
 	}
 	
 }

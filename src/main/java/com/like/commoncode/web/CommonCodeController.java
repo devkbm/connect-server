@@ -1,7 +1,5 @@
 package com.like.commoncode.web;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.List;
 
 import javax.annotation.Resource;

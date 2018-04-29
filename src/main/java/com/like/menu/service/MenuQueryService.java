@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
-import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
+import com.like.menu.web.dto.MenuHierarchyDTO;
 
 import lombok.extern.slf4j.Slf4j;
 

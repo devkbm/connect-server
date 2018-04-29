@@ -21,12 +21,12 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
-import com.like.menu.domain.repository.dto.MenuDTO;
-import com.like.menu.domain.repository.dto.MenuGroupDTO;
-import com.like.menu.domain.repository.dto.MenuHierarchyDTO;
-import com.like.menu.domain.repository.dto.ProgramSaveDTO;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
+import com.like.menu.web.dto.MenuDTO;
+import com.like.menu.web.dto.MenuGroupDTO;
+import com.like.menu.web.dto.MenuHierarchyDTO;
+import com.like.menu.web.dto.ProgramSaveDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -97,7 +97,11 @@ public class MenuController {
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupDTO.getMenuGroupCode());
 		
-		menuGroup = MenuGroup.updateEntity(menuGroupDTO, menuGroup);
+		if (menuGroup == null) {
+			menuGroup = new MenuGroup(menuGroupDTO.getMenuGroupCode(), menuGroupDTO.getMenuGroupName(), menuGroupDTO.getDescription());
+		} else {
+			menuGroup = menuGroup.updateEntity(menuGroupDTO);
+		}					
 																			
 		menuCommandService.saveMenuGroup(menuGroup);			
 										 					
