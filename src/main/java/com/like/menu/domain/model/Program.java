@@ -60,28 +60,11 @@ public class Program extends AuditEntity implements Serializable{
 		this.menuList.add(menu);
 	}
 	
-	public static Program updateEntity(ProgramSaveDTO source, Program target) {
-		if (target == null) {
-			target = new Program(
-							source.getProgramCode(), 
-							source.getProgramName(), 
-							source.getUrl(), 
-							source.getDescription());
-		} else {
-			target.programCode 	= source.getProgramCode();
-			target.programName 	= source.getProgramName();
-			target.url			= source.getUrl();
-			target.description	= source.getDescription();
-		}
-				
-		return target;
-	}
-		
 	public Program updateEntity(ProgramSaveDTO dto) {
-		this.programCode 	= dto.getProgramCode();
-		this.programName 	= dto.getProgramName();
-		this.url			= dto.getUrl();
-		this.description	= dto.getDescription();
+		this.programCode 	= dto.getProgramCode() != null ? dto.getProgramCode() : this.programCode ;
+		this.programName 	= dto.getProgramName() != null ? dto.getProgramName() : this.programName ;
+		this.url			= dto.getUrl() != null ? dto.getUrl() : this.url ;
+		this.description	= dto.getDescription() != null ? dto.getDescription() : this.description ;
 		
 		return this;
 	}

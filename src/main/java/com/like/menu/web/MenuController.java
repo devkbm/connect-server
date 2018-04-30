@@ -156,22 +156,29 @@ public class MenuController {
 	
 	
 	@RequestMapping(value={"/menugroup/{groupcode}/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO menuDTO, BindingResult result) throws Exception {
+	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO dto, BindingResult result) throws Exception {
 											
 		if ( result.hasErrors()) {
 			//throw new ControllerException("오류");
 			log.info(result.getAllErrors().toString());
 		} 
 		
-		Menu menu = menuQueryService.getMenu(menuDTO.getMenuCode());			
+		Menu menu = menuQueryService.getMenu(dto.getMenuCode());			
 		
-		menu = Menu.updateEntity(menuDTO, menu);
+		//menu = Menu.updateEntity(menuDTO, menu);
 		
-		if (menuDTO.getProgram() != null) {
-			menu.registerProgram(menuQueryService.getProgram(menuDTO.getProgram()));
+		if ( menu == null ) {
+			menu = new Menu(dto.getMenuCode(), dto.getMenuName(), dto.getSequence(), dto.getLevel());
+		} else {
+			menu.updateEntity(dto);
+		}
+		
+		if (dto.getProgram() != null) {
+			Program program = menuQueryService.getProgram(dto.getProgram());
+			menu.registerProgram(program);
 		}
 					
-		menuCommandService.saveMenu(menu, menuDTO.getMenuGroupCode());																			
+		menuCommandService.saveMenu(menu, dto.getMenuGroupCode());																			
 														 				
 		return WebControllerUtil.getResponse(null,
 				menu != null ? 1 : 0, 
@@ -207,15 +214,21 @@ public class MenuController {
 	}
 	
 	@RequestMapping(value={"/program/{code}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramSaveDTO programSaveDTO, BindingResult result) throws Exception {
+	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramSaveDTO dto, BindingResult result) throws Exception {
 										
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
 		
-		Program program = menuQueryService.getProgram(programSaveDTO.getProgramCode());			
+		Program program = menuQueryService.getProgram(dto.getProgramCode());			
 				
-		program = Program.updateEntity(programSaveDTO, program);		
+		//program = Program.updateEntity(programSaveDTO, program);
+		
+		if ( program == null ) {
+			program = new Program(dto.getProgramCode(), dto.getProgramName(), dto.getUrl(), dto.getDescription());					
+		} else {
+			program.updateEntity(dto);
+		}
 					
 		menuCommandService.saveProgram(program);																						
 										 					

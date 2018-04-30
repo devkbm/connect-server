@@ -54,23 +54,7 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	
 	public void addMenu(Menu menu) {
 		this.menuList.add(menu);
-	}
-	
-	public static MenuGroup updateEntity(MenuGroupDTO source, MenuGroup target) {
-		
-		if (target == null) {
-			target = new MenuGroup(
-						source.getMenuGroupCode(),						
-						source.getMenuGroupName(),
-						source.getDescription());
-		} else {
-			target.menuGroupCode 	= source.getMenuGroupCode() != null ? source.getMenuGroupCode() : target.menuGroupCode;
-			target.menuGroupName 	= source.getMenuGroupName() != null ? source.getMenuGroupName() : target.menuGroupName;
-			target.description 		= source.getDescription() != null 	? source.getDescription() : target.description;
-		}
-		
-		return target;
-	}
+	}	
 	
 	public MenuGroup updateEntity(MenuGroupDTO dto) {
 		this.menuGroupCode 	= dto.getMenuGroupCode() != null ? dto.getMenuGroupCode() : this.menuGroupCode;

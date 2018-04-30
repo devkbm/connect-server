@@ -72,26 +72,7 @@ public class Menu extends AuditEntity implements Serializable {
 	public void registerProgram(Program program) {
 		this.program = program;
 	}
-	
-	public static Menu updateEntity(MenuDTO source, Menu target) {
-		
-		if (target == null) {
-			target = new Menu(
-						source.getMenuCode(),
-						source.getMenuName(), 
-						source.getSequence(), 
-						source.getLevel());
-		} else {
-			target.menuCode	= source.getMenuCode();
-			target.menuName = source.getMenuName();
-			target.sequence = source.getSequence();
-			target.level 	= source.getLevel();
-			target.parentMenuCode = source.getParentMenuCode();					
-		}
-		
-		return target;
-	}
-	
+			
 	public Menu updateEntity(MenuDTO dto) {
 		this.menuCode	= dto.getMenuCode() != null ? dto.getMenuCode() : this.menuCode;
 		this.menuName 	= dto.getMenuName() != null ? dto.getMenuName() : this.menuName;
