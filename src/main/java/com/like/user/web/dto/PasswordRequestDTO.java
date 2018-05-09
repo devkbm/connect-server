@@ -1,4 +1,4 @@
-package com.like.user.domain.repository.dto;
+package com.like.user.web.dto;
 
 import lombok.Data;
 

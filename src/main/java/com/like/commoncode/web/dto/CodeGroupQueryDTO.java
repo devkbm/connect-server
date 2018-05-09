@@ -1,4 +1,4 @@
-package com.like.commoncode.domain.repository.dto;
+package com.like.commoncode.web.dto;
 
 import org.springframework.util.StringUtils;
 

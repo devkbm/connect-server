@@ -36,11 +36,11 @@ import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
-import com.like.user.domain.repository.dto.AuthoritySaveDTO;
-import com.like.user.domain.repository.dto.LoginRequestDTO;
-import com.like.user.domain.repository.dto.PasswordRequestDTO;
-import com.like.user.domain.repository.dto.UserSaveDTO;
 import com.like.user.service.UserService;
+import com.like.user.web.dto.AuthoritySaveDTO;
+import com.like.user.web.dto.LoginRequestDTO;
+import com.like.user.web.dto.PasswordRequestDTO;
+import com.like.user.web.dto.UserSaveDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -134,7 +134,8 @@ public class UserController {
 		}							
 	
 		User user = new User(userDTO.getUserId(), userDTO.getName(), userDTO.getPassword(), 
-						userDTO.getAccountNonExpired(), userDTO.getAccountNonLocked(), userDTO.getCredentialsNonExpired(),
+					//	userDTO.getAccountNonExpired(), userDTO.getAccountNonLocked(), userDTO.getCredentialsNonExpired(),
+						true, true, true,
 						userDTO.getEnabled());					
 		
 		List<Authority> authList = userService.getAllAuthorityList(userDTO.getAuthorityList());

@@ -21,10 +21,10 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.domain.model.CodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
-import com.like.commoncode.domain.repository.dto.CodeDTO;
-import com.like.commoncode.domain.repository.dto.CodeGroupQueryDTO;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
+import com.like.commoncode.web.dto.CodeDTO;
+import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 
 import lombok.extern.slf4j.Slf4j;
 

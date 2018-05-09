@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.CodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
-import com.like.commoncode.domain.repository.dto.CodeComboDTO;
-import com.like.commoncode.domain.repository.dto.CodeGroupQueryDTO;
+import com.like.commoncode.web.dto.CodeComboDTO;
+import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 
 @Repository
 public interface CommonCodeRepository {

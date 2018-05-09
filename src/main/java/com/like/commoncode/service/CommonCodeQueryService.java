@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.CodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
-import com.like.commoncode.domain.repository.dto.CodeComboDTO;
-import com.like.commoncode.domain.repository.dto.CodeGroupQueryDTO;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
+import com.like.commoncode.web.dto.CodeComboDTO;
+import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 
 @Service
 @Transactional(readOnly=true)
