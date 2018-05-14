@@ -6,20 +6,23 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
+import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.model.enums.PasswordType;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity
+
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
 @Getter
+@NoArgsConstructor()
 @ToString()
+@Entity
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {
@@ -47,8 +50,10 @@ public class Board extends AuditEntity implements Serializable {
 	/**
 	 * 게시판_타입
 	 */
+	@Enumerated(EnumType.STRING)
+	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="board_type")
-    String boardType;
+    BoardType boardType;
 	
 	/**
      * 게시판 명
@@ -66,13 +71,11 @@ public class Board extends AuditEntity implements Serializable {
      * 시작일자
      */	
 	@Column(name="from_dt")
-	//@JsonFormat(pattern = "dd::MM::yyyy")
 	LocalDate fromDate;
     
     /**
      * 종료일자
      */	
-	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")	
 	@Column(name="to_dt")
     LocalDate toDate;    
     
@@ -103,24 +106,22 @@ public class Board extends AuditEntity implements Serializable {
 	PasswordType pwdMethod;
 
     @OneToMany(mappedBy = "board")          
-    List<Article> articles = new ArrayList<Article>();
-    
-    public Board() {}
+    List<Article> articles = new ArrayList<Article>();       
     
     public Board(String boardNm) {
     	this.boardName = boardNm;
     	    	
-    	this.boardType = "A1";
+    	this.boardType = BoardType.BOARD;
     	this.fromDate = LocalDate.now();
     	this.toDate = LocalDate.now();    	    	
     }
     
     public boolean hasParentBoard() {    	    		    		
-    	return this.parent != null ? true : false;
+    	return this.pkBoard != this.ppkBoard ? true : false;
 	}
     
     public void setParentRoot() {
-    	//this.ppkBoard = 0L;
+    	this.ppkBoard = this.pkBoard;
     }
     
     public void setParent(Board board) {
