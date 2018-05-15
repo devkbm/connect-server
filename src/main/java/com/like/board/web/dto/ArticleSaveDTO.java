@@ -1,4 +1,4 @@
-package com.like.board.domain.repository.dto;
+package com.like.board.web.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import com.like.common.dto.annotation.DtoField;
 import lombok.Data;
 
 @Data
-public class ArticleRequestDTO implements Serializable {
+public class ArticleSaveDTO implements Serializable {
 
 	/**
 	 * 
@@ -27,35 +27,25 @@ public class ArticleRequestDTO implements Serializable {
 	LocalDateTime updDt;
 		
 	String updUser;
-    
-	@DtoField(targetEntity=Article.class)
+    	
     Long pkArticle;	
 	
-	@DtoField(targetEntity=Article.class)
 	Long ppkArticle;		
-	
-	@DtoField(targetEntity=Article.class)
+		
 	String title;
-    
-	@DtoField(targetEntity=Article.class)
+    	
     String contents;
-    
-	@DtoField(targetEntity=Article.class)
+    	
     String pwd;
-    
-	@DtoField(targetEntity=Article.class)
+    	
     String hitCount;
-        
-	@DtoField(targetEntity=Article.class)
-    String fromDt;
-    
-	@DtoField(targetEntity=Article.class)
-    String toDt;
-    
-	@DtoField(targetEntity=Article.class)
+        	
+    LocalDate fromDate;
+    	
+    LocalDate toDate;
+    	
     Integer seq;
-    
-	@DtoField(targetEntity=Article.class)
+    	
     Integer depth;
     	
     Long fkBoard;

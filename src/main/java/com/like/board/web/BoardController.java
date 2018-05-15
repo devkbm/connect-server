@@ -1,6 +1,5 @@
 package com.like.board.web;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -23,11 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
-import com.like.board.domain.repository.dto.BoardRequestDTO;
-import com.like.board.domain.repository.dto.BoardRequestDTO2;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
-import com.like.common.dto.DtoAssembler;
+import com.like.board.web.dto.BoardSaveDTO;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 
@@ -49,41 +46,32 @@ public class BoardController {
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
 		
 	@GetMapping("/grw/boards")
-	public ResponseEntity<?> getBoardList() {
-		
-		ResponseEntity<?> result = null;
+	public ResponseEntity<?> getBoardList() {			
 		
 		List<Board> list = boardQueryService.getBoardList(); 										
-			
-		result = WebControllerUtil.getResponse(list, 
+							
+		return WebControllerUtil.getResponse(list,				
 				list.size(), 
 				true, 
 				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 		
 	@GetMapping("/grw/boards/{id}")
-	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {
-			
-		ResponseEntity<?> result = null;
+	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {				
 				
-		Board board = boardQueryService.getBoard(id);			
-				
-		result = WebControllerUtil.getResponse(board, 
+		Board board = boardQueryService.getBoard(id);							
+					
+		return WebControllerUtil.getResponse(board,				
 				board != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 조회되었습니다.", board != null ? 1 : 0), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 	
 	@GetMapping("/grw/boardHierarchy")
 	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
-			
-		ResponseEntity<?> result = null;			
+							
 		Long id;
 		
 		if ("root".equals(parentId) || parentId == null) {		
@@ -92,87 +80,52 @@ public class BoardController {
 			id = Long.parseLong(parentId);
 		}
 		
-		List<?> list = boardQueryService.getBoardHierarchy(id);
+		List<?> list = boardQueryService.getBoardHierarchy(id);				 			
 		
-		result = WebControllerUtil.getResponse(list,
+		return WebControllerUtil.getResponse(list,
 				list.size(), 
 				true,
 				String.format("%d 건 조회되었습니다.", list.size()),
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardRequestDTO2 boardDTO, BindingResult result) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InstantiationException, InvocationTargetException {
-			
-		ResponseEntity<?> res = null;
-		
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardSaveDTO boardDTO, BindingResult result) {
+							
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
 		log.info(authentication.getPrincipal().toString());
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} else {
-			
-			Board board = boardQueryService.getBoard(id);			
-			
-			log.info(boardDTO.toString());
-			//log.info(board.toString());
-			//board = DTOConverter.convertEntity(board, boardDTO);						
-			board = DtoAssembler.convertEntityByAnnotation(boardDTO, board, Board.class);
-			log.info(board.toString());
-			boardCommandService.saveBoard(board);
-																						
-			res = WebControllerUtil.getResponse(board,
-					board != null ? 1 : 0, 
-					true, 
-					String.format("%d 건 저장되었습니다.", board != null ? 1 : 0), 
-					HttpStatus.OK);
-		}
+		} 
+		
+		Board board = boardQueryService.getBoard(id);			
+		
+		if ( board == null )
+			board = new Board();
+		
+		board.updateEntity(boardDTO);
+		
+		boardCommandService.saveBoard(board);																					
 								 					
-		return res;
+		return WebControllerUtil.getResponse(board,
+				board != null ? 1 : 0, 
+				true, 
+				String.format("%d 건 저장되었습니다.", board != null ? 1 : 0), 
+				HttpStatus.OK);
 	}	
 		
 	@DeleteMapping("/grw/boards/{id}")
-	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {
-			
-		ResponseEntity<?> result = null;			
+	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {					
 												
-		boardCommandService.deleteBoard(id);
-						
-		result = WebControllerUtil.getResponse(null, 
+		boardCommandService.deleteBoard(id);							
+		
+		return WebControllerUtil.getResponse(null, 
 				1, 
 				true, 
 				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK); 					
-		
-		return result;
+				HttpStatus.OK);
 	}		
-	
-	@RequestMapping(value={"/grw/boards"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@RequestBody List<Board> boardList, BindingResult result) {
 			
-		ResponseEntity<?> res = null;
-		
-		if ( result.hasErrors()) {
-			//throw new IllegalArgumentException();
-			throw new ControllerException("오류");
-		} else {
-															
-			for (Board board : boardList ) {
-				boardCommandService.saveBoard(board);
-			}
-				
-			res = WebControllerUtil.getResponse(null,
-					boardList.size(), 
-					true, 
-					String.format("%d 건 저장되었습니다.", 1), 
-					HttpStatus.OK);
-		}
-								 					
-		return res;
-	}
-		
 }

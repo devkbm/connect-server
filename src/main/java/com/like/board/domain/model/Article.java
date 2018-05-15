@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.like.board.web.dto.ArticleSaveDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
@@ -123,8 +124,18 @@ public class Article extends AuditEntity implements Serializable {
 		this.toDate = toDate;				
 	}
 	
-	public boolean hasParentArticle() {		
-		return this.ppkArticle != null ? true : false;
+	public Article updateEntity(ArticleSaveDTO dto) {
+		
+		this.ppkArticle = dto.getPpkArticle();
+		this.title 		= dto.getTitle();
+		this.contents	= dto.getContents();
+		this.pwd		= dto.getPwd();
+		this.fromDate	= dto.getFromDate();
+		this.toDate		= dto.getToDate();
+		this.seq		= dto.getSeq();
+		this.depth		= dto.getDepth();
+		
+		return this;
 	}
 	
 	public void setBoard(Board board) {
@@ -136,12 +147,16 @@ public class Article extends AuditEntity implements Serializable {
 		}*/
 	}
 	
+	public boolean hasParentArticle() {		
+		return this.ppkArticle != this.pkArticle ? true : false;
+	}
+		
 	public void setParentPk(Long pk) {
 		this.ppkArticle = pk;
 	}
 	
 	public void setParentRoot() {
-		this.ppkArticle = 0L;	
+		this.ppkArticle = this.pkArticle;	
 	}
 	
 	public void setSeq(int seq) {

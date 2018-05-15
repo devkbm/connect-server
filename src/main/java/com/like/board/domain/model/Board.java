@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.model.enums.PasswordType;
+import com.like.board.web.dto.BoardSaveDTO;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;
@@ -109,11 +110,24 @@ public class Board extends AuditEntity implements Serializable {
     List<Article> articles = new ArrayList<Article>();       
     
     public Board(String boardNm) {
-    	this.boardName = boardNm;
+    	this.boardName 	= boardNm;
     	    	
-    	this.boardType = BoardType.BOARD;
-    	this.fromDate = LocalDate.now();
-    	this.toDate = LocalDate.now();    	    	
+    	this.boardType 	= BoardType.BOARD;
+    	this.fromDate 	= LocalDate.now();
+    	this.toDate 	= LocalDate.now();    	    	
+    }
+    
+    public Board updateEntity(BoardSaveDTO dto) {
+    	this.ppkBoard 			= dto.getPpkBoard();
+    	this.boardType 			= BoardType.valueOf(dto.getBoardType());
+    	this.boardDescription 	= dto.getBoardDescription();
+    	this.fromDate			= dto.getFromDate();
+    	this.toDate				= dto.getToDate();
+    	this.useYn				= dto.getUseYn();
+    	this.articleCount		= dto.getArticleCount();
+    	this.sequence			= dto.getSequence();		
+    	
+    	return this;
     }
     
     public boolean hasParentBoard() {    	    		    		

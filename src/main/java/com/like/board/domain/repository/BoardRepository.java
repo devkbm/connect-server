@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.like.board.domain.model.Article;
-import com.like.board.domain.model.ArticleCheck;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.dto.BoardHierarchyDTO;
-import com.like.file.domain.model.FileInfo;
+
 
 @Repository
 public interface BoardRepository {
@@ -52,6 +50,10 @@ public interface BoardRepository {
 	 */
 	void deleteBoard(Long id);
 	
+	/**
+	 * 게시판 도메인 삭제
+	 * @param board	게시판 도메인 
+	 */
 	void deleteBoard(Board board);
 			
 }
