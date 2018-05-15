@@ -13,16 +13,18 @@ import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.model.enums.PasswordType;
 import com.like.board.web.dto.BoardSaveDTO;
 import com.like.common.domain.AuditEntity;
+import com.like.menu.domain.model.Menu;
+import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.model.Program;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
 @Getter
-@NoArgsConstructor()
-@ToString()
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "grboard")
 @EntityListeners(AuditingEntityListener.class)
