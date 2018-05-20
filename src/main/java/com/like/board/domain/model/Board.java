@@ -13,9 +13,6 @@ import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.model.enums.PasswordType;
 import com.like.board.web.dto.BoardSaveDTO;
 import com.like.common.domain.AuditEntity;
-import com.like.menu.domain.model.Menu;
-import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "grboard")
+@Table(name = "GRBOARD")
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {
 	
@@ -37,76 +34,76 @@ public class Board extends AuditEntity implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="pk_board")
-	Long pkBoard;
+	@Column(name="PK_BOARD")
+	private Long pkBoard;
 	
     /**
      * 상위 게시판 키
      */
-	@Column(name="ppk_board")
-    Long ppkBoard;
+	@Column(name="PPK_BOARD")
+    private Long ppkBoard;
 	
 	@OneToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="ppk_board", insertable=false, updatable=false )
-	Board parent;
+	@JoinColumn(name="PPK_BOARD", insertable=false, updatable=false )
+	private Board parent;
 	
 	/**
 	 * 게시판_타입
 	 */
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-	@Column(name="board_type")
-    BoardType boardType;
+	@Column(name="BOARD_TYPE")
+    private BoardType boardType;
 	
 	/**
      * 게시판 명
      */	
-	@Column(name="board_name")
-    String boardName;             
+	@Column(name="BOARD_NAME")
+    private String boardName;             
     
     /**
      * 게시판_설명
      */
-	@Column(name="board_desc")
-    String boardDescription;
+	@Column(name="BOARD_DESC")
+	private String boardDescription;
     
     /**
      * 시작일자
      */	
-	@Column(name="from_dt")
-	LocalDate fromDate;
+	@Column(name="FROM_DT")
+	private LocalDate fromDate;
     
     /**
      * 종료일자
      */	
-	@Column(name="to_dt")
-    LocalDate toDate;    
+	@Column(name="TO_DT")
+	private LocalDate toDate;    
     
     /**
      * 사용여부
      */
-	@Column(name="use_yn")
-    Boolean useYn;
+	@Column(name="USE_YN")
+	private Boolean useYn;
     
     /**
      * 게시글 갯수
      */
-	@Column(name="article_cnt")
-    long articleCount;
+	@Column(name="ARTICLE_CNT")
+	private long articleCount;
     
     /**
      * 출력순서
      */
-	@Column(name="seq")
-    long sequence;
+	@Column(name="SEQ")
+	private long sequence;
 	
-	@Column(name="pwd_yn")
-	String pwdYn;
+	@Column(name="PWD_YN")
+	private Boolean pwdYn;
 	
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-	@Column(name="pwd_method")
-	PasswordType pwdMethod;
+	@Column(name="PWD_METHOD")
+	private PasswordType pwdMethod;
 
     @OneToMany(mappedBy = "board")          
     List<Article> articles = new ArrayList<Article>();       
@@ -115,8 +112,10 @@ public class Board extends AuditEntity implements Serializable {
     	this.boardName 	= boardNm;
     	    	
     	this.boardType 	= BoardType.BOARD;
+    	this.useYn		= true;
     	this.fromDate 	= LocalDate.now();
-    	this.toDate 	= LocalDate.now();    	    	
+    	this.toDate 	= LocalDate.of(9999, 12, 31);    	
+    	this.articleCount=0;    	
     }
     
     public Board updateEntity(BoardSaveDTO dto) {

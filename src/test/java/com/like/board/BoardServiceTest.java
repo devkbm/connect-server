@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.time.LocalDate;
+
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +40,8 @@ public class BoardServiceTest {
 
 	private static final Logger log = LoggerFactory.getLogger(BoardServiceTest.class);
 		 
-	//@MockBean
-	//private AuditorAwareImpl auditorAware;
+	@MockBean
+	private AuditorAware<String> auditorAware;
 		
 	@Autowired
 	UserService userService;
@@ -56,8 +59,8 @@ public class BoardServiceTest {
 	
 	@Before 
     public void setUp() { 
-		//User user = userService.getUser("1");
-		//Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(user.getUsername());
+		User user = userService.getUser("1");
+		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(user.getUsername());
     } 
 	
 	@Test	
@@ -66,6 +69,10 @@ public class BoardServiceTest {
 		
 		bcs.saveBoard(board);
 		
+		assertEquals(board.getBoardName(),"테스트 게시판");
+		assertEquals(board.getFromDate(), LocalDate.now());
+		assertEquals(board.getToDate(), LocalDate.of(9999, 12, 31));
+		assertEquals(board.getUseYn(), true);
 		//Board confirmBoard = bqs.getBoard(board.getPkBoard());
 		
 		//assertEquals(confirmBoard, board);
@@ -83,11 +90,9 @@ public class BoardServiceTest {
 		Board board = new Board("삭제 테스트 게시판");
 		bcs.saveBoard(board);				
 		
-		//bcs.deleteBoard(board);
-		
-		//board = null;
-		
-		//assertNull(board);			
+		bcs.deleteBoard(board);
+						
+		assertNull(board);			
 	}
 		
 	
