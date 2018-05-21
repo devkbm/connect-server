@@ -1,12 +1,10 @@
 package com.like.board;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -20,13 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
-import com.like.common.audit.AuditorAwareImpl;
+import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
@@ -61,6 +61,9 @@ public class BoardServiceTest {
     public void setUp() { 
 		User user = userService.getUser("1");
 		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(user.getUsername());
+		
+		Board board = new Board("테스트"); 		
+		bcs.saveBoard(board);
     } 
 	
 	@Test	
@@ -72,12 +75,7 @@ public class BoardServiceTest {
 		assertEquals(board.getBoardName(),"테스트 게시판");
 		assertEquals(board.getFromDate(), LocalDate.now());
 		assertEquals(board.getToDate(), LocalDate.of(9999, 12, 31));
-		assertEquals(board.getUseYn(), true);
-		//Board confirmBoard = bqs.getBoard(board.getPkBoard());
-		
-		//assertEquals(confirmBoard, board);
-		
-		//assertThat(confirmBoard.getPkBoard(), is(board.getPkBoard()));			
+		assertEquals(board.getUseYn(), true);			
 	}
 	
 		
@@ -87,12 +85,53 @@ public class BoardServiceTest {
 	@Test
 	public void test02_게시판삭제() {		
 
-		Board board = new Board("삭제 테스트 게시판");
-		bcs.saveBoard(board);				
+		List<Board> boardList = bqs.getBoardList("테스트");
 		
-		bcs.deleteBoard(board);
-						
-		assertNull(board);			
+		List<Board> boardSearch = 
+		boardList.stream()
+				.filter(board-> board.getBoardName().equals("테스트"))
+				.collect(Collectors.toList());
+		
+		assertEquals(boardSearch.size(), 1);
+		
+		for (Board board: boardSearch)
+			bcs.deleteBoard(board);
+					
+		//Assertions.assertThat(boardSearch).isEmpty();;
+	}
+	
+	@Test
+	public void test03_게시글등록() {
+		Board board = new Board("게시판");
+		bcs.saveBoard(board);
+		
+		Article article = new Article(board, "제목", "내용");
+		
+		bcs.saveArticle(article, board.getPkBoard());
+		
+	}
+	
+	@Test
+	public void test04_게시글파일저장() throws Exception {
+		Board board = new Board("Test");
+		
+		bcs.saveBoard(board);
+		
+		Article article = new Article(board, "test","test");		
+		
+		MockMultipartFile file = new MockMultipartFile("user-file", "test.txt",
+                                  "multipart/form-data", "test data".getBytes());
+		
+		FileInfo info = fs.uploadFile(file, "test","test");
+		
+		article.addAttachedFile(info);							
+		
+		bcs.saveArticle(article, board.getPkBoard());
+		
+		log.info("-------------------------------------");
+		log.info(article.getPkArticle().toString());
+		log.info(bqs.getAritlce(article.getPkArticle()).toString());
+		log.info(bqs.getAritlce(article.getPkArticle()).getFiles().toString());
 	}
 		
 	
@@ -127,32 +166,7 @@ public class BoardServiceTest {
 		bs.saveBoard(board);		
 		
 		bs.getBoardList();
-	}*/
-	
-	/*@Test
-	public void 게시글파일저장() throws Exception {
-		Board board = new Board("Test");
-		List<Article> articles = new ArrayList<Article>();
-		Article article = new Article("test","test");		
-		
-		MockMultipartFile file = new MockMultipartFile("user-file", "test.txt",
-                                  "multipart/form-data", "test data".getBytes());
-		
-		FileInfo info = fs.uploadFile(file, "test","test");
-		
-		article.addAttachedFile(info);		
-		
-		articles.add(article);
-		board.setArticles(articles);
-		
-		bcs.saveBoard(board);
-		bcs.saveArticle(article, board.getPkBoard());
-		
-		log.info("-------------------------------------");
-		log.info(article.getPkArticle().toString());
-		log.info(bqs.getAritlce(article.getPkArticle()).toString());
-		log.info(bqs.getAritlce(article.getPkArticle()).getFiles().toString());
-	}*/
+	}*/	
 	
 	
 }

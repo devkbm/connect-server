@@ -23,7 +23,7 @@ import com.like.file.domain.model.FileInfo;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @Getter
 @Entity
-@Table(name = "grarticle")
+@Table(name = "GRARTICLE")
 @EntityListeners(AuditingEntityListener.class)
 public class Article extends AuditEntity implements Serializable {
 	
@@ -34,69 +34,69 @@ public class Article extends AuditEntity implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="pk_article")
+	@Column(name="PK_ARTICLE")
 	Long pkArticle;	
 	
 	/**
 	 * 게시글 상위키
 	 */
-	@Column(name="ppk_article")
+	@Column(name="PPK_ARTICLE")
 	Long ppkArticle;		
 	
 	/**
 	 * 제목
 	 */
 	@NotEmpty(message="제목은 필수 입력 사항입니다.")
-	@Column(name="title")
+	@Column(name="TITLE")
 	String title;
     
     /**
      * 내용
      */
-	@Column(name="contents")
+	@Column(name="CONTENTS")
     String contents;
      
     /**
      * 비밀번호
      */
-	@Column(name="pwd")
+	@Column(name="PWD")
     String pwd;
     
     /**
      * 조회 수
      */
-	@Column(name="hit_cnt")
+	@Column(name="HIT_CNT")
     int hitCount;
         
     /**
      * 시작일자
      */
-	@Column(name="from_dt")
+	@Column(name="FROM_DT")
     LocalDate fromDate;
     
     /**
      * 종료일자
      */
-	@Column(name="to_dt")
+	@Column(name="TO_DT")
     LocalDate toDate;
     
     /**
      * 출력순서
      */
-	@Column(name="seq")
+	@Column(name="SEQ")
     Integer seq;
     
     /**
      * 게층 횟수
      */
-	@Column(name="depth")
+	@Column(name="HIER_DEPTH")
     int depth;
     
 	/**
 	 * 게시판 외래키
 	 */           
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_board", nullable=false, updatable=false)
+	@JoinColumn(name = "FK_BOARD", nullable=false, updatable=false)
 	Board board;
     
     @OneToMany(mappedBy = "article")
@@ -110,7 +110,8 @@ public class Article extends AuditEntity implements Serializable {
     
 	protected Article() {}
 	
-	public Article(String title, String contents) {
+	public Article(Board board, String title, String contents) {
+		this.board = board;
 		this.title = title;
 		this.contents = contents;
 		this.fromDate = LocalDate.now();

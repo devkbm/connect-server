@@ -35,6 +35,10 @@ public class BoardQueryService {
 	public List<Board> getBoardList() {
 		return boardRepository.getBoardList();
 	}
+	
+	public List<Board> getBoardList(String likeBoardName) {
+		return boardRepository.getBoardList(likeBoardName);
+	}
 		
 	public List<?> getBoardHierarchy(Long parentId) {
 		return boardRepository.getBoardHierarchy(parentId);
