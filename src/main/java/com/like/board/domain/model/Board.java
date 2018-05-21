@@ -120,6 +120,7 @@ public class Board extends AuditEntity implements Serializable {
     
     public Board updateEntity(BoardSaveDTO dto) {
     	this.ppkBoard 			= dto.getPpkBoard();
+    	this.boardName			= dto.getBoardName();
     	this.boardType 			= BoardType.valueOf(dto.getBoardType());
     	this.boardDescription 	= dto.getBoardDescription();
     	this.fromDate			= dto.getFromDate();
