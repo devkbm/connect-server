@@ -34,8 +34,8 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(board);
 	}
 	
-	public String saveArticle(Article article, Long fkBoard) {										
-		return articleRepository.saveArticle(article, fkBoard).toString();
+	public String saveArticle(Article article) {										
+		return articleRepository.saveArticle(article).toString();
 	}
 
 	public void deleteArticle(Article article) {					

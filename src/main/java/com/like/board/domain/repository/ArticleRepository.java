@@ -48,7 +48,7 @@ public interface ArticleRepository {
 	 * @param fkBoard	
 	 * @return Article 도메인의 PK
 	 */
-	Long saveArticle(Article article, Long fkBoard);
+	Long saveArticle(Article article);
 	
 	/**
 	 * 게시글 도메인 삭제

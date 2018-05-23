@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.like.board.domain.model.Article;
+import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.dto.ArticleListDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
@@ -53,8 +54,10 @@ public class ArticleController {
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
 		
 		Article article = boardQueryService.getAritlce(id);
-						
-		return WebControllerUtil.getResponse(article, 
+		
+		ArticleSaveDTO dto = new ArticleSaveDTO(article);
+				
+		return WebControllerUtil.getResponse(dto, 
 				article == null ? 0 : 1, 
 				article == null ? false : true, 
 				String.format("%d 건 조회되었습니다.", 1), 
@@ -116,25 +119,6 @@ public class ArticleController {
 				HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveArticle(@RequestBody List<Article> articleList,
-			@RequestParam(value="fkBoard", required=true) Long fkBoard) {				
-								
-		for (Article article : articleList ) {			
-			boardCommandService.saveArticle(article, fkBoard);
-		}
-		
-		/*ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8090/file", 
-																			request, 
-																			responseType, 
-																			uriVariables);*/							
-		
-		return WebControllerUtil.getResponse(null, 
-				articleList.size(), 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK);
-	}
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.DELETE) 
 	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {						
@@ -148,29 +132,39 @@ public class ArticleController {
 				HttpStatus.OK);
 	}	
 	
-	@RequestMapping(value={"/grw/boards/articles2"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
-	public ResponseEntity<?> saveArticleWithFile(@ModelAttribute ArticleSaveDTO articleDTO) {
+	public ResponseEntity<?> saveArticleWithFile(@RequestBody ArticleSaveDTO dto) {
 														
 		Article article = null;
 		FileInfo file = null;
 		
-		/*if ( articleDTO.hasId() ) {
-			article = boardQueryService.getAritlce(articleDTO.getId());			
-			article.setArticleDTO(articleDTO);
+		log.info(dto.toString());
+		
+		
+		if ( dto.getPkArticle() == null ) {
+			
+			Board board = boardQueryService.getBoard(dto.getFkBoard());
+			
+			article = new Article(board, dto.getTitle(), dto.getContents());
 		} else {
-			article = new Article(articleDTO.getTitle(), articleDTO.getContents());
-		}*/
-							
+			
+			article = boardQueryService.getAritlce(dto.getPkArticle());
+			
+			article.updateEntity(dto);
+		}
+											
 		try {
-			if (!articleDTO.getFile().isEmpty()) {
-				file = fileService.uploadFile(articleDTO.getFile(), "test", "board");
+			if (!dto.getFile().isEmpty()) {
+				file = fileService.uploadFile(dto.getFile(), "test", "board");
 				article.addAttachedFile(file);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}					
-		boardCommandService.saveArticle(article, articleDTO.getFkBoard());											
+		}
+		log.info(article.toString());
+		
+		boardCommandService.saveArticle(article);											
 		
 		return WebControllerUtil.getResponse(null, 
 				1, 

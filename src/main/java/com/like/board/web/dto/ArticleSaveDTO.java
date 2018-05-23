@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.board.domain.model.Article;
-import com.like.common.dto.annotation.DtoField;
 
 import lombok.Data;
 
@@ -38,7 +37,7 @@ public class ArticleSaveDTO implements Serializable {
     	
     String pwd;
     	
-    String hitCount;
+    int hitCount;
         	
     LocalDate fromDate;
     	
@@ -52,5 +51,21 @@ public class ArticleSaveDTO implements Serializable {
             
     @JsonIgnore
     MultipartFile file;
+    
+    public ArticleSaveDTO(){}
+    
+    public ArticleSaveDTO(Article article) {
+    	this.pkArticle 	= article.getPkArticle();
+    	this.ppkArticle = article.getPpkArticle();
+    	this.title 		= article.getTitle();
+    	this.contents	= article.getContents();
+    	this.pwd		= article.getPwd();
+    	this.hitCount	= article.getHitCount();
+    	this.fromDate 	= article.getFromDate();
+    	this.toDate		= article.getToDate();
+    	this.seq 		= article.getSeq();
+    	this.depth		= article.getDepth();
+    	this.fkBoard	= article.getBoard().getPkBoard();
+    }
         
 }

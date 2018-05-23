@@ -106,22 +106,19 @@ public class ArticleJpaRepository implements ArticleRepository {
 		return null;
 	}
 
-	public Long saveArticle(Article article, Long fkBoard) {		
-		
-		Board board = jpaBoard.findOne(fkBoard);
+	public Long saveArticle(Article article) {		
+				
 		
 		if ( !article.hasParentArticle() ){
 			article.setParentRoot();
 		}
 		
 		if (article.getSeq() == null ) {							
-			article.setSeq(getArticleNextSeq(fkBoard));
+			article.setSeq(getArticleNextSeq(article.getBoard().getPkBoard()));
 		} else if (article.getSeq() == 0 ) {
 			article.setSeq(1);
 		}
-						
-		article.setBoard(board);
-						
+														
 		Article savedArticle = jpaArticle.saveAndFlush(article);
 							
 		return savedArticle.getPkArticle();

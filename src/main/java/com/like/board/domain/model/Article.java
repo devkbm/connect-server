@@ -118,7 +118,7 @@ public class Article extends AuditEntity implements Serializable {
 		this.toDate = LocalDate.of(9999, Month.DECEMBER, 31);				
 	}
 	
-	public Article(String title, String contents, LocalDate fromDate, LocalDate toDate) {
+	public Article(Board board, String title, String contents, LocalDate fromDate, LocalDate toDate) {
 		this.title = title;
 		this.contents = contents;
 		this.fromDate = fromDate;
