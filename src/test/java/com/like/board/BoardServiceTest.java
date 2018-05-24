@@ -107,7 +107,7 @@ public class BoardServiceTest {
 		
 		Article article = new Article(board, "제목", "내용");
 		
-		bcs.saveArticle(article, board.getPkBoard());
+		bcs.saveArticle(article);
 		
 	}
 	
@@ -126,7 +126,7 @@ public class BoardServiceTest {
 		
 		article.addAttachedFile(info);							
 		
-		bcs.saveArticle(article, board.getPkBoard());
+		bcs.saveArticle(article);
 		
 		log.info("-------------------------------------");
 		log.info(article.getPkArticle().toString());
