@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.board.domain.model.Article;
 
 import lombok.Data;
@@ -52,6 +53,9 @@ public class ArticleSaveDTO implements Serializable {
     @JsonIgnore
     MultipartFile file;
     
+    @JsonProperty("file")
+    String fileName;
+    
     public ArticleSaveDTO(){}
     
     public ArticleSaveDTO(Article article) {
@@ -66,6 +70,7 @@ public class ArticleSaveDTO implements Serializable {
     	this.seq 		= article.getSeq();
     	this.depth		= article.getDepth();
     	this.fkBoard	= article.getBoard().getPkBoard();
+    	this.fileName   = article.getFiles().get(0).getFileNm();
     }
         
 }

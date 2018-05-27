@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +29,7 @@ import com.like.board.domain.repository.dto.ArticleListDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.board.web.dto.ArticleSaveDTO;
+import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
@@ -134,13 +136,16 @@ public class ArticleController {
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
-	public ResponseEntity<?> saveArticleWithFile(@RequestBody ArticleSaveDTO dto) {
+	public ResponseEntity<?> saveArticleWithFile(ArticleSaveDTO dto, BindingResult result) {
 														
 		Article article = null;
 		FileInfo file = null;
 		
 		log.info(dto.toString());
 		
+		if ( result.hasErrors() ) {
+			throw new ControllerException("오류");
+		}
 		
 		if ( dto.getPkArticle() == null ) {
 			
@@ -151,7 +156,7 @@ public class ArticleController {
 			
 			article = boardQueryService.getAritlce(dto.getPkArticle());
 			
-			article.updateEntity(dto);
+			//article.updateEntity(dto);
 		}
 											
 		try {
@@ -162,7 +167,9 @@ public class ArticleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		log.info(article.toString());
+		
+		
+		//log.info(article.toString());
 		
 		boardCommandService.saveArticle(article);											
 		
