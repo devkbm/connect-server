@@ -56,6 +56,8 @@ public class ArticleSaveDTO implements Serializable {
     @JsonProperty("file")
     String fileName;
     
+    Long fileId;
+    
     public ArticleSaveDTO(){}
     
     public ArticleSaveDTO(Article article) {
@@ -71,6 +73,7 @@ public class ArticleSaveDTO implements Serializable {
     	this.depth		= article.getDepth();
     	this.fkBoard	= article.getBoard().getPkBoard();
     	this.fileName   = article.getFiles().get(0).getFileNm();
+    	this.fileId		= article.getFiles().get(0).getPkFile();
     }
         
 }
