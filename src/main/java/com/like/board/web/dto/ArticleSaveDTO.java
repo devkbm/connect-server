@@ -3,12 +3,15 @@ package com.like.board.web.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.board.domain.model.Article;
+import com.like.file.domain.model.FileInfo;
 
 import lombok.Data;
 
@@ -52,11 +55,8 @@ public class ArticleSaveDTO implements Serializable {
             
     @JsonIgnore
     MultipartFile file;
-    
-    @JsonProperty("file")
-    String fileName;
-    
-    Long fileId;
+                
+    List<AttachFile> attachFile = new ArrayList<AttachFile>();
     
     public ArticleSaveDTO(){}
     
@@ -72,8 +72,11 @@ public class ArticleSaveDTO implements Serializable {
     	this.seq 		= article.getSeq();
     	this.depth		= article.getDepth();
     	this.fkBoard	= article.getBoard().getPkBoard();
-    	this.fileName   = article.getFiles().get(0).getFileNm();
-    	this.fileId		= article.getFiles().get(0).getPkFile();
+    	    	
+		for (FileInfo info : article.getFiles()) {
+			attachFile.add(new AttachFile(info.getPkFile(), info.getFileNm()));
+		}    		
+    	
     }
         
 }

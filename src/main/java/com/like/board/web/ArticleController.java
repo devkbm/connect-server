@@ -144,7 +144,7 @@ public class ArticleController {
 		log.info(dto.toString());
 		
 		if ( result.hasErrors() ) {
-			throw new ControllerException("오류");
+			throw new ControllerException(result.getAllErrors().toString());
 		}
 		
 		if ( dto.getPkArticle() == null ) {
