@@ -23,11 +23,7 @@
 		     , b.FROM_DT	as fromDt
 		     , b.TO_DT		as toDt
 		     , b.seq		as seq
-		     , 'Y'			as checkYn		     
-		     , case when d.PK_FILE is not null 
-		            then 'Y' 
-		            else 'N' 
-		       end 			as fileYn
+		     , 'Y'			as checkYn		     		     
 		     , (select group_concat(z.PK_FILE,'|',z.FILE_NM,'|',z.size order by z.PK_FILE SEPARATOR ',')     
 		          from grarticle_files x
 		         inner join cmfileinfo z
@@ -36,13 +32,9 @@
 		     , b.FK_BOARD	as fkBoard
    		  from grboard a
    			inner join grarticle b
-   	        	on (a.PK_BOARD = b.FK_BOARD)   	        
-   			left outer join grarticle_files c
-   	        	on (b.PK_ARTICLE = c.PK_ARTICLE)
+   	        	on (a.PK_BOARD = b.FK_BOARD)   	           			
    	        left outer join user u
-   	         	on (b.SYS_USER = u.USERNAME)
-    		left outer join cmfileinfo d
-            	on (c.pk_file = d.PK_FILE)            	
+   	         	on (b.SYS_USER = u.USERNAME)    		            
        where a.PK_BOARD = #{pkBoard}      
     ]]>          	
     	<if test="title != null"><![CDATA[

@@ -88,12 +88,7 @@ public class ArticleListDTO implements Serializable {
      * 조회 여부
      */
     String checkYn;
-    
-    /**
-     * 파일 첨부 유무
-     */
-    String fileYn;
-    
+            
     /**
      * 파일 정보
      * uuid | path | name | size
@@ -108,7 +103,7 @@ public class ArticleListDTO implements Serializable {
 	@QueryProjection
 	public ArticleListDTO(Date sysDt, String sysUser, String sysUsernm, Date updDt, String updUser, String pkArticle,
 			String ppkArticle, String title, String contents, String pwd, String hitCnt, String fromDt, String toDt,
-			String seq, String checkYn, String fileYn, String fileInfo, String fkBoard) {
+			String seq, String checkYn, String fileInfo, String fkBoard) {
 		super();
 		this.sysDt = sysDt;
 		this.sysUser = sysUser;
@@ -124,8 +119,7 @@ public class ArticleListDTO implements Serializable {
 		this.fromDt = fromDt;
 		this.toDt = toDt;
 		this.seq = seq;
-		this.checkYn = checkYn;
-		this.fileYn = fileYn;
+		this.checkYn = checkYn;		
 		this.fileInfo = fileInfo;
 		this.fkBoard = fkBoard;
 	}
