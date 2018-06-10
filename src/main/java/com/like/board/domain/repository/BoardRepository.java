@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.model.Board;
-import com.like.board.domain.repository.dto.BoardHierarchyDTO;
+import com.like.board.web.dto.BoardHierarchyDTO;
 
 
 @Repository
@@ -33,10 +33,9 @@ public interface BoardRepository {
 	
 	/**
 	 * 게시판 계층명단을 조회
-	 * @param parentId	상위 게시판 도메인 PK
 	 * @return	
 	 */
-	List<BoardHierarchyDTO> getBoardHierarchy(Long parentId);
+	List<BoardHierarchyDTO> getBoardHierarchy();
 		
 	/**
 	 * 게시판 도메인 저장

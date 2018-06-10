@@ -1,13 +1,14 @@
 package com.like.board.infra.jparepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
-import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
+import com.like.board.web.dto.BoardHierarchyDTO;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -44,28 +45,65 @@ public class BoardJpaRepository implements BoardRepository {
 					.fetch();				
 	}
 	
-	public List<BoardHierarchyDTO> getBoardHierarchy(Long parentId) {
+	public List<BoardHierarchyDTO> getBoardHierarchy() {
 				
-		QBoard parent = new QBoard("parent");								
+		List<BoardHierarchyDTO> rootList = getBoardHierarchyRootList();
 		
-		Expression<String> leaf = new CaseBuilder()
-										.when(qBoard.ppkBoard.isNull()).then("true")
-										.otherwise("false").as("leaf");													
+		List<BoardHierarchyDTO> rtn =  setLinkBoardHierarchy(rootList);
+		
+		return rtn;
+	}
+	
+	private List<BoardHierarchyDTO> setLinkBoardHierarchy(List<BoardHierarchyDTO> list) {
+		List<BoardHierarchyDTO> children = null;
+		
+		for ( BoardHierarchyDTO dto : list) {
+			if (dto.isLeaf()) {	// leaf 노드이면 다음 리스트 검색
+				continue;
+			} else {
+				children = getBoardHierarchyChildrenList(dto.getPkBoard());
+				dto.setChildren(children);
+				
+				setLinkBoardHierarchy(children);
+			}
+		}
+		
+		return list;
+	}
+	
+	private List<BoardHierarchyDTO> getBoardHierarchyRootList() {									
+		
+		Expression<Boolean> isLeaf = new CaseBuilder()
+										.when(qBoard.ppkBoard.isNotNull()).then(true)
+										.otherwise(false).as("leaf");
 		
 		JPAQuery<BoardHierarchyDTO> query = queryFactory
-													.select(Projections.constructor(BoardHierarchyDTO.class
-																				, parent.pkBoard, parent.boardName, leaf
-																				, parent.boardName, parent.boardName, parent.ppkBoard))
-													.from(qBoard)
-													.rightJoin(qBoard.parent, parent);
+				.select(Projections.constructor(BoardHierarchyDTO.class
+						, qBoard.pkBoard, qBoard.ppkBoard, qBoard.boardType
+						, qBoard.boardName, qBoard.boardDescription, qBoard.fromDate
+						, qBoard.toDate, qBoard.articleCount, qBoard.sequence, isLeaf))
+				.from(qBoard)
+				.where(qBoard.ppkBoard.isNull());
 													
-		if ( parentId == null ) {
-			query.where(parent.ppkBoard.isNull());
-		} else {
-			query.where(parent.ppkBoard.eq(parentId));
-		}		
+						
+		return query.fetch();	
+	}
+	
+	private List<BoardHierarchyDTO> getBoardHierarchyChildrenList(Long parentPkBoard) {
+		Expression<Boolean> isLeaf = new CaseBuilder()
+				.when(qBoard.ppkBoard.isNotNull()).then(true)
+				.otherwise(false).as("leaf");
+
+		JPAQuery<BoardHierarchyDTO> query = queryFactory
+				.select(Projections.constructor(BoardHierarchyDTO.class
+						, qBoard.pkBoard, qBoard.ppkBoard, qBoard.boardType
+						, qBoard.boardName, qBoard.boardDescription, qBoard.fromDate
+						, qBoard.toDate, qBoard.articleCount, qBoard.sequence, isLeaf))
+				.from(qBoard)
+				.where(qBoard.ppkBoard.eq(parentPkBoard));								
 		
-		return query.fetch();					
+		return query.fetch();
+		
 	}
 	
 	public void saveBoard(Board board) {

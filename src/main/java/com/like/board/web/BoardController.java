@@ -70,17 +70,9 @@ public class BoardController {
 	}
 	
 	@GetMapping("/grw/boardHierarchy")
-	public ResponseEntity<?> getBoardHierarchyList(@RequestParam(value="parentId", required=false) String parentId ) {
-							
-		Long id;
-		
-		if ("root".equals(parentId) || parentId == null) {		
-			id = null;
-		} else {
-			id = Long.parseLong(parentId);
-		}
-		
-		List<?> list = boardQueryService.getBoardHierarchy(id);				 			
+	public ResponseEntity<?> getBoardHierarchyList() {
+											
+		List<?> list = boardQueryService.getBoardHierarchy();				 			
 		
 		return WebControllerUtil.getResponse(list,
 				list.size(), 

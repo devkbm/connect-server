@@ -40,8 +40,8 @@ public class BoardQueryService {
 		return boardRepository.getBoardList(likeBoardName);
 	}
 		
-	public List<?> getBoardHierarchy(Long parentId) {
-		return boardRepository.getBoardHierarchy(parentId);
+	public List<?> getBoardHierarchy() {
+		return boardRepository.getBoardHierarchy();
 	}
 	
 	public Article getAritlce(Long id) {

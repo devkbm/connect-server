@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.like.board.domain.repository.dto.BoardHierarchyDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
@@ -17,7 +16,6 @@ import com.like.menu.infra.jparepository.springdata.JpaMenu;
 import com.like.menu.infra.jparepository.springdata.JpaMenuGroup;
 import com.like.menu.infra.jparepository.springdata.JpaProgram;
 import com.like.menu.web.dto.MenuHierarchyDTO;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
