@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.todo.domain.model.TaskGroup;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -27,6 +29,7 @@ public class TaskCommandServiceTest {
 	TaskQueryService tqs;
 	
 	@Test
+	@Ignore
 	public void 업무그룹조회() {
 		List<?> list = tqs.getTaskGroupList();
 		

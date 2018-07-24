@@ -14,7 +14,6 @@ import com.like.commoncode.domain.repository.CommonCodeRepository;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCode;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCodeGroup;
 import com.like.commoncode.web.dto.CodeComboDTO;
-import com.like.commoncode.web.dto.CodeDTO;
 import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;

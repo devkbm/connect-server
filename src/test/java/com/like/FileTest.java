@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
@@ -40,6 +42,7 @@ public class FileTest {
     }
 	
 	@Test
+	@Ignore
 	public void 파일업로드() throws Exception {
 		ResultMatcher ok = MockMvcResultMatchers.status().isOk();
 
