@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+
+@Getter
 @Entity
 @Table(name = "member")
 public class Member {
@@ -23,6 +26,8 @@ public class Member {
 	@OneToMany(mappedBy="team")
 	private List<JoinTeam> teamList = new ArrayList<JoinTeam>();
 		
+	protected Member() {}
+	
 	public Member(String memberId, String memberName) {
 		this.memberId = memberId;
 		this.memberName = memberName;	
