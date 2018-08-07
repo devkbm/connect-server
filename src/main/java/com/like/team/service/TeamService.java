@@ -48,12 +48,32 @@ public class TeamService {
 		teamRepository.deleteMember(member);
 	}
 	
-	
-	public void saveJoinTeam(JoinTeam joinTeam) {
+	public JoinTeam joinTeam(String teamId, String memberId) {
+		Team team = teamRepository.getTeam(teamId);
+		Member member = teamRepository.getMember(memberId);
+		
+		JoinTeam joinTeam = new JoinTeam(team, member);
+		
 		teamRepository.saveJoinTeam(joinTeam);
+		
+		return joinTeam;
+	}	
+	
+	public JoinTeam changeTeam(String memberId, String prevTeamId, String afterTeamId) {
+		JoinTeam joinTeam = teamRepository.getJoinTeam(prevTeamId, memberId);
+		
+		Team team = teamRepository.getTeam(afterTeamId);
+		
+		joinTeam.changeTeam(team);
+		
+		teamRepository.saveJoinTeam(joinTeam);
+		
+		return joinTeam;
 	}
 	
-	public void deleteJoinTeam(JoinTeam joinTeam) {
+	public void quitTeam(String memberId, String teamId) {
+		JoinTeam joinTeam = teamRepository.getJoinTeam(teamId, memberId);
+		
 		teamRepository.deleteJoinTeam(joinTeam);
 	}
 	

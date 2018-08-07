@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.team.domain.model.JoinTeam;
 import com.like.team.domain.model.Member;
+import com.like.team.domain.model.QJoinTeam;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
 import com.like.team.domain.repository.springdata.JpaJoinTeam;
@@ -29,6 +30,7 @@ public class TeamJpaRepository implements TeamRepository {
 	@Autowired
 	private JpaJoinTeam jpaJoinTeam;
 	
+	private final QJoinTeam qJoinTeam = QJoinTeam.joinTeam;
 	
 	@Override
 	public Team getTeam(String teamId) {
@@ -74,6 +76,14 @@ public class TeamJpaRepository implements TeamRepository {
 	@Override
 	public void deleteJoinTeam(JoinTeam joinTeam) {
 		jpaJoinTeam.delete(joinTeam);
+	}
+
+	@Override
+	public JoinTeam getJoinTeam(String teamId, String memberId) {
+		return queryFactory.selectFrom(qJoinTeam)
+							.where(qJoinTeam.team.teamId.eq(teamId)
+								.and(qJoinTeam.member.memberId.eq(memberId)))
+							.fetchOne();
 	}
 
 }

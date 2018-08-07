@@ -27,6 +27,8 @@ public interface TeamRepository {
 	void deleteMember(Member member);
 	
 	
+	JoinTeam getJoinTeam(String teamId, String memberId);
+	
 	void saveJoinTeam(JoinTeam joinTeam);
 	
 	void deleteJoinTeam(JoinTeam joinTeam);

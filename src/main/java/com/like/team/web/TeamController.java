@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.team.domain.model.JoinTeam;
 import com.like.team.domain.model.Member;
 import com.like.team.domain.model.Team;
 import com.like.team.service.TeamService;
@@ -78,6 +80,35 @@ public class TeamController {
 				member != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 저장되었습니다.", member != null ? 1 : 0), 
+				HttpStatus.OK);
+	}
+	
+	@PostMapping(value={"/member/{memberId}/join/{teamId}"})
+	public ResponseEntity<?> joinTeam(
+			@PathVariable(value="teamId") String teamId,
+			@PathVariable(value="memberId") String memberId) {				
+
+		JoinTeam joinTeam = teamService.joinTeam(teamId, memberId);			
+										 					
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("팀에 등록 되었습니다."), 
+				HttpStatus.OK);
+	}
+	
+	@PostMapping(value={"/member/{memberId}/team/{teamId}/change/{afterTeamId}"})
+	public ResponseEntity<?> changeTeam(
+			@PathVariable(value="teamId") String teamId,
+			@PathVariable(value="memberId") String memberId,
+			@PathVariable(value="afterTeamId") String afterTeamId) {				
+
+		JoinTeam joinTeam = teamService.changeTeam(memberId, teamId, afterTeamId);			
+										 					
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("팀이 변경되었습니다."), 
 				HttpStatus.OK);
 	}
 	

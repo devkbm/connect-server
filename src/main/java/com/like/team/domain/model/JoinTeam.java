@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "jointeam")
 public class JoinTeam {
@@ -25,6 +24,13 @@ public class JoinTeam {
 	@ManyToOne
 	@JoinColumn(name="member_id")
 	private Member member;	
+	
+	protected JoinTeam() {}
+	
+	public JoinTeam(Team team, Member member) {
+		this.team = team;
+		this.member = member;
+	}
 	
 	public void joinTeam(Team team, Member member) {
 		this.team = team;

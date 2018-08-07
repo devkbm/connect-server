@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.like.team.domain.model.JoinTeam;
 
 @Repository
-public interface JpaJoinTeam extends JpaRepository<JoinTeam, String> {
+public interface JpaJoinTeam extends JpaRepository<JoinTeam, Long> {
 
 }
