@@ -90,7 +90,7 @@ public class TeamController {
 
 		JoinTeam joinTeam = teamService.joinTeam(teamId, memberId);			
 										 					
-		return WebControllerUtil.getResponse(null,
+		return WebControllerUtil.getResponse(joinTeam,
 				1, 
 				true, 
 				String.format("팀에 등록 되었습니다."), 
@@ -105,7 +105,7 @@ public class TeamController {
 
 		JoinTeam joinTeam = teamService.changeTeam(memberId, teamId, afterTeamId);			
 										 					
-		return WebControllerUtil.getResponse(null,
+		return WebControllerUtil.getResponse(joinTeam,
 				1, 
 				true, 
 				String.format("팀이 변경되었습니다."), 

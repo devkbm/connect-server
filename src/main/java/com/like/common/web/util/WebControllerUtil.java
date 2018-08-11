@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.like.common.web.response.ResponseObject;
 import com.like.common.web.response.ResponseObjectList;
 
-public class WebControllerUtil {
+public abstract class WebControllerUtil {
 		
 	private static final ObjectMapper mapper = new ObjectMapper();	
 	
