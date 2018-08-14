@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
@@ -27,8 +28,7 @@ public class Member {
 	@Column(name="member_name")
 	private String memberName;
 	
-	@JsonManagedReference
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="member")
 	private List<JoinTeam> teamList = new ArrayList<JoinTeam>();
 		
