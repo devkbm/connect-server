@@ -35,6 +35,17 @@ public class TeamService {
 		teamRepository.deleteTeam(team);
 	}
 	
+	public List<Member> getMemberList(String teamId) {
+		Team team = teamRepository.getTeam(teamId);
+		
+		return team.getMemberList();
+	}
+	
+	public List<Team> getTeamList(String memberId) {
+		Member member = teamRepository.getMember(memberId);
+		
+		return member.getTeamList();
+	}
 	
 	public Member getMember(String memberId) {
 		return teamRepository.getMember(memberId);

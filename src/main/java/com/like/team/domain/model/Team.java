@@ -2,12 +2,17 @@ package com.like.team.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 
@@ -23,7 +28,8 @@ public class Team {
 	@Column(name="team_name")
 	private String teamName;
 	
-	@OneToMany(mappedBy="member")
+	@JsonIgnore
+	@OneToMany(mappedBy="team")
 	private List<JoinTeam> memberList = new ArrayList<JoinTeam>();
 			
 	protected Team() {}
@@ -31,5 +37,18 @@ public class Team {
 	public Team(String teamId, String teamName) {
 		this.teamId = teamId;
 		this.teamName = teamName;
+	}
+	
+	public List<Member> getMemberList() {
+		/*List<Member> memberList = new ArrayList<>();
+		for (JoinTeam joinTeam : this.memberList) {
+			memberList.add(joinTeam.getMember());
+		}
+		
+		return memberList;*/
+		return this.memberList
+				.stream()
+				.map(r -> r.getMember())
+				.collect(Collectors.toList());
 	}
 }

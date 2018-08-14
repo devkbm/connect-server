@@ -1,11 +1,14 @@
 package com.like.team.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +38,30 @@ public class TeamController {
 		return WebControllerUtil.getResponse(team,
 				team == null ? 0 : 1, 
 				team == null ? false : true,
+				"조회 되었습니다.",
+				HttpStatus.OK);
+	}
+	
+	@GetMapping(value={"/team/{id}/members"})
+	public ResponseEntity<?> getMemberList(@PathVariable(value="id") String teamId) {
+						
+		List<Member> memberList = teamService.getMemberList(teamId);												
+		
+		return WebControllerUtil.getResponse(memberList,
+				memberList == null ? 0 : 1, 
+				memberList == null ? false : true,
+				"조회 되었습니다.",
+				HttpStatus.OK);
+	}
+	
+	@GetMapping(value={"/member/{id}/teams"})
+	public ResponseEntity<?> getTeamList(@PathVariable(value="id") String memberId) {
+						
+		List<Team> teamList = teamService.getTeamList(memberId);												
+		
+		return WebControllerUtil.getResponse(teamList,
+				teamList == null ? 0 : 1, 
+				teamList == null ? false : true,
 				"조회 되었습니다.",
 				HttpStatus.OK);
 	}
@@ -109,6 +136,20 @@ public class TeamController {
 				1, 
 				true, 
 				String.format("팀이 변경되었습니다."), 
+				HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value={"/member/{memberId}/team/{teamId}"})
+	public ResponseEntity<?> deleteTeam(
+			@PathVariable(value="teamId") String teamId,
+			@PathVariable(value="memberId") String memberId) {				
+
+		teamService.quitTeam(memberId, teamId);	
+										 					
+		return WebControllerUtil.getResponse(memberId,
+				1, 
+				true, 
+				String.format("팀에서 제외되었습니다."), 
 				HttpStatus.OK);
 	}
 	
