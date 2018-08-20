@@ -6,7 +6,7 @@ import com.like.employee.domain.entity.enums.JobType;
 
 public class JobChangeHistory {
 
-	private String id;
+	private Long id;
 	
 	private JobType jobType;
 	
