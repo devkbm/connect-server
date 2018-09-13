@@ -32,6 +32,7 @@ public class Employee extends AuditEntity implements Serializable {
 	@Column(name="RREGNO")
 	private String residentRegistrationNumber;
 	
+	/*
 	@OneToMany(mappedBy = "employee")
 	private List<DeptChangeHistory> deptHistory = new ArrayList<>();
 	
@@ -51,6 +52,7 @@ public class Employee extends AuditEntity implements Serializable {
 	public void addJobChange(JobChangeHistory jobChangeHistory) {
 		jobHistory.add(jobChangeHistory);
 	}
+	*/
 	
 	
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.team.domain.model.Member;
 import com.like.team.domain.model.Team;
 import com.like.team.service.TeamService;
 
@@ -29,7 +30,11 @@ public class TeamServiceTest {
     public void setUp() throws Exception { 
 		Team team = new Team("team00","팀테스트");
 		
-		teamService.saveTeam(team);	
+		teamService.saveTeam(team);
+		
+		Member member = new Member("member00","멤버00");
+		
+		teamService.saveMember(member);
 	}
 	
 	@Test
@@ -45,5 +50,19 @@ public class TeamServiceTest {
 		Team team = new Team("team01","팀테스트");
 		
 		teamService.saveTeam(team);			
+	}
+	
+	@Test
+	public void 멤버저장() {
+		Member member = new Member("member001","멤버001");
+		
+		teamService.saveMember(member);		
+	}
+	
+	@Test
+	public void 팀가입() {
+				
+		teamService.joinTeam("team00", "member00");
+	
 	}
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -12,11 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.like.common.domain.AuditEntity;
 import com.like.employee.domain.entity.enums.DeptType;
 
+@Entity
+@Table(name = "HRMEMPDEPTHISTORY")
+@EntityListeners(AuditingEntityListener.class)
 public class DeptChangeHistory extends AuditEntity implements Serializable {
 
 	@Id
