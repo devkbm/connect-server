@@ -16,7 +16,7 @@ import com.like.common.domain.AuditEntity;
 @JsonAutoDetect
 @Getter
 @Entity
-@Table(name = "grarticlecheck")
+@Table(name = "GRWARTICLECHECK")
 @EntityListeners(AuditingEntityListener.class)
 public class ArticleCheck extends AuditEntity implements Serializable {
 	

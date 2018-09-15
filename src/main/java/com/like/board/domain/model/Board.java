@@ -23,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "GRBOARD")
+@Table(name = "GRWBOARD")
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {
 	
@@ -95,15 +95,7 @@ public class Board extends AuditEntity implements Serializable {
      * 출력순서
      */
 	@Column(name="SEQ")
-	private long sequence;
-	
-	@Column(name="PWD_YN")
-	private Boolean pwdYn;
-	
-	@Enumerated(EnumType.STRING)
-	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-	@Column(name="PWD_METHOD")
-	private PasswordType pwdMethod;
+	private long sequence;	
 
     @OneToMany(mappedBy = "board")          
     List<Article> articles = new ArrayList<Article>();       

@@ -14,7 +14,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.like.board.domain.model.enums.PasswordType;
 import com.like.board.web.dto.ArticleSaveDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
@@ -23,7 +25,7 @@ import com.like.file.domain.model.FileInfo;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @Getter
 @Entity
-@Table(name = "GRARTICLE")
+@Table(name = "GRWARTICLE")
 @EntityListeners(AuditingEntityListener.class)
 public class Article extends AuditEntity implements Serializable {
 	
@@ -54,13 +56,7 @@ public class Article extends AuditEntity implements Serializable {
      * 내용
      */
 	@Column(name="CONTENTS")
-    String contents;
-     
-    /**
-     * 비밀번호
-     */
-	@Column(name="PWD")
-    String pwd;
+    String contents;        
     
     /**
      * 조회 수
@@ -91,6 +87,20 @@ public class Article extends AuditEntity implements Serializable {
      */
 	@Column(name="HIER_DEPTH")
     int depth;
+	
+	@Column(name="PWD_YN")
+	private Boolean pwdYn;
+	
+	@Enumerated(EnumType.STRING)
+	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+	@Column(name="HASH_METHOD")
+	private PasswordType pwdMethod;
+	
+	/**
+     * 비밀번호
+     */
+	@Column(name="PWD")
+    String pwd;
     
 	/**
 	 * 게시판 외래키
