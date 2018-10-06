@@ -14,13 +14,18 @@ import lombok.Data;
 @Data
 public class BoardSaveDTO implements Serializable {
 	
-	LocalDateTime sysDt;	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3823369604516101480L;
+
+	LocalDateTime createdDt;	
 		
-	String sysUser;
+	String createdBy;
 		
-	LocalDateTime updDt;
+	LocalDateTime modifiedDt;
 		
-	String updUser;
+	String modifiedBy;
 		
 	Long pkBoard;
 	
@@ -49,10 +54,6 @@ public class BoardSaveDTO implements Serializable {
     Boolean useYn;
     
     long articleCount;
-    
-    String pwdYn;
-    
-    long sequence;
-    
-    String pwdMethod;
+            
+    long sequence;       
 }
