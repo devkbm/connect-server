@@ -138,7 +138,7 @@ public class MenuJpaRepository implements MenuRepository {
 			if (dto.isLeaf()) { // leaf 노드이면 다음 리스트 검색
 				continue;
 			} else {				
-				children = getMenuChildrenList(dto.getMenuGroupCode(), dto.getMenuCode());
+				children = getMenuChildrenList(dto.getMenuGroupCode(), dto.getKey());
 				dto.setChildren(children);
 				
 				getMenuHierarchyDTO(children);

@@ -16,9 +16,9 @@ public class MenuHierarchyDTO implements Serializable {
 		
 	private String menuGroupCode;
 		
-	private String menuCode;
+	private String key;
 	
-	private String menuName;
+	private String title;
 	
 	private String parentMenuCode;
 		
@@ -37,11 +37,11 @@ public class MenuHierarchyDTO implements Serializable {
 	private List<MenuHierarchyDTO> children;
 
 	@QueryProjection
-	public MenuHierarchyDTO(String menuGroupCode, String menuCode, String menuName, String parentMenuCode,
+	public MenuHierarchyDTO(String menuGroupCode, String key, String title, String parentMenuCode,
 			Long sequence, Long level, String url, boolean isLeaf) {		
 		this.menuGroupCode = menuGroupCode;
-		this.menuCode = menuCode;
-		this.menuName = menuName;
+		this.key = key;
+		this.title = title;
 		this.parentMenuCode = parentMenuCode;
 		this.sequence = sequence;
 		this.level = level;
