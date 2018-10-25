@@ -14,13 +14,13 @@ public class BoardHierarchyDTO implements Serializable {
 
 	private static final long serialVersionUID = -4534626900084055780L;
 
-	Long pkBoard;
+	Long key;
 	
 	Long ppkBoard;
 	
 	BoardType boardType;
 	
-	String boardName;
+	String title;
 	
 	String boardDescription;
 	
@@ -44,22 +44,22 @@ public class BoardHierarchyDTO implements Serializable {
 			
 	@QueryProjection
 	public BoardHierarchyDTO(
-			Long pkBoard, Long ppkBoard, BoardType boardType, 
-			String boardName, String boardDescription, LocalDate fromDate, 
+			Long key, Long ppkBoard, BoardType boardType, 
+			String title, String boardDescription, LocalDate fromDate, 
 			LocalDate toDate, Long articleCount, Long sequence, Boolean isLeaf) {
 		super();
-		this.pkBoard = pkBoard;
-		this.ppkBoard = ppkBoard;
-		this.boardType = boardType;
-		this.boardName = boardName;
-		this.boardDescription = boardDescription;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
-		this.articleCount = articleCount;
-		this.sequence = sequence;
-		this.expanded = false;
-		this.selected = false;
-		this.active = false;
+		this.key 				= key;
+		this.ppkBoard 			= ppkBoard;
+		this.boardType 			= boardType;
+		this.title 				= title;
+		this.boardDescription 	= boardDescription;
+		this.fromDate 			= fromDate;
+		this.toDate 			= toDate;
+		this.articleCount 		= articleCount;
+		this.sequence 			= sequence;
+		this.expanded 			= false;
+		this.selected 			= false;
+		this.active 			= false;
 	}
 	
 	

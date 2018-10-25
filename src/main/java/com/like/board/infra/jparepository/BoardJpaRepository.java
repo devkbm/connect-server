@@ -61,7 +61,7 @@ public class BoardJpaRepository implements BoardRepository {
 			if (dto.isLeaf()) {	// leaf 노드이면 다음 리스트 검색
 				continue;
 			} else {
-				children = getBoardHierarchyChildrenList(dto.getPkBoard());
+				children = getBoardHierarchyChildrenList(dto.getKey());
 				dto.setChildren(children);
 				
 				setLinkBoardHierarchy(children);
