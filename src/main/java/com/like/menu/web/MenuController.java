@@ -155,7 +155,7 @@ public class MenuController {
 	}
 	
 	
-	@RequestMapping(value={"/menugroup/{groupcode}/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO dto, BindingResult result) throws Exception {
 											
 		if ( result.hasErrors()) {
@@ -184,6 +184,18 @@ public class MenuController {
 				menu != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 저장되었습니다.", menu != null ? 1 : 0), 
+				HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/menu/{id}")
+	public ResponseEntity<?> delMenu(@PathVariable(value="id") String menuCode) {				
+												
+		menuCommandService.deleteMenu(menuCode);							
+		
+		return WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
 				HttpStatus.OK);
 	}
 	

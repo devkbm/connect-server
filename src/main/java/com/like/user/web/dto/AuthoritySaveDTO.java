@@ -2,6 +2,8 @@ package com.like.user.web.dto;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.like.user.domain.model.Authority;
 
 import lombok.Data;
@@ -17,6 +19,7 @@ public class AuthoritySaveDTO {
 	
 	String modifiedBy;
 			
+	@NotBlank(message="권한은 필수 항목입니다.")
 	String authority;
 			
 	String description;

@@ -149,6 +149,13 @@ public class UserService implements UserDetailsService {
 	}		
 		
 	/**
+	 * 권한 도메인을 삭제한다.
+	 * @param authorityName
+	 */
+	public void deleteAuthority(String authorityName) {
+		userRepository.deleteAuthority(authorityName);
+	}
+	/**
 	 * 중복 유저 검증 기능
 	 * @param userId
 	 * @return 기존 아이디가 있으면 true, 아니면 false 리턴

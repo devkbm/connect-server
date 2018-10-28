@@ -83,8 +83,8 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public void deleteAuthority(String userId) {
-		jpaAuthority.delete(userId);		
+	public void deleteAuthority(String authority) {
+		jpaAuthority.delete(authority);		
 	}
 	
 }

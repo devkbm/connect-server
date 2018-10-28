@@ -212,8 +212,7 @@ public class UserController {
 				 HttpStatus.OK);
 	}
 	
-	//@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})
-	@PostMapping("/authority")
+	@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})	
 	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO dto, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
 		
 		if ( result.hasErrors()) {
@@ -224,9 +223,7 @@ public class UserController {
 		
 		if (authority == null) {
 			authority = new Authority(dto.getAuthority(), dto.getDescription());
-		} else {
-			//DtoAssembler.convertEntityByAnnotation(dto, authority, authority.getClass());
-		}
+		} 
 		
 		userService.createAuthority(authority);					
 																				 				
@@ -236,5 +233,17 @@ public class UserController {
 				String.format("%d 건 저장되었습니다.", 1), 
 				HttpStatus.OK);
 	}	
+	
+	@DeleteMapping("/authority/{id}")
+	public ResponseEntity<?> deleteAuthority(@PathVariable(value="id") String authorityName) {
+		
+		userService.deleteAuthority(authorityName);					
+			
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK);
+	}
 			
 }
