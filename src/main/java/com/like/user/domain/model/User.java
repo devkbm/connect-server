@@ -42,7 +42,7 @@ public class User extends AuditEntity implements UserDetails {
 	private String name;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)	
-	@Column(name="password")
+	@Column(name="pwd")
 	private String password;	
 	
 	@Column(name="non_expired_yn")
@@ -51,7 +51,7 @@ public class User extends AuditEntity implements UserDetails {
 	@Column(name="non_locked_yn")
 	private Boolean isAccountNonLocked;
 	
-	@Column(name="pass_non_expried_yn")
+	@Column(name="pass_non_expired_yn")
 	private Boolean isCredentialsNonExpired;
 	
 	@Column(name="enabled_yn")

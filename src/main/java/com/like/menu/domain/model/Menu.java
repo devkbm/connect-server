@@ -45,7 +45,7 @@ public class Menu extends AuditEntity implements Serializable {
 	@Column(name="seq")
 	private long sequence;
 	
-	@Column(name="level")
+	@Column(name="lvl")
 	private long level;			
 			 				
 	@ManyToOne(fetch = FetchType.LAZY)

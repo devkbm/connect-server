@@ -32,7 +32,7 @@ create table if not exists COM.CMUSERAUTHORITY (
     AUTHORITY_NAME		VARCHAR(50)		NOT NULL	COMMENT '권한명',
 	constraint pk_cmauthority 	primary key(USER_ID, AUTHORITY_NAME),
 	constraint fk_cmuser 		foreign key(USER_ID) references CMUSER(USER_ID),
-	constraint fk_cmauthority 	foreign key(AUTHORITY_NAME) references CMAUTHORITY(AUTHORITY_NAME),
+	constraint fk_cmauthority 	foreign key(AUTHORITY_NAME) references CMAUTHORITY(AUTHORITY_NAME)
 );
 
 create table if not exists COM.CMPROGRAM (
@@ -74,7 +74,7 @@ create table if not exists COM.CMMENU (
 	constraint pk_cmmenu		primary key(MENU_CODE),
 	constraint fk_cmmenu	 	foreign key(P_MENU_CODE) references CMMENU(MENU_CODE),
 	constraint fk_cmmenugroup 	foreign key(MENU_GROUP_CODE) references CMMENUGROUP(MENU_GROUP_CODE),
-	constraint fk_cmprogram 	foreign key(PROGRAM_CODE) references CMPROGRAM(PROGRAM_CODE),
+	constraint fk_cmprogram 	foreign key(PROGRAM_CODE) references CMPROGRAM(PROGRAM_CODE)
 );
 
 create table if not exists COM.CMUSERMENUGROUP (
@@ -85,8 +85,8 @@ create table if not exists COM.CMUSERMENUGROUP (
 	USER_ID				VARCHAR(20)		NOT NULL	COMMENT '유저ID',
     MENU_GROUP_CODE		VARCHAR(10)		NOT NULL	COMMENT '메뉴그룹코드',
 	constraint pk_cmusermenugroup 	primary key(USER_ID, MENU_GROUP_CODE),
-	constraint fk_cmuser 		foreign key(USER_ID) references CMUSER(USER_ID),
-	constraint fk_cmauthority 	foreign key(MENU_GROUP_CODE) references CMMENUGROUP(MENU_GROUP_CODE),
+	constraint fk_cmuser 			foreign key(USER_ID) references CMUSER(USER_ID),
+	constraint fk_cmmenugroup 		foreign key(MENU_GROUP_CODE) references CMMENUGROUP(MENU_GROUP_CODE)
 );
 
 
