@@ -2,6 +2,54 @@
 INSERT INTO com.cmuser(user_id, pwd, user_name, non_expired_yn, non_locked_yn, enabled_yn, pass_non_expired_yn, sys_dt, sys_user, upd_dt, upd_user)
 VALUES('1', '1234', 'test', 1, 1, 1, 1, NULL, NULL, '2018-10-26 12:48:34.000', '1');
 
+/* 프로그램 */
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM001', '2018-04-10 23:14:32.000', '1', '2018-10-26 07:35:49.000', '1', '사용자등록', 'userForm', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM002', '2018-04-10 23:15:03.000', '1', '2018-04-10 23:15:03.000', '1', '사용자그리드', 'userList', NULL);
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM003', '2018-04-10 23:15:28.000', '1', '2018-04-10 23:15:28.000', '1', '권한등록', 'authForm', '권한등록');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM004', '2018-04-10 23:15:40.000', '1', '2018-04-10 23:15:40.000', '1', '권한그리드', 'authList', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM005', '2018-04-10 23:16:00.000', '1', '2018-04-10 23:16:00.000', '1', '메뉴그룹등록', 'menuGroupForm', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM006', '2018-04-10 23:16:10.000', '1', '2018-04-10 23:16:10.000', '1', '메뉴그룹 그리드', 'menuGroupList', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM007', '2018-04-10 23:16:26.000', '1', '2018-04-10 23:16:26.000', '1', '메뉴등록', 'menuForm', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM008', '2018-04-10 23:16:54.000', '1', '2018-04-10 23:16:54.000', '1', '메뉴그리드', 'menuList', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM009', '2018-04-10 23:17:04.000', '1', '2018-04-10 23:17:04.000', '1', '메뉴트리', 'menuTree', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM010', '2018-04-10 23:17:23.000', '1', '2018-04-10 23:17:23.000', '1', '프로그램등록', 'programForm', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('COM011', '2018-04-10 23:17:35.000', '1', '2018-04-10 23:17:35.000', '1', '프로그램그리드', 'programList', '');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('GRP0001', '2018-10-26 12:47:44.000', '1', '2018-10-26 12:47:44.000', '1', '게시판등록', 'boardForm', NULL);
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('PROGRAM1', '2018-03-01 08:33:43.000', '1', '2018-03-16 23:47:42.000', '1', '프로그램1', 'home', NULL);
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('PROGRAM2', '2018-03-03 23:06:48.000', '1', '2018-03-16 23:47:49.000', '1', '프로그램2', 'menuForm', '메뉴 트리');
+INSERT INTO com.cmprogram
+(program_code, sys_dt, sys_user, upd_dt, upd_user, program_name, url, description)
+VALUES('PROGRAM3', '2018-03-16 23:49:18.000', '1', '2018-03-16 23:49:18.000', '1', '메뉴트리', 'menuTree', NULL);
+
+
 /* 메뉴 그룹 */
 INSERT INTO com.cmmenugroup(sys_dt, sys_user, upd_dt, upd_user, menu_group_code, menu_group_name, description)
 VALUES('2018-10-26 07:25:54.602', '1', '2018-10-26 07:25:55.000', '1', 'COM', '공통메뉴그룹', NULL);
