@@ -22,7 +22,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "cmprogram")
+@Table(name = "comprogram")
 @EntityListeners(AuditingEntityListener.class)
 public class Program extends AuditEntity implements Serializable{
 

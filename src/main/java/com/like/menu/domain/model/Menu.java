@@ -24,7 +24,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
-@Table(name = "cmmenu")
+@Table(name = "commenu")
 @EntityListeners(AuditingEntityListener.class)
 public class Menu extends AuditEntity implements Serializable {
 		

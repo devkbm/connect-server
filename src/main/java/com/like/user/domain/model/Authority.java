@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.like.common.domain.AuditEntity;
 
 @Entity
-@Table(name = "cmauthority")
+@Table(name = "comauthority")
 public class Authority extends AuditEntity implements GrantedAuthority {
 
 	private static final long serialVersionUID = 5255280527856714047L;

@@ -29,7 +29,7 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "cmuser")
+@Table(name = "comuser")
 public class User extends AuditEntity implements UserDetails {
 	
 	private static final long serialVersionUID = 2601682947639908458L;
@@ -58,13 +58,13 @@ public class User extends AuditEntity implements UserDetails {
 	private Boolean isEnabled;
 				
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name="cmuserauthority",
+    @JoinTable(name="comuserauthority",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="authority_name"))	
 	private List<Authority> authorities = new ArrayList<Authority>();
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name="cmusermenugroup",
+    @JoinTable(name="comusermenugroup",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
 	private List<MenuGroup> menuGroupList = new ArrayList<MenuGroup>();
