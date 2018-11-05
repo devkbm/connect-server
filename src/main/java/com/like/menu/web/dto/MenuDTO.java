@@ -2,7 +2,6 @@ package com.like.menu.web.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -32,6 +31,8 @@ public class MenuDTO implements Serializable {
 	private String menuName;
 		
 	private String parentMenuCode;
+	
+	private String menuType;
 		
 	private long sequence;
 			
@@ -50,6 +51,7 @@ public class MenuDTO implements Serializable {
 		this.menuCode 		= menu.getMenuCode();
 		this.menuName 		= menu.getMenuName();
 		this.parentMenuCode = menu.getParentMenuCode();
+		this.menuType		= menu.getMenuType().getCode();				
 		this.sequence 		= menu.getSequence();
 		this.level 			= menu.getLevel();		
 		//Optional<Program> program = menu.getProgram()

@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,7 +17,10 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.like.common.domain.AuditEntity;
+import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.web.dto.MenuDTO;
 
 import lombok.Getter;
@@ -42,6 +47,11 @@ public class Menu extends AuditEntity implements Serializable {
 	@JoinColumn(name="p_menu_code", insertable=false, updatable=false )
 	Menu parent;
 	
+	// @Enumerated(EnumType.STRING)
+	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+	@Column(name="menu_type")
+	private MenuType menuType;
+	
 	@Column(name="seq")
 	private long sequence;
 	
@@ -58,9 +68,10 @@ public class Menu extends AuditEntity implements Serializable {
 	
 	public Menu() {}
 	
-	public Menu(String menuCode, String menuName, long sequence, long level) {
+	public Menu(String menuCode, String menuName, MenuType menuType, long sequence, long level) {
 		this.menuCode = menuCode;
 		this.menuName = menuName;		
+		this.menuType = menuType;
 		this.sequence = sequence;
 		this.level = level;
 	}
@@ -76,6 +87,7 @@ public class Menu extends AuditEntity implements Serializable {
 	public Menu updateEntity(MenuDTO dto) {
 		this.menuCode	= dto.getMenuCode() != null ? dto.getMenuCode() : this.menuCode;
 		this.menuName 	= dto.getMenuName() != null ? dto.getMenuName() : this.menuName;
+		this.menuType	= MenuType.valueOf(dto.getMenuType());
 		this.sequence 	= dto.getSequence();
 		this.level 		= dto.getLevel();
 		this.parentMenuCode = dto.getParentMenuCode() != null ? dto.getParentMenuCode() : this.parentMenuCode;

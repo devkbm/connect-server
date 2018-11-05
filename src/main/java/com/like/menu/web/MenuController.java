@@ -1,5 +1,6 @@
 package com.like.menu.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,8 +22,10 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
+import com.like.menu.web.dto.EnumDTO;
 import com.like.menu.web.dto.MenuDTO;
 import com.like.menu.web.dto.MenuGroupDTO;
 import com.like.menu.web.dto.MenuHierarchyDTO;
@@ -154,6 +157,23 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
+	@GetMapping("/menu/menutype")
+	public ResponseEntity<?> getMenuTypeList() {				
+		
+		List<EnumDTO> list = new ArrayList<EnumDTO>();
+		
+		for (MenuType menuType : MenuType.values()) {
+			EnumDTO dto = new EnumDTO(menuType.getCode(), menuType.getName());
+			list.add(dto);
+		}				 					
+		
+		return WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK);
+	}
+	
 	
 	@RequestMapping(value={"/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO dto, BindingResult result) throws Exception {
@@ -164,11 +184,9 @@ public class MenuController {
 		} 
 		
 		Menu menu = menuQueryService.getMenu(dto.getMenuCode());			
-		
-		//menu = Menu.updateEntity(menuDTO, menu);
-		
+				
 		if ( menu == null ) {
-			menu = new Menu(dto.getMenuCode(), dto.getMenuName(), dto.getSequence(), dto.getLevel());
+			menu = new Menu(dto.getMenuCode(), dto.getMenuName(), MenuType.valueOf(dto.getMenuCode()), dto.getSequence(), dto.getLevel());
 		} else {
 			menu.updateEntity(dto);
 		}
