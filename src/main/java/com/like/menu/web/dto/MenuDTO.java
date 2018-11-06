@@ -51,7 +51,7 @@ public class MenuDTO implements Serializable {
 		this.menuCode 		= menu.getMenuCode();
 		this.menuName 		= menu.getMenuName();
 		this.parentMenuCode = menu.getParentMenuCode();
-		this.menuType		= menu.getMenuType().getCode();				
+		this.menuType		= menu.getMenuType().toString();				
 		this.sequence 		= menu.getSequence();
 		this.level 			= menu.getLevel();		
 		//Optional<Program> program = menu.getProgram()

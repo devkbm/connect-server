@@ -47,7 +47,7 @@ public class Menu extends AuditEntity implements Serializable {
 	@JoinColumn(name="p_menu_code", insertable=false, updatable=false )
 	Menu parent;
 	
-	// @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="menu_type")
 	private MenuType menuType;

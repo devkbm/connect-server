@@ -96,12 +96,11 @@ public class MenuJpaRepository implements MenuRepository {
 		Expression<Boolean> isLeaf = new CaseBuilder()											
 											.when(qMenu.parentMenuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
-				
-		
+						
 		JPAQuery<MenuHierarchyDTO> query = queryFactory
 				.select(Projections.constructor(MenuHierarchyDTO.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
+											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
 				.from(qMenu)
 					.leftJoin(qMenu.program ,qProgram)					
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
@@ -115,12 +114,11 @@ public class MenuJpaRepository implements MenuRepository {
 		Expression<Boolean> isLeaf = new CaseBuilder()										
 											.when(qMenu.parentMenuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
-				
-		
+						
 		JPAQuery<MenuHierarchyDTO> query = queryFactory
 				.select(Projections.constructor(MenuHierarchyDTO.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
+											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
 				.from(qMenu)				
 					.leftJoin(qMenu.program ,qProgram)
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)

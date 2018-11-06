@@ -163,7 +163,7 @@ public class MenuController {
 		List<EnumDTO> list = new ArrayList<EnumDTO>();
 		
 		for (MenuType menuType : MenuType.values()) {
-			EnumDTO dto = new EnumDTO(menuType.getCode(), menuType.getName());
+			EnumDTO dto = new EnumDTO(menuType.toString(), menuType.getName());
 			list.add(dto);
 		}				 					
 		

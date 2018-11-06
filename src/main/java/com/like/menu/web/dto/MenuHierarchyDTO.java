@@ -1,12 +1,9 @@
 package com.like.menu.web.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-
-import com.like.menu.domain.model.Menu;
+import com.like.menu.domain.model.enums.MenuType;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;
@@ -22,6 +19,8 @@ public class MenuHierarchyDTO implements Serializable {
 	
 	private String parentMenuCode;
 		
+	private String menuType;
+	
 	private Long sequence;
 		
 	private Long level;
@@ -38,11 +37,12 @@ public class MenuHierarchyDTO implements Serializable {
 
 	@QueryProjection
 	public MenuHierarchyDTO(String menuGroupCode, String key, String title, String parentMenuCode,
-			Long sequence, Long level, String url, boolean isLeaf) {		
+			MenuType menuType, Long sequence, Long level, String url, boolean isLeaf) {		
 		this.menuGroupCode = menuGroupCode;
 		this.key = key;
 		this.title = title;
 		this.parentMenuCode = parentMenuCode;
+		this.menuType = menuType.toString();
 		this.sequence = sequence;
 		this.level = level;
 		this.url = url;
