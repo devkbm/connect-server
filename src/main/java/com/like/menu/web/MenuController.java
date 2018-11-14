@@ -269,5 +269,17 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/program/{code}")
+	public ResponseEntity<?> delProgram(@PathVariable(value="code") String programCode) {				
+												
+		menuCommandService.deleteProgram(programCode);							
+		
+		return WebControllerUtil.getResponse(null, 
+				1, 
+				true, 
+				String.format("%d 건 삭제되었습니다.", 1), 
+				HttpStatus.OK);
+	}
+	
 	
 }

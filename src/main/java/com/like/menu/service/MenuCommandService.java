@@ -45,4 +45,8 @@ public class MenuCommandService {
 		menuJpaRepository.saveProgram(program);
 	}
 	
+	public void deleteProgram(String programCode) {
+		menuJpaRepository.deleteProgram(programCode);
+	}
+	
 }
