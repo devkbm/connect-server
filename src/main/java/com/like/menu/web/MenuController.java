@@ -184,9 +184,20 @@ public class MenuController {
 		} 
 		
 		Menu menu = menuQueryService.getMenu(dto.getMenuCode());			
-				
-		if ( menu == null ) {
-			menu = new Menu(dto.getMenuCode(), dto.getMenuName(), MenuType.valueOf(dto.getMenuCode()), dto.getSequence(), dto.getLevel());
+						
+		if ( menu == null ) {					
+			
+			MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());
+			Program program = menuQueryService.getProgram(dto.getProgram());
+			
+			menu = new Menu(dto.getMenuCode(), 
+							dto.getMenuName(),
+							dto.getParentMenuCode(),
+							MenuType.valueOf(dto.getMenuType()), 
+							dto.getSequence(), 
+							dto.getLevel(),
+							menuGroup,
+							program);
 		} else {
 			menu.updateEntity(dto);
 		}

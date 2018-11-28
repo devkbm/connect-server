@@ -29,6 +29,7 @@ import com.like.file.service.FileService;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -53,9 +54,9 @@ public class MenuServiceTest {
     public void setUp() throws Exception { 
 		//테스트 데이터 입력
 		MenuGroup menuGroup = new MenuGroup("GROUP","테스트메뉴그룹","테스트메뉴그룹");				
-		cs.saveMenuGroup(menuGroup);
+		cs.saveMenuGroup(menuGroup);			
 		
-		Menu menu = new Menu("MENU","테스트메뉴", 0, 0);		
+		Menu menu = new Menu("MENU", "테스트메뉴", null, MenuType.ITEM, 0L, 0L, null, null);
 		cs.saveMenu(menu, menuGroup.getMenuGroupCode());
 					
 		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");		
@@ -86,7 +87,7 @@ public class MenuServiceTest {
 	
 	@Test
 	public void test03_메뉴등록() throws Exception {
-		Menu menu = new Menu("testmenu","테스트메뉴", 0, 0);
+		Menu menu = new Menu("testmenu", "테스트메뉴", null, MenuType.ITEM, 0L, 0L, null, null);
 		
 		cs.saveMenu(menu, "GROUP");		
 		
