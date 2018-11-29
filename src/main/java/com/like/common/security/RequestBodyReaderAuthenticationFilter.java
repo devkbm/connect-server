@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.like.user.web.dto.LoginRequestDTO;
+import com.like.user.dto.LoginRequestDTO;
 
 public class RequestBodyReaderAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	

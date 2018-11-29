@@ -34,11 +34,12 @@ import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
+import com.like.user.dto.AuthorityQueryDTO;
+import com.like.user.dto.AuthoritySaveDTO;
+import com.like.user.dto.LoginRequestDTO;
+import com.like.user.dto.PasswordRequestDTO;
+import com.like.user.dto.UserSaveDTO;
 import com.like.user.service.UserService;
-import com.like.user.web.dto.AuthoritySaveDTO;
-import com.like.user.web.dto.LoginRequestDTO;
-import com.like.user.web.dto.PasswordRequestDTO;
-import com.like.user.web.dto.UserSaveDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -189,9 +190,9 @@ public class UserController {
 	}
 	
 	@RequestMapping(value={"/authority"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getAuthorityList() {				
+	public ResponseEntity<?> getAuthorityList(AuthorityQueryDTO dto) {				
 		
-		List<Authority> authorityList = userService.getAllAuthorities();								 				
+		List<Authority> authorityList = userService.getAuthorityList(dto);								 				
 		
 		return WebControllerUtil.getResponse(authorityList,				
 				authorityList.size(), 

@@ -7,13 +7,16 @@ import org.springframework.stereotype.Repository;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
+import com.like.menu.dto.MenuGroupQueryDTO;
+import com.like.menu.dto.MenuQueryDTO;
+import com.like.menu.dto.ProgramQueryDTO;
 
 @Repository
 public interface MenuRepository {
 	
 	MenuGroup getMenuGroup(String menuGroupCode);
 	
-	List<MenuGroup> getMenuGroupList();
+	List<MenuGroup> getMenuGroupList(MenuGroupQueryDTO condition);
 	
 	List<MenuGroup> getMenuGroupList(String likeMenuGroupName);
 	
@@ -26,7 +29,7 @@ public interface MenuRepository {
 	
 	Menu getMenu(String menuCode);
 			
-	List<Menu> getMenuList(String likeMenuName);
+	List<Menu> getMenuList(String menuGroupCode, MenuQueryDTO condition);
 			
 	void saveMenu(Menu menu, MenuGroup menuGroup);
 	
@@ -35,7 +38,7 @@ public interface MenuRepository {
 	
 	Program getProgram(String programCode);
 	
-	List<Program> getProgramList();
+	List<Program> getProgramList(ProgramQueryDTO condition);
 	
 	void saveProgram(Program program);
 	

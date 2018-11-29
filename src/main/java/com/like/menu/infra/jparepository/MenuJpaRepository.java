@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
@@ -12,10 +13,14 @@ import com.like.menu.domain.model.QMenu;
 import com.like.menu.domain.model.QMenuGroup;
 import com.like.menu.domain.model.QProgram;
 import com.like.menu.domain.repository.MenuRepository;
+import com.like.menu.dto.MenuGroupQueryDTO;
+import com.like.menu.dto.MenuHierarchyDTO;
+import com.like.menu.dto.MenuQueryDTO;
+import com.like.menu.dto.ProgramQueryDTO;
 import com.like.menu.infra.jparepository.springdata.JpaMenu;
 import com.like.menu.infra.jparepository.springdata.JpaMenuGroup;
 import com.like.menu.infra.jparepository.springdata.JpaProgram;
-import com.like.menu.web.dto.MenuHierarchyDTO;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -50,8 +55,11 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<MenuGroup> getMenuGroupList() {
-		return jpaMenuGroup.findAll();
+	public List<MenuGroup> getMenuGroupList(MenuGroupQueryDTO condition) {
+		return queryFactory
+				.selectFrom(qMenuGroup)
+				.where(condition.getBooleanBuilder())
+				.fetch();
 	}
 
 	@Override
@@ -83,10 +91,13 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Menu> getMenuList(String likeMenuName) {
+	public List<Menu> getMenuList(String menuGroupCode, MenuQueryDTO condition) {
 		return queryFactory
 				.selectFrom(qMenu)
-				.where(qMenu.menuName.like(likeMenuName+"%"))
+					.innerJoin(qMenu.menuGroup, qMenuGroup)
+					.fetchJoin()
+				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
+					.and(condition.getBooleanBuilder()))				
 				.fetch();
 	}
 	
@@ -163,8 +174,12 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Program> getProgramList() {
-		return jpaProgram.findAll();
+	public List<Program> getProgramList(ProgramQueryDTO condition) {
+					
+		return queryFactory
+				.selectFrom(qProgram)
+				.where(condition.getBooleanBuilder())
+				.fetch();					
 	}
 
 	@Override

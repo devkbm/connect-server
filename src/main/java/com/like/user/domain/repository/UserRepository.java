@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
+import com.like.user.dto.AuthorityQueryDTO;
 
 public interface UserRepository {
 			
@@ -52,7 +53,7 @@ public interface UserRepository {
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
 	 */
-	List<Authority> getAllAuthorities();
+	List<Authority> getAuthorityList(AuthorityQueryDTO condition);
 	
 	/**
 	 * 

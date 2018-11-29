@@ -1,4 +1,4 @@
-package com.like.user.web.dto;
+package com.like.user.dto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

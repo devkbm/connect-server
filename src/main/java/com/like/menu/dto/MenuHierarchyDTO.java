@@ -1,4 +1,4 @@
-package com.like.menu.web.dto;
+package com.like.menu.dto;
 
 import java.io.Serializable;
 import java.util.List;

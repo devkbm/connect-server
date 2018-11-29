@@ -10,8 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
+import com.like.menu.dto.MenuGroupQueryDTO;
+import com.like.menu.dto.MenuHierarchyDTO;
+import com.like.menu.dto.MenuQueryDTO;
+import com.like.menu.dto.ProgramQueryDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
-import com.like.menu.web.dto.MenuHierarchyDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,8 +30,8 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenuGroup(menuGroupCode);
 	}
 	
-	public List<MenuGroup> getMenuGroupList() {
-		return menuJpaRepository.getMenuGroupList();
+	public List<MenuGroup> getMenuGroupList(MenuGroupQueryDTO condition) {
+		return menuJpaRepository.getMenuGroupList(condition);
 	}
 	
 	public List<MenuGroup> getMenuGroupList(String likeMenuGroupName) {
@@ -43,8 +46,8 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenu(menuCode);
 	}
 	
-	public List<Menu> getMenuList(String likeMenuName) {
-		return menuJpaRepository.getMenuList(likeMenuName);
+	public List<Menu> getMenuList(String menuGroupCode, MenuQueryDTO condition) {
+		return menuJpaRepository.getMenuList(menuGroupCode, condition);
 	}
 	
 	public List<MenuHierarchyDTO> getMenuHierachy(String menuGroupCode) {
@@ -57,7 +60,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getProgram(programCode);
 	}
 	
-	public List<Program> getProgramList() {
-		return menuJpaRepository.getProgramList();
+	public List<Program> getProgramList(ProgramQueryDTO condition) {
+		return menuJpaRepository.getProgramList(condition);
 	}
 }

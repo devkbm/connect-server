@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
-import com.like.menu.web.dto.MenuGroupDTO;
+import com.like.menu.dto.MenuGroupDTO;
 
 import lombok.Getter;
 import lombok.ToString;

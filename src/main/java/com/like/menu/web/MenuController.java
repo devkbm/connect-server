@@ -23,13 +23,16 @@ import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
 import com.like.menu.domain.model.enums.MenuType;
+import com.like.menu.dto.EnumDTO;
+import com.like.menu.dto.MenuDTO;
+import com.like.menu.dto.MenuGroupDTO;
+import com.like.menu.dto.MenuGroupQueryDTO;
+import com.like.menu.dto.MenuHierarchyDTO;
+import com.like.menu.dto.MenuQueryDTO;
+import com.like.menu.dto.ProgramQueryDTO;
+import com.like.menu.dto.ProgramSaveDTO;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
-import com.like.menu.web.dto.EnumDTO;
-import com.like.menu.web.dto.MenuDTO;
-import com.like.menu.web.dto.MenuGroupDTO;
-import com.like.menu.web.dto.MenuHierarchyDTO;
-import com.like.menu.web.dto.ProgramSaveDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -80,9 +83,9 @@ public class MenuController {
 	}
 	
 	@GetMapping("/menugroup")
-	public ResponseEntity<?> getMenuGroupList() {				
+	public ResponseEntity<?> getMenuGroupList(MenuGroupQueryDTO dto) {				
 		
-		List<MenuGroup> list = menuQueryService.getMenuGroupList(); 							
+		List<MenuGroup> list = menuQueryService.getMenuGroupList(dto); 							
 		
 		return WebControllerUtil.getResponse(list,
 				list.size(), 
@@ -146,9 +149,10 @@ public class MenuController {
 	
 	@GetMapping("/menugroup/{groupcode}/menu")
 	public ResponseEntity<?> getMenuList(
-			@PathVariable(value="groupcode") String menuGroupCode) {				
+			@PathVariable(value="groupcode") String menuGroupCode,
+			MenuQueryDTO dto) {				
 		
-		List<Menu> list = menuQueryService.getMenuGroup(menuGroupCode).getMenuList(); 							
+		List<Menu> list = menuQueryService.getMenuList(menuGroupCode, dto);														 						
 		
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -230,9 +234,9 @@ public class MenuController {
 	
 	
 	@GetMapping("/program")
-	public ResponseEntity<?> getProgramList() {
-							 		
-		List<Program> list = menuQueryService.getProgramList();
+	public ResponseEntity<?> getProgramList(ProgramQueryDTO condition) {							 			
+		
+		List<Program> list = menuQueryService.getProgramList(condition);
 										
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -261,9 +265,7 @@ public class MenuController {
 			throw new ControllerException("오류");
 		} 
 		
-		Program program = menuQueryService.getProgram(dto.getProgramCode());			
-				
-		//program = Program.updateEntity(programSaveDTO, program);
+		Program program = menuQueryService.getProgram(dto.getProgramCode());							
 		
 		if ( program == null ) {
 			program = new Program(dto.getProgramCode(), dto.getProgramName(), dto.getUrl(), dto.getDescription());					

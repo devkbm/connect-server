@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.like.common.domain.AuditEntity;
 import com.like.menu.domain.model.enums.MenuType;
-import com.like.menu.web.dto.MenuDTO;
+import com.like.menu.dto.MenuDTO;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -60,11 +60,11 @@ public class Menu extends AuditEntity implements Serializable {
 			 				
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)
-	private MenuGroup menuGroup;
+	private MenuGroup menuGroup = new MenuGroup();
 	
 	@OneToOne(optional=true)
 	@JoinColumn(name = "program_code")
-	private Program program;
+	private Program program = new Program();
 	
 	public Menu() {}	
 	

@@ -17,6 +17,7 @@ import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.domain.service.UserDomainService;
+import com.like.user.dto.AuthorityQueryDTO;
 
 @Transactional
 @Service
@@ -118,8 +119,8 @@ public class UserService implements UserDetailsService {
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
 	 */
-	public List<Authority> getAllAuthorities() {        									
-        return userRepository.getAllAuthorities();
+	public List<Authority> getAuthorityList(AuthorityQueryDTO condition) {        									
+        return userRepository.getAuthorityList(condition);
 	}
 	
 	/**
