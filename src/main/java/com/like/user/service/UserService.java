@@ -18,6 +18,7 @@ import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.domain.service.UserDomainService;
 import com.like.user.dto.AuthorityQueryDTO;
+import com.like.user.dto.UserQueryDTO;
 
 @Transactional
 @Service
@@ -59,8 +60,8 @@ public class UserService implements UserDetailsService {
 	 * 유저 도메인 리스트를 조회한다.
 	 * @return	유저 도메인 리스트
 	 */
-	public List<User> getUserList() {
-		return userRepository.getUserList();
+	public List<User> getUserList(UserQueryDTO dto) {
+		return userRepository.getUserList(dto);
 	}
 	
 	/**

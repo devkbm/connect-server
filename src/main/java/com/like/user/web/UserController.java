@@ -38,6 +38,7 @@ import com.like.user.dto.AuthorityQueryDTO;
 import com.like.user.dto.AuthoritySaveDTO;
 import com.like.user.dto.LoginRequestDTO;
 import com.like.user.dto.PasswordRequestDTO;
+import com.like.user.dto.UserQueryDTO;
 import com.like.user.dto.UserSaveDTO;
 import com.like.user.service.UserService;
 
@@ -114,9 +115,9 @@ public class UserController {
 	}
 		
 	@GetMapping(value={"/user"})
-	public ResponseEntity<?> getUserList() {
+	public ResponseEntity<?> getUserList(UserQueryDTO dto) {
 				
-		List<User> userList = userService.getUserList();						 				
+		List<User> userList = userService.getUserList(dto);						 				
 		
 		return WebControllerUtil.getResponse(userList,
 				userList.size(), 

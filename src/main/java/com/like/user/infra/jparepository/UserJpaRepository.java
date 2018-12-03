@@ -12,6 +12,7 @@ import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.dto.AuthorityQueryDTO;
+import com.like.user.dto.UserQueryDTO;
 import com.like.user.infra.jparepository.springdata.JpaAuthority;
 import com.like.user.infra.jparepository.springdata.JpaUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,8 +38,11 @@ public class UserJpaRepository implements UserRepository {
 	}
 	
 	@Override
-	public List<User> getUserList() {
-		return jpaUser.findAll();
+	public List<User> getUserList(UserQueryDTO dto) {
+		return  queryFactory
+				.selectFrom(qUser)
+				.where(dto.getBooleanBuilder())
+				.fetch();
 	}
 
 	@Override
