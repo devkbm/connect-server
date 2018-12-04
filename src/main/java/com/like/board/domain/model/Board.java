@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.model.enums.PasswordType;
-import com.like.board.web.dto.BoardSaveDTO;
+import com.like.board.dto.BoardSaveDTO;
 import com.like.common.domain.AuditEntity;
 
 import lombok.Getter;

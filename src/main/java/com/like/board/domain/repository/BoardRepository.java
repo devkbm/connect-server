@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.model.Board;
-import com.like.board.web.dto.BoardHierarchyDTO;
+import com.like.board.dto.BoardHierarchyDTO;
 
 
 @Repository

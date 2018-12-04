@@ -1,4 +1,4 @@
-package com.like.board.web.dto;
+package com.like.board.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

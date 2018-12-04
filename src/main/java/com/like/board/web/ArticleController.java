@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
-import com.like.board.domain.repository.dto.ArticleListDTO;
+import com.like.board.dto.ArticleListDTO;
+import com.like.board.dto.ArticleSaveDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
-import com.like.board.web.dto.ArticleSaveDTO;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;

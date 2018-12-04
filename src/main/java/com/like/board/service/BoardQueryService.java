@@ -12,7 +12,7 @@ import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
-import com.like.board.domain.repository.dto.ArticleListDTO;
+import com.like.board.dto.ArticleListDTO;
 import com.like.board.infra.mapper.BoardMapper;
 
 @Service

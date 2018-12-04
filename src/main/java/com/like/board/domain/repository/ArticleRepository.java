@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.ArticleCheck;
-import com.like.board.domain.repository.dto.ArticleResponseDTO;
+import com.like.board.dto.ArticleResponseDTO;
 import com.like.file.domain.model.FileInfo;
 
 @Repository

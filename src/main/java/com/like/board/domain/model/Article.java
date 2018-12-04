@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.board.domain.model.enums.PasswordType;
-import com.like.board.web.dto.ArticleSaveDTO;
+import com.like.board.dto.ArticleSaveDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 

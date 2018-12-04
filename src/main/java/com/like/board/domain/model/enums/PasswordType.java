@@ -1,7 +1,8 @@
 package com.like.board.domain.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PasswordType {
 	SHA224("SHA224","SHA2-224BIT"),
 	SHA256("SHA256","SHA2-256BIT"),
@@ -16,7 +17,6 @@ public enum PasswordType {
         this.name = name;
 	}
 	
-	@JsonValue
     public String getCode() {
         return code;
     }

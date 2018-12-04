@@ -1,7 +1,8 @@
 package com.like.board.domain.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum BoardType {
 	/**
 	 * 관리자만 등록가능 
@@ -18,7 +19,6 @@ public enum BoardType {
         this.name = name;
 	}
 	
-	@JsonValue
     public String getCode() {
         return code;
     }

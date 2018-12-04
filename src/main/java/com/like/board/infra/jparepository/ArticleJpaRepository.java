@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.like.board.domain.repository.ArticleRepository;
-import com.like.board.domain.repository.dto.ArticleListDTO;
-import com.like.board.domain.repository.dto.ArticleResponseDTO;
+import com.like.board.dto.ArticleListDTO;
+import com.like.board.dto.ArticleResponseDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;

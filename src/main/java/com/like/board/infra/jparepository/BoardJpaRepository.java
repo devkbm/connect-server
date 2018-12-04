@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
+import com.like.board.dto.BoardHierarchyDTO;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
-import com.like.board.web.dto.BoardHierarchyDTO;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;

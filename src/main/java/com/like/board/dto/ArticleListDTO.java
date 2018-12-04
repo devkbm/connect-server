@@ -1,4 +1,4 @@
-package com.like.board.domain.repository.dto;
+package com.like.board.dto;
 
 import java.io.Serializable;
 import java.util.Date;
