@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.dto.BoardHierarchyDTO;
+import com.like.board.dto.BoardQueryDTO;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
@@ -32,18 +33,12 @@ public class BoardJpaRepository implements BoardRepository {
 		return jpaBoard.findOne(id);
 	}
 	
-	public List<Board> getBoardList() {		
-		return jpaBoard.findAll(); 		
-	}
-	
-	public List<Board> getBoardList(String likeBoardName) {		
-									
-		//query = (JPAQuery) super.getQuerydsl().applyPagination(pageable, query);
-		
-		return queryFactory.selectFrom(qBoard)
-					.where(qBoard.boardName.like(likeBoardName))
-					.fetch();				
-	}
+	public List<Board> getBoardList(BoardQueryDTO queryDTO) {		
+		return queryFactory
+					.selectFrom(qBoard)
+					.where(queryDTO.getBooleanBuilder())
+					.fetch(); 		
+	}	
 	
 	public List<BoardHierarchyDTO> getBoardHierarchy() {
 				

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.model.Board;
 import com.like.board.dto.BoardHierarchyDTO;
+import com.like.board.dto.BoardQueryDTO;
 
 
 @Repository
@@ -22,15 +23,8 @@ public interface BoardRepository {
 	 * 전체 게시판 도메인 리스트를 조회
 	 * @return	게시판 도메인 리스트
 	 */
-	List<Board> getBoardList();
-	
-	/**
-	 * 게시판 도메인 리스트 조회
-	 * @param likeBoardName	게시판명
-	 * @return	게시판 도메인 리스트
-	 */
-	List<Board> getBoardList(String likeBoardName);
-	
+	List<Board> getBoardList(BoardQueryDTO queryDTO);
+			
 	/**
 	 * 게시판 계층명단을 조회
 	 * @return	

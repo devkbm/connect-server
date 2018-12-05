@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.dto.ArticleListDTO;
+import com.like.board.dto.ArticleQueryDTO;
 import com.like.board.dto.ArticleResponseDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
@@ -76,35 +77,12 @@ public class ArticleJpaRepository implements ArticleRepository {
 							.fetch();				
 	}
 	
-	public List<Article> getArticleList(Long fkBoard, String likeTitle, String likeContents) { 
-		
-		BooleanBuilder builder = new BooleanBuilder();
-		
-		if (StringUtils.hasText(likeTitle)) {
-			builder.and(qArticle.title.like("%"+likeTitle+"%"));
-		}
-		
-		if (StringUtils.hasText(likeContents)) {
-			builder.and(qArticle.contents.like("%"+likeContents+"%"));
-		}
+	public List<Article> getArticleList(ArticleQueryDTO queryDTO) { 	
 		
 		return queryFactory.selectFrom(qArticle)
-							.where(qArticle.board.pkBoard.eq(fkBoard)
-								  .and(builder))							
+							.where(queryDTO.getBooleanBuilder())							
 							.fetch();				
-	}
-	
-	public List<ArticleListDTO> getArticleListDTO(Long fkBoard) {
-		
-		/*JPAQuery<BoardHierarchyDTO> query = queryFactory
-				.select(Projections.constructor(ArticleListDTO.class
-											, qBoard.pkBoard, qBoard.boardNm, leaf
-											, qBoard.boardNm, qBoard.boardNm, parent.pkBoard))
-				.from(qArticle)
-				.leftJoin(qBoard.parent, parent);
-		*/
-		return null;
-	}
+	}	
 
 	public Long saveArticle(Article article) {		
 				

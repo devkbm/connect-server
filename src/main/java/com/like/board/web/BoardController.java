@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
+import com.like.board.dto.BoardQueryDTO;
 import com.like.board.dto.BoardSaveDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
@@ -46,9 +47,9 @@ public class BoardController {
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
 		
 	@GetMapping("/grw/boards")
-	public ResponseEntity<?> getBoardList() {			
+	public ResponseEntity<?> getBoardList(BoardQueryDTO queryDTO) {			
 		
-		List<Board> list = boardQueryService.getBoardList(); 										
+		List<Board> list = boardQueryService.getBoardList(queryDTO); 										
 							
 		return WebControllerUtil.getResponse(list,				
 				list.size(), 

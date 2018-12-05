@@ -13,6 +13,8 @@ import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.dto.ArticleListDTO;
+import com.like.board.dto.ArticleQueryDTO;
+import com.like.board.dto.BoardQueryDTO;
 import com.like.board.infra.mapper.BoardMapper;
 
 @Service
@@ -32,13 +34,9 @@ public class BoardQueryService {
     	return boardRepository.getBoard(id);
     }
     
-	public List<Board> getBoardList() {
-		return boardRepository.getBoardList();
-	}
-	
-	public List<Board> getBoardList(String likeBoardName) {
-		return boardRepository.getBoardList(likeBoardName);
-	}
+	public List<Board> getBoardList(BoardQueryDTO queryDTO) {
+		return boardRepository.getBoardList(queryDTO);
+	}	
 		
 	public List<?> getBoardHierarchy() {
 		return boardRepository.getBoardHierarchy();
@@ -48,11 +46,11 @@ public class BoardQueryService {
 		return articleRepository.getArticle(id);		
 	}
 			
-	public List<Article> getAritlceList(Long fkBoard, String title, String contents) {
-		return articleRepository.getArticleList(fkBoard,title,contents);
+	public List<Article> getAritlceList(ArticleQueryDTO queryDTO) {
+		return articleRepository.getArticleList(queryDTO);
 	}
 	
-	public List<ArticleListDTO> getArticleList(Map<String, Object> map) {
-		return boardMapper.getArticleList(map);
+	public List<ArticleListDTO> getArticleList(ArticleQueryDTO queryDTO) {
+		return boardMapper.getArticleList(queryDTO);
 	}
 }

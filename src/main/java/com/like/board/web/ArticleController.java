@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.dto.ArticleListDTO;
+import com.like.board.dto.ArticleQueryDTO;
 import com.like.board.dto.ArticleSaveDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
@@ -78,18 +79,10 @@ public class ArticleController {
 				HttpStatus.OK);
 	}
 		
-	@GetMapping("/grw/boards/{id}/articles")
-	public ResponseEntity<?> getArticleList(
-			@PathVariable(value="id") Long id,					
-			@RequestParam(value="title", required=false) String title,
-			@RequestParam(value="contents", required=false) String contents) {
-											
-		Map<String,Object> map = new HashMap<>();		
-		map.put("pkBoard", 	id);
-		map.put("title", 	title);
-		map.put("contents", contents);
-				
-		List<ArticleListDTO> list = boardQueryService.getArticleList(map);  							
+	@GetMapping("/grw/boards/articles")
+	public ResponseEntity<?> getArticleList(ArticleQueryDTO queryDTO) {
+																	
+		List<Article> list = boardQueryService.getAritlceList(queryDTO);  							
 				
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -97,30 +90,7 @@ public class ArticleController {
 				String.format("%d 건 조회되었습니다.", list.size()), 
 				HttpStatus.OK);
 	}
-		
-	@RequestMapping(value={"/grw/boards/articles_temp"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getArticleList(@RequestParam(value="fkBoard", required=true) Long fkBoard,
-			@RequestParam(value="id", required=false) Long id,
-			@RequestParam(value="title", required=false) String title,
-			@RequestParam(value="contents", required=false) String contents) {						
-		
-		List<Article> list;
-		
-		if ( validId(id) ) {
-			list = new ArrayList<>(); 			
-			list.add(boardQueryService.getAritlce(id));
-		} else {
-			list = boardQueryService.getAritlceList(fkBoard,title,contents);
-			log.info(title);
-		}				
 				
-		return WebControllerUtil.getResponse(list, 
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK);
-	}
-	
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.DELETE) 
 	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {						
