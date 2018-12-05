@@ -1,5 +1,6 @@
 package com.like.board.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,12 +23,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
+import com.like.board.domain.model.enums.BoardType;
 import com.like.board.dto.BoardQueryDTO;
 import com.like.board.dto.BoardSaveDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.menu.domain.model.enums.MenuType;
+import com.like.menu.dto.EnumDTO;
 
 /**
  * 게시판 Rest 컨트롤러
@@ -46,6 +50,23 @@ public class BoardController {
 		
 	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
 		
+	@GetMapping("/grw/boards/boardType")
+	public ResponseEntity<?> getMenuTypeList() {				
+		
+		List<EnumDTO> list = new ArrayList<EnumDTO>();
+		
+		for (BoardType boardType : BoardType.values()) {
+			EnumDTO dto = new EnumDTO(boardType.toString(), boardType.getName());
+			list.add(dto);
+		}				 					
+		
+		return WebControllerUtil.getResponse(list, 
+				list.size(), 
+				true, 
+				String.format("%d 건 조회되었습니다.", list.size()), 
+				HttpStatus.OK);
+	}
+
 	@GetMapping("/grw/boards")
 	public ResponseEntity<?> getBoardList(BoardQueryDTO queryDTO) {			
 		

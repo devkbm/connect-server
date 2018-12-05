@@ -8,7 +8,7 @@
 	]]>     	  
 	</select>	   
 		
-	<select id="getArticleList" parameterType="map" resultType="com.like.board.domain.repository.dto.ArticleListDTO"><![CDATA[
+	<select id="getArticleList" parameterType="com.like.board.dto.ArticleQueryDTO" resultType="com.like.board.dto.ArticleListDTO"><![CDATA[
 		select b.SYS_DT		as sysDt
 		     , b.SYS_USER	as sysUser
 		     , u.name 		as sysUsernm
@@ -35,7 +35,7 @@
    	        	on (a.PK_BOARD = b.FK_BOARD)   	           			
    	        left outer join user u
    	         	on (b.SYS_USER = u.USERNAME)    		            
-       where a.PK_BOARD = #{pkBoard}      
+       where a.PK_BOARD = #{fkBoard}      
     ]]>          	
     	<if test="title != null"><![CDATA[
     	and b.title like #{title}
