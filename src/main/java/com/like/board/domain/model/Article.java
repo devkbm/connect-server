@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 import lombok.Getter;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,7 +23,7 @@ import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks"})
 @Getter
 @Entity
 @Table(name = "GRWARTICLE")
@@ -44,6 +45,10 @@ public class Article extends AuditEntity implements Serializable {
 	 */
 	@Column(name="PPK_ARTICLE")
 	Long ppkArticle;		
+	
+	
+	@Formula("(SELECT X.USER_NAME FROM COM.COMUSER X WHERE X.USER_ID = sys_user)")
+	private String userName;
 	
 	/**
 	 * 제목
@@ -113,7 +118,7 @@ public class Article extends AuditEntity implements Serializable {
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
     
     @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinTable(name="grarticle_files",
+    @JoinTable(name="GRWARTICLEFILES",
     		joinColumns= @JoinColumn(name="pk_article"),
     		inverseJoinColumns=@JoinColumn(name="pk_file"))
     private List<FileInfo> files;       

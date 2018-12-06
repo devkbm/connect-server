@@ -30,7 +30,6 @@ import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.dto.EnumDTO;
 
 /**
@@ -66,6 +65,18 @@ public class BoardController {
 				String.format("%d 건 조회되었습니다.", list.size()), 
 				HttpStatus.OK);
 	}
+	
+	@GetMapping("/grw/boardHierarchy")
+	public ResponseEntity<?> getBoardHierarchyList() {
+											
+		List<?> list = boardQueryService.getBoardHierarchy();				 			
+		
+		return WebControllerUtil.getResponse(list,
+				list.size(), 
+				true,
+				String.format("%d 건 조회되었습니다.", list.size()),
+				HttpStatus.OK);
+	}
 
 	@GetMapping("/grw/boards")
 	public ResponseEntity<?> getBoardList(BoardQueryDTO queryDTO) {			
@@ -82,26 +93,16 @@ public class BoardController {
 	@GetMapping("/grw/boards/{id}")
 	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {				
 				
-		Board board = boardQueryService.getBoard(id);							
+		Board board = boardQueryService.getBoard(id);		
+		
+		BoardSaveDTO dto = new BoardSaveDTO(board);
 					
-		return WebControllerUtil.getResponse(board,				
+		return WebControllerUtil.getResponse(dto,				
 				board != null ? 1 : 0, 
 				true, 
 				String.format("%d 건 조회되었습니다.", board != null ? 1 : 0), 
 				HttpStatus.OK);
-	}
-	
-	@GetMapping("/grw/boardHierarchy")
-	public ResponseEntity<?> getBoardHierarchyList() {
-											
-		List<?> list = boardQueryService.getBoardHierarchy();				 			
-		
-		return WebControllerUtil.getResponse(list,
-				list.size(), 
-				true,
-				String.format("%d 건 조회되었습니다.", list.size()),
-				HttpStatus.OK);
-	}
+	}	
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardSaveDTO boardDTO, BindingResult result) {

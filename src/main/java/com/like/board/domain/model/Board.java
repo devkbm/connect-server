@@ -6,13 +6,14 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.domain.model.enums.PasswordType;
 import com.like.board.dto.BoardSaveDTO;
 import com.like.common.domain.AuditEntity;
+import com.like.user.domain.model.User;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +28,8 @@ import lombok.ToString;
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends AuditEntity implements Serializable {
 	
-	private static final long serialVersionUID = -9079904581069883219L;
-		
+	private static final long serialVersionUID = -9079904581069883219L;			
+	
 	/**
 	 * 게시판 키
 	 */

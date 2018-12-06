@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
@@ -111,6 +112,8 @@ public class ArticleController {
 		Article article = null;
 		FileInfo file = null;
 		
+		
+		log.info("------------------------------------------");
 		log.info(dto.toString());
 		
 		if ( result.hasErrors() ) {
@@ -131,8 +134,11 @@ public class ArticleController {
 											
 		try {
 			if (!dto.getFile().isEmpty()) {
-				file = fileService.uploadFile(dto.getFile(), "test", "board");
-				article.addAttachedFile(file);
+				
+				for (MultipartFile mfile : dto.getFile()) {									
+					file = fileService.uploadFile(mfile, "test", "board");
+					article.addAttachedFile(file);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

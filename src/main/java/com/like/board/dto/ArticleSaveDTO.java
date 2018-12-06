@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,13 +24,13 @@ public class ArticleSaveDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -6844786437530688768L;
 	
-	LocalDateTime sysDt;	
+	LocalDateTime createdDt;	
 	
-	String sysUser;
+	String createdBy;
 		
-	LocalDateTime updDt;
+	LocalDateTime modifiedDt;
 		
-	String updUser;
+	String modifiedBy;
     	
     Long pkArticle;	
 	
@@ -42,9 +43,11 @@ public class ArticleSaveDTO implements Serializable {
     String pwd;
     	
     int hitCount;
-        	
+        
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate fromDate;
     	
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate toDate;
     	
     Integer seq;
@@ -54,7 +57,7 @@ public class ArticleSaveDTO implements Serializable {
     Long fkBoard;
             
     @JsonIgnore
-    MultipartFile file;
+    List<MultipartFile> file;
                 
     List<AttachFile> attachFile = new ArrayList<AttachFile>();
     

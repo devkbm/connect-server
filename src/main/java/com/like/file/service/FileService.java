@@ -2,6 +2,7 @@ package com.like.file.service;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +46,32 @@ public class FileService {
 		file.setUserId(userId);		
 												
 		return fileInfoRepository.save(file);		
+	}
+	
+	@Transactional
+	public List<FileInfo> uploadFile(List<MultipartFile> sourceFiles, String userId, String pgmId) throws Exception {
+		
+		List<FileInfo> rtn = new ArrayList<FileInfo>();
+		
+		for (MultipartFile multipartFile : sourceFiles) {
+			
+			String uuid = UUID.randomUUID().toString();
+			
+			localFileRepository.fileTransfer(multipartFile, localFileRepository.getPath(), uuid);
+																	
+			FileInfo file = new FileInfo(pgmId);			
+			file.setUuid(uuid);		
+			file.setPath(localFileRepository.getPath());
+			file.setFileNm(multipartFile.getOriginalFilename());		
+			file.setSize(multipartFile.getSize());
+			file.setContentType(multipartFile.getContentType());		
+			file.setDownloadCnt(0);
+			file.setUserId(userId);
+			
+			rtn.add(fileInfoRepository.save(file));
+		}
+												
+		return rtn; 		
 	}
 		
 		
