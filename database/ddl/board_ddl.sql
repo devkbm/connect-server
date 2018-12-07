@@ -55,3 +55,13 @@ CREATE TABLE GRWARTICLECHECK (
     constraint pk_articlecheck 	primary key(PK_ARTICLECHECK),
     constraint fk_article 	foreign key(FK_ARTICLE) references GRWARTICLE(PK_ARTICLE)
 );
+
+
+CREATE TABLE GRWARTICLEFILES (
+	SYS_DT			DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 		VARCHAR(50)		NULL		COMMENT '최초등록유저',
+	UPD_DT			DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER		VARCHAR(50)		NULL		COMMENT '최종수정유저',
+	PK_FILE			INT 			NOT NULL 	COMMENT '첨부파일 키',
+	PK_ARTICLE 		INT 			NOT NULL	COMMENT '게시글 키'			    
+);

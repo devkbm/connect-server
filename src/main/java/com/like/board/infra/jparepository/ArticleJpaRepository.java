@@ -16,6 +16,7 @@ import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
 import com.like.file.domain.model.FileInfo;
+import com.like.file.domain.model.QFileInfo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
@@ -41,7 +42,9 @@ public class ArticleJpaRepository implements ArticleRepository {
 	private JpaArticleCheck jpaArticleCheck;
 			
 	private final QArticle qArticle = QArticle.article;
-	private final QArticleCheck qArticleCheck = QArticleCheck.articleCheck;	
+	private final QArticleCheck qArticleCheck = QArticleCheck.articleCheck;
+	private final QFileInfo qFileInfo = QFileInfo.fileInfo;
+	
 
 	public ArticleCheck findFkarticleAndSysuser(Long fkarticle, String userId) {
 									
@@ -72,14 +75,18 @@ public class ArticleJpaRepository implements ArticleRepository {
 
 	public List<Article> getArticleList(Long fkBoard) { 
 					
-		return queryFactory.selectFrom(qArticle)
-							.where(qArticle.board.pkBoard.eq(fkBoard))
+		return queryFactory.select(qArticle)
+							.from(qArticle)														
+							.where(qArticle.board.pkBoard.eq(fkBoard))							
 							.fetch();				
 	}
 	
 	public List<Article> getArticleList(ArticleQueryDTO queryDTO) { 	
 		
 		return queryFactory.selectFrom(qArticle)
+							//.leftJoin(qFileInfo)
+							//.on(qArticle.pkArticle.eq(qFileInfo.pkFile))
+							//.fetchJoin()
 							.where(queryDTO.getBooleanBuilder())							
 							.fetch();				
 	}	
