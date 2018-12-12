@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.dto.BoardQueryDTO;
-import com.like.board.dto.BoardSaveDTO;
+import com.like.board.dto.BoardDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
@@ -79,9 +79,9 @@ public class BoardController {
 	}
 
 	@GetMapping("/grw/boards")
-	public ResponseEntity<?> getBoardList(BoardQueryDTO queryDTO) {			
+	public ResponseEntity<?> getBoardList(BoardDTO.QueryCondition condition) {						
 		
-		List<Board> list = boardQueryService.getBoardList(queryDTO); 										
+		List<Board> list = boardQueryService.getBoardList(condition); 										
 							
 		return WebControllerUtil.getResponse(list,				
 				list.size(), 
@@ -95,7 +95,7 @@ public class BoardController {
 				
 		Board board = boardQueryService.getBoard(id);		
 		
-		BoardSaveDTO dto = new BoardSaveDTO(board);
+		BoardDTO.BoardSaveDTO dto = new BoardDTO.BoardSaveDTO(board);
 					
 		return WebControllerUtil.getResponse(dto,				
 				board != null ? 1 : 0, 
@@ -105,7 +105,7 @@ public class BoardController {
 	}	
 		
 	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody BoardSaveDTO boardDTO, BindingResult result) {
+	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody final BoardDTO.BoardSaveDTO boardDTO, BindingResult result) {
 							
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		

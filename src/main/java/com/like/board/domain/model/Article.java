@@ -121,7 +121,7 @@ public class Article extends AuditEntity implements Serializable {
     @JoinTable(name="GRWARTICLEFILES",
     		joinColumns= @JoinColumn(name="pk_article"),
     		inverseJoinColumns=@JoinColumn(name="pk_file"))
-    private List<FileInfo> files;       
+    private List<FileInfo> files = new ArrayList<FileInfo>();       
     
 	protected Article() {}
 	

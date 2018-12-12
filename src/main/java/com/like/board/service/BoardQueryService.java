@@ -14,7 +14,7 @@ import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.dto.ArticleListDTO;
 import com.like.board.dto.ArticleQueryDTO;
-import com.like.board.dto.BoardQueryDTO;
+import com.like.board.dto.BoardDTO;
 import com.like.board.infra.mapper.BoardMapper;
 
 @Service
@@ -34,8 +34,8 @@ public class BoardQueryService {
     	return boardRepository.getBoard(id);
     }
     
-	public List<Board> getBoardList(BoardQueryDTO queryDTO) {
-		return boardRepository.getBoardList(queryDTO);
+	public List<Board> getBoardList(BoardDTO.QueryCondition condition) {
+		return boardRepository.getBoardList(condition);
 	}	
 		
 	public List<?> getBoardHierarchy() {

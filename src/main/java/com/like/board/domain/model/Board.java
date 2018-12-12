@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.dto.BoardSaveDTO;
+import com.like.board.dto.BoardDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.user.domain.model.User;
 
@@ -111,7 +111,7 @@ public class Board extends AuditEntity implements Serializable {
     	this.articleCount=0;    	
     }
     
-    public Board updateEntity(BoardSaveDTO dto) {
+    public Board updateEntity(BoardDTO.BoardSaveDTO dto) {
     	this.ppkBoard 			= dto.getPpkBoard();
     	this.boardName			= dto.getBoardName();
     	this.boardType 			= BoardType.valueOf(dto.getBoardType());

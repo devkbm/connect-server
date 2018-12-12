@@ -57,7 +57,7 @@ public class ArticleSaveDTO implements Serializable {
     Long fkBoard;
             
     @JsonIgnore
-    List<MultipartFile> file;
+    List<MultipartFile> file = new ArrayList<MultipartFile>();
                 
     List<AttachFile> attachFile = new ArrayList<AttachFile>();
     
