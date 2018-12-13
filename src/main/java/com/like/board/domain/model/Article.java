@@ -116,12 +116,15 @@ public class Article extends AuditEntity implements Serializable {
     
     @OneToMany(mappedBy = "article")
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
-    
-    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+        
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(name="GRWARTICLEFILES",
-    		joinColumns= @JoinColumn(name="pk_article"),
-    		inverseJoinColumns=@JoinColumn(name="pk_file"))
+    		joinColumns= @JoinColumn(name="pk_article",  nullable=false, updatable=false ),
+    		inverseJoinColumns=@JoinColumn(name="pk_file",  nullable=false, updatable=false))
     private List<FileInfo> files = new ArrayList<FileInfo>();       
+        
+    @OneToMany(mappedBy = "board")
+    private List<AttachedFile> files2 = new ArrayList<>();
     
 	protected Article() {}
 	

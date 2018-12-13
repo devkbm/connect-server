@@ -83,12 +83,11 @@ public class ArticleJpaRepository implements ArticleRepository {
 	
 	public List<Article> getArticleList(ArticleQueryDTO queryDTO) { 	
 		
-		return queryFactory.selectFrom(qArticle)
-							//.leftJoin(qFileInfo)
-							//.on(qArticle.pkArticle.eq(qFileInfo.pkFile))
-							//.fetchJoin()
+		/*return queryFactory.selectFrom(qArticle)							
 							.where(queryDTO.getBooleanBuilder())							
-							.fetch();				
+							.fetch();*/
+		
+		return (List<Article>) jpaArticle.findAll(queryDTO.getBooleanBuilder());		
 	}	
 
 	public Long saveArticle(Article article) {		
