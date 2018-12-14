@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.ArticleCheck;
-import com.like.board.dto.ArticleQueryDTO;
-import com.like.board.dto.ArticleResponseDTO;
+import com.like.board.dto.ArticleDTO;
 import com.like.file.domain.model.FileInfo;
 
 @Repository
@@ -19,14 +18,7 @@ public interface ArticleRepository {
 	 * @return 게시글 도메인
 	 */
 	Article getArticle(Long id);
-	
-	/**
-	 * 게시글 DTO 조회
-	 * @param id	게시글 도메인 PK
-	 * @return	게시글 DTO
-	 */
-	ArticleResponseDTO getArticleDTO(Long id);
-	
+			
 	/**
 	 * 게시글 도메인 리스트 조회
 	 * @param fkBoard	게시글 도메인 FK
@@ -41,7 +33,7 @@ public interface ArticleRepository {
 	 * @param likeContents	내용
 	 * @return	게시글 도메인 리스트
 	 */
-	List<Article> getArticleList(ArticleQueryDTO queryDTO);
+	List<Article> getArticleList(ArticleDTO.QueryCondition condition);
 	
 	/**
 	 * 게시글 도메인 저장

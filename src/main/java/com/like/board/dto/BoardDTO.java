@@ -12,13 +12,10 @@ import org.springframework.util.StringUtils;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.QBoard;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.dto.BoardDTO.BoardHierarchy;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

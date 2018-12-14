@@ -1,9 +1,6 @@
 package com.like.board.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
-import com.like.board.dto.ArticleListDTO;
-import com.like.board.dto.ArticleQueryDTO;
-import com.like.board.dto.ArticleSaveDTO;
+import com.like.board.dto.ArticleDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
@@ -48,20 +42,16 @@ public class ArticleController {
 	private BoardQueryService boardQueryService;
 	
 	@Resource
-	private FileService fileService;
-	
-	private boolean validId(Long id) {				
-		return ( id != null && id > 0 ) ? true : false;
-	}
+	private FileService fileService;	
 		
 	@GetMapping("/grw/boards/articles/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
 		
 		Article article = boardQueryService.getAritlce(id);
 		
-		ArticleSaveDTO dto = new ArticleSaveDTO(article);
+		//Article dto = new ArticleSaveDTO(article);
 				
-		return WebControllerUtil.getResponse(dto, 
+		return WebControllerUtil.getResponse(article, 
 				article == null ? 0 : 1, 
 				article == null ? false : true, 
 				String.format("%d 건 조회되었습니다.", 1), 
@@ -81,9 +71,9 @@ public class ArticleController {
 	}
 		
 	@GetMapping("/grw/boards/articles")
-	public ResponseEntity<?> getArticleList(ArticleQueryDTO queryDTO) {
+	public ResponseEntity<?> getArticleList(ArticleDTO.QueryCondition condition) {
 																	
-		List<Article> list = boardQueryService.getAritlceList(queryDTO);  							
+		List<Article> list = boardQueryService.getAritlceList(condition);  							
 				
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -107,29 +97,32 @@ public class ArticleController {
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
-	public ResponseEntity<?> saveArticleWithFile(ArticleSaveDTO dto, BindingResult result) {
-														
+	public ResponseEntity<?> saveArticleWithFile(ArticleDTO.ArticleSave dto, BindingResult result) {
+		
+		Board board = null;
 		Article article = null;
-		FileInfo file = null;
-		
-		
-		log.info("------------------------------------------");
-		log.info(dto.toString());
+		FileInfo file = null;					
 		
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
-		}
+		}			
 		
-		if ( dto.getPkArticle() == null ) {
+		board = boardQueryService.getBoard(dto.getFkBoard());
+		
+		if ( dto.getPkArticle() == null ) {											
 			
-			Board board = boardQueryService.getBoard(dto.getFkBoard());
-			
-			article = new Article(board, dto.getTitle(), dto.getContents());
-		} else {
-			
+			article = Article.builder()
+							 .board(board)
+							 .title(dto.getTitle())
+							 .contents(dto.getContents())
+							 .fromDate(dto.getFromDate())
+							 .toDate(dto.getToDate())							 
+							 .build();
+					
+		} else {			
 			article = boardQueryService.getAritlce(dto.getPkArticle());
 			
-			//article.updateEntity(dto);
+			article.updateEntity(dto);
 		}
 											
 		try {
@@ -137,16 +130,13 @@ public class ArticleController {
 				
 				for (MultipartFile mfile : dto.getFile()) {									
 					file = fileService.uploadFile(mfile, "test", "board");
-					article.addAttachedFile(file);
+					article.addAttachedFile(file);									
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		//log.info(article.toString());
-		
+						
 		boardCommandService.saveArticle(article);											
 		
 		return WebControllerUtil.getResponse(null, 

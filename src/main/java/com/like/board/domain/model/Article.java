@@ -5,26 +5,30 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import org.hibernate.annotations.Formula;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.board.domain.model.enums.PasswordType;
-import com.like.board.dto.ArticleSaveDTO;
+import com.like.board.dto.ArticleDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "GRWARTICLE")
 @EntityListeners(AuditingEntityListener.class)
@@ -52,8 +56,7 @@ public class Article extends AuditEntity implements Serializable {
 	
 	/**
 	 * 제목
-	 */
-	@NotEmpty(message="제목은 필수 입력 사항입니다.")
+	 */	
 	@Column(name="TITLE")
 	String title;
     
@@ -116,34 +119,26 @@ public class Article extends AuditEntity implements Serializable {
     
     @OneToMany(mappedBy = "article")
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
-        
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinTable(name="GRWARTICLEFILES",
-    		joinColumns= @JoinColumn(name="pk_article",  nullable=false, updatable=false ),
-    		inverseJoinColumns=@JoinColumn(name="pk_file",  nullable=false, updatable=false))
-    private List<FileInfo> files = new ArrayList<FileInfo>();       
-        
-    @OneToMany(mappedBy = "board")
-    private List<AttachedFile> files2 = new ArrayList<>();
-    
-	protected Article() {}
-	
-	public Article(Board board, String title, String contents) {
-		this.board = board;
+                          
+    @OneToMany(mappedBy = "article")
+    private List<AttachedFile> files = new ArrayList<>();    
+		
+	@Builder
+	public Article(Board board, Long ppkArticle, String title, String contents,
+			LocalDate fromDate, LocalDate toDate, Boolean pwdYn, PasswordType pwdMethod,
+			String pwd) {		
+		this.board = board;		
+		this.ppkArticle = ppkArticle;		
 		this.title = title;
-		this.contents = contents;
-		this.fromDate = LocalDate.now();
-		this.toDate = LocalDate.of(9999, Month.DECEMBER, 31);				
-	}
-	
-	public Article(Board board, String title, String contents, LocalDate fromDate, LocalDate toDate) {
-		this.title = title;
-		this.contents = contents;
+		this.contents = contents;		
 		this.fromDate = fromDate;
 		this.toDate = toDate;				
-	}
+		this.pwdYn = pwdYn;
+		this.pwdMethod = pwdMethod;
+		this.pwd = pwd;			
+	}	
 	
-	public Article updateEntity(ArticleSaveDTO dto) {
+	public Article updateEntity(ArticleDTO.ArticleSave dto) {
 		
 		this.ppkArticle = dto.getPpkArticle();
 		this.title 		= dto.getTitle();
@@ -169,15 +164,7 @@ public class Article extends AuditEntity implements Serializable {
 	public boolean hasParentArticle() {		
 		return this.ppkArticle != this.pkArticle ? true : false;
 	}
-		
-	public void setParentPk(Long pk) {
-		this.ppkArticle = pk;
-	}
-	
-	public void setParentRoot() {
-		this.ppkArticle = this.pkArticle;	
-	}
-	
+			
 	public void setSeq(int seq) {
 		this.seq = seq;
 	}
@@ -188,14 +175,40 @@ public class Article extends AuditEntity implements Serializable {
 	
 	public boolean addAttachedFile(FileInfo file) {
 		boolean rtn = false;
-					
-		if (this.files == null)
-			this.files = new ArrayList<>();
+		
+		checkFileInfoList();
 		
 		if (file != null) {
-			rtn = files.add(file);			
+			AttachedFile afile = new AttachedFile(this, file);
+			rtn = files.add(afile);		
 		}			
 			
 		return rtn;
-	}	
+	}		
+	
+	public boolean addAttachedFile(List<FileInfo> fileList) {
+		boolean rtn = false;
+		
+		checkFileInfoList();
+		
+		for (FileInfo fileInfo: fileList) {
+			AttachedFile afile = new AttachedFile(this, fileInfo);
+			rtn = files.add(afile);
+		}
+		
+		return rtn;
+	}
+		
+	public List<FileInfo> getAttachedFileInfoList() {
+		return this.files.stream()						 
+				  		 .map(v -> v.fileInfo)
+				  		 .collect(Collectors.toList());		
+				  
+	}
+	
+	private void checkFileInfoList() {
+		if (this.files == null)
+			this.files = new ArrayList<>();
+	}
+		
 }

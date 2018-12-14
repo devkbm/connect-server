@@ -12,8 +12,7 @@ import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
-import com.like.board.dto.ArticleListDTO;
-import com.like.board.dto.ArticleQueryDTO;
+import com.like.board.dto.ArticleDTO;
 import com.like.board.dto.BoardDTO;
 import com.like.board.infra.mapper.BoardMapper;
 
@@ -46,11 +45,11 @@ public class BoardQueryService {
 		return articleRepository.getArticle(id);		
 	}
 			
-	public List<Article> getAritlceList(ArticleQueryDTO queryDTO) {
-		return articleRepository.getArticleList(queryDTO);
+	public List<Article> getAritlceList(ArticleDTO.QueryCondition condition) {
+		return articleRepository.getArticleList(condition);
 	}
 	
-	public List<ArticleListDTO> getArticleList(ArticleQueryDTO queryDTO) {
-		return boardMapper.getArticleList(queryDTO);
+	public List<Map<String,Object>> getArticleList(ArticleDTO.QueryCondition condition) {
+		return boardMapper.getArticleList(condition);
 	}
 }

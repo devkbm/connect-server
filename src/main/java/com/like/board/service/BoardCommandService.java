@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.domain.model.Article;
+import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
@@ -52,6 +53,6 @@ public class BoardCommandService {
 	
 	public Article updateArticleHitCnt(Long pkAriticle, String userId) {		
 		return articleRepository.updateArticleHitCnt(pkAriticle, userId);
-	}	
+	}		
 		
 }
