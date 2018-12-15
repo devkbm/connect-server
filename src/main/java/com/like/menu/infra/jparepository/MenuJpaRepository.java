@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
@@ -13,14 +12,12 @@ import com.like.menu.domain.model.QMenu;
 import com.like.menu.domain.model.QMenuGroup;
 import com.like.menu.domain.model.QProgram;
 import com.like.menu.domain.repository.MenuRepository;
-import com.like.menu.dto.MenuGroupQueryDTO;
-import com.like.menu.dto.MenuHierarchyDTO;
-import com.like.menu.dto.MenuQueryDTO;
-import com.like.menu.dto.ProgramQueryDTO;
+import com.like.menu.dto.MenuDTO;
+import com.like.menu.dto.MenuGroupDTO;
+import com.like.menu.dto.ProgramDTO;
 import com.like.menu.infra.jparepository.springdata.JpaMenu;
 import com.like.menu.infra.jparepository.springdata.JpaMenuGroup;
 import com.like.menu.infra.jparepository.springdata.JpaProgram;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -55,7 +52,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<MenuGroup> getMenuGroupList(MenuGroupQueryDTO condition) {
+	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.QueryCondition condition) {
 		return queryFactory
 				.selectFrom(qMenuGroup)
 				.where(condition.getBooleanBuilder())
@@ -91,7 +88,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Menu> getMenuList(String menuGroupCode, MenuQueryDTO condition) {
+	public List<Menu> getMenuList(String menuGroupCode, MenuDTO.QueryCondition condition) {
 		return queryFactory
 				.selectFrom(qMenu)
 					.innerJoin(qMenu.menuGroup, qMenuGroup)
@@ -102,14 +99,14 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 	
 	
-	public List<MenuHierarchyDTO> getMenuRootList(String menuGroupCode) {
+	public List<MenuDTO.MenuHierarchy> getMenuRootList(String menuGroupCode) {
 								
 		Expression<Boolean> isLeaf = new CaseBuilder()											
 											.when(qMenu.parentMenuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
 						
-		JPAQuery<MenuHierarchyDTO> query = queryFactory
-				.select(Projections.constructor(MenuHierarchyDTO.class
+		JPAQuery<MenuDTO.MenuHierarchy> query = queryFactory
+				.select(Projections.constructor(MenuDTO.MenuHierarchy.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
 											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
 				.from(qMenu)
@@ -120,14 +117,14 @@ public class MenuJpaRepository implements MenuRepository {
 		return query.fetch();
 	}
 			
-	public List<MenuHierarchyDTO> getMenuChildrenList(String menuGroupCode, String parentMenuCode) {					
+	public List<MenuDTO.MenuHierarchy> getMenuChildrenList(String menuGroupCode, String parentMenuCode) {					
 		
 		Expression<Boolean> isLeaf = new CaseBuilder()										
 											.when(qMenu.parentMenuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
 						
-		JPAQuery<MenuHierarchyDTO> query = queryFactory
-				.select(Projections.constructor(MenuHierarchyDTO.class
+		JPAQuery<MenuDTO.MenuHierarchy> query = queryFactory
+				.select(Projections.constructor(MenuDTO.MenuHierarchy.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
 											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
 				.from(qMenu)				
@@ -140,10 +137,10 @@ public class MenuJpaRepository implements MenuRepository {
 	
 
 	// TODO 계층 쿼리 테스트해보아야함 1 루트 노드 검색 : getMenuChildrenList 2. 하위노드 검색 : getMenuHierarchyDTO
-	public List<MenuHierarchyDTO> getMenuHierarchyDTO(List<MenuHierarchyDTO> list) {
-		List<MenuHierarchyDTO> children = null;
+	public List<MenuDTO.MenuHierarchy> getMenuHierarchyDTO(List<MenuDTO.MenuHierarchy> list) {
+		List<MenuDTO.MenuHierarchy> children = null;
 		
-		for ( MenuHierarchyDTO dto : list ) {			
+		for ( MenuDTO.MenuHierarchy dto : list ) {			
 			if (dto.isLeaf()) { // leaf 노드이면 다음 리스트 검색
 				continue;
 			} else {				
@@ -174,7 +171,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Program> getProgramList(ProgramQueryDTO condition) {
+	public List<Program> getProgramList(ProgramDTO.QueryCondition condition) {
 					
 		return queryFactory
 				.selectFrom(qProgram)

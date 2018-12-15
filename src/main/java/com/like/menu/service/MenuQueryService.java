@@ -10,10 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.Program;
-import com.like.menu.dto.MenuGroupQueryDTO;
-import com.like.menu.dto.MenuHierarchyDTO;
-import com.like.menu.dto.MenuQueryDTO;
-import com.like.menu.dto.ProgramQueryDTO;
+import com.like.menu.dto.MenuDTO;
+import com.like.menu.dto.MenuGroupDTO;
+import com.like.menu.dto.ProgramDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenuGroup(menuGroupCode);
 	}
 	
-	public List<MenuGroup> getMenuGroupList(MenuGroupQueryDTO condition) {
+	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.QueryCondition condition) {
 		return menuJpaRepository.getMenuGroupList(condition);
 	}
 	
@@ -46,12 +45,12 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenu(menuCode);
 	}
 	
-	public List<Menu> getMenuList(String menuGroupCode, MenuQueryDTO condition) {
+	public List<Menu> getMenuList(String menuGroupCode, MenuDTO.QueryCondition condition) {
 		return menuJpaRepository.getMenuList(menuGroupCode, condition);
 	}
 	
-	public List<MenuHierarchyDTO> getMenuHierachy(String menuGroupCode) {
-		List<MenuHierarchyDTO> rootList = menuJpaRepository.getMenuRootList(menuGroupCode);
+	public List<MenuDTO.MenuHierarchy> getMenuHierachy(String menuGroupCode) {
+		List<MenuDTO.MenuHierarchy> rootList = menuJpaRepository.getMenuRootList(menuGroupCode);
 		
 		return menuJpaRepository.getMenuHierarchyDTO(rootList);
 	}
@@ -60,7 +59,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getProgram(programCode);
 	}
 	
-	public List<Program> getProgramList(ProgramQueryDTO condition) {
+	public List<Program> getProgramList(ProgramDTO.QueryCondition condition) {
 		return menuJpaRepository.getProgramList(condition);
 	}
 }

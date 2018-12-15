@@ -2,60 +2,145 @@ package com.like.menu.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.util.StringUtils;
 
 import com.like.menu.domain.model.Menu;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.QMenu;
+import com.like.menu.domain.model.enums.MenuType;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;
 
-@Data
-public class MenuDTO implements Serializable {
+public class MenuDTO {
 	
-	LocalDateTime createdDt;	
-	
-	String createdBy;
-	
-	LocalDateTime modifiedDt;
-	
-	String modifiedBy;
-	
-	@NotEmpty
-	private String menuGroupCode;
+	@Data
+	public static class QueryCondition implements Serializable {
+		
+		private static final long serialVersionUID = -7394537330230941998L;
+
+		private final QMenu qMenu = QMenu.menu;
+		
+		String menuCode;
+		
+		String menuName;
+				
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
 			
-	@NotEmpty
-	private String menuCode;
-		
-	@NotEmpty
-	private String menuName;
-		
-	private String parentMenuCode;
-	
-	private String menuType;
-		
-	private long sequence;
+			if (StringUtils.hasText(this.menuCode)) {
+				builder.and(qMenu.menuCode.like("%"+this.menuCode+"%"));
+			}
 			
-	private long level;
+			if (StringUtils.hasText(this.menuName)) {
+				builder.and(qMenu.menuName.like("%"+this.menuName+"%"));
+			}			
+			
+			return builder;
+		}
+	}
 	
-	private String program;
+	@Data
+	public static class MenuSave implements Serializable {
+		
+		private static final long serialVersionUID = 2421325619239144951L;
+
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+		
+		@NotEmpty
+		private String menuGroupCode;
+				
+		@NotEmpty
+		private String menuCode;
+			
+		@NotEmpty
+		private String menuName;
+			
+		private String parentMenuCode;
+		
+		private String menuType;
+			
+		private long sequence;
+				
+		private long level;
+		
+		private String program;
+							
+		public MenuSave() {}
+		
+		public MenuSave(Menu menu) {					
+			this.createdDt 		= menu.getCreatedDt();
+			this.createdBy 		= menu.getCreatedBy();
+			this.modifiedDt 	= menu.getModifiedDt();
+			this.modifiedBy 	= menu.getModifiedBy();
+			this.menuGroupCode 	= menu.getMenuGroup().getMenuGroupCode();
+			this.menuCode 		= menu.getMenuCode();
+			this.menuName 		= menu.getMenuName();
+			this.parentMenuCode = menu.getParentMenuCode();
+			this.menuType		= menu.getMenuType().toString();				
+			this.sequence 		= menu.getSequence();
+			this.level 			= menu.getLevel();
+			this.program 		= menu.getProgram() == null ? "" : menu.getProgram().getProgramCode();
+		}		
+		
+	}
+	
+	@Data
+	public static class MenuHierarchy implements Serializable {
+					
+		private static final long serialVersionUID = 6846227958954258462L;
+
+		private String menuGroupCode;
+			
+		private String key;
+		
+		private String title;
+		
+		private String parentMenuCode;
+			
+		private String menuType;
+		
+		private Long sequence;
+			
+		private Long level;
+					
+		private String url;
 						
-	public MenuDTO() {}
-	
-	public MenuDTO(Menu menu) {					
-		this.createdDt 		= menu.getCreatedDt();
-		this.createdBy 		= menu.getCreatedBy();
-		this.modifiedDt 	= menu.getModifiedDt();
-		this.modifiedBy 	= menu.getModifiedBy();
-		this.menuGroupCode 	= menu.getMenuGroup().getMenuGroupCode();
-		this.menuCode 		= menu.getMenuCode();
-		this.menuName 		= menu.getMenuName();
-		this.parentMenuCode = menu.getParentMenuCode();
-		this.menuType		= menu.getMenuType().toString();				
-		this.sequence 		= menu.getSequence();
-		this.level 			= menu.getLevel();		
-		//Optional<Program> program = menu.getProgram()
-		this.program 		= menu.getProgram() == null ? "" : menu.getProgram().getProgramCode();
-	}		
-	
+		private boolean expanded;
+		
+		private boolean selected;
+		
+		private boolean isLeaf;
+		
+		private List<MenuHierarchy> children;
+
+		@QueryProjection
+		public MenuHierarchy(String menuGroupCode, String key, String title, String parentMenuCode,
+				MenuType menuType, Long sequence, Long level, String url, boolean isLeaf) {		
+			this.menuGroupCode = menuGroupCode;
+			this.key = key;
+			this.title = title;
+			this.parentMenuCode = parentMenuCode;
+			this.menuType = menuType.toString();
+			this.sequence = sequence;
+			this.level = level;
+			this.url = url;
+			this.isLeaf = isLeaf;		
+			this.expanded = false;
+			this.selected = false;
+		}
+		
+		
+		
+		
+	}
 }

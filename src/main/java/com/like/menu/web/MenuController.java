@@ -26,11 +26,7 @@ import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.dto.EnumDTO;
 import com.like.menu.dto.MenuDTO;
 import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.MenuGroupQueryDTO;
-import com.like.menu.dto.MenuHierarchyDTO;
-import com.like.menu.dto.MenuQueryDTO;
-import com.like.menu.dto.ProgramQueryDTO;
-import com.like.menu.dto.ProgramSaveDTO;
+import com.like.menu.dto.ProgramDTO;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -61,7 +57,7 @@ public class MenuController {
 	@GetMapping("/menutest/{menuGroupCode}")
 	public ResponseEntity<?> getMenuGroupHierachyTest(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
 		
-		List<MenuHierarchyDTO> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
+		List<MenuDTO.MenuHierarchy> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
 		
 		return WebControllerUtil.getResponse(menuGroup, 
 				menuGroup.size(), 
@@ -73,7 +69,7 @@ public class MenuController {
 	@GetMapping("/menuhierarchy/{menuGroupCode}")
 	public ResponseEntity<?> getMenuGroupHierachy(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
 		
-		List<MenuHierarchyDTO> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
+		List<MenuDTO.MenuHierarchy> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
 		
 		return WebControllerUtil.getResponse(menuGroup, 
 				menuGroup.size(), 
@@ -83,7 +79,7 @@ public class MenuController {
 	}
 	
 	@GetMapping("/menugroup")
-	public ResponseEntity<?> getMenuGroupList(MenuGroupQueryDTO dto) {				
+	public ResponseEntity<?> getMenuGroupList(MenuGroupDTO.QueryCondition dto) {				
 		
 		List<MenuGroup> list = menuQueryService.getMenuGroupList(dto); 							
 		
@@ -95,18 +91,18 @@ public class MenuController {
 	}
 	
 	@RequestMapping(value={"/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO menuGroupDTO, BindingResult result) {				
+	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO.MenuGroupSave dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.getAllErrors().toString());
 		} 
 		
-		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupDTO.getMenuGroupCode());
+		MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());
 		
 		if (menuGroup == null) {
-			menuGroup = new MenuGroup(menuGroupDTO.getMenuGroupCode(), menuGroupDTO.getMenuGroupName(), menuGroupDTO.getDescription());
+			menuGroup = new MenuGroup(dto.getMenuGroupCode(), dto.getMenuGroupName(), dto.getDescription());
 		} else {
-			menuGroup = menuGroup.updateEntity(menuGroupDTO);
+			menuGroup = menuGroup.updateEntity(dto);
 		}					
 																			
 		menuCommandService.saveMenuGroup(menuGroup);			
@@ -138,7 +134,7 @@ public class MenuController {
 		
 		Menu menu = menuQueryService.getMenu(menuCode); 		
 		
-		MenuDTO dto = new MenuDTO(menu);			
+		MenuDTO.MenuSave dto = new MenuDTO.MenuSave(menu);			
 		
 		return WebControllerUtil.getResponse(dto, 
 				dto != null ? 1 : 0, 
@@ -150,7 +146,7 @@ public class MenuController {
 	@GetMapping("/menugroup/{groupcode}/menu")
 	public ResponseEntity<?> getMenuList(
 			@PathVariable(value="groupcode") String menuGroupCode,
-			MenuQueryDTO dto) {				
+			MenuDTO.QueryCondition dto) {				
 		
 		List<Menu> list = menuQueryService.getMenuList(menuGroupCode, dto);														 						
 		
@@ -180,7 +176,7 @@ public class MenuController {
 	
 	
 	@RequestMapping(value={"/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO dto, BindingResult result) throws Exception {
+	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO.MenuSave dto, BindingResult result) throws Exception {
 											
 		if ( result.hasErrors()) {
 			//throw new ControllerException("오류");
@@ -234,7 +230,7 @@ public class MenuController {
 	
 	
 	@GetMapping("/program")
-	public ResponseEntity<?> getProgramList(ProgramQueryDTO condition) {							 			
+	public ResponseEntity<?> getProgramList(ProgramDTO.QueryCondition condition) {							 			
 		
 		List<Program> list = menuQueryService.getProgramList(condition);
 										
@@ -259,7 +255,7 @@ public class MenuController {
 	}
 	
 	@RequestMapping(value={"/program/{code}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramSaveDTO dto, BindingResult result) throws Exception {
+	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramDTO.ProgramSave dto, BindingResult result) throws Exception {
 										
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");

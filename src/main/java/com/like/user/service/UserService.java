@@ -2,8 +2,6 @@ package com.like.user.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,14 +15,12 @@ import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.domain.service.UserDomainService;
-import com.like.user.dto.AuthorityQueryDTO;
-import com.like.user.dto.UserQueryDTO;
+import com.like.user.dto.AuthorityDTO;
+import com.like.user.dto.UserDTO;
 
 @Transactional
 @Service
-public class UserService implements UserDetailsService {
-	
-	private static final Logger log = LoggerFactory.getLogger(UserService.class);
+public class UserService implements UserDetailsService {	
 	
 	@Autowired
 	UserRepository userRepository;	
@@ -60,8 +56,8 @@ public class UserService implements UserDetailsService {
 	 * 유저 도메인 리스트를 조회한다.
 	 * @return	유저 도메인 리스트
 	 */
-	public List<User> getUserList(UserQueryDTO dto) {
-		return userRepository.getUserList(dto);
+	public List<User> getUserList(UserDTO.QueryCondition condition) {
+		return userRepository.getUserList(condition);
 	}
 	
 	/**
@@ -120,7 +116,7 @@ public class UserService implements UserDetailsService {
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
 	 */
-	public List<Authority> getAuthorityList(AuthorityQueryDTO condition) {        									
+	public List<Authority> getAuthorityList(AuthorityDTO.QueryCondition condition) {        									
         return userRepository.getAuthorityList(condition);
 	}
 	

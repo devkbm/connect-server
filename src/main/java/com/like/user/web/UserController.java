@@ -34,12 +34,10 @@ import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
-import com.like.user.dto.AuthorityQueryDTO;
-import com.like.user.dto.AuthoritySaveDTO;
+import com.like.user.dto.AuthorityDTO;
 import com.like.user.dto.LoginRequestDTO;
 import com.like.user.dto.PasswordRequestDTO;
-import com.like.user.dto.UserQueryDTO;
-import com.like.user.dto.UserSaveDTO;
+import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -104,8 +102,8 @@ public class UserController {
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) {
 						
 		User user = userService.getUser(userId);				
-				
-		UserSaveDTO dto = new UserSaveDTO(user);					
+		
+		UserDTO.UserSave dto = new UserDTO.UserSave(user);					
 		
 		return WebControllerUtil.getResponse(dto,
 				 user == null ? 0 : 1, 
@@ -115,9 +113,9 @@ public class UserController {
 	}
 		
 	@GetMapping(value={"/user"})
-	public ResponseEntity<?> getUserList(UserQueryDTO dto) {
+	public ResponseEntity<?> getUserList(UserDTO.QueryCondition condition) {
 				
-		List<User> userList = userService.getUserList(dto);						 				
+		List<User> userList = userService.getUserList(condition);						 				
 		
 		return WebControllerUtil.getResponse(userList,
 				userList.size(), 
@@ -127,20 +125,20 @@ public class UserController {
 	}
 	
 	@PostMapping(value={"/user/{id}"})	
-	public ResponseEntity<?> saveUser(@RequestBody UserSaveDTO userDTO, BindingResult result) {
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO.UserSave dto, BindingResult result) {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		}							
 	
-		User user = new User(userDTO.getUserId(), userDTO.getName(), userDTO.getPassword(), 
+		User user = new User(dto.getUserId(), dto.getName(), dto.getPassword(), 
 					//	userDTO.getAccountNonExpired(), userDTO.getAccountNonLocked(), userDTO.getCredentialsNonExpired(),
 						true, true, true,
-						userDTO.getEnabled());					
+						dto.getEnabled());					
 		
-		List<Authority> authList = userService.getAllAuthorityList(userDTO.getAuthorityList());
+		List<Authority> authList = userService.getAllAuthorityList(dto.getAuthorityList());
 					
-		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(userDTO.getMenuGroupList());
+		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
 		
 		user.setAuthorities(authList);
 		user.setMenuGroupList(menuGroupList);
@@ -191,7 +189,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value={"/authority"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getAuthorityList(AuthorityQueryDTO dto) {				
+	public ResponseEntity<?> getAuthorityList(AuthorityDTO.QueryCondition dto) {				
 		
 		List<Authority> authorityList = userService.getAuthorityList(dto);								 				
 		
@@ -215,7 +213,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})	
-	public ResponseEntity<?> saveAuthority(@RequestBody AuthoritySaveDTO dto, BindingResult result) throws IllegalArgumentException, IllegalAccessException, SecurityException, InstantiationException {
+	public ResponseEntity<?> saveAuthority(@RequestBody AuthorityDTO.AuthoritySave dto, BindingResult result) {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");

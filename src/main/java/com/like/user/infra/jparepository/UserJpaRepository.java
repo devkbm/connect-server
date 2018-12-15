@@ -11,8 +11,8 @@ import com.like.user.domain.model.QAuthority;
 import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
-import com.like.user.dto.AuthorityQueryDTO;
-import com.like.user.dto.UserQueryDTO;
+import com.like.user.dto.AuthorityDTO;
+import com.like.user.dto.UserDTO;
 import com.like.user.infra.jparepository.springdata.JpaAuthority;
 import com.like.user.infra.jparepository.springdata.JpaUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -38,10 +38,10 @@ public class UserJpaRepository implements UserRepository {
 	}
 	
 	@Override
-	public List<User> getUserList(UserQueryDTO dto) {
+	public List<User> getUserList(UserDTO.QueryCondition condition) {
 		return  queryFactory
 				.selectFrom(qUser)
-				.where(dto.getBooleanBuilder())
+				.where(condition.getBooleanBuilder())
 				.fetch();
 	}
 
@@ -68,7 +68,7 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public List<Authority> getAuthorityList(AuthorityQueryDTO condition) {
+	public List<Authority> getAuthorityList(AuthorityDTO.QueryCondition condition) {
 		return queryFactory
 				.selectFrom(qAuthority)
 				.where(condition.getBooleanBuilder())
