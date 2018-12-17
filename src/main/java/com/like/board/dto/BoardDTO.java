@@ -105,8 +105,8 @@ public class BoardDTO {
 	    	this.boardType	= board.getBoardType().getCode();
 	    	this.boardName 	= board.getBoardName();
 	    	this.boardDescription = board.getBoardDescription();
-	    	this.fromDate 	= null; // board.getFromDate();
-	    	this.toDate		= null; // board.getToDate();
+	    	this.fromDate 	= board.getFromDate();
+	    	this.toDate		= board.getToDate();
 	    	this.useYn 		= board.getUseYn();
 	    	this.articleCount = board.getArticleCount();
 	    	this.sequence	= board.getSequence();    	
