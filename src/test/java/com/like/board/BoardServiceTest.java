@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
+import com.like.board.dto.BoardDTO;
+import com.like.board.dto.BoardDTO.QueryCondition;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.file.domain.model.FileInfo;
@@ -85,7 +87,9 @@ public class BoardServiceTest {
 	@Test
 	public void test02_게시판삭제() {		
 
-		List<Board> boardList = bqs.getBoardList("테스트");
+		BoardDTO.QueryCondition condition = new QueryCondition();
+		condition.setBoardName("테스트");
+		List<Board> boardList = bqs.getBoardList(condition);
 		
 		List<Board> boardSearch = 
 		boardList.stream()
@@ -105,7 +109,7 @@ public class BoardServiceTest {
 		Board board = new Board("게시판");
 		bcs.saveBoard(board);
 		
-		Article article = new Article(board, "제목", "내용");
+		Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);
 		
 		bcs.saveArticle(article);
 		
@@ -117,7 +121,7 @@ public class BoardServiceTest {
 		
 		bcs.saveBoard(board);
 		
-		Article article = new Article(board, "test","test");		
+		Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);		
 		
 		MockMultipartFile file = new MockMultipartFile("user-file", "test.txt",
                                   "multipart/form-data", "test data".getBytes());

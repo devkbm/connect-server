@@ -1,4 +1,4 @@
-package com.like.employee.util;
+package com.like.hrm.util;
 
 public class Token<E> {
 	public final String sequence;

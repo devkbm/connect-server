@@ -1,4 +1,4 @@
-package com.like.employee.domain.entity;
+package com.like.hrm.employee.domain.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,25 +20,28 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.like.common.domain.AuditEntity;
-import com.like.employee.domain.entity.enums.DeptType;
+import com.like.hrm.employee.domain.entity.enums.JobType;
+
 
 @Entity
-@Table(name = "HRMEMPDEPTHISTORY")
+@Table(name = "HRMEMPJOBHISTORY")
 @EntityListeners(AuditingEntityListener.class)
-public class DeptChangeHistory extends AuditEntity implements Serializable {
+public class JobChangeHistory extends AuditEntity implements Serializable {
+	
+	private static final long serialVersionUID = -1926241614174202250L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
 	private Long id;
-	
+		
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-	@Column(name="DEPT_TYPE")
-	private DeptType deptType;
+	@Column(name="JOB_TYPE")
+	private JobType jobType;
 	
-	@Column(name="DEPT_CODE")
-	private String deptCode;
+	@Column(name="JOB_CODE")
+	private String jobCode;
 	
 	@Column(name="FROM_DT")
 	private LocalDate fromDate;
@@ -49,12 +52,24 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;
-	
-	public DeptChangeHistory(DeptType deptType, String deptCode, LocalDate fromDate, LocalDate toDate) {
-		this.deptType = deptType;
-		this.deptCode = deptCode;
+
+	public JobChangeHistory(JobType jobType, String jobCode, LocalDate fromDate, LocalDate toDate) {		
+		this.jobType = jobType;
+		this.jobCode = jobCode;
 		this.fromDate = fromDate;
-		this.toDate = toDate;
+		this.toDate = toDate;		
+	}	
+	
+	public boolean isEnabled(LocalDate date) {
+		return date.isAfter(fromDate) && date.isBefore(toDate) ? true : false;		
 	}
-			
+	
+	public void terminateHistory(LocalDate date) {
+		this.toDate = date;
+	}
+	
+	public boolean equalJobType(JobType jobType) {
+		return this.jobType.equals(jobType) ? true : false;
+	}
+	
 }

@@ -1,6 +1,7 @@
-package com.like.employee.domain.entity;
+package com.like.hrm.employee.domain.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
+import com.like.hrm.employee.domain.entity.enums.DeptType;
+import com.like.hrm.employee.domain.entity.enums.JobType;
 
 @Entity
 @Table(name = "HRMEMPLOYEE")
@@ -31,8 +34,7 @@ public class Employee extends AuditEntity implements Serializable {
 		
 	@Column(name="RREGNO")
 	private String residentRegistrationNumber;
-	
-	/*
+		
 	@OneToMany(mappedBy = "employee")
 	private List<DeptChangeHistory> deptHistory = new ArrayList<>();
 	
@@ -52,7 +54,23 @@ public class Employee extends AuditEntity implements Serializable {
 	public void addJobChange(JobChangeHistory jobChangeHistory) {
 		jobHistory.add(jobChangeHistory);
 	}
-	*/
+	
+	public void terminateDept(DeptType deptType, LocalDate terminateDate) {
+		
+		for (DeptChangeHistory deptHistory: this.deptHistory) {
+			if (deptHistory.equalDeptType(deptType) && deptHistory.isEnabled(terminateDate) )
+				deptHistory.terminateHistory(terminateDate);				
+		}									
+		
+	}
+	
+	public void terminateJob(JobType jobType, LocalDate terminateDate) {
+		
+		for (JobChangeHistory jobHistory: this.jobHistory) {
+			if ( jobHistory.isEnabled(terminateDate) )
+				jobHistory.terminateHistory(terminateDate);				
+		}
+	}
 	
 	
 }

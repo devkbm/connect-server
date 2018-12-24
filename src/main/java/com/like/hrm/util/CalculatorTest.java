@@ -80,7 +80,7 @@
 // Note: Evaluation 단계에서 에러가 발생한경우, 실행이 불가능한것이지 파싱은
 // 가능하므로 postfix expression을 출력한 뒤 ERROR를 발생한다고 생각할 수 있지만,
 // 그래선 안된다. FAQ 참고.
-package com.like.employee.util;
+package com.like.hrm.util;
 
 import java.util.*;
 import java.util.stream.Collectors;
