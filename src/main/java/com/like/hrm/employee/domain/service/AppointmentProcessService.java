@@ -4,13 +4,20 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Service;
+
 import com.like.hrm.appointment.domain.entity.AppointmentDetails;
 import com.like.hrm.appointment.domain.entity.AppointmentMemorandum;
+import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 
-public class AppointmentService {
+import lombok.extern.slf4j.Slf4j;
 
-	@Resource
+@Slf4j
+@Service
+public class AppointmentProcessService implements ApplicationListener<ProcessEvent> {
+
 	private AppointmentRepository appointmentRepository;
 		
 	public void Appoinment(String AppointmentId) {
@@ -22,6 +29,13 @@ public class AppointmentService {
 			
 		}
 			
+	}
+
+	@Override
+	public void onApplicationEvent(ProcessEvent event) {
+		log.info("이벤트 구독");
+		System.out.println(event.toString());
+		
 	}
 	
 	
