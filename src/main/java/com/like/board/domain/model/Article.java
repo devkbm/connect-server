@@ -2,7 +2,6 @@ package com.like.board.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,7 +119,7 @@ public class Article extends AuditEntity implements Serializable {
     @OneToMany(mappedBy = "article")
     List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
                           
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade=CascadeType.ALL)
     private List<AttachedFile> files = new ArrayList<>();    
 		
 	@Builder
@@ -171,44 +170,13 @@ public class Article extends AuditEntity implements Serializable {
 	
 	public void updateHitCnt() {
 		this.hitCount = this.hitCount + 1;	
-	}
-	
-	public boolean addAttachedFile(FileInfo file) {
-		boolean rtn = false;
-		
-		checkFileInfoList();
-		
-		if (file != null) {
-			AttachedFile afile = new AttachedFile(this, file);
-			rtn = files.add(afile);		
-		}			
-			
-		return rtn;
-	}		
-	
-	public boolean addAttachedFile(List<FileInfo> fileList) {
-		boolean rtn = false;
-		
-		checkFileInfoList();
-		
-		for (FileInfo fileInfo: fileList) {
-			AttachedFile afile = new AttachedFile(this, fileInfo);
-			rtn = files.add(afile);
-		}
-		
-		return rtn;
-	}
+	}	
 		
 	public List<FileInfo> getAttachedFileInfoList() {
 		return this.files.stream()						 
 				  		 .map(v -> v.fileInfo)
 				  		 .collect(Collectors.toList());		
 				  
-	}
-	
-	private void checkFileInfoList() {
-		if (this.files == null)
-			this.files = new ArrayList<>();
-	}
+	}	
 		
 }

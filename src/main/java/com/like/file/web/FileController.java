@@ -44,7 +44,7 @@ public class FileController {
 								
 		FileInfo fileInfo = fileService.getFileInfo(id);
 		
-		response = this.setResponse(response, fileInfo.getSize(), fileInfo.getFileNm());
+		response = this.setResponse(response, fileInfo.getSize(), fileInfo.getFileName());
 		
 		fileService.downloadFile(fileInfo, response.getOutputStream());		
 		

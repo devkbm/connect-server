@@ -113,6 +113,15 @@ public class CalculatorTest {
 				   .collect(Collectors.toList())));
     	
     	System.out.println(eval(test));    	    
+    	
+    	System.out.println(UUID.randomUUID().version());
+    	
+    	for (int i=0; i<10000; i++) {
+    		//System.out.println(UUID.randomUUID().toString());
+    		System.out.println(System.nanoTime() + i);
+    		
+    	}    	
+    	
     }
 
     // 토크나이징에 사용될 렉서

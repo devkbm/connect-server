@@ -34,7 +34,7 @@ public class FileInfoJpaRepository implements FileRepository {
 	}
 	
 	public FileInfo save(FileInfo fileInfo) {
-		return jpaFileInfo.save(fileInfo);		
+		return jpaFileInfo.saveAndFlush(fileInfo);		
 	}
 	
 }

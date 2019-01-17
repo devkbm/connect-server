@@ -1,6 +1,7 @@
 package com.like.board.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -12,6 +13,7 @@ import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
+import com.like.file.domain.model.FileInfo;
 
 @Service
 @Transactional
@@ -35,8 +37,22 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(board);
 	}
 	
-	public String saveArticle(Article article) {										
-		return articleRepository.saveArticle(article).toString();
+	public String saveArticle(Article article, List<FileInfo> fileInfoList) {
+		
+		// 게시글 저장
+		String pkArticle = articleRepository.saveArticle(article).getPkArticle().toString(); 
+		
+		// 첨부파일 저장
+		if (!fileInfoList.isEmpty()) {
+			List<AttachedFile> attachedFileList = fileInfoList.stream()
+																.map( v -> new AttachedFile(article, v) )
+																.collect(Collectors.toList());			
+			
+			
+			articleRepository.saveAttachedFile(attachedFileList);
+		}
+				
+		return pkArticle;
 	}
 
 	public void deleteArticle(Article article) {					

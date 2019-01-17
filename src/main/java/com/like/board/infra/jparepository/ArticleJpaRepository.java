@@ -16,8 +16,11 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.like.board.domain.model.*;
 
+@Slf4j
 @Repository
 public class ArticleJpaRepository implements ArticleRepository {
 				
@@ -51,7 +54,6 @@ public class ArticleJpaRepository implements ArticleRepository {
 		
 	}
 			
-
 	public List<Article> getArticleList(Long fkBoard) { 			
 				
 		return queryFactory.select(qArticle)
@@ -75,29 +77,21 @@ public class ArticleJpaRepository implements ArticleRepository {
 		
 		//return (List<Article>) jpaArticle.findAll(queryDTO.getBooleanBuilder());		
 	}	
-
-	private void setArticleSequence(Article article) {
-		if (article.getSeq() == null ) {							
-			article.setSeq(getArticleNextSeq(article.getBoard().getPkBoard()));
-		} else if (article.getSeq() == 0 ) {
-			article.setSeq(1);
-		}
-	}
 	
-	public Long saveArticle(Article article) {		
+	public Article saveArticle(Article article) {		
 								
 		setArticleSequence(article);			
-														
-		Article savedArticle = jpaArticle.saveAndFlush(article);
-				
-		for (AttachedFile file: article.getFiles()) {
-			file.setId();
-		}
-			
-		jpaAttachedFile.save(article.getFiles());
-		
-		return savedArticle.getPkArticle();
+																										
+		return jpaArticle.saveAndFlush(article);
 	}
+	
+	public void saveAttachedFile(AttachedFile attachedFile) {
+		jpaAttachedFile.save(attachedFile);
+	}
+	
+	public void saveAttachedFile(List<AttachedFile> attachedFileList) {
+		jpaAttachedFile.save(attachedFileList);
+	}	
 	
 	public void deleteArticle(Article article) {		
 		
@@ -175,8 +169,18 @@ public class ArticleJpaRepository implements ArticleRepository {
 		return article.getAttachedFileInfoList();
 	}
 	
-	public void saveAttachedFile(AttachedFile attachedFile) {
-		jpaAttachedFile.save(attachedFile);
+	
+	
+	/**
+	 * 게시글 엔티티의 순번을 설정한다.
+	 * @param article
+	 */
+	private void setArticleSequence(Article article) {
+		if (article.getSeq() == null ) {							
+			article.setSeq(getArticleNextSeq(article.getBoard().getPkBoard()));
+		} else if (article.getSeq() == 0 ) {
+			article.setSeq(1);
+		}
 	}
 	
 }

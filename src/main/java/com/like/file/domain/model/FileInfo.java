@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,25 +13,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @JsonAutoDetect
-@Data
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "cmfileinfo")
 @EntityListeners(AuditingEntityListener.class)
 public class FileInfo extends AuditEntity implements Serializable {
-		
-	/**
-	 * 
-	 */
+			
 	private static final long serialVersionUID = 4108977246168878308L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="pk_file")
 	Long pkFile;	
 
@@ -53,21 +48,48 @@ public class FileInfo extends AuditEntity implements Serializable {
 	String path;
 	
 	@Column(name="file_nm")
-	String fileNm;
+	String fileName;
 	
 	@Column(name="size")
 	long size;
 	
 	@Column(name="download_cnt")
-	long downloadCnt;	
+	long downloadCnt;			
 		
-	protected FileInfo() { }
-	
-	public FileInfo(String pgmId) {
-		this.pgmId = pgmId;		
+	@Builder
+	public FileInfo(String pgmId, String userId, String contentType, String uuid, String path, String fileName, long size) {		
+		this.pkFile = System.nanoTime();
+		this.pgmId = pgmId;
+		this.userId = userId;
+		this.contentType = contentType;
+		this.uuid = uuid;
+		this.path = path;
+		this.fileName = fileName;
+		this.size = size;
 	}
 	
+	public Long getPkFile() {
+		return this.pkFile;
+	}
+	
+	public long getSize() {
+		return this.size;
+	}
+	
+	public String getFileName() {
+		return this.fileName;
+	}
+	
+	public String getUuid() {
+		return uuid;
+	}
+
+	public String getPath() {
+		return path;
+	}
+		
 	public void plusDownloadCount() {
 		this.downloadCnt = this.downloadCnt + 1;
 	}
+
 }

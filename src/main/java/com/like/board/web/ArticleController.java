@@ -1,5 +1,6 @@
 package com.like.board.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -47,9 +48,7 @@ public class ArticleController {
 	@GetMapping("/grw/boards/articles/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
 		
-		Article article = boardQueryService.getAritlce(id);
-		
-		//Article dto = new ArticleSaveDTO(article);
+		Article article = boardQueryService.getAritlce(id);		
 				
 		return WebControllerUtil.getResponse(article, 
 				article == null ? 0 : 1, 
@@ -98,46 +97,27 @@ public class ArticleController {
 	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
 	public ResponseEntity<?> saveArticleWithFile(ArticleDTO.ArticleSave dto, BindingResult result) {
-		
-		Board board = null;
-		Article article = null;
-		FileInfo file = null;					
-		
+						
+		List<FileInfo> fileList = new ArrayList<>();
+					
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
 		}			
 		
-		board = boardQueryService.getBoard(dto.getFkBoard());
-		
-		if ( dto.getPkArticle() == null ) {											
-			
-			article = Article.builder()
-							 .board(board)
-							 .title(dto.getTitle())
-							 .contents(dto.getContents())
-							 .fromDate(dto.getFromDate())
-							 .toDate(dto.getToDate())							 
-							 .build();
-					
-		} else {			
-			article = boardQueryService.getAritlce(dto.getPkArticle());
-			
-			article.updateEntity(dto);
-		}
+		Article article = convertArticleEntity(dto);
 											
 		try {
 			if (!dto.getFile().isEmpty()) {
 				
 				for (MultipartFile mfile : dto.getFile()) {									
-					file = fileService.uploadFile(mfile, "test", "board");
-					article.addAttachedFile(file);									
+					fileList.add(fileService.uploadFile(mfile, "test", "board"));						
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 						
-		boardCommandService.saveArticle(article);											
+		boardCommandService.saveArticle(article, fileList);											
 		
 		return WebControllerUtil.getResponse(null, 
 				1, 
@@ -158,5 +138,35 @@ public class ArticleController {
 				true, 
 				String.format("%d건 업데이트 하였습니다.", 1), 
 				HttpStatus.OK);
+	}
+	
+	/**
+	 * DTO -> 게시글 엔티티로 변환한다
+	 * @param dto
+	 * @return 게시글 엔티티
+	 */
+	private Article convertArticleEntity(ArticleDTO.ArticleSave dto) {
+				
+		Article article = null;
+		
+		Board board = boardQueryService.getBoard(dto.getFkBoard());
+		
+		if ( dto.getPkArticle() == null ) {											
+			
+			article = Article.builder()
+							 .board(board)
+							 .title(dto.getTitle())
+							 .contents(dto.getContents())
+							 .fromDate(dto.getFromDate())
+							 .toDate(dto.getToDate())							 
+							 .build();
+					
+		} else {			
+			article = boardQueryService.getAritlce(dto.getPkArticle());
+			
+			article.updateEntity(dto);
+		}
+		
+		return article;		
 	}
 }

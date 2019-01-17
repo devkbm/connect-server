@@ -27,23 +27,12 @@ public class FileService {
 	private FileInfoJpaRepository fileInfoRepository;	
 	
 	@Resource(name="localFileRepository")
-	private LocalFileRepository localFileRepository;
+	private LocalFileRepository localFileRepository;	
 	
 	@Transactional
 	public FileInfo uploadFile(MultipartFile sourceFile, String userId, String pgmId) throws Exception {
-				
-		String uuid = UUID.randomUUID().toString();
-		
-		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), uuid);
-																
-		FileInfo file = new FileInfo(pgmId);			
-		file.setUuid(uuid);		
-		file.setPath(localFileRepository.getPath());
-		file.setFileNm(sourceFile.getOriginalFilename());		
-		file.setSize(sourceFile.getSize());
-		file.setContentType(sourceFile.getContentType());		
-		file.setDownloadCnt(0);
-		file.setUserId(userId);		
+																					
+		FileInfo file = newFileInfo(sourceFile, userId, pgmId);			
 												
 		return fileInfoRepository.save(file);		
 	}
@@ -53,20 +42,9 @@ public class FileService {
 		
 		List<FileInfo> rtn = new ArrayList<FileInfo>();
 		
-		for (MultipartFile multipartFile : sourceFiles) {
-			
-			String uuid = UUID.randomUUID().toString();
-			
-			localFileRepository.fileTransfer(multipartFile, localFileRepository.getPath(), uuid);
+		for (MultipartFile multipartFile : sourceFiles) {			
 																	
-			FileInfo file = new FileInfo(pgmId);			
-			file.setUuid(uuid);		
-			file.setPath(localFileRepository.getPath());
-			file.setFileNm(multipartFile.getOriginalFilename());		
-			file.setSize(multipartFile.getSize());
-			file.setContentType(multipartFile.getContentType());		
-			file.setDownloadCnt(0);
-			file.setUserId(userId);
+			FileInfo file = newFileInfo(multipartFile, userId, pgmId);	
 			
 			rtn.add(fileInfoRepository.save(file));
 		}
@@ -86,20 +64,15 @@ public class FileService {
 	}
 	
 	@Transactional	
-	public void downloadFile(FileInfo fileInfo, OutputStream os)
-			throws Exception {		
+	public void downloadFile(FileInfo fileInfo, OutputStream os) throws Exception {		
 		
 		localFileRepository.fileToStream(new File(fileInfo.getPath(), fileInfo.getUuid()), os);
 		
 		// 다운로드 카운트 + 1
 		fileInfo.plusDownloadCount();
-		fileInfoRepository.save(fileInfo);
-	}
-	
 		
-	public FileInfo getFileInfo(Long id) {
-		return fileInfoRepository.getFileInfo(id);
-	}
+		fileInfoRepository.save(fileInfo);
+	}		
 	
 	@Transactional
 	public void deleteFile(FileInfo fileInfo) throws Exception {
@@ -108,6 +81,29 @@ public class FileService {
 		
 		fileInfoRepository.delete(fileInfo.getPkFile());											
 	}
+	
+	public FileInfo getFileInfo(Long id) {
+		return fileInfoRepository.getFileInfo(id);
+	}
+	
+	private FileInfo newFileInfo(MultipartFile sourceFile, String userId, String pgmId) throws Exception {
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), uuid);
+																
+		FileInfo file = FileInfo.builder()
+								.uuid(uuid)
+								.path(localFileRepository.getPath())
+								.fileName(sourceFile.getOriginalFilename())
+								.size(sourceFile.getSize())
+								.contentType(sourceFile.getContentType())
+								.userId(userId)
+								.pgmId(pgmId)
+								.build();
+		return file;
+	}
+
 
 	public String downloadBase64(Long id) throws Exception {
 		FileInfo info = fileInfoRepository.getFileInfo(id);
