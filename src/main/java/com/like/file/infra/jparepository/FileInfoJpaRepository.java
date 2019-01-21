@@ -20,7 +20,7 @@ public class FileInfoJpaRepository implements FileRepository {
 	private JpaFileInfo jpaFileInfo;
 	
 	@Override
-	public FileInfo getFileInfo(Long id) {
+	public FileInfo getFileInfo(String id) {
 		return jpaFileInfo.findOne(id);
 	}
 
@@ -29,7 +29,7 @@ public class FileInfoJpaRepository implements FileRepository {
 		return jpaFileInfo.findAll();
 	}
 
-	public void delete(Long id) {
+	public void delete(String id) {
 		jpaFileInfo.delete(id);
 	}
 	

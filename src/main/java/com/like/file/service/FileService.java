@@ -53,7 +53,7 @@ public class FileService {
 	}
 		
 		
-	public FileInfo downloadFile(HttpServletResponse response, Long pk)
+	public FileInfo downloadFile(HttpServletResponse response, String pk)
 			throws Exception {
 		
 		FileInfo file = getFileInfo(pk);
@@ -82,7 +82,7 @@ public class FileService {
 		fileInfoRepository.delete(fileInfo.getPkFile());											
 	}
 	
-	public FileInfo getFileInfo(Long id) {
+	public FileInfo getFileInfo(String id) {
 		return fileInfoRepository.getFileInfo(id);
 	}
 	
@@ -105,7 +105,7 @@ public class FileService {
 	}
 
 
-	public String downloadBase64(Long id) throws Exception {
+	public String downloadBase64(String id) throws Exception {
 		FileInfo info = fileInfoRepository.getFileInfo(id);
 					
 		return localFileRepository.fileToBase64String(info.getPath(), info.getUuid());		

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
+import com.like.file.util.FileIdGenerator;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,7 +23,7 @@ import lombok.ToString;
 @JsonAutoDetect
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "cmfileinfo")
+@Table(name = "comfileinfo")
 @EntityListeners(AuditingEntityListener.class)
 public class FileInfo extends AuditEntity implements Serializable {
 			
@@ -30,7 +31,7 @@ public class FileInfo extends AuditEntity implements Serializable {
 
 	@Id
 	@Column(name="pk_file")
-	Long pkFile;	
+	String pkFile;	
 
 	@Column(name="pgm_id")
 	String pgmId;
@@ -58,7 +59,7 @@ public class FileInfo extends AuditEntity implements Serializable {
 		
 	@Builder
 	public FileInfo(String pgmId, String userId, String contentType, String uuid, String path, String fileName, long size) {		
-		this.pkFile = System.nanoTime();
+		this.pkFile = FileIdGenerator.generateFileId();
 		this.pgmId = pgmId;
 		this.userId = userId;
 		this.contentType = contentType;
@@ -68,7 +69,7 @@ public class FileInfo extends AuditEntity implements Serializable {
 		this.size = size;
 	}
 	
-	public Long getPkFile() {
+	public String getPkFile() {
 		return this.pkFile;
 	}
 	

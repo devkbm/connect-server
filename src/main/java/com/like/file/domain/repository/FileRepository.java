@@ -6,11 +6,11 @@ import com.like.file.domain.model.FileInfo;
 
 public interface FileRepository {
 	
-	FileInfo getFileInfo(Long id);
+	FileInfo getFileInfo(String id);
 	
 	List<FileInfo> getFileInfoList();
 	
-	void delete(Long id);
+	void delete(String id);
 	
 	FileInfo save(FileInfo fileInfo);
 }

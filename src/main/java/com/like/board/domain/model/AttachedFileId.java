@@ -14,11 +14,11 @@ public class AttachedFileId implements Serializable {
 	private Long pkArticle;
 	
 	@Column(name="PK_FILE", nullable=false, updatable=false)
-	private Long pkFile;
+	private String pkFile;
 
 	protected AttachedFileId() {}
 	
-	public AttachedFileId(Long pkArticle, Long pkFile) {		
+	public AttachedFileId(Long pkArticle, String pkFile) {		
 		this.pkArticle = pkArticle;
 		this.pkFile = pkFile;
 	}	

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
@@ -14,6 +15,7 @@ import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.file.domain.model.FileInfo;
+import com.like.file.service.FileService;
 
 @Service
 @Transactional
@@ -25,6 +27,9 @@ public class BoardCommandService {
     @Resource(name="articleJpaRepository")
 	private ArticleRepository articleRepository;          
 		
+    @Resource(name="fileService")
+    private FileService fileService;
+    
 	public void saveBoard(Board board) {		
 		boardRepository.saveBoard(board);		
 	}
@@ -37,17 +42,22 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(board);
 	}
 	
-	public String saveArticle(Article article, List<FileInfo> fileInfoList) {
+	//public String saveArticle(Article article, List<FileInfo> fileInfoList) {
+	public String saveArticle(Article article, List<MultipartFile> fileList) throws Exception {
+		
+		List<FileInfo> fileInfoList;
 		
 		// 게시글 저장
-		String pkArticle = articleRepository.saveArticle(article).getPkArticle().toString(); 
+		String pkArticle = articleRepository.saveArticle(article).getPkArticle().toString(); 						
 		
 		// 첨부파일 저장
-		if (!fileInfoList.isEmpty()) {
+		if (!fileList.isEmpty()) {
+			
+			fileInfoList = fileService.uploadFile(fileList, "test", "board");
+												
 			List<AttachedFile> attachedFileList = fileInfoList.stream()
 																.map( v -> new AttachedFile(article, v) )
-																.collect(Collectors.toList());			
-			
+																.collect(Collectors.toList());						
 			
 			articleRepository.saveAttachedFile(attachedFileList);
 		}

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.like.file.domain.model.FileInfo;
 
 @Repository
-public interface JpaFileInfo extends JpaRepository<FileInfo, Long> {
+public interface JpaFileInfo extends JpaRepository<FileInfo, String> {
 	List<FileInfo> findByPgmId(String pgmId);
 }

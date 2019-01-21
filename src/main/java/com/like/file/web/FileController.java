@@ -40,7 +40,7 @@ public class FileController {
 			
 	@RequestMapping(value={"/file/{id}"}, method=RequestMethod.GET) 
 	public HttpServletResponse fileDownLoad(HttpServletResponse response,
-			@PathVariable(value="id") Long id) throws Exception {
+			@PathVariable(value="id") String id) throws Exception {
 								
 		FileInfo fileInfo = fileService.getFileInfo(id);
 		

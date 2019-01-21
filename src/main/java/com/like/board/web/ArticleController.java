@@ -96,28 +96,15 @@ public class ArticleController {
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
-	public ResponseEntity<?> saveArticleWithFile(ArticleDTO.ArticleSave dto, BindingResult result) {
-						
-		List<FileInfo> fileList = new ArrayList<>();
-					
+	public ResponseEntity<?> saveArticleWithFile(ArticleDTO.ArticleSave dto, BindingResult result) throws Exception {
+											
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
 		}			
 		
-		Article article = convertArticleEntity(dto);
-											
-		try {
-			if (!dto.getFile().isEmpty()) {
-				
-				for (MultipartFile mfile : dto.getFile()) {									
-					fileList.add(fileService.uploadFile(mfile, "test", "board"));						
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Article article = convertArticleEntity(dto);															
 						
-		boardCommandService.saveArticle(article, fileList);											
+		boardCommandService.saveArticle(article, dto.getFile());											
 		
 		return WebControllerUtil.getResponse(null, 
 				1, 
