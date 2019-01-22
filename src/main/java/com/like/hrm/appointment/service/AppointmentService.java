@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import com.like.hrm.appointment.domain.entity.AppointmentMemorandum;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
+import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -2,7 +2,7 @@ package com.like.hrm.appointment.domain.event;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.like.hrm.appointment.domain.entity.AppointmentMemorandum;
+import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;

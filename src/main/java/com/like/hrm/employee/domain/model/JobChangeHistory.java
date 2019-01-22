@@ -1,4 +1,4 @@
-package com.like.hrm.employee.domain.entity;
+package com.like.hrm.employee.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,9 +20,23 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.employee.domain.entity.enums.JobType;
+import com.like.hrm.employee.domain.model.enums.JobType;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+/**
+ * <p>직위, 직급등 이력 관리 클래스</p>
+ * 
+ * Index : EMP_ID, JOB_TYPE, JOB_CODE <br>
+ * [상세] <br>
+ * 1. <br>
+ * 2. <br>
+ * @author 김병민
+ * 
+ */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPJOBHISTORY")
 @EntityListeners(AuditingEntityListener.class)
@@ -41,7 +55,7 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 	private JobType jobType;
 	
 	@Column(name="JOB_CODE")
-	private String jobCode;
+	private String jobCode;	
 	
 	@Column(name="FROM_DT")
 	private LocalDate fromDate;
@@ -53,11 +67,12 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;
 
+	@Builder
 	public JobChangeHistory(JobType jobType, String jobCode, LocalDate fromDate, LocalDate toDate) {		
-		this.jobType = jobType;
-		this.jobCode = jobCode;
-		this.fromDate = fromDate;
-		this.toDate = toDate;		
+		this.jobType 	= jobType;
+		this.jobCode 	= jobCode;		
+		this.fromDate 	= fromDate;
+		this.toDate 	= toDate;		
 	}	
 	
 	public boolean isEnabled(LocalDate date) {
@@ -70,6 +85,10 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 	
 	public boolean equalJobType(JobType jobType) {
 		return this.jobType.equals(jobType) ? true : false;
+	}
+	
+	public boolean equalJobCode(String jobCode) {
+		return this.jobCode.equals(jobCode) ? true : false;
 	}
 	
 }

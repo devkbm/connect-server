@@ -1,4 +1,4 @@
-package com.like.hrm.employee.domain.entity;
+package com.like.hrm.employee.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,8 +20,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.employee.domain.entity.enums.DeptType;
+import com.like.hrm.employee.domain.model.enums.DeptType;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+/**
+ * <p>부서 이력 관리 클래스</p>
+ * 
+ * Index : EMP_ID, DEPT_TYPE, DEPT_CODE <br>
+ * [상세] <br>
+ * 1. <br>
+ * 2. <br>
+ * @author 김병민
+ * 
+ */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPDEPTHISTORY")
 @EntityListeners(AuditingEntityListener.class)
@@ -69,6 +83,10 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	
 	public boolean equalDeptType(DeptType deptType) {
 		return this.deptType.equals(deptType) ? true : false;
+	}
+	
+	public boolean equalDeptCode(String deptCode) {
+		return this.deptCode.equals(deptCode) ? true : false;
 	}
 			
 }

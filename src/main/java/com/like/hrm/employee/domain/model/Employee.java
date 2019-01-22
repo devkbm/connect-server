@@ -1,4 +1,4 @@
-package com.like.hrm.employee.domain.entity;
+package com.like.hrm.employee.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,9 +15,13 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.employee.domain.entity.enums.DeptType;
-import com.like.hrm.employee.domain.entity.enums.JobType;
+import com.like.hrm.employee.domain.model.enums.DeptType;
+import com.like.hrm.employee.domain.model.enums.JobType;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPLOYEE")
 @EntityListeners(AuditingEntityListener.class)
@@ -47,6 +51,10 @@ public class Employee extends AuditEntity implements Serializable {
 		this.residentRegistrationNumber = residentRegistrationNumber;
 	}
 	
+	public String getEmployeeId() {
+		return this.id;
+	}
+	
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
 		deptHistory.add(deptChangeHistory);
 	}
@@ -55,19 +63,37 @@ public class Employee extends AuditEntity implements Serializable {
 		jobHistory.add(jobChangeHistory);
 	}
 	
-	public void terminateDept(DeptType deptType, LocalDate terminateDate) {
+	/**
+	 * <p>부서 이력을 종료일자 기준으로 종료시킨다.</p>
+	 * @param deptType
+	 * @param deptCode
+	 * @param terminateDate
+	 */
+	public void terminateDept(DeptType deptType, String deptCode, LocalDate terminateDate) {
 		
 		for (DeptChangeHistory deptHistory: this.deptHistory) {
-			if (deptHistory.equalDeptType(deptType) && deptHistory.isEnabled(terminateDate) )
+			if ( deptHistory.equalDeptType(deptType)
+			  && deptHistory.equalDeptCode(deptCode)		
+			  && deptHistory.isEnabled(terminateDate) )
+				
 				deptHistory.terminateHistory(terminateDate);				
 		}									
 		
 	}
 	
-	public void terminateJob(JobType jobType, LocalDate terminateDate) {
+	/**
+	 * <p>인사정보 이력을 종료일자 기준으로 종료시킨다.</p>
+	 * @param jobType
+	 * @param jobCode
+	 * @param terminateDate
+	 */
+	public void terminateJob(JobType jobType, String jobCode, LocalDate terminateDate) {
 		
 		for (JobChangeHistory jobHistory: this.jobHistory) {
-			if ( jobHistory.isEnabled(terminateDate) )
+			if ( jobHistory.equalJobType(jobType) 
+			  && jobHistory.equalJobCode(jobCode)
+			  && jobHistory.isEnabled(terminateDate) )
+				
 				jobHistory.terminateHistory(terminateDate);				
 		}
 	}

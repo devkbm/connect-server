@@ -1,4 +1,4 @@
-package com.like.hrm.employee.domain.entity.enums;
+package com.like.hrm.employee.domain.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

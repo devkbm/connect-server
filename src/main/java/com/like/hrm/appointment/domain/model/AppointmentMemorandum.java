@@ -1,4 +1,4 @@
-package com.like.hrm.appointment.domain.entity;
+package com.like.hrm.appointment.domain.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

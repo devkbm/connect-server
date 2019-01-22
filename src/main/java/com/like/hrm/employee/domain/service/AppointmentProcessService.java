@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import com.like.hrm.appointment.domain.entity.AppointmentDetails;
-import com.like.hrm.appointment.domain.entity.AppointmentMemorandum;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
+import com.like.hrm.appointment.domain.model.AppointmentDetails;
+import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 
 import lombok.extern.slf4j.Slf4j;
