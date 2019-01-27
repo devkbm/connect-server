@@ -2,22 +2,22 @@ package com.like.term.domain.repository;
 
 import java.util.List;
 
-import com.like.term.domain.model.Term;
-import com.like.term.domain.repository.dto.TermQueryDTO;
+import com.like.term.domain.model.TermDictionary;
+import com.like.term.dto.TermDTO;
 
 public interface TermRepository {
 	
-	Term getTerm(Long pkTerm);	
+	TermDictionary getTerm(Long pkTerm);	
 	
-	List<Term> getTermList();
+	List<TermDictionary> getTermList();
 	
-	List<Term> getTermList(TermQueryDTO termQueryDTO);
+	List<TermDictionary> getTermList(TermDTO.QueryCondition condition);
 	
-	void saveTerm(Term term);
+	void saveTerm(TermDictionary term);
 	
-	void saveTerm(List<Term> termList);
+	void saveTerm(List<TermDictionary> termList);
 	
 	void deleteTerm(Long pkTerm);
 	
-	void deleteTerm(List<Term> termList);
+	void deleteTerm(List<TermDictionary> termList);
 }

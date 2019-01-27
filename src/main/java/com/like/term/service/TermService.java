@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.term.domain.model.Term;
+import com.like.term.domain.model.TermDictionary;
 import com.like.term.domain.repository.TermRepository;
-import com.like.term.domain.repository.dto.TermQueryDTO;
+import com.like.term.dto.TermDTO;
 
 @Service("termService")
 @Transactional
@@ -18,23 +18,23 @@ public class TermService {
     @Resource(name="termJpaRepository")
 	private TermRepository termRepository;      
 	
-	public Term getTerm(Long pkTerm) {
+	public TermDictionary getTerm(Long pkTerm) {
 		return termRepository.getTerm(pkTerm);
 	}
 	
-	public List<Term> getTermList() {
+	public List<TermDictionary> getTermList() {
 		return termRepository.getTermList();
 	}
 	
-	public List<Term> getTermList(TermQueryDTO termQueryDTO) {
-		return termRepository.getTermList(termQueryDTO);
+	public List<TermDictionary> getTermList(TermDTO.QueryCondition condition) {
+		return termRepository.getTermList(condition);
 	}
 
-	public void saveTerm(Term term) {
+	public void saveTerm(TermDictionary term) {
 		termRepository.saveTerm(term);
 	}
 	
-	public void saveTerm(List<Term> termList) {
+	public void saveTerm(List<TermDictionary> termList) {
 		termRepository.saveTerm(termList);		
 	}
 	
@@ -42,7 +42,7 @@ public class TermService {
 		termRepository.deleteTerm(pkTerm);		
 	}
 	
-	public void deleteTerm(List<Term> termList) {
+	public void deleteTerm(List<TermDictionary> termList) {
 		termRepository.deleteTerm(termList);	
 	}
 		

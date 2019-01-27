@@ -14,7 +14,5 @@ public class AppointmentDetails {
 	private LocalDate AppointmentFromDate;
 	
 	private LocalDate AppointmentToDate = LocalDate.of(9999, 12, 31);
-	
-	
-	
+		
 }
