@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -185,10 +186,13 @@ public class MenuController {
 		
 		Menu menu = menuQueryService.getMenu(dto.getMenuCode());			
 						
-		if ( menu == null ) {					
+		if ( menu == null ) {								
+			MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());						
+			Program program = null;
 			
-			MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());
-			Program program = menuQueryService.getProgram(dto.getProgram());
+			if (StringUtils.hasText(dto.getProgram())) {
+				program = menuQueryService.getProgram(dto.getProgram());;
+			}					
 			
 			menu = new Menu(dto.getMenuCode(), 
 							dto.getMenuName(),
@@ -200,13 +204,13 @@ public class MenuController {
 							program);
 		} else {
 			menu.updateEntity(dto);
-		}
+			
+			if (dto.getProgram() != null) {
+				Program program = menuQueryService.getProgram(dto.getProgram());
+				menu.registerProgram(program);
+			}
+		}			
 		
-		if (dto.getProgram() != null) {
-			Program program = menuQueryService.getProgram(dto.getProgram());
-			menu.registerProgram(program);
-		}
-					
 		menuCommandService.saveMenu(menu, dto.getMenuGroupCode());																			
 														 				
 		return WebControllerUtil.getResponse(null,

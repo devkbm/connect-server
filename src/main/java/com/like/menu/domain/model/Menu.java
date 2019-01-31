@@ -63,7 +63,7 @@ public class Menu extends AuditEntity implements Serializable {
 	private MenuGroup menuGroup = new MenuGroup();
 	
 	@OneToOne(optional=true)
-	@JoinColumn(name = "program_code")
+	@JoinColumn(name = "program_code", nullable=true)
 	private Program program = new Program();
 	
 	public Menu() {}	
