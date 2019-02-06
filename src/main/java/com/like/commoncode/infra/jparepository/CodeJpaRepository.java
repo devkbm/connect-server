@@ -11,10 +11,10 @@ import com.like.commoncode.domain.model.QCode;
 import com.like.commoncode.domain.model.QCodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.commoncode.domain.repository.CommonCodeRepository;
+import com.like.commoncode.dto.CodeGroupDTO;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCode;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCodeGroup;
 import com.like.commoncode.web.dto.CodeComboDTO;
-import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -42,10 +42,10 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	}
 
 	@Override	
-	public List<CodeGroup> getCodeGroupList(CodeGroupQueryDTO commonCodeGroupQueryDTO) {
+	public List<CodeGroup> getCodeGroupList(CodeGroupDTO.QueryCondition queryCondition) {
 		return queryFactory				
 				.selectFrom(qCommonCodeGroup)				
-				.where(commonCodeGroupQueryDTO.getQuerySpec())
+				.where(queryCondition.getQuerySpec())
 				.fetch();
 	}
 

@@ -21,10 +21,10 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.domain.model.CodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.commoncode.dto.CodeGroupDTO;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
 import com.like.commoncode.web.dto.CodeDTO;
-import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,9 +39,9 @@ public class CommonCodeController {
 	private CommonCodeQueryService commonCodeQueryService;	
 	
 	@RequestMapping(value={"/common/codegroups"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getCodeGroups(@ModelAttribute CodeGroupQueryDTO commonCodeGroupQueryDTO) {				
+	public ResponseEntity<?> getCodeGroups(@ModelAttribute CodeGroupDTO.QueryCondition queryCondition) {				
 		
-		List<CodeGroup> list = commonCodeQueryService.getCodeGroupList(commonCodeGroupQueryDTO); 							
+		List<CodeGroup> list = commonCodeQueryService.getCodeGroupList(queryCondition); 							
 		
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 

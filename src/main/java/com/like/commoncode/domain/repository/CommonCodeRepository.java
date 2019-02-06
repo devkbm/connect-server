@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.CodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.commoncode.dto.CodeGroupDTO;
 import com.like.commoncode.web.dto.CodeComboDTO;
-import com.like.commoncode.web.dto.CodeGroupQueryDTO;
 
 @Repository
 public interface CommonCodeRepository {
@@ -17,7 +17,7 @@ public interface CommonCodeRepository {
 	
 	List<CodeGroup> getCodeGroupList();
 	
-	List<CodeGroup> getCodeGroupList(CodeGroupQueryDTO commonCodeGroupQueryDTO);
+	List<CodeGroup> getCodeGroupList(CodeGroupDTO.QueryCondition queryCondition);
 	
 	void saveCodeGroup(CodeGroup codeGroup);
 	

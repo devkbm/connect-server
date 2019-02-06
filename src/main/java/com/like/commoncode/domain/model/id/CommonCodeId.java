@@ -16,6 +16,7 @@ public class CommonCodeId implements Serializable {
 		
 	private static final long serialVersionUID = -6803140784727174194L;
 
+	@Column(name="code_group")
 	private String codeGroup;
 	
 	@Column(name = "code")
