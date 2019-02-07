@@ -17,8 +17,10 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Table(name = "cmcode")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

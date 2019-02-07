@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
+import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
 import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
 
 @Repository
@@ -23,4 +24,9 @@ public interface AppointmentRepository {
 	
 	void deleteAppintmentCode(AppointmentCode appointmentCode);
 	
+	AppointmentCodeDetails getAppointmentCodeDetails(Long id);
+	
+	void saveAppointmentCodeDetails(AppointmentCodeDetails details);
+	
+	void deleteAppointmentCodeDetails(AppointmentCodeDetails appointmentCode);
 }

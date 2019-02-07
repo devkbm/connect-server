@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 
-import lombok.Getter;
+import lombok.Builder;
 import lombok.ToString;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -23,10 +23,7 @@ import lombok.ToString;
 @Table(name = "cmcodegroup")
 @EntityListeners(AuditingEntityListener.class)
 public class CodeGroup extends AuditEntity implements Serializable {
-	
-	/**
-	 * 
-	 */
+		
 	private static final long serialVersionUID = -5418758137151108128L;
 
 	@Id		
@@ -41,17 +38,7 @@ public class CodeGroup extends AuditEntity implements Serializable {
 	private int codeLength;
 	
 	@Column(name="cmt")
-	private String cmt;
-	
-	@Column(name="enum_yn")
-	private boolean enumYn;
-	
-	@Column(name="enum_package")
-	private String enumPackage;
-	
-	@Column(name="enum_name")
-	private String enumName;
-		
+	private String cmt;		
 	
 	protected CodeGroup() {}
 	
@@ -59,4 +46,14 @@ public class CodeGroup extends AuditEntity implements Serializable {
 		this.codeGroup = codeGroup;
 		this.codeGroupName = codeGroupName;				    	   
 	}
+
+	@Builder
+	public CodeGroup(String codeGroup, String codeGroupName, int codeLength, String cmt) {		
+		this.codeGroup = codeGroup;
+		this.codeGroupName = codeGroupName;
+		this.codeLength = codeLength;
+		this.cmt = cmt;
+	}
+	
+	
 }

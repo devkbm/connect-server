@@ -90,7 +90,19 @@ create table if not exists COM.COMUSERMENUGROUP (
 	constraint fk_comusermenugroup2 	foreign key(MENU_GROUP_CODE) references COMMENUGROUP(MENU_GROUP_CODE)
 );
 
-
+create table if not exists COM.APPOINMENTCODEDETAILS (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    PK_CODE_DETAIL		INT				NOT NULL	AUTO_INCREMENT COMMENT '발령상세키',
+    CODE_GROUP			VARCHAR(20)		NULL		COMMENT '발령코드그룹',
+    CODE				VARCHAR(20)		NULL		COMMENT '발령코드',
+    CHANGE_TYPE			VARCHAR(20)		NULL		COMMENT '변경타입',
+    TYPE_CODE			VARCHAR(20)		NULL		COMMENT '코드',
+    TYPE_NAME			VARCHAR(20)		NULL		COMMENT '코드명',
+	constraint pk_codedetail primary key(PK_CODE_DETAIL)
+);
 
 
 

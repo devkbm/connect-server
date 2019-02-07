@@ -19,14 +19,11 @@ public class AppointmentCodeDTO {
 	public static class CodeSave implements Serializable {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
-
-		private String codeGroup;
+		
 			
 		private String code;
 			
-		private String codeName;
-			
-		private String codeNameAbbreviation;		
+		private String codeName;					
 			
 		private LocalDate fromDate;
 			
