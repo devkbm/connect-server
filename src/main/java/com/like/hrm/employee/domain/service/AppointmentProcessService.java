@@ -21,6 +21,7 @@ public class AppointmentProcessService implements ApplicationListener<ProcessEve
 	private AppointmentRepository appointmentRepository;
 		
 	public void Appoinment(String AppointmentId) {
+		/*
 		AppointmentMemorandum memorandum = appointmentRepository.getAppointmentMemorandum();
 				
 		List<AppointmentDetails> appointmentList = memorandum.getDetails();
@@ -28,6 +29,7 @@ public class AppointmentProcessService implements ApplicationListener<ProcessEve
 		for (AppointmentDetails appointment : appointmentList) {
 			
 		}
+		*/
 			
 	}
 

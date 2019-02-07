@@ -21,10 +21,10 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.domain.model.CodeGroup;
 import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.commoncode.dto.CodeDTO;
 import com.like.commoncode.dto.CodeGroupDTO;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
-import com.like.commoncode.web.dto.CodeDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +49,25 @@ public class CommonCodeController {
 				String.format("%d 건 조회되었습니다.", list.size()), 
 				HttpStatus.OK);
 	}
+	
+	@RequestMapping(value={"/common/codegroup"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveCodeGroup(@RequestBody CodeGroup codeGroup, BindingResult result) {				
+		
+		if ( result.hasErrors()) {
+			log.info(result.toString());
+			throw new ControllerException(result.toString());
+		} 
+																	
+		commonCodeCommandService.saveCodeGroup(codeGroup);
+						
+								 					
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 저장되었습니다.", 1), 
+				HttpStatus.OK);
+	}
+	
 	
 	@RequestMapping(value={"/common/codegroups"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveCodeGroup(@RequestBody List<CodeGroup> codeGroupList, BindingResult result) {				
@@ -102,23 +121,22 @@ public class CommonCodeController {
 
 	}
 	
-	@RequestMapping(value={"/common/codegroups/codes"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCode(@RequestBody List<CodeDTO> codeList, BindingResult result) {			
+	
+	@RequestMapping(value={"/common/codegroup/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveCode(@RequestBody CodeDTO.CodeSave code, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
-		
-		for (CodeDTO code : codeList ) {
-			commonCodeCommandService.saveCode(code.getCommonCode());
-		}
+				
+		commonCodeCommandService.saveCode(code.getCommonCode());		
 											 				
 		return WebControllerUtil.getResponse(null,
-				codeList.size(), 
+				1, 
 				true, 
-				String.format("%d 건 저장되었습니다.", codeList.size()), 
+				String.format("%d 건 저장되었습니다.", 1), 
 				HttpStatus.OK);
-	}
+	}	
 		
 	@DeleteMapping("/common/codegroups/codes")
 	public ResponseEntity<?> delCode(@RequestParam(value="codeGroup", required=true) String codeGroup,
