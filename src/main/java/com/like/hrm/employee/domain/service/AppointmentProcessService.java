@@ -8,9 +8,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import com.like.hrm.appointment.domain.event.ProcessEvent;
-import com.like.hrm.appointment.domain.model.AppointmentDetails;
-import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
+import com.like.hrm.appointment.domain.model.AppointmentLedger;
+import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
+import com.like.hrm.employee.domain.model.Employee;
+import com.like.hrm.employee.domain.repository.EmployeeRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AppointmentProcessService implements ApplicationListener<ProcessEvent> {
 
 	private AppointmentRepository appointmentRepository;
+	
+	private EmployeeRepository employeeRepository;
 		
 	public void Appoinment(String AppointmentId) {
 		/*
@@ -35,8 +39,17 @@ public class AppointmentProcessService implements ApplicationListener<ProcessEve
 
 	@Override
 	public void onApplicationEvent(ProcessEvent event) {
-		log.info("이벤트 구독");
-		System.out.println(event.toString());
+		
+		AppointmentLedger ledger = null; // appointmentRepository.getAppointmentCode(event.getAppointmentId());
+		
+		for ( AppointmentLedgerDetail detail : ledger.getLedgerDetails() ) {
+			
+			Employee emp = employeeRepository.getEmployee(detail.getEmpId());
+			
+			emp.appoint(detail);
+			
+		}
+		
 		
 	}
 	

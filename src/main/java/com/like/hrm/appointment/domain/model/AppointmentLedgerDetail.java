@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import lombok.Getter;
 
 @Getter
-public class AppointmentDetails {
+public class AppointmentLedgerDetail {
 
 	private String empId;
 		

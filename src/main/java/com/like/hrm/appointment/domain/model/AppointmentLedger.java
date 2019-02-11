@@ -7,18 +7,20 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class AppointmentMemorandum {
+public class AppointmentLedger {
 
+	/**
+	 * 발령 번호
+	 */
 	String AppointmentId;
+		
+	/**
+	 * 발령 유형(정기, 임의)
+	 */
+	String AppointmentType;
 	
 	LocalDate registrationDate;
 		
-	List<AppointmentDetails> details = new ArrayList<>();
-			
-	public void process() {
-		for (AppointmentDetails detail: this.details) {
-			
-		}
-		
-	}
+	List<AppointmentLedgerDetail> ledgerDetails = new ArrayList<>();
+				
 }

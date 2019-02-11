@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
-import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
+import com.like.hrm.appointment.domain.model.AppointmentLedger;
 import com.like.hrm.appointment.infra.jparepository.AppointmentJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class AppointmentService {
 	
 	public void doSomething() {
 		log.info("서비스 발행");
-		applicationEventPublisher.publishEvent(new ProcessEvent(this, new AppointmentMemorandum()));
+		applicationEventPublisher.publishEvent(new ProcessEvent(this, new AppointmentLedger()));
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {

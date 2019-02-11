@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
-import com.like.hrm.appointment.domain.model.AppointmentMemorandum;
+import com.like.hrm.appointment.domain.model.AppointmentLedger;
 
 @Repository
 public interface AppointmentRepository {

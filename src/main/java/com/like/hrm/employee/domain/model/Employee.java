@@ -15,6 +15,9 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
+import com.like.hrm.appointment.domain.model.Appointable;
+import com.like.hrm.appointment.domain.model.AppointmentLedger;
+import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
 import com.like.hrm.employee.domain.model.enums.DeptType;
 import com.like.hrm.employee.domain.model.enums.JobType;
 
@@ -25,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "HRMEMPLOYEE")
 @EntityListeners(AuditingEntityListener.class)
-public class Employee extends AuditEntity implements Serializable {
+public class Employee extends AuditEntity implements Serializable, Appointable {
 
 	private static final long serialVersionUID = -3164713918774455925L;
 
@@ -96,6 +99,11 @@ public class Employee extends AuditEntity implements Serializable {
 				
 				jobHistory.terminateHistory(terminateDate);				
 		}
+	}
+
+	@Override
+	public void appoint(AppointmentLedgerDetail ledgerDetail) {
+
 	}
 	
 	
