@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -16,10 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
 import com.like.hrm.appointment.domain.model.Appointable;
-import com.like.hrm.appointment.domain.model.AppointmentLedger;
 import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
-import com.like.hrm.employee.domain.model.enums.DeptType;
-import com.like.hrm.employee.domain.model.enums.JobType;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -42,10 +40,10 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	@Column(name="RREGNO")
 	private String residentRegistrationNumber;
 		
-	@OneToMany(mappedBy = "employee")
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
 	private List<DeptChangeHistory> deptHistory = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "employee")
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
 	private List<JobChangeHistory> jobHistory = new ArrayList<>();
 	
 	public Employee(String id, String name, String residentRegistrationNumber) {
@@ -72,7 +70,7 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	 * @param deptCode
 	 * @param terminateDate
 	 */
-	public void terminateDept(DeptType deptType, String deptCode, LocalDate terminateDate) {
+	public void terminateDept(String deptType, String deptCode, LocalDate terminateDate) {
 		
 		for (DeptChangeHistory deptHistory: this.deptHistory) {
 			if ( deptHistory.equalDeptType(deptType)
@@ -90,7 +88,7 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	 * @param jobCode
 	 * @param terminateDate
 	 */
-	public void terminateJob(JobType jobType, String jobCode, LocalDate terminateDate) {
+	public void terminateJob(String jobType, String jobCode, LocalDate terminateDate) {
 		
 		for (JobChangeHistory jobHistory: this.jobHistory) {
 			if ( jobHistory.equalJobType(jobType) 

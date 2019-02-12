@@ -20,7 +20,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.employee.domain.model.enums.JobType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -48,18 +47,22 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
 	private Long id;
-		
-	@Enumerated(EnumType.STRING)
-	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+			
 	@Column(name="JOB_TYPE")
-	private JobType jobType;
+	private String jobType;
 	
 	@Column(name="JOB_CODE")
 	private String jobCode;	
 	
+	/**
+	 * 시작일
+	 */
 	@Column(name="FROM_DT")
 	private LocalDate fromDate;
 	
+	/**
+	 * 종료일
+	 */
 	@Column(name="TO_DT")
 	private LocalDate toDate;
 	
@@ -68,11 +71,11 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 	private Employee employee;
 
 	@Builder
-	public JobChangeHistory(JobType jobType, String jobCode, LocalDate fromDate, LocalDate toDate) {		
+	public JobChangeHistory(String jobType, String jobCode, LocalDate fromDate, LocalDate toDate) {		
 		this.jobType 	= jobType;
 		this.jobCode 	= jobCode;		
 		this.fromDate 	= fromDate;
-		this.toDate 	= toDate;		
+		this.toDate 	= toDate;				
 	}	
 	
 	public boolean isEnabled(LocalDate date) {
@@ -83,7 +86,7 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 		this.toDate = date;
 	}
 	
-	public boolean equalJobType(JobType jobType) {
+	public boolean equalJobType(String jobType) {
 		return this.jobType.equals(jobType) ? true : false;
 	}
 	
