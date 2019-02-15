@@ -35,10 +35,11 @@ public class JobType extends AbstractCode implements Serializable {
 	private static final long serialVersionUID = -5111930508978559883L;
 
 	@Builder
-	public JobType(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
+	public JobType(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate, Integer sequence) {
 		this.code 		= code;
 		this.codeName 	= codeName;
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;
+		this.sequence	= sequence;
 	}
 }

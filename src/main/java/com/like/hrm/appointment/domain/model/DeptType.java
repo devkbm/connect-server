@@ -35,10 +35,11 @@ public class DeptType extends AbstractCode implements Serializable {
 	private static final long serialVersionUID = -7607475813346542493L;		
 	
 	@Builder
-	public DeptType(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
+	public DeptType(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate, Integer sequence) {
 		this.code 		= code;
 		this.codeName 	= codeName;
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;
+		this.sequence 	= sequence;
 	}
 }

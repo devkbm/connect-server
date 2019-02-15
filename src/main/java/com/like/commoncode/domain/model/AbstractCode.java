@@ -41,4 +41,6 @@ public abstract class AbstractCode extends AuditEntity{
 	@Column(name="to_dt")
 	protected LocalDateTime toDate;
 	
+	@Column(name="seq")
+	protected Integer sequence;
 }

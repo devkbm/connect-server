@@ -1,8 +1,6 @@
 package com.like.hrm.appointment.domain.model;
 
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
-import com.like.hrm.employee.domain.model.enums.DeptType;
-import com.like.hrm.employee.domain.model.enums.JobType;
 
 public class ChangeInfo {
 
@@ -12,9 +10,9 @@ public class ChangeInfo {
 	
 	private ChangeType changeType;
 		
-	private JobType jobType;
+	//private JobType jobType;
 	
-	private DeptType deptType;
+	//private DeptType deptType;
 	
 	private String beforeCode;
 	
