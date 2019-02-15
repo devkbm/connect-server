@@ -9,6 +9,8 @@ import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
 import com.like.hrm.appointment.domain.model.AppointmentLedger;
+import com.like.hrm.appointment.domain.model.DeptType;
+import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.infra.jparepository.AppointmentJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,31 @@ public class AppointmentService {
 	
 	public void deleteAppointmentCodeDetails(AppointmentCodeDetails details) {
 		appointmentJpaRepository.deleteAppointmentCodeDetails(details);
+	}
+	
+		
+	public DeptType getDeptType(String id) {
+		return appointmentJpaRepository.getDeptType(id);
+	}
+	
+	public void saveDeptType(DeptType deptType) {
+		appointmentJpaRepository.saveDeptType(deptType);		
+	}
+
+	public void deleteDeptType(DeptType deptType) {
+		appointmentJpaRepository.deleteDeptType(deptType);		
+	}
+
+	public JobType getJobType(String id) {
+		return appointmentJpaRepository.getJobType(id);
+	}
+
+	public void saveJobType(JobType jobType) {
+		appointmentJpaRepository.saveJobType(jobType);		
+	}
+
+	public void deleteJobType(JobType jobType) {
+		appointmentJpaRepository.deleteJobType(jobType);		
 	}
 
 
