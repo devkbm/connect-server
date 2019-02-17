@@ -18,13 +18,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
 import com.like.menu.dto.ProgramDTO;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Table(name = "comprogram")
 @EntityListeners(AuditingEntityListener.class)
 public class Program extends AuditEntity implements Serializable{
+	
+	private static final long serialVersionUID = -3215673518471434299L;
 
 	@Id
 	@Column(name="program_code")
@@ -42,9 +50,9 @@ public class Program extends AuditEntity implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy="program", fetch=FetchType.LAZY)          
     List<Menu> menuList = new ArrayList<Menu>();
-	
-	public Program() {}
+		
 
+	@Builder
 	public Program(String programCode, String programName, String url, String description) {		
 		this.programCode = programCode;
 		this.programName = programName;

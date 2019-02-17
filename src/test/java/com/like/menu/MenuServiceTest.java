@@ -1,9 +1,7 @@
 package com.like.menu;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -20,11 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.board.domain.model.Board;
 import com.like.file.service.FileService;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
@@ -33,19 +29,20 @@ import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
 public class MenuServiceTest {
-
-	private static final Logger log = LoggerFactory.getLogger(MenuServiceTest.class);
 		 
 	@Autowired
-	MenuCommandService cs;
+	MenuCommandService menuCommandService;
 	
 	@Autowired
-	MenuQueryService qs;	
+	MenuQueryService menuQueryService;	
 	
 	@Autowired
 	FileService fs;
@@ -54,54 +51,80 @@ public class MenuServiceTest {
     public void setUp() throws Exception { 
 		//테스트 데이터 입력
 		MenuGroup menuGroup = new MenuGroup("GROUP","테스트메뉴그룹","테스트메뉴그룹");				
-		cs.saveMenuGroup(menuGroup);			
+		menuCommandService.saveMenuGroup(menuGroup);			
 		
 		Menu menu = new Menu("MENU", "테스트메뉴", null, MenuType.ITEM, 0L, 0L, null, null);
-		cs.saveMenu(menu, menuGroup.getMenuGroupCode());
+		menuCommandService.saveMenu(menu, menuGroup.getMenuGroupCode());
 					
 		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");		
-		cs.saveProgram(program);		
+		menuCommandService.saveProgram(program);		
     } 
 	
 	@Test	
-	public void test01_메뉴그룹등록() {
-		
+	public void test01_메뉴그룹등록및조회() {
+		//Given
 		MenuGroup menuGroup = new MenuGroup("Test","테스트메뉴그룹","테스트메뉴그룹");		
 		
-		cs.saveMenuGroup(menuGroup);
+		//When
+		menuCommandService.saveMenuGroup(menuGroup);
 		
-		assertThat(menuGroup.getMenuGroupCode(), is("Test"));
-		assertThat(menuGroup.getMenuGroupName(), is("테스트메뉴그룹"));
-		assertThat(menuGroup.getDescription(), is("테스트메뉴그룹"));
+		//Then
+		MenuGroup test = menuQueryService.getMenuGroup(menuGroup.getMenuGroupCode());
+		
+		assertThat(test.getMenuGroupCode()).isEqualTo("Test");
+		assertThat(test.getMenuGroupName()).isEqualTo("테스트메뉴그룹");
+		assertThat(test.getDescription()).isEqualTo("테스트메뉴그룹");			
+	}
+		
+	
+	@Test
+	public void test02_메뉴등록및조회() throws Exception {
+		//Given
+		MenuGroup menuGroup = new MenuGroup("GROUP","테스트메뉴그룹","테스트메뉴그룹");				
+		menuCommandService.saveMenuGroup(menuGroup);
+		
+		//When		
+		Menu menu = Menu.builder()
+						.menuCode("testmenu")
+						.menuName("테스트메뉴")
+						.menuType(MenuType.ITEM)
+						.level(0L)
+						.sequence(0L)						
+						.build();
+		
+		menuCommandService.saveMenu(menu, menuGroup.getMenuGroupCode());		
+		
+		//Then
+		Menu test = menuQueryService.getMenu(menu.getMenuCode());
+								
+		assertThat(test.getMenuCode()).isEqualTo("testmenu");
+		assertThat(test.getMenuName()).isEqualTo("테스트메뉴");
+		assertThat(test.getMenuType()).isEqualTo(MenuType.ITEM);
+		assertThat(test.getSequence()).isEqualTo(0L);
+		assertThat(test.getLevel()).isEqualTo(0L);
+				
 	}
 	
 	@Test	
-	public void test02_메뉴그룹조회() {			
+	public void test03_프로그램등록및조회() throws Exception {	
+		//Given
+		Program program = Program.builder()
+								.programCode("Program")
+								.programName("테스트프로그램")
+								.url("/home")
+								.description("테스트프로그램입니다.")
+								.build();			
 		
-		MenuGroup menuGroup = qs.getMenuGroup("GROUP");					
+		//When
+		menuCommandService.saveProgram(program);
 		
-		assertThat(menuGroup.getMenuGroupCode(), is("GROUP"));
-		assertThat(menuGroup.getMenuGroupName(), is("테스트메뉴그룹"));
-		assertThat(menuGroup.getDescription(), is("테스트메뉴그룹"));		
-	}
-	
-	@Test
-	public void test03_메뉴등록() throws Exception {
-		Menu menu = new Menu("testmenu", "테스트메뉴", null, MenuType.ITEM, 0L, 0L, null, null);
+		//Then
+		Program test = menuQueryService.getProgram(program.getProgramCode());
 		
-		cs.saveMenu(menu, "GROUP");		
-		
-		assertThat(menu.getMenuCode(), is("testmenu"));
-		assertThat(menu.getMenuName(), is("테스트메뉴"));
-		assertThat(menu.getSequence(), is(0L));
-		assertThat(menu.getLevel(), is(0L));		
-	}
-	
-	@Test
-	public void test04_프로그램등록() throws Exception {	
-		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");
-		
-		cs.saveProgram(program);				
+		assertThat(test.getProgramCode()).isEqualTo("Program");
+		assertThat(test.getProgramName()).isEqualTo("테스트프로그램");
+		assertThat(test.getUrl()).isEqualTo("/home");
+		assertThat(test.getDescription()).isEqualTo("테스트프로그램입니다.");		
 	}
 	
 }

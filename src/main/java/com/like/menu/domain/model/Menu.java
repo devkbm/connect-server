@@ -23,16 +23,22 @@ import com.like.common.domain.AuditEntity;
 import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.dto.MenuDTO;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Getter
-@ToString
 @Table(name = "commenu")
 @EntityListeners(AuditingEntityListener.class)
 public class Menu extends AuditEntity implements Serializable {
-		
+			
+	private static final long serialVersionUID = -6069806707460127190L;
+
 	@Id
 	@Column(name = "menu_code")
 	private String menuCode;
@@ -65,9 +71,8 @@ public class Menu extends AuditEntity implements Serializable {
 	@OneToOne(optional=true)
 	@JoinColumn(name = "program_code", nullable=true)
 	private Program program = new Program();
-	
-	public Menu() {}	
-	
+		
+	@Builder
 	public Menu(String menuCode, 
 				String menuName, 
 				String parentMenuCode, 				

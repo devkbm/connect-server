@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -37,7 +38,7 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	private String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "menuGroup")          
+	@OneToMany(mappedBy = "menuGroup", cascade = CascadeType.PERSIST)          
     List<Menu> menuList = new ArrayList<Menu>();
 	
 	public MenuGroup() {}			
