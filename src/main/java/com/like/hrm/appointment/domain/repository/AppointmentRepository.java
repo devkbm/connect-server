@@ -13,13 +13,13 @@ import com.like.hrm.appointment.domain.model.JobType;
 public interface AppointmentRepository {
 
 		
-	DeptType getDeptType(String id);
+	DeptType getDeptType(CommonCodeId id);
 	
 	void saveDeptType(DeptType deptType);
 	
 	void deleteDeptType(DeptType deptType);	
 	
-	JobType getJobType(String id);
+	JobType getJobType(CommonCodeId id);
 	
 	void saveJobType(JobType jobType);
 	

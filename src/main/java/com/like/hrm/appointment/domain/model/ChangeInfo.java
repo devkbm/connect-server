@@ -9,13 +9,6 @@ public class ChangeInfo {
 	private String empId;
 	
 	private ChangeType changeType;
-		
-	//private JobType jobType;
 	
-	//private DeptType deptType;
-	
-	private String beforeCode;
-	
-	private String afterCode;
 		
 }

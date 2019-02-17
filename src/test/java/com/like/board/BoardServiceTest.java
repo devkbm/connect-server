@@ -1,5 +1,6 @@
 package com.like.board;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
@@ -70,14 +71,19 @@ public class BoardServiceTest {
 	
 	@Test	
 	public void test01_게시판등록() {
+		//Given
 		Board board = new Board("테스트 게시판"); 
 		
+		//When
 		bcs.saveBoard(board);
 		
-		assertEquals(board.getBoardName(),"테스트 게시판");
-		assertEquals(board.getFromDate(), LocalDate.now());
-		assertEquals(board.getToDate(), LocalDate.of(9999, 12, 31));
-		assertEquals(board.getUseYn(), true);			
+		//Then
+		Board test = bqs.getBoard(board.getPkBoard());
+		
+		assertThat(test.getBoardName()).isEqualTo("테스트 게시판");
+		assertThat(test.getFromDate()).isEqualTo(LocalDate.now());
+		assertThat(test.getToDate()).isEqualTo(LocalDate.of(9999, 12, 31));
+		assertThat(test.getUseYn()).isEqualTo(true);			
 	}
 	
 		
@@ -111,7 +117,7 @@ public class BoardServiceTest {
 		
 		Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);
 		
-		bcs.saveArticle(article);
+		//bcs.saveArticle(article);
 		
 	}
 	
@@ -128,9 +134,9 @@ public class BoardServiceTest {
 		
 		FileInfo info = fs.uploadFile(file, "test","test");
 		
-		article.addAttachedFile(info);							
+		//article.addAttachedFile(info);							
 		
-		bcs.saveArticle(article);
+		//bcs.saveArticle(article);
 		
 		log.info("-------------------------------------");
 		log.info(article.getPkArticle().toString());

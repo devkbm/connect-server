@@ -3,6 +3,7 @@ package com.like.hrm.appointment.infra.jparepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
 import com.like.hrm.appointment.domain.model.DeptType;
@@ -65,7 +66,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	}
 
 	@Override
-	public DeptType getDeptType(String id) {
+	public DeptType getDeptType(CommonCodeId id) {
 		return jpaDeptType.findOne(id);
 	}
 
@@ -80,7 +81,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	}
 
 	@Override
-	public JobType getJobType(String id) {
+	public JobType getJobType(CommonCodeId id) {
 		return jpaJobType.findOne(id);
 	}
 

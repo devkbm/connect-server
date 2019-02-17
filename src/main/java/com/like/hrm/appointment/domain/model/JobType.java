@@ -3,14 +3,19 @@ package com.like.hrm.appointment.domain.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.like.commoncode.domain.model.AbstractCode;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.like.common.domain.AuditEntity;
+import com.like.commoncode.domain.model.id.CommonCodeId;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,15 +33,31 @@ import lombok.ToString;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Getter
 @Entity
-@DiscriminatorValue("H0003")
+@Table(name = "cmcode")
 @EntityListeners(AuditingEntityListener.class)
-public class JobType extends AbstractCode implements Serializable {
+public class JobType extends AuditEntity implements Serializable {
 		
 	private static final long serialVersionUID = -5111930508978559883L;
 
+	@JsonUnwrapped
+	@EmbeddedId		
+	private CommonCodeId id;
+		
+	@Column(name="code_name")
+	private String codeName;
+	
+	@Column(name="from_dt")
+	private LocalDateTime fromDate;
+	
+	@Column(name="to_dt")
+	private LocalDateTime toDate;
+	
+	@Column(name="seq")
+	private Integer sequence;
+	
 	@Builder
 	public JobType(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate, Integer sequence) {
-		this.code 		= code;
+		this.id 		= new CommonCodeId(ChangeType.JOB.getCode(), code);
 		this.codeName 	= codeName;
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;

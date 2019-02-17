@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -14,14 +15,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DiscriminatorOptions;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.commoncode.domain.model.CodeGroup;
+import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
@@ -57,15 +62,16 @@ public class AppointmentCodeDetails extends AuditEntity implements Serializable 
 	
 	@Column(name="TYPE_NAME")
 	private String typeName;		
-	
-	@Column(name="CODE_GROUP")
+				
+	@Column(name="CODE_GROUP",insertable=false, updatable=false)
 	private String codeGroup;
 	
-	@Column(name="CODE")
+	@Column(name="CODE",insertable=false, updatable=false)
 	private String code;
-		
-	@ManyToOne(fetch=FetchType.LAZY)	
-	@JoinColumn(name="code", insertable = false, updatable = false)
+				
+	@ManyToOne(fetch=FetchType.LAZY)		
+	@JoinColumns({@JoinColumn(name="code_group"),@JoinColumn(name="code")})
+	//@JoinColumn(name="code")
 	private AppointmentCode appointmentCode;	
 	
 	

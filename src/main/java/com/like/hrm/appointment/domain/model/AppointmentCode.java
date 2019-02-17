@@ -6,15 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.like.commoncode.domain.model.AbstractCode;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.like.common.domain.AuditEntity;
+import com.like.commoncode.domain.model.id.CommonCodeId;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,18 +35,34 @@ import lombok.ToString;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Getter
 @Entity
-@DiscriminatorValue("H0001")
+@Table(name = "cmcode")
 @EntityListeners(AuditingEntityListener.class)
-public class AppointmentCode extends AbstractCode implements Serializable {
+public class AppointmentCode extends AuditEntity implements Serializable {
 	 
 	private static final long serialVersionUID = -2792716645396219283L;
 
+	@JsonUnwrapped
+	@EmbeddedId		
+	private CommonCodeId id;
+		
+	@Column(name="code_name")
+	private String codeName;
+	
+	@Column(name="from_dt")
+	private LocalDateTime fromDate;
+	
+	@Column(name="to_dt")
+	private LocalDateTime toDate;
+	
+	@Column(name="seq")
+	private Integer sequence;
+	
 	@OneToMany(mappedBy = "appointmentCode")
 	private List<AppointmentCodeDetails> codeDetails = new ArrayList<>();		
 	
 	@Builder
 	public AppointmentCode(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
-		this.code 		= code;
+		this.id = new CommonCodeId("H0001", code);
 		this.codeName 	= codeName;
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;

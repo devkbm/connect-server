@@ -5,12 +5,14 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
 import com.like.hrm.appointment.domain.model.AppointmentLedger;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.like.hrm.appointment.infra.jparepository.AppointmentJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +59,7 @@ public class AppointmentService {
 	
 		
 	public DeptType getDeptType(String id) {
-		return appointmentJpaRepository.getDeptType(id);
+		return appointmentJpaRepository.getDeptType(new CommonCodeId(ChangeType.DEPT.getCode(), id));
 	}
 	
 	public void saveDeptType(DeptType deptType) {
@@ -69,7 +71,7 @@ public class AppointmentService {
 	}
 
 	public JobType getJobType(String id) {
-		return appointmentJpaRepository.getJobType(id);
+		return appointmentJpaRepository.getJobType(new CommonCodeId(ChangeType.JOB.getCode(), id));
 	}
 
 	public void saveJobType(JobType jobType) {
