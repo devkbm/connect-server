@@ -21,6 +21,7 @@ import com.like.menu.dto.MenuGroupDTO;
 import lombok.Getter;
 import lombok.ToString;
 
+@ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Getter
 @Table(name = "commenugroup")

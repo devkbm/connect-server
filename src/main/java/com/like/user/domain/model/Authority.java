@@ -9,6 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.like.common.domain.AuditEntity;
 
+import lombok.ToString;
+
+@ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Table(name = "comauthority")
 public class Authority extends AuditEntity implements GrantedAuthority {

@@ -14,21 +14,29 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.apache.ibatis.annotations.Case;
-import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
 import com.like.menu.domain.model.MenuGroup;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 import lombok.ToString;
 
+@Builder
+@ToString(callSuper=true, includeFieldNames=true)
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"authorities","comusermenugroup"})
 @Entity
-@ToString
 @Table(name = "comuser")
 public class User extends AuditEntity implements UserDetails {
 	
@@ -45,43 +53,39 @@ public class User extends AuditEntity implements UserDetails {
 	@Column(name="pwd")
 	private String password;	
 	
+	@Builder.Default
 	@Column(name="non_expired_yn")
-	private Boolean isAccountNonExpired;
+	private Boolean isAccountNonExpired = true;
 	
+	@Builder.Default
 	@Column(name="non_locked_yn")
-	private Boolean isAccountNonLocked;
+	private Boolean isAccountNonLocked = true;
 	
+	@Builder.Default
 	@Column(name="pass_non_expired_yn")
-	private Boolean isCredentialsNonExpired;
+	private Boolean isCredentialsNonExpired = true;
 	
+	@Builder.Default
 	@Column(name="enabled_yn")
-	private Boolean isEnabled;
-				
+	private Boolean isEnabled = true;
+	
+	@Singular(value="authorities")
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comuserauthority",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="authority_name"))	
-	private List<Authority> authorities = new ArrayList<Authority>();
-	
+	private List<Authority> authorities;
+		
+	@Singular(value="menuGroupList") 
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comusermenugroup",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
-	private List<MenuGroup> menuGroupList = new ArrayList<MenuGroup>();
-	
-	protected User() {}
-	
-	public User(String userId, String userName) {
-		this.userId = userId;
-		this.name = userName;
-		this.isEnabled = true;
-		this.isAccountNonExpired = true;
-		this.isAccountNonLocked = true;
-		this.isCredentialsNonExpired = true;
-	}
-	
+	private List<MenuGroup> menuGroupList;			
+		
 	public User(String userId, String name, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
-			Boolean isCredentialsNonExpired, Boolean isEnabled) {
+			Boolean isCredentialsNonExpired, Boolean isEnabled, List<Authority> authorities,
+			List<MenuGroup> menuGroupList) {
 		super();
 		this.userId = userId;
 		this.name = name;
@@ -90,8 +94,9 @@ public class User extends AuditEntity implements UserDetails {
 		this.isAccountNonLocked = isAccountNonLocked;
 		this.isCredentialsNonExpired = isCredentialsNonExpired;
 		this.isEnabled = isEnabled;
-	}
-	
+		this.authorities = authorities;
+		this.menuGroupList = menuGroupList;
+	}	
 	
 	@Override
 	@JsonIgnore	
@@ -173,5 +178,7 @@ public class User extends AuditEntity implements UserDetails {
 	public void initPassword() {
 		this.password = "12345678";	
 	}
+
+	
 	
 }

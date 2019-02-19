@@ -130,18 +130,21 @@ public class UserController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		}							
-	
-		User user = new User(dto.getUserId(), dto.getName(), dto.getPassword(), 
-					//	userDTO.getAccountNonExpired(), userDTO.getAccountNonLocked(), userDTO.getCredentialsNonExpired(),
-						true, true, true,
-						dto.getEnabled());					
+							
+		User user = User.builder()
+						.userId(dto.getUserId())
+						.name(dto.getName())
+						.password(dto.getPassword())
+						.isEnabled(dto.getEnabled())
+						.clearAuthorities()
+						.clearMenuGroupList()
+						.build();
 		
-		List<Authority> authList = userService.getAllAuthorityList(dto.getAuthorityList());
-					
+		List<Authority> authList = userService.getAllAuthorityList(dto.getAuthorityList());					
 		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
 		
 		user.setAuthorities(authList);
-		user.setMenuGroupList(menuGroupList);
+		user.setMenuGroupList(menuGroupList);								
 		
 		userService.createUser(user);					
 																					 		
