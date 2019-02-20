@@ -1,15 +1,15 @@
-package com.like;
+package com.like.file;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,13 +22,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
 @Transactional
-public class FileTest {
+public class FileServiceTest {
 
 	@Autowired
     private WebApplicationContext wac;
@@ -41,8 +41,8 @@ public class FileTest {
         this.mockMvc = builder.build();
     }
 	
-	@Test
-	@Ignore
+	@Test	
+	@WithMockUser
 	public void 파일업로드() throws Exception {
 		ResultMatcher ok = MockMvcResultMatchers.status().isOk();
 
