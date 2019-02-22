@@ -13,8 +13,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString(callSuper=true, includeFieldNames=true)
+@Builder
 @Entity
-@Table(name = "dept")
+@Table(name = "comdept")
 @EntityListeners(AuditingEntityListener.class)
 public class Dept extends AuditEntity implements Serializable {
 	
@@ -22,18 +32,26 @@ public class Dept extends AuditEntity implements Serializable {
 
 	@Id	
 	@Column(name="dept_cd")
-	private String deptCode;
+	String deptCode;
 	
 	@Column(name="dept_nm")
-	private String deptName;
+	String deptName;
 		
 	@Column(name="use_yn")
-	private Boolean isUse;
+	Boolean isUse;
 	
 	@Column(name="from_dt")
-	private LocalDate fromDate;
+	LocalDate fromDate;
 	
 	@Column(name="to_dt")
-	private LocalDate toDate;
+	LocalDate toDate;
+			
+	public void changeDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	
+	public void closeDept(LocalDate toDate) {		
+		this.toDate = toDate;
+		this.isUse = false;
+	}
 }

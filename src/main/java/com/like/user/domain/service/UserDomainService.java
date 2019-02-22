@@ -16,12 +16,17 @@ public class UserDomainService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public void createUser(User user) {		
+	public void createUser(User user) {
+		
+		if (user.getUsername() == null) {
+			new IllegalArgumentException("유저 아이디가 존재하지 않습니다.");
+		}
+		
 		if ( user.getAuthorityList().isEmpty() ) {
 			initAuthority(user);
 		}
 		
-		userRepository.saveUser(user);
+		userRepository.saveUser(user);				
 	}
 	
 	/**

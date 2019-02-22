@@ -14,9 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.user.domain.model.User;
+import com.like.user.dto.UserDTO;
+import com.like.user.dto.UserDTO.UserSave;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,26 +31,33 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Transactional
 public class UserServiceTest {
-		 
+		 		
 	@Autowired
 	UserService userService;
 						
 	@Test	
 	public void test01_사용자등록및조회() {
-		//Given
-		User user = User.builder()
+		//Given		
+		/*User user = User.builder()
 						.userId("test01")
 						.name("테스트")
 						.password("12345678")
 						.clearAuthorities()
 						.clearMenuGroupList()
-						.build();
+						.build();*/
+		
+		UserDTO.UserSave user = UserSave.builder()
+										.userId("test01")
+										.name("테스트")
+										.password("12345678")
+										.enabled(true)
+										.build();
 		
 		//When
 		userService.createUser(user);
 		
 		//Then
-		User test = userService.getUser(user.getUsername());
+		User test = userService.getUser(user.getUserId());
 		
 		assertThat(test.getUsername()).isEqualTo("test01");
 		assertThat(test.getName()).isEqualTo("테스트");

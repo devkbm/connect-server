@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.dept.domain.model.Dept;
+import com.like.dept.domain.model.DeptDTOAssembler;
 import com.like.dept.domain.repository.DeptRepository;
+import com.like.dept.dto.DeptDTO;
 
 @Service("deptService")
 @Transactional
@@ -21,11 +23,24 @@ public class DeptService {
 		return deptRepository.getDept(deptCode);
 	}
 	
-	public List<Dept> getDeptList() {
-		return deptRepository.getDeptList();
+	public List<Dept> getAllDeptList() {
+		return deptRepository.getAllDeptList();
+	}
+	
+	public List<Dept> getDeptList(DeptDTO.SearchCondition searchCondition) {
+		return deptRepository.getDeptList(searchCondition);
 	}
 			
-	public void saveDept(Dept dept) {
+	public void saveDept(DeptDTO.DeptSave dto) {
+		
+		Dept dept = this.getDept(dto.getDeptCode());
+		
+		if (dept == null) {
+			dept = DeptDTOAssembler.createEntity(dto);
+		} else {
+			DeptDTOAssembler.mergeEntity(dept, dto);			
+		}
+		
 		deptRepository.saveDept(dept);
 	}
 	

@@ -2,6 +2,8 @@ package com.like.user.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,8 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
+import com.like.user.domain.model.UserDTOAssembler;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.domain.service.UserDomainService;
 import com.like.user.dto.AuthorityDTO;
@@ -24,6 +29,9 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	UserRepository userRepository;	
+	
+	@Resource
+	private MenuQueryService menuQueryService;
 	
 	@Autowired
 	UserDomainService userDomainService;
@@ -64,10 +72,16 @@ public class UserService implements UserDetailsService {
 	 * 사용자를 생성한다.
 	 * @param user	사용자 도메인
 	 */
-	public void createUser(User user) {
+	public void createUser(UserDTO.UserSave dto) {
 		//String rawPassword = user.getPassword();
 		//String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
-		//user.setPassword(encodedPassword);		
+		//user.setPassword(encodedPassword);	
+		
+		List<Authority> authList = userRepository.getAuthorityList(dto.getAuthorityList());
+		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
+		
+		User user = UserDTOAssembler.createEntity(dto, authList, menuGroupList);
+		
 		userDomainService.createUser(user);						
 	}
 	

@@ -17,7 +17,10 @@ import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
 import com.querydsl.core.BooleanBuilder;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class UserDTO {
 
@@ -49,6 +52,9 @@ public class UserDTO {
 	}
 	
 	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class UserSave {
 		
 		LocalDateTime createdDt;	
@@ -80,32 +86,7 @@ public class UserDTO {
 		List<String> authorityList = new ArrayList<String>();
 
 		List<String> menuGroupList = new ArrayList<String>(); 
-		
-		public UserSave() {}
-		
-		public UserSave(User user) {
-			this.createdDt = user.getCreatedDt();
-			this.createdBy = user.getCreatedBy();
-			this.modifiedDt = user.getModifiedDt();
-			this.modifiedBy = user.getModifiedBy();
-			this.userId = user.getUsername();
-			this.name = user.getName();
-			this.password = user.getPassword();
-			this.accountNonExpired = user.isAccountNonExpired();
-			this.accountNonLocked = user.isAccountNonLocked();
-			this.credentialsNonExpired = user.isCredentialsNonExpired();
-			this.enabled = user.isEnabled();
-			this.authorityList = user.getAuthorityList()
-									.stream()
-									.map(auth -> auth.getAuthority())
-									.collect(Collectors.toList());
-			this.menuGroupList = user.getMenuGroupList()
-									.stream()
-									.map(menuGroup -> menuGroup.getMenuGroupCode())
-									.collect(Collectors.toList());
-		}
-		
-
+								
 	}
 
 }

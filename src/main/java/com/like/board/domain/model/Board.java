@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.dto.BoardDTO;
 import com.like.common.domain.AuditEntity;
-import com.like.user.domain.model.User;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -143,9 +142,10 @@ public class Board extends AuditEntity implements Serializable {
 	
 	public void addArticle(Article article) {
 		this.articles.add(article);		
-		/*if (article.getBoard() != this) {	// 무한루프에 빠지지 않도록 체크
+		
+		if (article.getBoard() != this) {	// 무한루프에 빠지지 않도록 체크
 			article.setBoard(this);
-		}*;	*/
+		}
 	}
 	
 }

@@ -21,46 +21,49 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.like.common.domain.AuditEntity;
 import com.like.commoncode.domain.model.id.CommonCodeId;
 
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@ToString
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"commonCodeGroup"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper=true, includeFieldNames=true)
+@Builder
 @Entity
 @Table(name = "cmcode")
 @EntityListeners(AuditingEntityListener.class)
 public class Code extends AuditEntity implements Serializable {
-		
-	/**
-	 * 
-	 */
+			
 	private static final long serialVersionUID = 1122730947003822818L;
 	
 	@JsonUnwrapped
 	@EmbeddedId		
-	private CommonCodeId id;
+	CommonCodeId id;
 		
 	@Column(name="code_name")
-	private String codeName;
+	String codeName;
 	
 	@Column(name="code_name_abbr")
-	private String codeNameAbbreviation;	
+	String codeNameAbbreviation;	
 	
 	@Column(name="from_dt")
-	private LocalDateTime fromDate;
+	LocalDateTime fromDate;
 	
 	@Column(name="to_dt")
-	private LocalDateTime toDate;
+	LocalDateTime toDate;
 	
+	@Builder.Default
 	@Column(name="seq")
-	private int seq;
+	int seq = 0;
 	
+	@Builder.Default
 	@Column(name="use_yn")
-	private boolean useYn;
+	boolean useYn = true;
 	
 	@Column(name="cmt")
-	private String cmt;
+	String cmt;
 		
 	@MapsId("codeGroup")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -69,19 +72,9 @@ public class Code extends AuditEntity implements Serializable {
 	
 	public void setCommonCodeGroup(CodeGroup commonCodeGroup) {
 		this.commonCodeGroup = commonCodeGroup;
-	}
-	
-	protected Code() {}
-	
-	public Code(CommonCodeId commonCodeId, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
-		this.id = commonCodeId;
-		this.codeName = codeName;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
-		this.seq = 0;
-		this.useYn = true;
-	}
-		
+	}		
+			
+	@Builder
 	public Code(CommonCodeId id, String codeName, String codeNameAbbreviation, LocalDateTime fromDate,
 			LocalDateTime toDate, int seq, boolean useYn, String cmt) {		
 		this.id = id;

@@ -34,6 +34,7 @@ import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
+import com.like.user.domain.model.UserDTOAssembler;
 import com.like.user.dto.AuthorityDTO;
 import com.like.user.dto.LoginRequestDTO;
 import com.like.user.dto.PasswordRequestDTO;
@@ -103,7 +104,7 @@ public class UserController {
 						
 		User user = userService.getUser(userId);				
 		
-		UserDTO.UserSave dto = new UserDTO.UserSave(user);					
+		UserDTO.UserSave dto = UserDTOAssembler.convertDTO(user);					
 		
 		return WebControllerUtil.getResponse(dto,
 				 user == null ? 0 : 1, 
@@ -130,23 +131,8 @@ public class UserController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		}							
-							
-		User user = User.builder()
-						.userId(dto.getUserId())
-						.name(dto.getName())
-						.password(dto.getPassword())
-						.isEnabled(dto.getEnabled())
-						.clearAuthorities()
-						.clearMenuGroupList()
-						.build();
-		
-		List<Authority> authList = userService.getAllAuthorityList(dto.getAuthorityList());					
-		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
-		
-		user.setAuthorities(authList);
-		user.setMenuGroupList(menuGroupList);								
-		
-		userService.createUser(user);					
+																		
+		userService.createUser(dto);					
 																					 		
 		return WebControllerUtil.getResponse(null,
 				1, 

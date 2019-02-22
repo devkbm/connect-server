@@ -44,44 +44,44 @@ public class User extends AuditEntity implements UserDetails {
 
 	@Id	
 	@Column(name="user_id")
-	private String userId;
+	String userId;
 	
 	@Column(name="user_name")
-	private String name;
+	String name;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)	
 	@Column(name="pwd")
-	private String password;	
+	String password;	
 	
 	@Builder.Default
 	@Column(name="non_expired_yn")
-	private Boolean isAccountNonExpired = true;
+	Boolean isAccountNonExpired = true;
 	
 	@Builder.Default
 	@Column(name="non_locked_yn")
-	private Boolean isAccountNonLocked = true;
+	Boolean isAccountNonLocked = true;
 	
 	@Builder.Default
 	@Column(name="pass_non_expired_yn")
-	private Boolean isCredentialsNonExpired = true;
+	Boolean isCredentialsNonExpired = true;
 	
 	@Builder.Default
 	@Column(name="enabled_yn")
-	private Boolean isEnabled = true;
+	Boolean isEnabled = true;
 	
 	@Singular(value="authorities")
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comuserauthority",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="authority_name"))	
-	private List<Authority> authorities;
+	List<Authority> authorities;
 		
 	@Singular(value="menuGroupList") 
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comusermenugroup",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
-	private List<MenuGroup> menuGroupList;			
+	List<MenuGroup> menuGroupList;			
 		
 	public User(String userId, String name, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
 			Boolean isCredentialsNonExpired, Boolean isEnabled, List<Authority> authorities,
