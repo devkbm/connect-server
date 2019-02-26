@@ -16,6 +16,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,7 +58,9 @@ public class BoardDTO {
 	 * 	 
 	 */
 	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)	
+	@Builder
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
 	public static class BoardSaveDTO implements Serializable {
 						
 		private static final long serialVersionUID = 1L;
@@ -97,20 +101,7 @@ public class BoardDTO {
 	    
 	    long articleCount;
 	            
-	    long sequence;       
-	    	    	    	    
-	    public BoardSaveDTO(Board board) {
-	    	this.pkBoard 	= board.getPkBoard();
-	    	this.ppkBoard 	= board.getPpkBoard();
-	    	this.boardType	= board.getBoardType().getCode();
-	    	this.boardName 	= board.getBoardName();
-	    	this.boardDescription = board.getBoardDescription();
-	    	this.fromDate 	= board.getFromDate();
-	    	this.toDate		= board.getToDate();
-	    	this.useYn 		= board.getUseYn();
-	    	this.articleCount = board.getArticleCount();
-	    	this.sequence	= board.getSequence();    	
-	    }	       
+	    long sequence;       	    	    	    	    	   
 	}
 	
 	

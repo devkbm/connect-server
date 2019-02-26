@@ -1,4 +1,4 @@
-package com.like.board;
+package com.like.board.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -65,14 +65,16 @@ public class BoardServiceTest {
 		User user = userService.getUser("1");
 		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(user.getUsername());
 		
-		Board board = new Board("테스트"); 		
-		bcs.saveBoard(board);
+		//Board board = new Board("테스트"); 		
+		//bcs.saveBoard(board);
     } 
 	
 	@Test	
-	public void test01_게시판등록() {
+	public void test01_게시판등록및조회() {
 		//Given
-		Board board = new Board("테스트 게시판"); 
+		Board board = Board.builder()
+						  	.boardName("테스트 게시판")
+						  	.build();
 		
 		//When
 		bcs.saveBoard(board);
@@ -112,10 +114,10 @@ public class BoardServiceTest {
 	
 	@Test
 	public void test03_게시글등록() {
-		Board board = new Board("게시판");
-		bcs.saveBoard(board);
+		//Board board = new Board("게시판");
+		//bcs.saveBoard(board);
 		
-		Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);
+		//Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);
 		
 		//bcs.saveArticle(article);
 		
@@ -123,7 +125,9 @@ public class BoardServiceTest {
 	
 	@Test
 	public void test04_게시글파일저장() throws Exception {
-		Board board = new Board("Test");
+		Board board = Board.builder()							
+						  	.boardName("테스트 게시판")
+						  	.build();
 		
 		bcs.saveBoard(board);
 		

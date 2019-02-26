@@ -6,22 +6,25 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.dto.BoardDTO;
 import com.like.common.domain.AuditEntity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 import lombok.ToString;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
 @Getter
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
+@Builder
+@ToString(callSuper=true, includeFieldNames=true,exclude= {"articles","parent"})
 @Entity
 @Table(name = "GRWBOARD")
 @EntityListeners(AuditingEntityListener.class)
@@ -35,17 +38,17 @@ public class Board extends AuditEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PK_BOARD")
-	private Long pkBoard;
+	Long pkBoard;
 	
     /**
      * 상위 게시판 키
      */
 	@Column(name="PPK_BOARD")
-    private Long ppkBoard;
+    Long ppkBoard;
 	
 	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="PPK_BOARD", insertable=false, updatable=false )
-	private Board parent;
+	Board parent;
 	
 	/**
 	 * 게시판_타입
@@ -53,76 +56,58 @@ public class Board extends AuditEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="BOARD_TYPE")
-    private BoardType boardType;
+    BoardType boardType;
 	
 	/**
      * 게시판 명
      */	
 	@Column(name="BOARD_NAME")
-    private String boardName;             
+    String boardName;             
     
     /**
      * 게시판_설명
      */
 	@Column(name="BOARD_DESC")
-	private String boardDescription;
+	String boardDescription;
     
     /**
      * 시작일자
      */	
+	@Builder.Default
 	@Column(name="FROM_DT")
-	private LocalDate fromDate;
+	LocalDate fromDate = LocalDate.now();
     
     /**
      * 종료일자
      */	
+	@Builder.Default
 	@Column(name="TO_DT")
-	private LocalDate toDate;    
+	LocalDate toDate = LocalDate.of(9999, 12, 31);    
     
     /**
      * 사용여부
      */
+	@Builder.Default
 	@Column(name="USE_YN")
-	private Boolean useYn;
+	Boolean useYn = true;
     
     /**
      * 게시글 갯수
      */
+	@Builder.Default
 	@Column(name="ARTICLE_CNT")
-	private long articleCount;
+	long articleCount = 0;
     
     /**
      * 출력순서
      */
+	@Builder.Default
 	@Column(name="SEQ")
-	private long sequence;	
+	long sequence = 0;	
 
+	@Singular(value="articles")
     @OneToMany(mappedBy = "board")          
-    List<Article> articles = new ArrayList<Article>();       
-    
-    public Board(String boardNm) {
-    	this.boardName 	= boardNm;
-    	    	
-    	this.boardType 	= BoardType.BOARD;
-    	this.useYn		= true;
-    	this.fromDate 	= LocalDate.now();
-    	this.toDate 	= LocalDate.of(9999, 12, 31);    	
-    	this.articleCount=0;    	
-    }
-    
-    public Board updateEntity(BoardDTO.BoardSaveDTO dto) {
-    	this.ppkBoard 			= dto.getPpkBoard();
-    	this.boardName			= dto.getBoardName();
-    	this.boardType 			= BoardType.valueOf(dto.getBoardType());
-    	this.boardDescription 	= dto.getBoardDescription();
-    	this.fromDate			= dto.getFromDate();
-    	this.toDate				= dto.getToDate();
-    	this.useYn				= dto.getUseYn();
-    	this.articleCount		= dto.getArticleCount();
-    	this.sequence			= dto.getSequence();		
-    	
-    	return this;
-    }
+    List<Article> articles;           
     
     public boolean hasParentBoard() {    	    		    		
     	return this.pkBoard != this.ppkBoard ? true : false;

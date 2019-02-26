@@ -12,8 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
+import com.like.board.dto.BoardDTO;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
@@ -32,6 +34,19 @@ public class BoardCommandService {
     
 	public void saveBoard(Board board) {		
 		boardRepository.saveBoard(board);		
+	}
+	
+	public void saveBoard(BoardDTO.BoardSaveDTO dto) {
+		
+		Board board = boardRepository.getBoard(dto.getPkBoard());			
+		
+		if (board == null) {
+			board = BoardDTOAssembler.createEntity(dto);
+		} else {
+			board = BoardDTOAssembler.mergeEntity(board, dto);
+		}			
+		
+		boardRepository.saveBoard(board);
 	}
 	
 	public void deleteBoard(Long id) {

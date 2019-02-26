@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.domain.model.Board;
+import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.dto.BoardDTO;
 import com.like.board.service.BoardCommandService;
@@ -93,8 +95,8 @@ public class BoardController {
 				
 		Board board = boardQueryService.getBoard(id);		
 		
-		BoardDTO.BoardSaveDTO dto = new BoardDTO.BoardSaveDTO(board);
-					
+		BoardDTO.BoardSaveDTO dto = BoardDTOAssembler.convertDTO(board);
+							
 		return WebControllerUtil.getResponse(dto,				
 				board != null ? 1 : 0, 
 				true, 
@@ -102,8 +104,8 @@ public class BoardController {
 				HttpStatus.OK);
 	}	
 		
-	@RequestMapping(value={"/grw/boards/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@PathVariable(value="id",required=false) Long id, @RequestBody final BoardDTO.BoardSaveDTO boardDTO, BindingResult result) {
+	@RequestMapping(value={"/grw/boards"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.BoardSaveDTO boardDTO, BindingResult result) {
 							
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -111,21 +113,14 @@ public class BoardController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} 
+		} 			
 		
-		Board board = boardQueryService.getBoard(id);			
-		
-		if ( board == null )
-			board = new Board();
-		
-		board.updateEntity(boardDTO);
-		
-		boardCommandService.saveBoard(board);																					
+		boardCommandService.saveBoard(boardDTO);																					
 								 					
-		return WebControllerUtil.getResponse(board,
-				board != null ? 1 : 0, 
+		return WebControllerUtil.getResponse(null,
+				1, 
 				true, 
-				String.format("%d 건 저장되었습니다.", board != null ? 1 : 0), 
+				String.format("%d 건 저장되었습니다.", 1), 
 				HttpStatus.OK);
 	}	
 		
