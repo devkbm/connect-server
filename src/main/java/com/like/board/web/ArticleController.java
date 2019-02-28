@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,22 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.dto.ArticleDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
-public class ArticleController {
-	
-	private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
+public class ArticleController {	
 	
 	@Resource
 	private BoardCommandService boardCommandService;
@@ -48,7 +46,7 @@ public class ArticleController {
 	@GetMapping("/grw/boards/articles/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
 		
-		Article article = boardQueryService.getAritlce(id);		
+		Article article = boardQueryService.getArticle(id);		
 				
 		return WebControllerUtil.getResponse(article, 
 				article == null ? 0 : 1, 
@@ -101,10 +99,8 @@ public class ArticleController {
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
 		}			
-		
-		Article article = convertArticleEntity(dto);															
-						
-		boardCommandService.saveArticle(article, dto.getFile());											
+																					
+		boardCommandService.saveArticle(dto);											
 		
 		return WebControllerUtil.getResponse(null, 
 				1, 
@@ -127,33 +123,18 @@ public class ArticleController {
 				HttpStatus.OK);
 	}
 	
-	/**
-	 * DTO -> 게시글 엔티티로 변환한다
-	 * @param dto
-	 * @return 게시글 엔티티
-	 */
-	private Article convertArticleEntity(ArticleDTO.ArticleSave dto) {
-				
-		Article article = null;
+	
+	public Article convertEntity(ArticleDTO.ArticleSave dto) {
 		
-		Board board = boardQueryService.getBoard(dto.getFkBoard());
+		Board board = boardQueryService.getBoard(dto.getFkBoard());		
+		Article article = boardQueryService.getArticle(dto.getPkArticle());
 		
-		if ( dto.getPkArticle() == null ) {											
-			
-			article = Article.builder()
-							 .board(board)
-							 .title(dto.getTitle())
-							 .contents(dto.getContents())
-							 .fromDate(dto.getFromDate())
-							 .toDate(dto.getToDate())							 
-							 .build();
-					
-		} else {			
-			article = boardQueryService.getAritlce(dto.getPkArticle());
-			
-			article.updateEntity(dto);
+		if (article == null) {
+			article = BoardDTOAssembler.createEntity(dto, board);
+		} else {
+			article = BoardDTOAssembler.mergeEntity(article, dto);
 		}
 		
-		return article;		
+		return article;
 	}
 }

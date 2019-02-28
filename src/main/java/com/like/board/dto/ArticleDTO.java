@@ -16,6 +16,8 @@ import com.like.board.domain.model.QArticle;
 import com.querydsl.core.BooleanBuilder;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -54,6 +56,8 @@ public class ArticleDTO {
 	
 	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
+	@Builder
 	@ToString
 	public static class ArticleSave implements Serializable {
 		

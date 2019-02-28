@@ -1,13 +1,11 @@
 package com.like.board.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
@@ -15,10 +13,15 @@ import com.like.board.domain.model.Board;
 import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
+import com.like.board.domain.service.AttachedFileConverter;
+import com.like.board.dto.ArticleDTO;
 import com.like.board.dto.BoardDTO;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
 public class BoardCommandService {
@@ -34,20 +37,7 @@ public class BoardCommandService {
     
 	public void saveBoard(Board board) {		
 		boardRepository.saveBoard(board);		
-	}
-	
-	public void saveBoard(BoardDTO.BoardSaveDTO dto) {
-		
-		Board board = boardRepository.getBoard(dto.getPkBoard());			
-		
-		if (board == null) {
-			board = BoardDTOAssembler.createEntity(dto);
-		} else {
-			board = BoardDTOAssembler.mergeEntity(board, dto);
-		}			
-		
-		boardRepository.saveBoard(board);
-	}
+	}	
 	
 	public void deleteBoard(Long id) {
 		boardRepository.deleteBoard(id);
@@ -57,26 +47,45 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(board);
 	}
 	
-	//public String saveArticle(Article article, List<FileInfo> fileInfoList) {
-	public String saveArticle(Article article, List<MultipartFile> fileList) throws Exception {
+	public Article convertEntity(ArticleDTO.ArticleSave dto) {
 		
-		List<FileInfo> fileInfoList;
+		Board board = boardRepository.getBoard(dto.getFkBoard());		
+		Article article = null; 
 		
-		// 게시글 저장
-		String pkArticle = articleRepository.saveArticle(article).getPkArticle().toString(); 						
+		if ( dto.getPkArticle() != null ) {
+			article = articleRepository.getArticle(dto.getPkArticle());
+		}
+		
+		if (article == null) {
+			article = BoardDTOAssembler.createEntity(dto, board);
+		} else {
+			article = BoardDTOAssembler.mergeEntity(article, dto);
+		}
+		
+		return article;
+	}
+		
+	public String saveArticle(ArticleDTO.ArticleSave dto) throws Exception {
+		
+		List<FileInfo> fileInfoList = null;
+		List<AttachedFile> attachedFileList = null;					
+		
+		Article article = convertEntity(dto);			
 		
 		// 첨부파일 저장
-		if (!fileList.isEmpty()) {
-			
-			fileInfoList = fileService.uploadFile(fileList, "test", "board");
-												
-			List<AttachedFile> attachedFileList = fileInfoList.stream()
-																.map( v -> new AttachedFile(article, v) )
-																.collect(Collectors.toList());						
-			
-			articleRepository.saveAttachedFile(attachedFileList);
+		if (!dto.getFile().isEmpty()) {		
+			fileInfoList = fileService.uploadFile(dto.getFile(), "test", "board");
+			attachedFileList = AttachedFileConverter.convert(article, fileInfoList);
 		}
-				
+		
+		article.setFiles(attachedFileList);												
+									 											
+		return this.saveArticle(article);
+	}	
+	
+	public String saveArticle(Article article) {
+		String pkArticle = articleRepository.saveArticle(article).getId().toString(); 						
+		
 		return pkArticle;
 	}
 
@@ -94,6 +103,7 @@ public class BoardCommandService {
 	
 	public Article updateArticleHitCnt(Long pkAriticle, String userId) {		
 		return articleRepository.updateArticleHitCnt(pkAriticle, userId);
-	}		
+	}			
+	
 		
 }

@@ -1,6 +1,7 @@
 package com.like.board.domain.model;
 
 import com.like.board.domain.model.enums.BoardType;
+import com.like.board.dto.ArticleDTO;
 import com.like.board.dto.BoardDTO;
 import com.like.board.dto.BoardDTO.BoardSaveDTO;
 
@@ -57,6 +58,33 @@ public class BoardDTOAssembler {
 								.build();		
 		return dto;
 	}
+	
+	public static Article createEntity(ArticleDTO.ArticleSave dto, Board board) {
+						
+		return Article.builder()	
+						.board(board)
+						.ppkArticle(dto.getPpkArticle())
+						.title(dto.getTitle())
+						.contents(dto.getContents())
+						.fromDate(dto.getFromDate())
+						.toDate(dto.getToDate())
+						.pwd(dto.getPwd())
+						.build();
+	}
+	
+	public static Article mergeEntity(Article entity, ArticleDTO.ArticleSave dto) {
+					
+		entity.ppkArticle 		= nvl(dto.getPpkArticle(), entity.ppkArticle);
+		entity.title 			= nvl(dto.getTitle(), entity.title);
+		entity.contents			= nvl(dto.getContents(), entity.contents);
+		entity.pwd				= nvl(dto.getPwd(), entity.pwd);
+		entity.fromDate			= nvl(dto.getFromDate(), entity.fromDate);
+		entity.toDate			= nvl(dto.getToDate(), entity.toDate);
+		entity.seq				= nvl(dto.getSeq(), entity.seq);
+		
+		return entity;
+	}
+	
 	
 	/**
 	 * 

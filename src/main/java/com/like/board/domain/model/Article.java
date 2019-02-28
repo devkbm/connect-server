@@ -9,9 +9,12 @@ import java.util.stream.Collectors;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,14 +23,16 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.board.domain.model.enums.PasswordType;
-import com.like.board.dto.ArticleDTO;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
+@Slf4j
+@ToString
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
-@Getter
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "GRWARTICLE")
 @EntityListeners(AuditingEntityListener.class)
@@ -50,6 +55,7 @@ public class Article extends AuditEntity implements Serializable {
 	Long ppkArticle;		
 	
 	
+	@Transient
 	@Formula("(SELECT X.USER_NAME FROM COM.COMUSER X WHERE X.USER_ID = sys_user)")
 	private String userName;
 	
@@ -74,14 +80,16 @@ public class Article extends AuditEntity implements Serializable {
     /**
      * 시작일자
      */
+	@Builder.Default
 	@Column(name="FROM_DT")
-    LocalDate fromDate;
+    LocalDate fromDate = LocalDate.now();
     
     /**
      * 종료일자
      */
+	@Builder.Default
 	@Column(name="TO_DT")
-    LocalDate toDate;
+    LocalDate toDate = LocalDate.of(9999,12,31);
     
     /**
      * 출력순서
@@ -116,54 +124,38 @@ public class Article extends AuditEntity implements Serializable {
 	@JoinColumn(name = "FK_BOARD", nullable=false, updatable=false)
 	Board board;
     
+	@Singular(value="articleChecks")
     @OneToMany(mappedBy = "article")
-    List<ArticleCheck> articleChecks = new ArrayList<ArticleCheck>();
+    List<ArticleCheck> articleChecks;
                           
-    @OneToMany(mappedBy = "article", cascade=CascadeType.ALL)
-    private List<AttachedFile> files = new ArrayList<>();    
-		
-	@Builder
-	public Article(Board board, Long ppkArticle, String title, String contents,
-			LocalDate fromDate, LocalDate toDate, Boolean pwdYn, PasswordType pwdMethod,
-			String pwd) {		
-		this.board = board;		
-		this.ppkArticle = ppkArticle;		
-		this.title = title;
-		this.contents = contents;		
-		this.fromDate = fromDate;
-		this.toDate = toDate;				
-		this.pwdYn = pwdYn;
-		this.pwdMethod = pwdMethod;
-		this.pwd = pwd;			
-	}	
-	
-	public Article updateEntity(ArticleDTO.ArticleSave dto) {
-		
-		this.ppkArticle = dto.getPpkArticle();
-		this.title 		= dto.getTitle();
-		this.contents	= dto.getContents();
-		this.pwd		= dto.getPwd();
-		this.fromDate	= dto.getFromDate();
-		this.toDate		= dto.getToDate();
-		this.seq		= dto.getSeq();
-		this.depth		= dto.getDepth();
-		
-		return this;
+	@Singular(value="files")
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    List<AttachedFile> files;    
+			
+	public Long getId() {
+		return this.pkArticle;
 	}
+	
+	public Board getBoard() {
+		return board;
+	}	
 	
 	public void setBoard(Board board) {
 		this.board = board;
 		
-		//무한루프에 빠지지 않도록 체크
-		/*if (!board.getArticles().contains(this)) {
+		if (!board.getArticles().contains(this)) {
 			board.getArticles().add(this);
-		}*/
+		}
 	}
 	
 	public boolean hasParentArticle() {		
 		return this.ppkArticle != this.pkArticle ? true : false;
 	}
 			
+	public Integer getSeq() {
+		return seq;
+	}
+	
 	public void setSeq(int seq) {
 		this.seq = seq;
 	}
@@ -177,6 +169,11 @@ public class Article extends AuditEntity implements Serializable {
 				  		 .map(v -> v.fileInfo)
 				  		 .collect(Collectors.toList());		
 				  
+	}
+	
+	public void setFiles(List<AttachedFile> files) {
+		this.files = files;
 	}	
+	
 		
 }

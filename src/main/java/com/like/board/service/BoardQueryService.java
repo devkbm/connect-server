@@ -41,7 +41,7 @@ public class BoardQueryService {
 		return boardRepository.getBoardHierarchy();
 	}
 	
-	public Article getAritlce(Long id) {
+	public Article getArticle(Long id) {
 		return articleRepository.getArticle(id);		
 	}
 			

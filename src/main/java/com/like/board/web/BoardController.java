@@ -115,7 +115,9 @@ public class BoardController {
 			throw new ControllerException("오류");
 		} 			
 		
-		boardCommandService.saveBoard(boardDTO);																					
+		Board board = convertEntity(boardDTO);
+		
+		boardCommandService.saveBoard(board);																					
 								 					
 		return WebControllerUtil.getResponse(null,
 				1, 
@@ -135,5 +137,18 @@ public class BoardController {
 				String.format("%d 건 삭제되었습니다.", 1), 
 				HttpStatus.OK);
 	}		
+	
+	
+	private Board convertEntity(BoardDTO.BoardSaveDTO dto) {
+		Board board = boardQueryService.getBoard(dto.getPkBoard());			
+		
+		if (board == null) {
+			board = BoardDTOAssembler.createEntity(dto);
+		} else {
+			board = BoardDTOAssembler.mergeEntity(board, dto);
+		}
+		
+		return board;
+	}
 			
 }

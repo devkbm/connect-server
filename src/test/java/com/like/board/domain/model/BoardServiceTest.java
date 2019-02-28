@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.service.AttachedFileConverter;
 import com.like.board.dto.BoardDTO;
 import com.like.board.dto.BoardDTO.QueryCondition;
 import com.like.board.service.BoardCommandService;
@@ -50,10 +52,10 @@ public class BoardServiceTest {
 	UserService userService;
 	
 	@Autowired
-	BoardCommandService bcs;
+	BoardCommandService boardCommandService;
 	
 	@Autowired
-	BoardQueryService bqs;	
+	BoardQueryService boardQueryService;	
 	
 	@Autowired
 	FileService fs;
@@ -77,10 +79,10 @@ public class BoardServiceTest {
 						  	.build();
 		
 		//When
-		bcs.saveBoard(board);
+		boardCommandService.saveBoard(board);
 		
 		//Then
-		Board test = bqs.getBoard(board.getPkBoard());
+		Board test = boardQueryService.getBoard(board.getPkBoard());
 		
 		assertThat(test.getBoardName()).isEqualTo("테스트 게시판");
 		assertThat(test.getFromDate()).isEqualTo(LocalDate.now());
@@ -95,92 +97,92 @@ public class BoardServiceTest {
 	@Test
 	public void test02_게시판삭제() {		
 
-		BoardDTO.QueryCondition condition = new QueryCondition();
-		condition.setBoardName("테스트");
-		List<Board> boardList = bqs.getBoardList(condition);
+		//Given 
+		Board board = Board.builder()
+						  	.boardName("테스트 게시판")
+						  	.build();
 		
-		List<Board> boardSearch = 
-		boardList.stream()
-				.filter(board-> board.getBoardName().equals("테스트"))
-				.collect(Collectors.toList());
+		boardCommandService.saveBoard(board);
+				
+		//when 
+		boardCommandService.deleteBoard(board);
 		
-		assertEquals(boardSearch.size(), 1);
 		
-		for (Board board: boardSearch)
-			bcs.deleteBoard(board);
-					
-		//Assertions.assertThat(boardSearch).isEmpty();;
+		//Then
+		Board test = boardQueryService.getBoard(board.pkBoard);
+		
+		assertThat(test).isNull();
 	}
 	
 	@Test
-	public void test03_게시글등록() {
-		//Board board = new Board("게시판");
-		//bcs.saveBoard(board);
+	public void test03_첨부파일없이게시글등록() {
 		
-		//Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);
+		//Given
+		Board board = createBoard();
 		
-		//bcs.saveArticle(article);
+		Article article = Article.builder()
+								.board(board)
+								.title("제목")
+								.contents("내용")
+								.clearArticleChecks()
+								.clearFiles()
+								.build();
+		
+		//When 
+		boardCommandService.saveArticle(article);
+		
+		//Then 
+		Article test = boardQueryService.getArticle(article.pkArticle);
+		
+		assertThat(test.title).isEqualTo("제목");
+		assertThat(test.contents).isEqualTo("내용");
 		
 	}
 	
 	@Test
 	public void test04_게시글파일저장() throws Exception {
-		Board board = Board.builder()							
-						  	.boardName("테스트 게시판")
-						  	.build();
 		
-		bcs.saveBoard(board);
+		//Given 		
+		Board board = createBoard();
 		
-		Article article = new Article(board, null, "제목", "내용", null, null, null, null, null);		
 		
+		//When					
 		MockMultipartFile file = new MockMultipartFile("user-file", "test.txt",
                                   "multipart/form-data", "test data".getBytes());
 		
-		FileInfo info = fs.uploadFile(file, "test","test");
+		FileInfo fileInfo = fs.uploadFile(file, "test","test");		
 		
-		//article.addAttachedFile(info);							
+		Article article = Article.builder()
+				.board(board)
+				.title("제목")
+				.contents("내용")				
+				.clearArticleChecks()
+				.clearFiles()				
+				.build();
+				
+		List<FileInfo> fileInfoList = new ArrayList<>();
+		fileInfoList.add(fileInfo);
+		List<AttachedFile> attachedFileList = null;
 		
-		//bcs.saveArticle(article);
-		
-		log.info("-------------------------------------");
-		log.info(article.getPkArticle().toString());
-		log.info(bqs.getAritlce(article.getPkArticle()).toString());
-		log.info(bqs.getAritlce(article.getPkArticle()).getFiles().toString());
-	}
-		
+		attachedFileList = AttachedFileConverter.convert(article, fileInfoList);			
+		article.setFiles(attachedFileList);			
 	
-	/*@Testf
-	public void 게시글명단조회() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("pkBoard", 1);
+		boardCommandService.saveArticle(article);
 		
-		List<ArticleListDTO> list = bqs.getArticleList(map);
+		//Then
 		
-		log.info(list.toString());		
-	}
-	
-	@Test
-	public void getBoardHierarchy() throws Exception {		
-		List list = bs.getBoardHierarchy(2L);		
-		log.info(list.toString());
 	}
 	
-	@Test
-	public void insertBoard() throws Exception {
-		Board board = new Board("Test");
-		List<Article> articles = new ArrayList<Article>();
-		Article article = new Article();
+	private Board createBoard() {
+		Board board = Board.builder()
+						  	.boardName("테스트 게시판")
+						  	.build();
+
+		boardCommandService.saveBoard(board);
 		
-		FileInfo file= new FileInfo();
-		file.setFileNm("test");
-		article.addAttachedFile(file);
-		
-		articles.add(article);
-		board.setArticles(articles);
-		bs.saveBoard(board);		
-		
-		bs.getBoardList();
-	}*/	
+		return board;
+	}
+			
 	
 	
 }

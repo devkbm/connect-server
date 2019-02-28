@@ -2,9 +2,12 @@ package com.like.board.domain.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,34 +25,36 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
-@ToString
+@ToString(exclude= {"article","fileInfo"})
 @Slf4j
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"article"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"article","fileInfo"})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "GRWARTICLEFILE")
 public class AttachedFile extends AuditEntity implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+		
+		
+	private static final long serialVersionUID = 1933620773768936638L;
 
-	@EmbeddedId
-	AttachedFileId id;	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="PK_ARTICLE_FILE")
+	Long pkArticleFile;	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PK_ARTICLE", insertable=false, updatable = false)
+	@JoinColumn(name = "PK_ARTICLE", nullable = false)
 	Article article; 	
 		
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="PK_FILE", insertable=false, updatable = false)
+	@JoinColumn(name="PK_FILE", nullable = false)
 	FileInfo fileInfo;
-	
-	public AttachedFile(Article article, FileInfo fileInfo) {
-		this.id = new AttachedFileId(article.getPkArticle(), fileInfo.getPkFile());
+
+	public AttachedFile(Article article, FileInfo fileInfo) {		
 		this.article = article;
 		this.fileInfo = fileInfo;
-	}	
+	}
 		
 }
 
