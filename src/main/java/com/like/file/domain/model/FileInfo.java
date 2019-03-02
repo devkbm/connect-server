@@ -45,13 +45,13 @@ public class FileInfo extends AuditEntity implements Serializable {
 	@Column(name="uuid")
 	String uuid;
 	
-	@Column(name="path")
+	@Column(name="file_path")
 	String path;
 	
 	@Column(name="file_nm")
 	String fileName;
 	
-	@Column(name="size")
+	@Column(name="file_size")
 	long size;
 	
 	@Column(name="download_cnt")

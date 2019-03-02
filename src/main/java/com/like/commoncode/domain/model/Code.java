@@ -32,7 +32,7 @@ import lombok.ToString;
 @ToString(callSuper=true, includeFieldNames=true)
 @Builder
 @Entity
-@Table(name = "cmcode")
+@Table(name = "comcode")
 @EntityListeners(AuditingEntityListener.class)
 public class Code extends AuditEntity implements Serializable {
 			
@@ -55,7 +55,7 @@ public class Code extends AuditEntity implements Serializable {
 	LocalDateTime toDate;
 	
 	@Builder.Default
-	@Column(name="seq")
+	@Column(name="prt_seq")
 	int seq = 0;
 	
 	@Builder.Default

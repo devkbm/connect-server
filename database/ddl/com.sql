@@ -90,19 +90,55 @@ create table if not exists COM.COMUSERMENUGROUP (
 	constraint fk_comusermenugroup2 	foreign key(MENU_GROUP_CODE) references COMMENUGROUP(MENU_GROUP_CODE)
 );
 
-create table if not exists COM.APPOINMENTCODEDETAILS (
+create table if not exists COM.COMFILEINFO (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    PK_CODE_DETAIL		INT				NOT NULL	AUTO_INCREMENT COMMENT '발령상세키',
-    CODE_GROUP			VARCHAR(20)		NULL		COMMENT '발령코드그룹',
-    CODE				VARCHAR(20)		NULL		COMMENT '발령코드',
-    CHANGE_TYPE			VARCHAR(20)		NULL		COMMENT '변경타입',
-    TYPE_CODE			VARCHAR(20)		NULL		COMMENT '코드',
-    TYPE_NAME			VARCHAR(20)		NULL		COMMENT '코드명',
-	constraint pk_codedetail primary key(PK_CODE_DETAIL)
+    PK_FILE				VARCHAR(40) 	NOT NULL 	COMMENT '키',
+    PGM_ID				VARCHAR(10)		NOT NULL 	COMMENT '유저아이디',
+    USER_ID				VARCHAR(20)		NULL		COMMENT '발령코드',
+    CONTENT_TYPE		VARCHAR(50)		NULL 		COMMENT 'CONTENT-TYPE',
+    UUID				VARCHAR(1000)	NOT NULL 	COMMENT 'UUID_서버에저장된파일명',
+    FILE_PATH			VARCHAR(1000)	NULL 		COMMENT '파일경로',
+    FILE_NM				VARCHAR(1000)	NULL 		COMMENT '파일명',
+    FILE_SIZE			INT				NULL 		COMMENT '파일사이즈',
+    DOWNLOAD_CNT		INT				NULL 		COMMENT '다운로드횟수',
+	constraint pk_comfileinfo primary key(PK_FILE)
 );
+
+create table if not exists COM.COMCODEGROUP (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    CODE_GROUP			VARCHAR(10) 	NOT NULL 	COMMENT '코드그룹',
+   	CODE_GROUP_NAME		VARCHAR(255) 	NOT NULL 	COMMENT '코드그룹명',
+   	FIXED_LENGTH_YN		BOOLEAN			NOT NULL 	COMMENT '고정길이여부',
+   	CODE_LENGTH			INT				NULL		COMMENT '코드길이',
+   	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
+	constraint pk_comcodegroup primary key(CODE_GROUP)
+);
+
+create table if not exists COM.COMCODE (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    CODE_GROUP			VARCHAR(10) 	NOT NULL 	COMMENT '코드그룹',
+   	CODE				VARCHAR(10) 	NOT NULL 	COMMENT '공통코드',
+	CODE_NAME			VARCHAR(255) 	NOT NULL 	COMMENT '코드명칭',
+	CODE_NAME_ABBR		VARCHAR(255) 	NOT NULL 	COMMENT '코드명칭약어',
+	FROM_DT				DATETIME		NULL		COMMENT '시작일시',
+	TO_DT				DATETIME		NULL		COMMENT '종료일시',
+	PRT_SEQ				INT				NULL		COMMENT '출력순서',
+	USE_YN				BOOLEAN			NOT NULL 	COMMENT '사용여부',
+	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
+	constraint pk_comcode primary key(CODE_GROUP, CODE),
+	constraint fk_comcode1 foreign key(CODE_GROUP) references COMCODEGROUP(CODE_GROUP)
+);
+
+
 
 
 

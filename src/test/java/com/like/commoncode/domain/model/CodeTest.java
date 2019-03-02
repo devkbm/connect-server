@@ -8,8 +8,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,9 +23,7 @@ import com.like.commoncode.service.CommonCodeQueryService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class CodeTest {
-
-	private static final Logger log = LoggerFactory.getLogger(CodeTest.class);
+public class CodeTest {	
 	
 	@Autowired
 	CommonCodeCommandService commonCodeCommandService;
@@ -48,6 +44,7 @@ public class CodeTest {
 		//Then
 		assertThat(test.codeGroup).isEqualTo("A01");
 		assertThat(test.codeGroupName).isEqualTo("테스트 코드 그룹");
+		assertThat(test.fixedLengthYn).isEqualTo(true);
 		assertThat(test.codeLength).isEqualTo(10);
 		assertThat(test.cmt).isEqualTo("테스트 비고");						
 	}
@@ -88,6 +85,7 @@ public class CodeTest {
 		return CodeGroup.builder()
 						.codeGroup("A01")
 						.codeGroupName("테스트 코드 그룹")
+					    .fixedLengthYn(true)
 						.codeLength(10)
 						.cmt("테스트 비고")
 						.build();
