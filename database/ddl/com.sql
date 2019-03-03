@@ -107,25 +107,14 @@ create table if not exists COM.COMFILEINFO (
 	constraint pk_comfileinfo primary key(PK_FILE)
 );
 
-create table if not exists COM.COMCODEGROUP (
-	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
-	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    CODE_GROUP			VARCHAR(10) 	NOT NULL 	COMMENT '코드그룹',
-   	CODE_GROUP_NAME		VARCHAR(255) 	NOT NULL 	COMMENT '코드그룹명',
-   	FIXED_LENGTH_YN		BOOLEAN			NOT NULL 	COMMENT '고정길이여부',
-   	CODE_LENGTH			INT				NULL		COMMENT '코드길이',
-   	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
-	constraint pk_comcodegroup primary key(CODE_GROUP)
-);
 
 create table if not exists COM.COMCODE (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    CODE_GROUP			VARCHAR(10) 	NOT NULL 	COMMENT '코드그룹',
+    CODE_ID				VARCHAR(255) 	NOT NULL 	COMMENT '코드ID',
+    P_CODE				VARCHAR(10)		NOT NULL 	COMMENT '상위코드',
    	CODE				VARCHAR(10) 	NOT NULL 	COMMENT '공통코드',
 	CODE_NAME			VARCHAR(255) 	NOT NULL 	COMMENT '코드명칭',
 	CODE_NAME_ABBR		VARCHAR(255) 	NOT NULL 	COMMENT '코드명칭약어',
@@ -133,9 +122,10 @@ create table if not exists COM.COMCODE (
 	TO_DT				DATETIME		NULL		COMMENT '종료일시',
 	PRT_SEQ				INT				NULL		COMMENT '출력순서',
 	USE_YN				BOOLEAN			NOT NULL 	COMMENT '사용여부',
+	FIXED_LENGTH_YN		BOOLEAN			NOT NULL 	COMMENT '고정길이여부',
+   	CODE_LENGTH			INT				NULL		COMMENT '코드길이',
 	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
-	constraint pk_comcode primary key(CODE_GROUP, CODE),
-	constraint fk_comcode1 foreign key(CODE_GROUP) references COMCODEGROUP(CODE_GROUP)
+	constraint pk_comcode primary key(CODE_ID)	
 );
 
 

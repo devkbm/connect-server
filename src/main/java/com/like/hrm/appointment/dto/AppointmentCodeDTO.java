@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.commoncode.dto.CodeDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 

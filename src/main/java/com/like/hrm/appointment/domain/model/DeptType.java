@@ -14,7 +14,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.like.common.domain.AuditEntity;
-import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
@@ -41,7 +40,7 @@ public class DeptType extends AuditEntity implements Serializable {
 	
 	@JsonUnwrapped
 	@EmbeddedId		
-	private CommonCodeId id;
+	private String id;
 		
 	@Column(name="code_name")
 	private String codeName;
@@ -57,7 +56,7 @@ public class DeptType extends AuditEntity implements Serializable {
 	
 	@Builder
 	public DeptType(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate, Integer sequence) {
-		this.id 		= new CommonCodeId(ChangeType.DEPT.getCode(), code);		
+		this.id 		= code;		
 		this.codeName 	= codeName;
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;

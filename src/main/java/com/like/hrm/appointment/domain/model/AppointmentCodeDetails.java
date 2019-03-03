@@ -25,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
-import com.like.commoncode.domain.model.CodeGroup;
-import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;

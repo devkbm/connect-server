@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.like.common.domain.AuditEntity;
-import com.like.commoncode.domain.model.id.CommonCodeId;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,15 +35,14 @@ import lombok.ToString;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Getter
 @Entity
-@Table(name = "cmcode")
+@Table(name = "comcode")
 @EntityListeners(AuditingEntityListener.class)
 public class AppointmentCode extends AuditEntity implements Serializable {
 	 
 	private static final long serialVersionUID = -2792716645396219283L;
-
-	@JsonUnwrapped
-	@EmbeddedId		
-	private CommonCodeId id;
+	
+	@Id
+	private String id;
 		
 	@Column(name="code_name")
 	private String codeName;
@@ -62,7 +61,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	
 	@Builder
 	public AppointmentCode(String code, String codeName, LocalDateTime fromDate, LocalDateTime toDate) {
-		this.id = new CommonCodeId("H0001", code);
+		this.id = code;
 		this.codeName 	= codeName;
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;

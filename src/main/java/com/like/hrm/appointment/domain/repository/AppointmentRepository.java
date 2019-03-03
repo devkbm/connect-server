@@ -2,7 +2,6 @@ package com.like.hrm.appointment.domain.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.like.commoncode.domain.model.id.CommonCodeId;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
 import com.like.hrm.appointment.domain.model.AppointmentLedger;
@@ -13,13 +12,13 @@ import com.like.hrm.appointment.domain.model.JobType;
 public interface AppointmentRepository {
 
 		
-	DeptType getDeptType(CommonCodeId id);
+	DeptType getDeptType(String id);
 	
 	void saveDeptType(DeptType deptType);
 	
 	void deleteDeptType(DeptType deptType);	
 	
-	JobType getJobType(CommonCodeId id);
+	JobType getJobType(String id);
 	
 	void saveJobType(JobType jobType);
 	
