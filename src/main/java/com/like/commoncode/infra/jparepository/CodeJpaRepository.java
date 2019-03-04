@@ -29,13 +29,20 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	public Code getCode(String codeId) {
 		return jpaCommonCode.findOne(codeId);
 	}
+	
+	@Override
+	public List<Code> getAllCodeList() {
+		return queryFactory
+				.selectFrom(qCommonCode)				
+				.fetch();
+	}
 
 	@Override
-	public List<Code> getCodeList(String parentCode) {		
-		return null; /* queryFactory
+	public List<Code> getCodeList(String parentCodeId) {		
+		return queryFactory
 				.selectFrom(qCommonCode)
-				.where(qCommonCode.commonCodeGroup.codeGroup.eq(codeGroup))
-				.fetch();*/
+				.where(qCommonCode.parentCode.id.eq(parentCodeId))
+				.fetch();
 	}
 	
 	

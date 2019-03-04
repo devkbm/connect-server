@@ -12,7 +12,9 @@ public interface CommonCodeRepository {
 	
 	Code getCode(String codeId);
 	
-	List<Code> getCodeList(String parentCode);
+	List<Code> getAllCodeList();
+	
+	List<Code> getCodeList(String parentCodeId);
 	
 	List<CodeComboDTO> getCodeListByComboBox(String codeGroup);
 	

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.commoncode.domain.model.Code;
+import com.like.commoncode.domain.model.CodeDTOAssembler;
 import com.like.commoncode.dto.CodeDTO;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
@@ -59,13 +61,21 @@ public class CommonCodeController {
 	
 	
 	@RequestMapping(value={"/common/codegroup/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCode(@RequestBody CodeDTO.CodeSave code, BindingResult result) {			
+	public ResponseEntity<?> saveCode(@RequestBody CodeDTO.CodeSave dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
+		
+		Code parentCode = null;
+		
+		if ( dto.getParentId() != null ) {
+			commonCodeQueryService.getCode(dto.getParentId());
+		}				
+		
+		Code code = CodeDTOAssembler.createEntity(dto, parentCode);
 				
-		commonCodeCommandService.saveCode(null);		
+		commonCodeCommandService.saveCode(code);		
 											 				
 		return WebControllerUtil.getResponse(null,
 				1, 

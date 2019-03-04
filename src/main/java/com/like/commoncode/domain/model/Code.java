@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -34,11 +35,12 @@ public class Code extends AuditEntity implements Serializable {
 			
 	private static final long serialVersionUID = 1122730947003822818L;
 	
+	@Id
 	@Column(name="code_id")
 	String id;
 		
-	@Column(name="p_code")
-	String pCode;
+	/*@Column(name="p_code_id")
+	String parentId;*/
 	
 	@Column(name="code")
 	String code;
@@ -49,6 +51,10 @@ public class Code extends AuditEntity implements Serializable {
 	@Column(name="code_name_abbr")
 	String codeNameAbbreviation;	
 	
+	@Builder.Default
+	@Column(name="use_yn")
+	boolean useYn = true;
+	
 	@Column(name="from_dt")
 	LocalDateTime fromDate;
 	
@@ -56,13 +62,13 @@ public class Code extends AuditEntity implements Serializable {
 	LocalDateTime toDate;
 	
 	@Builder.Default
-	@Column(name="prt_seq")
-	int seq = 0;
+	@Column(name="hierarchy_level")
+	int hierarchyLevel = 1;
 	
 	@Builder.Default
-	@Column(name="use_yn")
-	boolean useYn = true;
-	
+	@Column(name="prt_seq")
+	int seq = 0;
+		
 	@Builder.Default
 	@Column(name="fixed_length_yn")
 	boolean fixedLengthYn = true;
@@ -74,26 +80,48 @@ public class Code extends AuditEntity implements Serializable {
 	String cmt;
 			
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "p_code", nullable=false, updatable=false)
+	@JoinColumn(name = "p_code_id")
 	Code parentCode;
 
 	@Builder
-	public Code(String id, String pCode, String code, String codeName, String codeNameAbbreviation,
-			LocalDateTime fromDate, LocalDateTime toDate, int seq, boolean useYn, boolean fixedLengthYn,
-			Integer codeLength, String cmt) {		
-		this.id = id;
-		this.pCode = pCode;
+	public Code(String code, String codeName, String codeNameAbbreviation, boolean useYn,
+			LocalDateTime fromDate, LocalDateTime toDate, int seq, boolean fixedLengthYn,
+			Integer codeLength, String cmt, Code parentCode) {
+		
 		this.code = code;
 		this.codeName = codeName;
 		this.codeNameAbbreviation = codeNameAbbreviation;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
-		this.seq = seq;
 		this.useYn = useYn;
+		this.fromDate = fromDate;
+		this.toDate = toDate;		
+		this.seq = seq;
 		this.fixedLengthYn = fixedLengthYn;
 		this.codeLength = codeLength;
 		this.cmt = cmt;
+		this.parentCode = parentCode;
+		
+		this.createId();
+		this.hierarchyLevel();
+	}
+
+
+	private String createId() {
+		
+		if ( this.parentCode == null ) {
+			this.id = this.code;			
+		} else {
+			this.id = this.parentCode.id + this.code;
+		}
+		
+		return this.id;
 	}
 	
+	private void hierarchyLevel() {
+		if ( this.parentCode == null ) {
+			this.hierarchyLevel = 1; 
+		} else {
+			this.hierarchyLevel = this.hierarchyLevel + 1;
+		}
+	}
 					
 }
