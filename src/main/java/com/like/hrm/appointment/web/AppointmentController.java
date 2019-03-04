@@ -54,7 +54,7 @@ public class AppointmentController {
 			throw new ControllerException(result.toString());
 		} 
 																	
-		appointmentService.saveAppintmentCode(code.getCommonCode());						
+		//appointmentService.saveAppintmentCode(code.getCommonCode());						
 								 					
 		return WebControllerUtil.getResponse(null,
 				1, 
@@ -112,7 +112,7 @@ public class AppointmentController {
 			throw new ControllerException(result.toString());
 		} 
 																	
-		appointmentService.saveDeptType(code.getCommonCode());						
+		//appointmentService.saveDeptType(code.getCommonCode());						
 								 					
 		return WebControllerUtil.getResponse(null,
 				1, 
@@ -142,7 +142,7 @@ public class AppointmentController {
 			throw new ControllerException(result.toString());
 		} 
 																	
-		appointmentService.saveJobType(code.getCommonCode());						
+		//appointmentService.saveJobType(code.getCommonCode());						
 								 					
 		return WebControllerUtil.getResponse(null,
 				1, 

@@ -3,9 +3,6 @@ package com.like.hrm.appointment.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.dto.CodeDTO;
-import com.like.hrm.appointment.domain.model.AppointmentCode;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -33,10 +30,6 @@ public class AppointmentCodeDTO {
 		private boolean useYn;
 		
 		private String cmt;
-							
-		public AppointmentCode getCommonCode() {	
-						
-			return new AppointmentCode(this.code, this.codeName, this.fromDate.atStartOfDay(), this.toDate.atStartOfDay());
-		}
+									
 	}
 }

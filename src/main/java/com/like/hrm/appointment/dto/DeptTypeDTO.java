@@ -27,10 +27,6 @@ public class DeptTypeDTO {
 		private LocalDate toDate;
 		
 		private Integer sequence;
-											
-		public DeptType getCommonCode() {	
-						
-			return new DeptType(this.code, this.codeName, this.fromDate.atStartOfDay(), this.toDate.atStartOfDay(), this.sequence);
-		}
+													
 	}
 }

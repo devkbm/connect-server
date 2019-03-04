@@ -27,10 +27,6 @@ public class JobTypeDTO {
 		private LocalDate toDate;
 		
 		private Integer sequence;
-											
-		public JobType getCommonCode() {	
-						
-			return new JobType(this.code, this.codeName, this.fromDate.atStartOfDay(), this.toDate.atStartOfDay(), this.sequence);
-		}
+													
 	}
 }
