@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.commoncode.domain.model.Code;
+import com.like.commoncode.dto.CodeComboDTO;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
-import com.like.commoncode.web.dto.CodeComboDTO;
 
 @Service
 @Transactional(readOnly=true)
@@ -21,9 +21,13 @@ public class CommonCodeQueryService {
 	public Code getCode(String commonCodeId) {
 		return codeJpaRepository.getCode(commonCodeId);
 	}
-		
-	public List<Code> getCodeList(String codeGroup) {		
-		return codeJpaRepository.getCodeList(codeGroup);
+	
+	public List<Code> getAllCodeList() {		
+		return codeJpaRepository.getAllCodeList();
+	}
+	
+	public List<Code> getCodeList(String parentCodeId) {		
+		return codeJpaRepository.getCodeList(parentCodeId);
 	}
 	
 	public List<CodeComboDTO> getCodeListByComboBox(String codeGroup) {

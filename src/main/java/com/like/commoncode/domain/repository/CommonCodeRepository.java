@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.web.dto.CodeComboDTO;
+import com.like.commoncode.dto.CodeComboDTO;
 
 @Repository
 public interface CommonCodeRepository {		

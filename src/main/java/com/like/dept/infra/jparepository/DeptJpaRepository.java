@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.like.commoncode.domain.model.QCodeGroup;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.like.dept.domain.repository.DeptRepository;

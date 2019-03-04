@@ -67,9 +67,8 @@ public class AppointmentCodeDetails extends AuditEntity implements Serializable 
 	@Column(name="CODE",insertable=false, updatable=false)
 	private String code;
 				
-	@ManyToOne(fetch=FetchType.LAZY)		
-	@JoinColumns({@JoinColumn(name="code_group"),@JoinColumn(name="code")})
-	//@JoinColumn(name="code")
+	@ManyToOne(fetch=FetchType.LAZY)			
+	@JoinColumn(name="code_id")
 	private AppointmentCode appointmentCode;	
 	
 	

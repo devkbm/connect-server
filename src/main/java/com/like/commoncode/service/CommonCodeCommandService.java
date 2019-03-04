@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
-import com.like.commoncode.web.dto.CodeComboDTO;
 
 @Service
 @Transactional

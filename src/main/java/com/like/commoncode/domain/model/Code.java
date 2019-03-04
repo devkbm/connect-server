@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"commonCodeGroup"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"parentCode"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true)
 @Builder
@@ -120,7 +120,7 @@ public class Code extends AuditEntity implements Serializable {
 		if ( this.parentCode == null ) {
 			this.hierarchyLevel = 1; 
 		} else {
-			this.hierarchyLevel = this.hierarchyLevel + 1;
+			this.hierarchyLevel = this.parentCode.hierarchyLevel + 1;
 		}
 	}
 					

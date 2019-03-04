@@ -6,11 +6,10 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,18 +37,16 @@ public class CommonCodeController {
 	private CommonCodeQueryService commonCodeQueryService;	
 	
 		
-	@GetMapping("/common/codegroups/codes")
-	public ResponseEntity<?> getCodes(@RequestParam(value="codeGroup", required=true) String codeGroup,
-			@RequestParam(value="qType", required=false) String qType) {
-					
-		List<?> list = null;			
+	@GetMapping("/common/code")
+	public ResponseEntity<?> getCodes(@RequestParam(value="parentId", required=false) String parentId) {
+							
+		List<Code> list = null; 
 		
-		if (StringUtils.hasText(qType)) { 
-			if (qType.equals("combo")) 
-				list = commonCodeQueryService.getCodeListByComboBox(codeGroup);			
+		if ( parentId == null ) {			
+			list = commonCodeQueryService.getAllCodeList();
 		} else {
-			list = commonCodeQueryService.getCodeList(codeGroup);
-		}
+			list = commonCodeQueryService.getCodeList(parentId);
+		}			
 					 					
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -60,7 +57,7 @@ public class CommonCodeController {
 	}
 	
 	
-	@RequestMapping(value={"/common/codegroup/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/common/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveCode(@RequestBody CodeDTO.CodeSave dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
@@ -70,7 +67,7 @@ public class CommonCodeController {
 		Code parentCode = null;
 		
 		if ( dto.getParentId() != null ) {
-			commonCodeQueryService.getCode(dto.getParentId());
+			parentCode = commonCodeQueryService.getCode(dto.getParentId());
 		}				
 		
 		Code code = CodeDTOAssembler.createEntity(dto, parentCode);
@@ -84,17 +81,16 @@ public class CommonCodeController {
 				HttpStatus.OK);
 	}	
 		
-	@DeleteMapping("/common/codegroups/codes")
-	public ResponseEntity<?> delCode(@RequestParam(value="codeGroup", required=true) String codeGroup,
-			@RequestParam(value="code", required=true) String code) {						
+	@DeleteMapping("/common/code/{id}")
+	public ResponseEntity<?> delCode(@PathVariable(value="id") String id) {						
 												
-		commonCodeCommandService.deleteCode(code);
+		commonCodeCommandService.deleteCode(id);
 								 						
 		return WebControllerUtil.getResponse(null, 
-				1, 
-				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK);
+											1, 
+											true, 
+											String.format("%d 건 삭제되었습니다.", 1), 
+											HttpStatus.OK);
 	}
 	
 	
