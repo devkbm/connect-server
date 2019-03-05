@@ -9,11 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
@@ -21,6 +21,7 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.CodeDTOAssembler;
 import com.like.commoncode.dto.CodeDTO;
+import com.like.commoncode.dto.CodeDTO.CodeHierarchy;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
 
@@ -34,27 +35,32 @@ public class CommonCodeController {
 	private CommonCodeCommandService commonCodeCommandService;
 	
 	@Resource
-	private CommonCodeQueryService commonCodeQueryService;	
+	private CommonCodeQueryService commonCodeQueryService;			
 	
-		
-	@GetMapping("/common/code")
-	public ResponseEntity<?> getCodes(@RequestParam(value="parentId", required=false) String parentId) {
+	
+	@GetMapping("/common/codetree") 
+	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute CodeDTO.SearchCondition searchCondition) {
 							
-		List<Code> list = null; 
+		List<CodeHierarchy> list = commonCodeQueryService.getCodeHierarchyList(searchCondition);  						 						
 		
-		if ( parentId == null ) {			
-			list = commonCodeQueryService.getAllCodeList();
-		} else {
-			list = commonCodeQueryService.getCodeList(parentId);
-		}			
-					 					
 		return WebControllerUtil.getResponse(list, 
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 					
-
+											list.size(), 
+											true, 
+											String.format("%d 건 조회되었습니다.", list.size()), 
+											HttpStatus.OK);
 	}
+	
+	@GetMapping("/common/code") 
+	public ResponseEntity<?> getCodeList(@ModelAttribute CodeDTO.SearchCondition searchCondition) {
+							
+		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
+		
+		return WebControllerUtil.getResponse(list, 
+											list.size(), 
+											true, 
+											String.format("%d 건 조회되었습니다.", list.size()), 
+											HttpStatus.OK);
+	}	
 	
 	
 	@RequestMapping(value={"/common/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 
