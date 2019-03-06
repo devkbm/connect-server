@@ -36,9 +36,9 @@ public class DeptService {
 		Dept dept = this.getDept(dto.getDeptCode());
 		
 		if (dept == null) {
-			dept = DeptDTOAssembler.createEntity(dto);
+			// dept = DeptDTOAssembler.createEntity(dto);
 		} else {
-			DeptDTOAssembler.mergeEntity(dept, dto);			
+			// DeptDTOAssembler.mergeEntity(dept, dto);			
 		}
 		
 		deptRepository.saveDept(dept);

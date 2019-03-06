@@ -66,7 +66,7 @@ public class CodeDTO {
 			}
 			
 			if (this.isUse) {																						
-				builder.and(qCode.enable());											
+				builder.and(qCode.enabled());											
 			} else {
 				builder.and(qCode.useYn.eq(this.isUse));
 			}

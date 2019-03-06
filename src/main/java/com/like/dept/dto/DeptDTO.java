@@ -4,21 +4,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
-import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.querydsl.core.BooleanBuilder;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 public class DeptDTO {
 	
@@ -33,7 +26,7 @@ public class DeptDTO {
 				
 		String deptName;
 					
-		Boolean isUse;
+		Boolean isEnabled;
 		
 		public BooleanBuilder getCondition() {
 			BooleanBuilder builder = new BooleanBuilder();
@@ -51,7 +44,7 @@ public class DeptDTO {
 	}
 	
 	@Data
-	@Builder
+	@Builder	
 	public static class DeptSave implements Serializable {
 		
 		private static final long serialVersionUID = -670038546212531439L;
@@ -64,17 +57,19 @@ public class DeptDTO {
 		
 		String modifiedBy;
 		
+		String parentDeptCode;
+		
 		@NotEmpty(message="부서코드는 필수 입력 사항입니다.")
 		String deptCode;		
 		
 		@NotEmpty(message="부서명은 필수 입력 사항입니다.")
 		String deptName;		
-		
-		Boolean isUse;		
-		
+							
 		LocalDate fromDate;
 				
-		LocalDate toDate;						
+		LocalDate toDate;
+		
+		Integer seq;
 	}
 	
 	

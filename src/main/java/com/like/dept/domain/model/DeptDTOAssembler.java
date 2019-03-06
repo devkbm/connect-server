@@ -5,7 +5,7 @@ import com.like.dept.dto.DeptDTO.DeptSave;
 
 public class DeptDTOAssembler {	
 		
-	public static Dept createEntity(DeptDTO.DeptSave dto) {
+	public static Dept createEntity(DeptDTO.DeptSave dto, Dept parentDept) {
 		if (dto.getDeptCode() == null) {
 			new IllegalArgumentException("부서코드가 없습니다.");
 		}
@@ -13,16 +13,20 @@ public class DeptDTOAssembler {
 		return Dept.builder()
 				.deptCode(dto.getDeptCode())
 				.deptName(dto.getDeptName())
-				.isUse(dto.getIsUse())
+				.parentDept(parentDept)
+				.fromDate(dto.getFromDate())
+				.toDate(dto.getToDate())
+				.seq(dto.getSeq())
 				.build();
 	}
 	
-	public static Dept mergeEntity(Dept dept, DeptDTO.DeptSave dto) {
+	public static Dept mergeEntity(Dept dept, DeptDTO.DeptSave dto, Dept parentDept) {
 		
-		dept.deptName 	= nvl(dto.getDeptName(), 	dept.deptName);
-		dept.isUse		= nvl(dto.getIsUse(), 		dept.isUse);
-		dept.fromDate	= nvl(dto.getFromDate(), 	dept.fromDate);
-		dept.toDate		= nvl(dto.getToDate(),		dept.toDate);
+		if (dept == null)
+			throw new IllegalArgumentException("Dept 엔티티가 존재하지 않습니다.");
+		
+		dept.deptName 	= nvl(dto.getDeptName(), 	dept.deptName);		
+		dept.toDate		= nvl(dto.getToDate(),		dept.toDate);		
 		
 		return dept;
 	}	
@@ -35,8 +39,7 @@ public class DeptDTOAssembler {
 								.modifiedDt(dept.getModifiedDt())
 								.modifiedBy(dept.getModifiedBy())
 								.deptCode(dept.deptCode)
-								.deptName(dept.deptName)
-								.isUse(dept.isUse)
+								.deptName(dept.deptName)													
 								.fromDate(dept.fromDate)
 								.toDate(dept.toDate)
 								.build();		

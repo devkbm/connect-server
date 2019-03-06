@@ -1,13 +1,10 @@
 package com.like.commoncode.infra.jparepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.like.board.dto.BoardDTO;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.QCode;
 import com.like.commoncode.domain.repository.CommonCodeRepository;
@@ -86,13 +83,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	@Override
 	public void deleteCode(String codeId) {
 		jpaCommonCode.delete(codeId);		
-	}
-	
-	/*
-CodeHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedDt, String modifiedBy,
-				String id, String parentId, String code, String codeName, String codeNameAbbreviation, boolean useYn,
-				LocalDate fromDate, LocalDate toDate, int seq, String cmt	
-	 */
+	}	
 	
 	private List<CodeHierarchy> getRootCodeList() {
 		
@@ -102,7 +93,8 @@ CodeHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedD
 						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation, qCode.useYn,
 						qCode.fromDate, qCode.toDate, qCode.seq, qCode.cmt))
 				.from(qCode)
-				.where(qCode.isRootNode())
+				.where(qCode.isRootNode()
+						.and(qCode.enabled()))					
 				.fetch();
 	}
 		
@@ -113,7 +105,8 @@ CodeHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedD
 						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation, qCode.useYn,
 						qCode.fromDate, qCode.toDate, qCode.seq, qCode.cmt))
 				.from(qCode)
-				.where(qCode.parentCode.id.eq(parentId))
+				.where(qCode.parentCode.id.eq(parentId)
+					.and(qCode.enabled()))
 				.fetch();
 	}
 	

@@ -15,7 +15,7 @@ public class CodeExpression {
 	 * @return
 	 */
 	@QueryDelegate(Code.class)
-	public static BooleanExpression enable(QCode code) {
+	public static BooleanExpression enabled(QCode code) {
 		
 		DateTimeExpression<LocalDateTime> now = DateTimeExpression.currentTimestamp(LocalDateTime.class);
 				
