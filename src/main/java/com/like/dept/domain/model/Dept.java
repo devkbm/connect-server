@@ -65,5 +65,9 @@ public class Dept extends AuditEntity implements Serializable {
 	public void closeDept(LocalDate toDate) {
 		this.toDate = toDate;
 	}
+	
+	public void changeParentDept(Dept parentDept) {
+		this.parentDept = parentDept;
+	}
 
 }
