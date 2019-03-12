@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.dept.domain.model.Dept;
+import com.like.dept.domain.model.DeptDTOAssembler;
 import com.like.dept.dto.DeptDTO;
 import com.like.dept.service.DeptService;
 
@@ -44,7 +45,16 @@ public class DeptController {
 			throw new ControllerException("오류");
 		} 					
 				
-		deptService.saveDept(dto);		
+		Dept dept = deptService.getDept(dto.getDeptCode());
+		Dept parentDept = deptService.getDept(dto.getParentDeptCode());
+		
+		if (dept == null) {
+			dept = DeptDTOAssembler.createEntity(dto, parentDept);
+		} else {
+			DeptDTOAssembler.mergeEntity(dept, dto, parentDept);			
+		}						
+				
+		deptService.saveDept(dept);		
 											 				
 		return WebControllerUtil.getResponse(null,
 				1, 

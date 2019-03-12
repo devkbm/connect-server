@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.dept.domain.model.Dept;
+import com.like.dept.domain.model.DeptDTOAssembler;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.dto.DeptDTO;
 
@@ -32,36 +33,9 @@ public class DeptService {
 	
 	public void createDept(Dept dept) {
 		deptRepository.saveDept(dept);
-	}
+	}			
 	
-	public void changeParentDept(String deptCode, String parentDeptCode) {
-		Dept dept = deptRepository.getDept(deptCode);
-		
-		Dept parentDept = deptRepository.getDept(parentDeptCode);
-		
-		dept.changeParentDept(parentDept);
-		
-		deptRepository.saveDept(dept);			
-	}
-	
-	public void changeDeptName(String deptCode, String changeDeptName) {
-		Dept dept = deptRepository.getDept(deptCode);
-		
-		dept.changeDeptName(changeDeptName);
-		
-		deptRepository.saveDept(dept);
-	}
-			
-	public void saveDept(DeptDTO.DeptSave dto) {
-		
-		Dept dept = this.getDept(dto.getDeptCode());
-		
-		if (dept == null) {
-			// dept = DeptDTOAssembler.createEntity(dto);
-		} else {
-			// DeptDTOAssembler.mergeEntity(dept, dto);			
-		}
-		
+	public void saveDept(Dept dept) {				
 		deptRepository.saveDept(dept);
 	}
 	

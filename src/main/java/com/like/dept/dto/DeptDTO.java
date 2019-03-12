@@ -36,7 +36,7 @@ public class DeptDTO {
 			}
 			
 			if (StringUtils.hasText(this.deptName)) {
-				builder.and(qDept.deptName.like("%"+this.deptName+"%"));
+				builder.and(qDept.deptAbbreviationKorean.like("%"+this.deptName+"%"));
 			}			
 			
 			return builder;

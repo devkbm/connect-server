@@ -12,11 +12,12 @@ public class DeptDTOAssembler {
 		
 		return Dept.builder()
 				.deptCode(dto.getDeptCode())
-				.deptName(dto.getDeptName())
+				.deptNameKorean(dto.getDeptName())
 				.parentDept(parentDept)
 				.fromDate(dto.getFromDate())
 				.toDate(dto.getToDate())
 				.seq(dto.getSeq())
+				.parentDept(parentDept)
 				.build();
 	}
 	
@@ -25,8 +26,12 @@ public class DeptDTOAssembler {
 		if (dept == null)
 			throw new IllegalArgumentException("Dept 엔티티가 존재하지 않습니다.");
 		
-		dept.deptName 	= nvl(dto.getDeptName(), 	dept.deptName);		
-		dept.toDate		= nvl(dto.getToDate(),		dept.toDate);		
+		dept.deptNameKorean 	= nvl(dto.getDeptName(), 	dept.deptNameKorean);		
+		dept.toDate		= nvl(dto.getToDate(),		dept.toDate);
+		
+		if (parentDept != null) {
+			dept.parentDept = parentDept; 
+		}
 		
 		return dept;
 	}	
@@ -39,7 +44,7 @@ public class DeptDTOAssembler {
 								.modifiedDt(dept.getModifiedDt())
 								.modifiedBy(dept.getModifiedBy())
 								.deptCode(dept.deptCode)
-								.deptName(dept.deptName)													
+								.deptName(dept.deptNameKorean)													
 								.fromDate(dept.fromDate)
 								.toDate(dept.toDate)
 								.build();		

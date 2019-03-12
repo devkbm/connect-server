@@ -11,7 +11,7 @@ create table if not exists COM.COMUSER (
     PASS_NON_EXPIRED_YN	BOOLEAN			NOT NULL	COMMENT '비밀번호만료여부',
     ENABLED_YN			BOOLEAN			NOT NULL	COMMENT '사용여부',
 	constraint pk_comuser primary key(USER_ID)
-);
+) COMMENT = '사용자관리';
 
 create table if not exists COM.COMAUTHORITY (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
@@ -21,7 +21,7 @@ create table if not exists COM.COMAUTHORITY (
     AUTHORITY_NAME		VARCHAR(50)		NOT NULL	COMMENT '권한명',
     DESCRIPTION			VARCHAR(500)	NULL		COMMENT '권한설명',
 	constraint pk_comauthority primary key(AUTHORITY_NAME)
-);
+) COMMENT = '권한관리';
 
 create table if not exists COM.COMUSERAUTHORITY (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
@@ -33,7 +33,7 @@ create table if not exists COM.COMUSERAUTHORITY (
 	constraint pk_comuserauthority 	primary key(USER_ID, AUTHORITY_NAME),
 	constraint fk_comuserauthority1	foreign key(USER_ID) references COMUSER(USER_ID),
 	constraint fk_comuserauthority2	foreign key(AUTHORITY_NAME) references COMAUTHORITY(AUTHORITY_NAME)
-);
+) COMMENT = '사용자권한매핑관리';
 
 create table if not exists COM.COMPROGRAM (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
@@ -45,7 +45,7 @@ create table if not exists COM.COMPROGRAM (
     URL					VARCHAR(500)	NULL		COMMENT 'URL',
     DESCRIPTION			VARCHAR(500)	NULL		COMMENT '설명',
 	constraint pk_comprogram	primary key(PROGRAM_CODE)
-);
+) COMMENT = '프로그램관리';
 
 
 create table if not exists COM.COMMENUGROUP (
@@ -57,7 +57,7 @@ create table if not exists COM.COMMENUGROUP (
     MENU_GROUP_NAME		VARCHAR(50)		NOT NULL	COMMENT '메뉴그룹명',
     DESCRIPTION			VARCHAR(500)	NULL		COMMENT '설명',
 	constraint pk_commenugroup	primary key(MENU_GROUP_CODE)
-);
+) COMMENT = '메뉴그룹관리';
 
 create table if not exists COM.COMMENU (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
@@ -76,7 +76,7 @@ create table if not exists COM.COMMENU (
 	constraint fk_commenu1	 	foreign key(P_MENU_CODE) references COMMENU(MENU_CODE),
 	constraint fk_commenu2	 	foreign key(MENU_GROUP_CODE) references COMMENUGROUP(MENU_GROUP_CODE),
 	constraint fk_commenu3 		foreign key(PROGRAM_CODE) references COMPROGRAM(PROGRAM_CODE)
-);
+) COMMENT = '메뉴관리';
 
 create table if not exists COM.COMUSERMENUGROUP (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
@@ -88,7 +88,7 @@ create table if not exists COM.COMUSERMENUGROUP (
 	constraint pk_comusermenugroup 		primary key(USER_ID, MENU_GROUP_CODE),
 	constraint fk_comusermenugroup1 	foreign key(USER_ID) references COMUSER(USER_ID),
 	constraint fk_comusermenugroup2 	foreign key(MENU_GROUP_CODE) references COMMENUGROUP(MENU_GROUP_CODE)
-);
+) COMMENT = '사용자메뉴그룹매핑관리';
 
 create table if not exists COM.COMFILEINFO (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
@@ -105,7 +105,7 @@ create table if not exists COM.COMFILEINFO (
     FILE_SIZE			INT				NULL 		COMMENT '파일사이즈',
     DOWNLOAD_CNT		INT				NULL 		COMMENT '다운로드횟수',
 	constraint pk_comfileinfo primary key(PK_FILE)
-);
+) COMMENT = '공통파일관리';
 
 
 create table if not exists COM.COMCODE (
@@ -127,9 +127,25 @@ create table if not exists COM.COMCODE (
    	CODE_LENGTH			INT				NULL		COMMENT '코드길이',
 	CMT					VARCHAR(2000) 	NULL 		COMMENT '비고',
 	constraint pk_comcode primary key(CODE_ID)	
-);
+) COMMENT = '공통코드관리';
 
-
+create table if not exists COM.COMDEPT (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    DEPT_CD				VARCHAR(10) 	NOT NULL 	COMMENT '부서코드',
+    P_DEPT_CD			VARCHAR(255)	NULL 		COMMENT '상위부서코드',
+    DEPT_NM_KOR			VARCHAR(255) 	NOT NULL 	COMMENT '부서명(한글)',
+    DEPT_ABBR_KOR		VARCHAR(255) 	NULL 		COMMENT '부서약어(한글)',
+    DEPT_NM_ENG			VARCHAR(255) 	NULL 		COMMENT '부서명(영어)',
+    DEPT_ABBR_ENG		VARCHAR(255) 	NULL 		COMMENT '부서약어(영어)',
+	FROM_DT				DATE			NULL		COMMENT '시작일',
+	TO_DT				DATE			NULL		COMMENT '종료일',	
+	PRT_SEQ				INT				NULL		COMMENT '출력순서',		
+	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
+	constraint pk_comdept primary key(DEPT_CD)	
+) COMMENT = '통합부서관리';
 
 
 

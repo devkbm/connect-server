@@ -19,6 +19,7 @@ import com.like.common.domain.AuditEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -38,12 +39,21 @@ public class Dept extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = -969524977226888898L;
 
 	@Id
-	@Column(name = "dept_cd")
+	@Column(name = "dept_cd", nullable = false)
 	String deptCode;
 
-	@Column(name = "dept_nm")
-	String deptName;
+	@Column(name = "dept_nm_kor")
+	String deptNameKorean;
 
+	@Column(name = "dept_abbr_kor")
+	String deptAbbreviationKorean;
+
+	@Column(name = "dept_nm_eng")
+	String deptNameEnglish;
+
+	@Column(name = "dept_abbr_eng")
+	String deptAbbreviationEnglish;
+	
 	@Column(name = "from_dt")
 	LocalDate fromDate;
 
@@ -54,20 +64,11 @@ public class Dept extends AuditEntity implements Serializable {
 	@Column(name="prt_seq")
 	int seq = 0;
 	
+	@Column(name = "cmt")
+	String comment;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "p_dept_cd")
-	Dept parentDept;
-
-	public void changeDeptName(String deptName) {
-		this.deptName = deptName;
-	}
-
-	public void closeDept(LocalDate toDate) {
-		this.toDate = toDate;
-	}
-	
-	public void changeParentDept(Dept parentDept) {
-		this.parentDept = parentDept;
-	}
+	Dept parentDept;	
 
 }
