@@ -10,8 +10,10 @@ import org.springframework.util.StringUtils;
 import com.like.dept.domain.model.QDept;
 import com.querydsl.core.BooleanBuilder;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class DeptDTO {
 	
@@ -44,6 +46,8 @@ public class DeptDTO {
 	}
 	
 	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
 	@Builder	
 	public static class DeptSave implements Serializable {
 		
@@ -62,14 +66,22 @@ public class DeptDTO {
 		@NotEmpty(message="부서코드는 필수 입력 사항입니다.")
 		String deptCode;		
 		
-		@NotEmpty(message="부서명은 필수 입력 사항입니다.")
-		String deptName;		
+		@NotEmpty(message="부서명(한글)은 필수 입력 사항입니다.")
+		String deptNameKorean;		
+		
+		String deptAbbreviationKorean;
+		
+		String deptNameEnglish;
+		
+		String deptAbbreviationEnglish;
 							
 		LocalDate fromDate;
 				
 		LocalDate toDate;
 		
 		Integer seq;
+		
+		String comment;
 	}
 	
 	

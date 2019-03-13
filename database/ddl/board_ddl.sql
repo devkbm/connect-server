@@ -16,7 +16,7 @@ CREATE TABLE GRWBOARD (
 	ARTICLE_CNT		INT				NULL		COMMENT '게시글 갯수(페이징에 사용)',
 	SEQ				INT				NULL		COMMENT '순번',	
     constraint pk_board 	primary key(PK_BOARD)    
-);
+) COMMENT = '게시판관리';
 
 DROP TABLE IF EXISTS GRWARTICLE;
 
@@ -40,7 +40,7 @@ CREATE TABLE GRWARTICLE (
 	HASH_METHOD		VARCHAR(20)		NULL		COMMENT '암호방식',
     constraint pk_article 	primary key(PK_ARTICLE),
     constraint fk_board 	foreign key(FK_BOARD) references GRWBOARD(PK_BOARD)
-);
+) COMMENT = '게시글관리';
 
 
 DROP TABLE IF EXISTS GRWARTICLECHECK;
@@ -54,7 +54,7 @@ CREATE TABLE GRWARTICLECHECK (
 	FK_ARTICLE 		INT 			NOT NULL	COMMENT '게시글 외래키',			
     constraint pk_articlecheck 	primary key(PK_ARTICLECHECK),
     constraint fk_article 	foreign key(FK_ARTICLE) references GRWARTICLE(PK_ARTICLE)
-);
+) COMMENT = '게시글조회관리';
 
 
 CREATE TABLE GRWARTICLEFILE (
@@ -66,4 +66,4 @@ CREATE TABLE GRWARTICLEFILE (
 	PK_ARTICLE 		INT 			NOT NULL	COMMENT '게시글 키',
 	PK_FILE			VARCHAR(40) 	NOT NULL 	COMMENT '첨부파일 키',	
 	constraint pk_grwarticlefiles 	primary key(PK_ARTICLE_FILE)	
-);
+) COMMENT = '게시글첨부관리';
