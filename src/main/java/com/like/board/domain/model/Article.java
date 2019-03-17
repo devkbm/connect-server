@@ -20,6 +20,7 @@ import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.board.domain.model.enums.PasswordType;
@@ -28,8 +29,8 @@ import com.like.file.domain.model.FileInfo;
 
 @Slf4j
 @ToString
-@JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks"})
+@JsonAutoDetect(fieldVisibility=Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
