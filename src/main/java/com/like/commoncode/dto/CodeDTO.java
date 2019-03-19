@@ -103,11 +103,13 @@ public class CodeDTO {
 		
 		boolean useYn;
 		
-		LocalDate fromDate;
+		LocalDateTime fromDate;
 			
-		LocalDate toDate;			
+		LocalDateTime toDate;			
 		
-		int seq;
+		Integer hierarchyLevel;
+				
+		Integer seq;
 			
 		boolean fixedLengthYn;
 		
