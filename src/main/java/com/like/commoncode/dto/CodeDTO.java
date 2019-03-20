@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.commoncode.domain.model.QCode;
 import com.like.commoncode.domain.repository.CodeExpression;
 import com.querydsl.core.BooleanBuilder;
@@ -121,6 +122,7 @@ public class CodeDTO {
 	
 	@Data	
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)	
+	
 	public static class CodeHierarchy implements Serializable {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
@@ -154,7 +156,18 @@ public class CodeDTO {
 		String cmt;
 		
 		List<CodeDTO.CodeHierarchy> children = new ArrayList<>();
-
+		
+		
+		/**
+		 * NzTreeNode property 
+		 */
+		String title;
+		
+		String key;
+				
+		@JsonProperty(value="isLeaf") 
+		boolean isLeaf;
+		
 		@QueryProjection
 		public CodeHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedDt, String modifiedBy,
 				String id, String parentId, String code, String codeName, String codeNameAbbreviation, boolean useYn,
@@ -174,6 +187,10 @@ public class CodeDTO {
 			this.toDate = toDate;
 			this.seq = seq;
 			this.cmt = cmt;
+			
+			this.title 	= this.codeName;
+			this.key  	= this.id;
+			//this.isLeaf	= this.children.isEmpty() ? true : false;			
 		}
 		
 	}

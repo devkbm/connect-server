@@ -123,9 +123,11 @@ public class CodeJpaRepository implements CommonCodeRepository {
 			children = getChildrenCodeList(code.getId());
 			
 			if (children.isEmpty()) {
+				code.setLeaf(true);
 				continue;
 			} else {
 				code.setChildren(children);
+				code.setLeaf(false);
 				
 				// 재귀 호출
 				addChildrenCodeList(children);
