@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.WebResource;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
 @Service
@@ -41,12 +41,12 @@ public class MenuCommandService {
 		menuJpaRepository.deleteMenu(menuCode);
 	}
 	
-	public void saveProgram(Program program) {				
-		menuJpaRepository.saveProgram(program);
+	public void saveWebResource(WebResource resource) {				
+		menuJpaRepository.saveResource(resource);
 	}
 	
-	public void deleteProgram(String programCode) {
-		menuJpaRepository.deleteProgram(programCode);
+	public void deleteWebResource(String resourceCode) {
+		menuJpaRepository.deleteResource(resourceCode);
 	}
 	
 }

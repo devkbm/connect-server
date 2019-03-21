@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
-import com.like.menu.dto.ProgramDTO;
+import com.like.menu.dto.WebResourceDTO;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,19 +28,22 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true)
 @Entity
-@Table(name = "comprogram")
+@Table(name = "comresource")
 @EntityListeners(AuditingEntityListener.class)
-public class Program extends AuditEntity implements Serializable{
+public class WebResource extends AuditEntity implements Serializable{
 	
 	private static final long serialVersionUID = -3215673518471434299L;
 
 	@Id
-	@Column(name="program_code")
-	private String programCode;
+	@Column(name="resource_code")
+	private String resourceCode;
 	
-	@Column(name="program_name")
-	private String programName; 
+	@Column(name="resource_name")
+	private String resourceName; 
 		
+	@Column(name="resource_type")
+	private String resourceType; 
+	
 	@Column(name="url")
 	private String url;
 	
@@ -48,17 +51,18 @@ public class Program extends AuditEntity implements Serializable{
 	private String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="program", fetch=FetchType.LAZY)          
+	@OneToMany(mappedBy="resource", fetch=FetchType.LAZY)          
     List<Menu> menuList = new ArrayList<Menu>();
 		
-
 	@Builder
-	public Program(String programCode, String programName, String url, String description) {		
-		this.programCode = programCode;
-		this.programName = programName;
+	public WebResource(String resourceCode, String resourceName, String resourceType, String url, String description) {
+		super();
+		this.resourceCode = resourceCode;
+		this.resourceName = resourceName;
+		this.resourceType = resourceType;
 		this.url = url;
 		this.description = description;
-	}
+	}	
 	
 	public void setMenuList(List<Menu> menuList) {
 		this.menuList = menuList;
@@ -67,14 +71,16 @@ public class Program extends AuditEntity implements Serializable{
 	public void registerMenu(Menu menu) {
 		this.menuList.add(menu);
 	}
+
 	
-	public Program updateEntity(ProgramDTO.ProgramSave dto) {
+	
+	/*public WebResource updateEntity(ProgramDTO.ProgramSave dto) {
 		this.programCode 	= dto.getProgramCode() != null ? dto.getProgramCode() : this.programCode ;
 		this.programName 	= dto.getProgramName() != null ? dto.getProgramName() : this.programName ;
 		this.url			= dto.getUrl() != null ? dto.getUrl() : this.url ;
 		this.description	= dto.getDescription() != null ? dto.getDescription() : this.description ;
 		
 		return this;
-	}
+	}*/
 			
 }

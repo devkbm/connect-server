@@ -19,7 +19,7 @@ public class CodeExpression {
 		
 		DateTimeExpression<LocalDateTime> now = DateTimeExpression.currentTimestamp(LocalDateTime.class);
 				
-		return code.useYn.eq(true).and(now.between(code.fromDate, code.toDate));
+		return now.between(code.fromDate, code.toDate);
 	}
 	
 	@QueryDelegate(Code.class)

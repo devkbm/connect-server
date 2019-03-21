@@ -49,11 +49,7 @@ public class Code extends AuditEntity implements Serializable {
 	String codeName;
 	
 	@Column(name="code_name_abbr")
-	String codeNameAbbreviation;	
-	
-	@Builder.Default
-	@Column(name="use_yn")
-	boolean useYn = true;
+	String codeNameAbbreviation;		
 	
 	@Column(name="from_dt")
 	LocalDateTime fromDate;
@@ -84,14 +80,13 @@ public class Code extends AuditEntity implements Serializable {
 	Code parentCode;
 
 	@Builder
-	public Code(String code, String codeName, String codeNameAbbreviation, boolean useYn,
+	public Code(String code, String codeName, String codeNameAbbreviation, 
 			LocalDateTime fromDate, LocalDateTime toDate, int seq, boolean fixedLengthYn,
 			Integer codeLength, String cmt, Code parentCode) {
 		
 		this.code = code;
 		this.codeName = codeName;
-		this.codeNameAbbreviation = codeNameAbbreviation;
-		this.useYn = useYn;
+		this.codeNameAbbreviation = codeNameAbbreviation;		
 		this.fromDate = fromDate;
 		this.toDate = toDate;		
 		this.seq = seq;
@@ -122,6 +117,14 @@ public class Code extends AuditEntity implements Serializable {
 		} else {
 			this.hierarchyLevel = this.parentCode.hierarchyLevel + 1;
 		}
+	}
+	
+	public Code getParentCode() {
+		return this.parentCode;
+	}
+	
+	public String getId() {
+		return this.id;
 	}
 					
 }

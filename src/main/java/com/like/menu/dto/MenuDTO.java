@@ -73,7 +73,7 @@ public class MenuDTO {
 				
 		private long level;
 		
-		private String program;
+		private String resource;
 							
 		public MenuSave() {}
 		
@@ -89,7 +89,7 @@ public class MenuDTO {
 			this.menuType		= menu.getMenuType().toString();				
 			this.sequence 		= menu.getSequence();
 			this.level 			= menu.getLevel();
-			this.program 		= menu.getProgram() == null ? "" : menu.getProgram().getProgramCode();
+			this.resource 		= menu.getResource() == null ? "" : menu.getResource().getResourceCode();
 		}		
 		
 	}

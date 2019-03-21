@@ -90,7 +90,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 		return queryFactory
 				.select(Projections.constructor(CodeHierarchy.class,
 						qCode._super.createdDt, qCode._super.createdBy, qCode._super.modifiedDt, qCode._super.modifiedBy,
-						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation, qCode.useYn,
+						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation,
 						qCode.fromDate, qCode.toDate, qCode.seq, qCode.cmt))
 				.from(qCode)
 				.where(qCode.isRootNode()
@@ -102,7 +102,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 		return queryFactory
 				.select(Projections.constructor(CodeHierarchy.class,
 						qCode._super.createdDt, qCode._super.createdBy, qCode._super.modifiedDt, qCode._super.modifiedBy,
-						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation, qCode.useYn,
+						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation,
 						qCode.fromDate, qCode.toDate, qCode.seq, qCode.cmt))
 				.from(qCode)
 				.where(qCode.parentCode.id.eq(parentId)

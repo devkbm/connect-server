@@ -7,17 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.WebResource;
 import com.like.menu.domain.model.QMenu;
 import com.like.menu.domain.model.QMenuGroup;
-import com.like.menu.domain.model.QProgram;
+import com.like.menu.domain.model.QWebResource;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.dto.MenuDTO;
 import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.ProgramDTO;
+import com.like.menu.dto.WebResourceDTO;
 import com.like.menu.infra.jparepository.springdata.JpaMenu;
 import com.like.menu.infra.jparepository.springdata.JpaMenuGroup;
-import com.like.menu.infra.jparepository.springdata.JpaProgram;
+import com.like.menu.infra.jparepository.springdata.JpaWebResource;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -40,11 +40,11 @@ public class MenuJpaRepository implements MenuRepository {
 	private JpaMenu jpaMenu;
 	
 	@Autowired
-	private JpaProgram jpaProgram;
+	private JpaWebResource jpaWebResource;
 	
 	private final QMenuGroup qMenuGroup = QMenuGroup.menuGroup;	
 	private final QMenu qMenu = QMenu.menu;	
-	private final QProgram qProgram = QProgram.program;
+	private final QWebResource qWebResource = QWebResource.webResource;
 
 	@Override
 	public MenuGroup getMenuGroup(String menuGroupCode) {
@@ -108,9 +108,9 @@ public class MenuJpaRepository implements MenuRepository {
 		JPAQuery<MenuDTO.MenuHierarchy> query = queryFactory
 				.select(Projections.constructor(MenuDTO.MenuHierarchy.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
+											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qWebResource.url ,isLeaf))
 				.from(qMenu)
-					.leftJoin(qMenu.program ,qProgram)					
+					.leftJoin(qMenu.resource, qWebResource)					
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
 					.and(qMenu.parentMenuCode.isNull()));													
 				
@@ -126,9 +126,9 @@ public class MenuJpaRepository implements MenuRepository {
 		JPAQuery<MenuDTO.MenuHierarchy> query = queryFactory
 				.select(Projections.constructor(MenuDTO.MenuHierarchy.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qProgram.url ,isLeaf))
+											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qWebResource.url, isLeaf))
 				.from(qMenu)				
-					.leftJoin(qMenu.program ,qProgram)
+					.leftJoin(qMenu.resource, qWebResource)
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
 					.and(qMenu.parentMenuCode.eq(parentMenuCode)));
 																		
@@ -166,27 +166,27 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public Program getProgram(String programCode) {		
-		return jpaProgram.findOne(programCode);
+	public WebResource getResource(String resourceCode) {		
+		return jpaWebResource.findOne(resourceCode);
 	}
 
 	@Override
-	public List<Program> getProgramList(ProgramDTO.QueryCondition condition) {
+	public List<WebResource> getResourceList(WebResourceDTO.QueryCondition condition) {
 					
 		return queryFactory
-				.selectFrom(qProgram)
+				.selectFrom(qWebResource)
 				.where(condition.getBooleanBuilder())
 				.fetch();					
 	}
 
 	@Override
-	public void saveProgram(Program program) {		
-		jpaProgram.save(program);		
+	public void saveResource(WebResource resource) {		
+		jpaWebResource.save(resource);		
 	}
 
 	@Override
-	public void deleteProgram(String programCode) {
-		jpaProgram.delete(programCode);		
+	public void deleteResource(String resourceCode) {
+		jpaWebResource.delete(resourceCode);		
 	}					
 	
 }

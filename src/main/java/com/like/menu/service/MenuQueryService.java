@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.WebResource;
 import com.like.menu.dto.MenuDTO;
 import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.ProgramDTO;
+import com.like.menu.dto.WebResourceDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,11 +55,11 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenuHierarchyDTO(rootList);
 	}
 	
-	public Program getProgram(String programCode) {
-		return menuJpaRepository.getProgram(programCode);
+	public WebResource getResource(String resourceCode) {
+		return menuJpaRepository.getResource(resourceCode);
 	}
 	
-	public List<Program> getProgramList(ProgramDTO.QueryCondition condition) {
-		return menuJpaRepository.getProgramList(condition);
+	public List<WebResource> getResourceList(WebResourceDTO.QueryCondition condition) {
+		return menuJpaRepository.getResourceList(condition);
 	}
 }

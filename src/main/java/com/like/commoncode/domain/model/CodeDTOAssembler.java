@@ -14,13 +14,13 @@ public class CodeDTOAssembler {
 				.parentCode(parentCode)
 				.code(dto.getCode())
 				.codeName(dto.getCodeName())
-				.codeNameAbbreviation(dto.getCodeNameAbbreviation())
-				.useYn(dto.isUseYn())
+				.codeNameAbbreviation(dto.getCodeNameAbbreviation())				
 				.fromDate(dto.getFromDate())
 				.toDate(dto.getToDate())
 				.seq(dto.getSeq())
 				.fixedLengthYn(dto.isFixedLengthYn())
 				.codeLength(dto.getCodeLength())
+				.cmt(dto.getCmt())
 				.build();
 	}
 	
@@ -38,22 +38,24 @@ public class CodeDTOAssembler {
 	
 	public static CodeDTO.CodeSave convertDTO(Code entity) {					
 		
+		Code parent = entity.getParentCode();
+						
 		CodeSave dto = CodeSave.builder()
 								.createdDt(entity.getCreatedDt())
 								.createdBy(entity.getCreatedBy())
 								.modifiedDt(entity.getModifiedDt())
 								.modifiedBy(entity.getModifiedBy())
 								.id(entity.id)
-								.parentId(entity.parentCode == null ? null : entity.parentCode.id)
+								.parentId(parent == null ? null : parent.getId())
 								.code(entity.code)
 								.codeName(entity.codeName)
-								.codeNameAbbreviation(entity.codeNameAbbreviation)
-								.useYn(entity.useYn)
+								.codeNameAbbreviation(entity.codeNameAbbreviation)								
 								.fromDate(entity.fromDate)
 								.toDate(entity.toDate)
 								.seq(entity.seq)
 								.fixedLengthYn(entity.fixedLengthYn)
 								.codeLength(entity.codeLength)
+								.cmt(entity.cmt)
 								.build();		
 		return dto;
 	}

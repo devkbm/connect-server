@@ -22,12 +22,12 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.WebResource;
 import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.dto.EnumDTO;
 import com.like.menu.dto.MenuDTO;
 import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.ProgramDTO;
+import com.like.menu.dto.WebResourceDTO;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -188,10 +188,10 @@ public class MenuController {
 						
 		if ( menu == null ) {								
 			MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());						
-			Program program = null;
+			WebResource program = null;
 			
-			if (StringUtils.hasText(dto.getProgram())) {
-				program = menuQueryService.getProgram(dto.getProgram());;
+			if (StringUtils.hasText(dto.getResource())) {
+				program = menuQueryService.getResource(dto.getResource());;
 			}					
 			
 			menu = new Menu(dto.getMenuCode(), 
@@ -205,8 +205,8 @@ public class MenuController {
 		} else {
 			menu.updateEntity(dto);
 			
-			if (dto.getProgram() != null) {
-				Program program = menuQueryService.getProgram(dto.getProgram());
+			if (dto.getResource() != null) {
+				WebResource program = menuQueryService.getResource(dto.getResource());
 				menu.registerProgram(program);
 			}
 		}			
@@ -216,7 +216,7 @@ public class MenuController {
 		return WebControllerUtil.getResponse(null,
 				menu != null ? 1 : 0, 
 				true, 
-				String.format("%d 건 저장되었습니다.", menu != null ? 1 : 0), 
+				String.format("%d 건 저장되었습니다.", menu != null ? 1 : 0),
 				HttpStatus.OK);
 	}
 	
@@ -233,10 +233,10 @@ public class MenuController {
 	}
 	
 	
-	@GetMapping("/program")
-	public ResponseEntity<?> getProgramList(ProgramDTO.QueryCondition condition) {							 			
+	@GetMapping("/webresource")
+	public ResponseEntity<?> getWebResourceList(WebResourceDTO.QueryCondition condition) {							 			
 		
-		List<Program> list = menuQueryService.getProgramList(condition);
+		List<WebResource> list = menuQueryService.getResourceList(condition);
 										
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -245,47 +245,48 @@ public class MenuController {
 				HttpStatus.OK); 
 	}
 	
-	@GetMapping("/program/{code}")
-	public ResponseEntity<?> getProgram(
-			@PathVariable(value="code") String programCode) {				
+	@GetMapping("/webresource/{code}")
+	public ResponseEntity<?> getResource(@PathVariable(value="code") String code) {				
 		
-		Program program = menuQueryService.getProgram(programCode); 							
+		WebResource resource = menuQueryService.getResource(code); 							
 		
-		return WebControllerUtil.getResponse(program, 
-				program != null ? 1 : 0, 
+		return WebControllerUtil.getResponse(resource, 
+				resource != null ? 1 : 0, 
 				true, 
-				String.format("%d 건 조회되었습니다.", program != null ? 1 : 0), 
+				String.format("%d 건 조회되었습니다.", resource != null ? 1 : 0), 
 				HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/program/{code}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveProgram(@RequestBody @Valid ProgramDTO.ProgramSave dto, BindingResult result) throws Exception {
+	@RequestMapping(value={"/webresource"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveResource(@RequestBody @Valid WebResourceDTO.ResourceSave dto, BindingResult result) throws Exception {
 										
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 
 		
-		Program program = menuQueryService.getProgram(dto.getProgramCode());							
+		WebResource resource = menuQueryService.getResource(dto.getResourceCode());							
 		
-		if ( program == null ) {
-			program = new Program(dto.getProgramCode(), dto.getProgramName(), dto.getUrl(), dto.getDescription());					
-		} else {
-			program.updateEntity(dto);
-		}
+		resource = WebResource.builder()
+								.resourceCode(dto.getResourceCode())
+								.resourceName(dto.getResourceName())
+								.resourceType(dto.getResourceType())
+								.url(dto.getUrl())
+								.description(dto.getDescription())
+								.build();
 					
-		menuCommandService.saveProgram(program);																						
+		menuCommandService.saveWebResource(resource);																						
 										 					
 		return WebControllerUtil.getResponse(null,
-				program != null ? 1 : 0, 
+				resource != null ? 1 : 0, 
 				true, 
-				String.format("%d 건 저장되었습니다.", program != null ? 1 : 0), 
+				String.format("%d 건 저장되었습니다.", resource != null ? 1 : 0), 
 				HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/program/{code}")
-	public ResponseEntity<?> delProgram(@PathVariable(value="code") String programCode) {				
+	@DeleteMapping("/webresource/{code}")
+	public ResponseEntity<?> delResource(@PathVariable(value="code") String code) {				
 												
-		menuCommandService.deleteProgram(programCode);							
+		menuCommandService.deleteWebResource(code);							
 		
 		return WebControllerUtil.getResponse(null, 
 				1, 

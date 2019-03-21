@@ -6,23 +6,25 @@ import java.time.LocalDateTime;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
-import com.like.menu.domain.model.QProgram;
+import com.like.menu.domain.model.QWebResource;
 import com.querydsl.core.BooleanBuilder;
 
 import lombok.Data;
 
-public class ProgramDTO {
+public class WebResourceDTO {
 
 	@Data
 	public static class QueryCondition implements Serializable {
 		
 		private static final long serialVersionUID = 698694617356322910L;
 
-		private final QProgram qProgram = QProgram.program;
+		private final QWebResource qWebResource = QWebResource.webResource;
 		
-		String programCode;
+		String resourceCode;
 		
-		String programName;
+		String resourceName;
+		
+		String resourceType;
 		
 		String url;
 		
@@ -31,20 +33,24 @@ public class ProgramDTO {
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
-			if (StringUtils.hasText(this.programCode)) {
-				builder.and(qProgram.programCode.like("%"+this.programCode+"%"));
+			if (StringUtils.hasText(this.resourceCode)) {
+				builder.and(qWebResource.resourceCode.like("%"+this.resourceCode+"%"));
 			}
 			
-			if (StringUtils.hasText(this.programName)) {
-				builder.and(qProgram.programName.like("%"+this.programName+"%"));
+			if (StringUtils.hasText(this.resourceName)) {
+				builder.and(qWebResource.resourceName.like("%"+this.resourceName+"%"));
+			}
+			
+			if (StringUtils.hasText(this.resourceType)) {
+				builder.and(qWebResource.resourceType.like("%"+this.resourceType+"%"));
 			}
 			
 			if (StringUtils.hasText(this.url)) {
-				builder.and(qProgram.url.like("%"+this.url+"%"));
+				builder.and(qWebResource.url.like("%"+this.url+"%"));
 			}
 			
 			if (StringUtils.hasText(this.description)) {
-				builder.and(qProgram.description.like("%"+this.description+"%"));
+				builder.and(qWebResource.description.like("%"+this.description+"%"));
 			}
 			
 			return builder;
@@ -52,7 +58,7 @@ public class ProgramDTO {
 	}
 	
 	@Data
-	public static class ProgramSave implements Serializable {
+	public static class ResourceSave implements Serializable {
 				
 		private static final long serialVersionUID = -1400051159309726788L;
 
@@ -65,10 +71,13 @@ public class ProgramDTO {
 		String modifiedBy;
 		
 		@NotEmpty
-		String programCode;
+		String resourceCode;
 			
 		@NotEmpty
-		String programName; 
+		String resourceName; 
+		
+		@NotEmpty
+		String resourceType;
 				
 		@NotEmpty
 		String url;

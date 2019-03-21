@@ -68,9 +68,7 @@ public class CodeDTO {
 			
 			if (this.isUse) {																						
 				builder.and(qCode.enabled());											
-			} else {
-				builder.and(qCode.useYn.eq(this.isUse));
-			}
+			} 
 			
 			return builder;
 		}
@@ -78,7 +76,7 @@ public class CodeDTO {
 	
 	@Data
 	@Builder
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class CodeSave implements Serializable {
 				
@@ -101,9 +99,7 @@ public class CodeDTO {
 		String codeName;
 			
 		String codeNameAbbreviation;		
-		
-		boolean useYn;
-		
+						
 		LocalDateTime fromDate;
 			
 		LocalDateTime toDate;			
@@ -143,9 +139,7 @@ public class CodeDTO {
 			
 		String codeName;
 			
-		String codeNameAbbreviation;		
-		
-		boolean useYn;
+		String codeNameAbbreviation;					
 		
 		LocalDateTime fromDate;
 			
@@ -170,7 +164,7 @@ public class CodeDTO {
 		
 		@QueryProjection
 		public CodeHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedDt, String modifiedBy,
-				String id, String parentId, String code, String codeName, String codeNameAbbreviation, boolean useYn,
+				String id, String parentId, String code, String codeName, String codeNameAbbreviation, 
 				LocalDateTime fromDate, LocalDateTime toDate, int seq, String cmt) {
 			super();
 			this.createdDt = createdDt;
@@ -182,13 +176,12 @@ public class CodeDTO {
 			this.code = code;
 			this.codeName = codeName;
 			this.codeNameAbbreviation = codeNameAbbreviation;
-			this.useYn = useYn;
 			this.fromDate = fromDate;
 			this.toDate = toDate;
 			this.seq = seq;
 			this.cmt = cmt;
 			
-			this.title 	= this.codeName;
+			this.title 	= this.codeName + " - " + this.code;
 			this.key  	= this.id;
 			//this.isLeaf	= this.children.isEmpty() ? true : false;			
 		}

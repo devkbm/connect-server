@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.file.service.FileService;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.WebResource;
 import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
@@ -47,8 +47,15 @@ public class MenuServiceTest {
 		Menu menu = new Menu("MENU", "테스트메뉴", null, MenuType.ITEM, 0L, 0L, null, null);
 		menuCommandService.saveMenu(menu, menuGroup.getMenuGroupCode());
 					
-		Program program = new Program("Program","테스트프로그램","/home","테스트프로그램입니다.");		
-		menuCommandService.saveProgram(program);		
+		WebResource program = WebResource.builder()
+											.resourceCode("Program")
+											.resourceName("테스트프로그램")
+											.resourceCode("TYPE")
+											.url("/home")
+											.description("테스트프로그램입니다.")
+											.build();
+																							
+		menuCommandService.saveWebResource(program);		
     } 
 	
 	@Test	
@@ -99,21 +106,23 @@ public class MenuServiceTest {
 	@Test	
 	public void test03_프로그램등록및조회() throws Exception {	
 		//Given
-		Program program = Program.builder()
-								.programCode("Program")
-								.programName("테스트프로그램")
+		WebResource program = WebResource.builder()
+								.resourceCode("Program")
+								.resourceName("테스트프로그램")
+								.resourceType("TYPE")
 								.url("/home")
 								.description("테스트프로그램입니다.")
 								.build();			
 		
 		//When
-		menuCommandService.saveProgram(program);
+		menuCommandService.saveWebResource(program);
 		
 		//Then
-		Program test = menuQueryService.getProgram(program.getProgramCode());
+		WebResource test = menuQueryService.getResource(program.getResourceCode());
 		
-		assertThat(test.getProgramCode()).isEqualTo("Program");
-		assertThat(test.getProgramName()).isEqualTo("테스트프로그램");
+		assertThat(test.getResourceCode()).isEqualTo("Program");
+		assertThat(test.getResourceName()).isEqualTo("테스트프로그램");
+		assertThat(test.getResourceType()).isEqualTo("TYPE");
 		assertThat(test.getUrl()).isEqualTo("/home");
 		assertThat(test.getDescription()).isEqualTo("테스트프로그램입니다.");		
 	}

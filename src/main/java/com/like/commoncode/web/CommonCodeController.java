@@ -60,7 +60,21 @@ public class CommonCodeController {
 											true, 
 											String.format("%d 건 조회되었습니다.", list.size()), 
 											HttpStatus.OK);
-	}	
+	}
+	
+	@GetMapping("/common/code/{id}") 
+	public ResponseEntity<?> getCodeList(@PathVariable String id) {
+								  						 					
+		Code entity = commonCodeQueryService.getCode(id);
+		
+		CodeDTO.CodeSave dto = CodeDTOAssembler.convertDTO(entity);	
+		
+		return WebControllerUtil.getResponse(dto, 
+											1, 
+											true, 
+											String.format("%d 건 조회되었습니다.", 1), 
+											HttpStatus.OK);
+	}
 	
 	
 	@RequestMapping(value={"/common/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 

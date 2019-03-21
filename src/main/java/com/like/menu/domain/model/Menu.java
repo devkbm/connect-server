@@ -69,8 +69,8 @@ public class Menu extends AuditEntity implements Serializable {
 	private MenuGroup menuGroup = new MenuGroup();
 	
 	@OneToOne(optional=true)
-	@JoinColumn(name = "program_code", nullable=true)
-	private Program program = new Program();
+	@JoinColumn(name = "resource_code", nullable=true)
+	private WebResource resource = new WebResource();
 		
 	@Builder
 	public Menu(String menuCode, 
@@ -80,7 +80,7 @@ public class Menu extends AuditEntity implements Serializable {
 				long sequence,
 				long level, 
 				MenuGroup menuGroup, 
-				Program program) {
+				WebResource resource) {
 		
 		this.menuCode = menuCode;
 		this.menuName = menuName;
@@ -89,15 +89,15 @@ public class Menu extends AuditEntity implements Serializable {
 		this.sequence = sequence;
 		this.level = level;
 		this.menuGroup = menuGroup;
-		this.program = program;
+		this.resource = resource;
 	}
 							
 	public void setMenuGroup(MenuGroup menuGroup) {
 		this.menuGroup = menuGroup;
 	}
 	
-	public void registerProgram(Program program) {
-		this.program = program;
+	public void registerProgram(WebResource resource) {
+		this.resource = resource;
 	}
 			
 	public Menu updateEntity(MenuDTO.MenuSave dto) {

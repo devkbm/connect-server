@@ -6,10 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.Program;
+import com.like.menu.domain.model.WebResource;
 import com.like.menu.dto.MenuDTO;
 import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.ProgramDTO;
+import com.like.menu.dto.WebResourceDTO;
 
 @Repository
 public interface MenuRepository {
@@ -36,12 +36,12 @@ public interface MenuRepository {
 	void deleteMenu(String menuCode);	
 	
 	
-	Program getProgram(String programCode);
+	WebResource getResource(String resouceCode);
 	
-	List<Program> getProgramList(ProgramDTO.QueryCondition condition);
+	List<WebResource> getResourceList(WebResourceDTO.QueryCondition condition);
 	
-	void saveProgram(Program program);
+	void saveResource(WebResource resource);
 	
-	void deleteProgram(String programCode);
+	void deleteResource(String resouceCode);
 	
 }
