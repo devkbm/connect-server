@@ -85,6 +85,10 @@ public class UserService implements UserDetailsService {
 		userDomainService.createUser(user);						
 	}
 	
+	public void saveUser(User user) {
+		userRepository.saveUser(user);
+	}
+	
 	/**
 	 * 사용자 정보를 삭제한다.
 	 * @param userId	사용자 아이디

@@ -1,5 +1,7 @@
 package com.like.user.domain.model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class UserDTOAssembler {
 		return entity;
 	}	
 	
-	public static UserDTO.UserSave convertDTO(User entity) {					
+	public static UserDTO.UserSave convertDTO(User entity) throws FileNotFoundException, IOException {					
 		
 		UserSave dto = UserSave.builder()
 								.createdDt(entity.getCreatedDt())
@@ -44,7 +46,8 @@ public class UserDTOAssembler {
 								.userId(entity.userId)
 								.name(entity.name)
 								.password(entity.password)
-								.enabled(entity.isEnabled)	
+								.enabled(entity.isEnabled)
+								.imageBase64(entity.getImageBase64())
 								.authorityList(entity.getAuthorityList()
 													.stream()
 													.map(auth -> auth.getAuthority())

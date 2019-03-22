@@ -74,6 +74,8 @@ public class UserDTO {
 		String name;
 			
 		String password;	
+		
+		String imageBase64;
 				
 		Boolean accountNonExpired;
 			

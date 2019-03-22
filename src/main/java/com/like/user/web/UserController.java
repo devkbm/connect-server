@@ -1,5 +1,7 @@
 package com.like.user.web;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +102,7 @@ public class UserController {
 	}
 		
 	@GetMapping(value={"/user/{id}"})
-	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) {
+	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) throws FileNotFoundException, IOException {
 						
 		User user = userService.getUser(userId);				
 		

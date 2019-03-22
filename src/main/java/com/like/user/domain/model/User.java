@@ -1,5 +1,7 @@
 package com.like.user.domain.model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +26,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
+import com.like.file.domain.model.FileInfo;
+import com.like.file.infra.LocalFileRepository;
 import com.like.menu.domain.model.MenuGroup;
 
 import lombok.AccessLevel;
@@ -31,7 +36,6 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 
-@Builder
 @ToString(callSuper=true, includeFieldNames=true)
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -52,22 +56,22 @@ public class User extends AuditEntity implements UserDetails {
 	@JsonProperty(access = Access.WRITE_ONLY)	
 	@Column(name="pwd")
 	String password;	
-	
-	@Builder.Default
+		
 	@Column(name="non_expired_yn")
 	Boolean isAccountNonExpired = true;
-	
-	@Builder.Default
+		
 	@Column(name="non_locked_yn")
 	Boolean isAccountNonLocked = true;
-	
-	@Builder.Default
+		
 	@Column(name="pass_non_expired_yn")
 	Boolean isCredentialsNonExpired = true;
-	
-	@Builder.Default
+		
 	@Column(name="enabled_yn")
 	Boolean isEnabled = true;
+	
+	@OneToOne(optional=true)
+	@JoinColumn(name = "fk_file", nullable=true)
+	FileInfo image;
 	
 	@Singular(value="authorities")
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -83,6 +87,7 @@ public class User extends AuditEntity implements UserDetails {
     		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
 	List<MenuGroup> menuGroupList;			
 		
+	@Builder
 	public User(String userId, String name, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
 			Boolean isCredentialsNonExpired, Boolean isEnabled, List<Authority> authorities,
 			List<MenuGroup> menuGroupList) {
@@ -90,10 +95,10 @@ public class User extends AuditEntity implements UserDetails {
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
-		this.isAccountNonExpired = isAccountNonExpired;
-		this.isAccountNonLocked = isAccountNonLocked;
-		this.isCredentialsNonExpired = isCredentialsNonExpired;
-		this.isEnabled = isEnabled;
+		this.isAccountNonExpired = isAccountNonExpired == null ? true : isAccountNonExpired;
+		this.isAccountNonLocked = isAccountNonLocked == null ? true : isAccountNonLocked;
+		this.isCredentialsNonExpired = isCredentialsNonExpired == null ? true : isCredentialsNonExpired;
+		this.isEnabled = isEnabled == null ? true : isEnabled;
 		this.authorities = authorities;
 		this.menuGroupList = menuGroupList;
 	}	
@@ -178,7 +183,19 @@ public class User extends AuditEntity implements UserDetails {
 	public void initPassword() {
 		this.password = "12345678";	
 	}
-
 	
+	public void ChangeImage(FileInfo imageFileInfo) {
+		this.image = imageFileInfo;
+	}
+	
+	public String getImageBase64() throws FileNotFoundException, IOException {		
+		String rtn = "";
+		
+		if (this.image != null) {
+			rtn = LocalFileRepository.getBase64String(image.getPath(), image.getUuid());
+		}
+		
+		return rtn;
+	}
 	
 }

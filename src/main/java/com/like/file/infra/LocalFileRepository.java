@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.Channels;
@@ -92,5 +93,33 @@ public class LocalFileRepository {
 		
 		return Base64.getEncoder().encodeToString(byteArray);		
 	}	
+	
+	public static String getBase64String(String path, String fileName) throws FileNotFoundException, IOException {
+				
+		byte[] byteArray = getByteArray(new File(path, fileName));		
+		
+		return Base64.getEncoder().encodeToString(byteArray);		
+	}	
+	
+	private static byte[] getByteArray(File file) throws FileNotFoundException, IOException {
+		
+		byte[] buffer;
+		byte[] byteArray;
+		int bytesRead = -1;
+				
+		try (InputStream is = new FileInputStream(file);
+			 BufferedInputStream bis = new BufferedInputStream(is);
+			 ByteArrayOutputStream bos = new ByteArrayOutputStream();) {
+							
+			buffer = new byte[4906];		
+			while ((bytesRead = is.read(buffer)) != -1) {
+				bos.write(buffer, 0, bytesRead);
+			}
+			byteArray = bos.toByteArray();					
+		} 
+		
+		return byteArray;
+	}
+	
 	
 }
