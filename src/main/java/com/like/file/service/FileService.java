@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.like.common.file.infra.FileRepository;
-import com.like.common.file.infra.mapper.FileMapper;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.infra.LocalFileRepository;
 import com.like.file.infra.jparepository.FileInfoJpaRepository;

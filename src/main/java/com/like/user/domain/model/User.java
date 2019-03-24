@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
-import com.like.file.infra.LocalFileRepository;
+import com.like.file.infra.FileUtil;
 import com.like.menu.domain.model.MenuGroup;
 
 import lombok.AccessLevel;
@@ -157,17 +157,17 @@ public class User extends AuditEntity implements UserDetails {
 	}
 	
 	public void addAuthoritiy(Authority authority) {
+		if (this.authorities == null) {
+			this.authorities = new ArrayList<>();
+		}
+		
 		this.authorities.add(authority);
 	}	
 			
 	public List<MenuGroup> getMenuGroupList() {
 		return menuGroupList;
 	}
-			
-	public void getMenuGroupList(List<MenuGroup> menuGroupList) {
-		this.menuGroupList = menuGroupList;
-	}
-	
+					
 	public void setMenuGroupList(List<MenuGroup> menuGroupList) {
 		this.menuGroupList = menuGroupList;
 	}
@@ -192,7 +192,7 @@ public class User extends AuditEntity implements UserDetails {
 		String rtn = "";
 		
 		if (this.image != null) {
-			rtn = LocalFileRepository.getBase64String(image.getPath(), image.getUuid());
+			rtn = FileUtil.getBase64String(image.getPath(), image.getUuid());
 		}
 		
 		return rtn;

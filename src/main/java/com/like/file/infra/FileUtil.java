@@ -1,15 +1,18 @@
-package com.like.common.file.infra;
+package com.like.file.infra;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 
-//import org.apache.tomcat.util.codec.binary.Base64;
 
 public class FileUtil {
-	
+
 	/**
 	 * 파일을 읽어 온다.
 	 * @param path 파일 경로
@@ -104,19 +107,10 @@ public class FileUtil {
 	 * @param sString
 	 *            파일명 또는 디렉토리명
 	 * @return 인코딩 처리된 파일명 또는 디렉토리명
+	 * @throws UnsupportedEncodingException 
 	 */
-	private static String toEncoding(String strString) throws Exception {
-		String retValue = null;
-		try
-		{
-			retValue = new String( strString.getBytes( "8859_1" ), "KSC5601" );
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-			retValue = strString;
-		}
-		return retValue;
+	private static String toEncoding(String strString) throws UnsupportedEncodingException {			
+		return new String( strString.getBytes( "8859_1" ), "KSC5601" );
 	}
 	
 
@@ -239,22 +233,45 @@ public class FileUtil {
 	 * @param strSrc 기존 파일명 또는 디렉토리명
 	 * @param strDest 변경될 파일명 또는 디렉토리명
 	 * @return 변경 성공 여부 
+	 * @throws Exception 
 	 */
-	public static boolean rename(String strSrc, String strDest) throws Exception  {
+	public static boolean rename(String strSrc, String strDest) throws Exception {
 		boolean retValue = false;
 		
 		File objSrcFile = new File( toEncoding( strSrc ) ); // 파일 또는 디렉토리가 한글 일 경우
 		File objDestFile = new File( toEncoding( strDest ) ); // 파일 또는 디렉토리가 한글 일 경우
+				
+		retValue = objSrcFile.renameTo( objDestFile );
 		
-		try
-		{
-			retValue = objSrcFile.renameTo( objDestFile );
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
 		return retValue;
 	}	
+	
+	public static String getBase64String(String path, String fileName) throws FileNotFoundException, IOException {
 		
+		byte[] byteArray = getByteArray(new File(path, fileName));		
+		
+		return Base64.getEncoder().encodeToString(byteArray);		
+	}
+	
+	public static byte[] getByteArray(File file) throws FileNotFoundException, IOException {
+		
+		byte[] buffer;
+		byte[] byteArray;
+		
+		int bytesRead = -1;
+		int BUFFER_SIZE = 4096;
+				
+		try (InputStream is = new FileInputStream(file);
+			 BufferedInputStream bis = new BufferedInputStream(is);
+			 ByteArrayOutputStream bos = new ByteArrayOutputStream();) {
+							
+			buffer = new byte[BUFFER_SIZE];		
+			while ((bytesRead = is.read(buffer)) != -1) {
+				bos.write(buffer, 0, bytesRead);
+			}
+			byteArray = bos.toByteArray();					
+		} 
+		
+		return byteArray;
+	}
 }
