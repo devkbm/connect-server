@@ -43,7 +43,7 @@ public class MenuController {
 	@Resource
 	private MenuQueryService menuQueryService;
 			
-	@GetMapping("/menugroup/{id}")
+	@GetMapping("/common/menugroup/{id}")
 	public ResponseEntity<?> getMenuGroup(@PathVariable(value="id") String menuGroupCode) {				
 		
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupCode); 		
@@ -55,7 +55,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menutest/{menuGroupCode}")
+	@GetMapping("/common/menutest/{menuGroupCode}")
 	public ResponseEntity<?> getMenuGroupHierachyTest(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
 		
 		List<MenuDTO.MenuHierarchy> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
@@ -67,7 +67,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menuhierarchy/{menuGroupCode}")
+	@GetMapping("/common/menuhierarchy/{menuGroupCode}")
 	public ResponseEntity<?> getMenuGroupHierachy(@PathVariable(value="menuGroupCode") String menuGroupCode) {				
 		
 		List<MenuDTO.MenuHierarchy> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
@@ -79,7 +79,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menugroup")
+	@GetMapping("/common/menugroup")
 	public ResponseEntity<?> getMenuGroupList(MenuGroupDTO.QueryCondition dto) {				
 		
 		List<MenuGroup> list = menuQueryService.getMenuGroupList(dto); 							
@@ -91,7 +91,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/common/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO.MenuGroupSave dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
@@ -115,7 +115,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 		
-	@DeleteMapping("/menugroup/{id}")
+	@DeleteMapping("/common/menugroup/{id}")
 	public ResponseEntity<?> delCodeGroup(@PathVariable(value="id") String menuGroupCode) {				
 												
 		menuCommandService.deleteMenuGroup(menuGroupCode);							
@@ -128,10 +128,8 @@ public class MenuController {
 	}
 	
 	
-	@GetMapping("/menugroup/{groupcode}/menu/{menucode}")
-	public ResponseEntity<?> getMenu(
-			@PathVariable(value="groupcode") String menuGroupCode,
-			@PathVariable(value="menucode") String menuCode) {				
+	@GetMapping("/common/menu/{menucode}")
+	public ResponseEntity<?> getMenu(@PathVariable(value="menucode") String menuCode) {				
 		
 		Menu menu = menuQueryService.getMenu(menuCode); 		
 		
@@ -144,12 +142,10 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menugroup/{groupcode}/menu")
-	public ResponseEntity<?> getMenuList(
-			@PathVariable(value="groupcode") String menuGroupCode,
-			MenuDTO.QueryCondition dto) {				
+	@GetMapping("/common/menu")
+	public ResponseEntity<?> getMenuList(MenuDTO.QueryCondition dto) {				
 		
-		List<Menu> list = menuQueryService.getMenuList(menuGroupCode, dto);														 						
+		List<Menu> list = menuQueryService.getMenuList(dto);														 						
 		
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
@@ -158,7 +154,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menu/menutype")
+	@GetMapping("/common/menu/menutype")
 	public ResponseEntity<?> getMenuTypeList() {				
 		
 		List<EnumDTO> list = new ArrayList<EnumDTO>();
@@ -176,7 +172,7 @@ public class MenuController {
 	}
 	
 	
-	@RequestMapping(value={"/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/common/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO.MenuSave dto, BindingResult result) throws Exception {
 											
 		if ( result.hasErrors()) {
@@ -220,7 +216,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/menu/{id}")
+	@DeleteMapping("/common/menu/{id}")
 	public ResponseEntity<?> delMenu(@PathVariable(value="id") String menuCode) {				
 												
 		menuCommandService.deleteMenu(menuCode);							
@@ -233,7 +229,7 @@ public class MenuController {
 	}
 	
 	
-	@GetMapping("/webresource")
+	@GetMapping("/common/webresource")
 	public ResponseEntity<?> getWebResourceList(WebResourceDTO.QueryCondition condition) {							 			
 		
 		List<WebResource> list = menuQueryService.getResourceList(condition);
@@ -245,7 +241,7 @@ public class MenuController {
 				HttpStatus.OK); 
 	}
 	
-	@GetMapping("/webresource/{code}")
+	@GetMapping("/common/webresource/{code}")
 	public ResponseEntity<?> getResource(@PathVariable(value="code") String code) {				
 		
 		WebResource resource = menuQueryService.getResource(code); 							
@@ -257,7 +253,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/webresource"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/common/webresource"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveResource(@RequestBody @Valid WebResourceDTO.ResourceSave dto, BindingResult result) throws Exception {
 										
 		if ( result.hasErrors()) {
@@ -283,7 +279,7 @@ public class MenuController {
 				HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/webresource/{code}")
+	@DeleteMapping("/common/webresource/{code}")
 	public ResponseEntity<?> delResource(@PathVariable(value="code") String code) {				
 												
 		menuCommandService.deleteWebResource(code);							

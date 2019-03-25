@@ -45,8 +45,8 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenu(menuCode);
 	}
 	
-	public List<Menu> getMenuList(String menuGroupCode, MenuDTO.QueryCondition condition) {
-		return menuJpaRepository.getMenuList(menuGroupCode, condition);
+	public List<Menu> getMenuList(MenuDTO.QueryCondition condition) {
+		return menuJpaRepository.getMenuList(condition);
 	}
 	
 	public List<MenuDTO.MenuHierarchy> getMenuHierachy(String menuGroupCode) {

@@ -88,13 +88,12 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Menu> getMenuList(String menuGroupCode, MenuDTO.QueryCondition condition) {
+	public List<Menu> getMenuList(MenuDTO.QueryCondition condition) {
 		return queryFactory
 				.selectFrom(qMenu)
 					.innerJoin(qMenu.menuGroup, qMenuGroup)
 					.fetchJoin()
-				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
-					.and(condition.getBooleanBuilder()))				
+				.where(condition.getBooleanBuilder())				
 				.fetch();
 	}
 	

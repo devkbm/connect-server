@@ -6,16 +6,17 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "team")
@@ -30,9 +31,7 @@ public class Team {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="team")
-	private List<JoinTeam> memberList = new ArrayList<JoinTeam>();
-			
-	protected Team() {}
+	private List<JoinTeam> memberList = new ArrayList<JoinTeam>();			
 	
 	public Team(String teamId, String teamName) {
 		this.teamId = teamId;

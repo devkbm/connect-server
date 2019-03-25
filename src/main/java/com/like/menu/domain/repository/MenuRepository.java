@@ -29,7 +29,7 @@ public interface MenuRepository {
 	
 	Menu getMenu(String menuCode);
 			
-	List<Menu> getMenuList(String menuGroupCode, MenuDTO.QueryCondition condition);
+	List<Menu> getMenuList(MenuDTO.QueryCondition condition);
 			
 	void saveMenu(Menu menu, MenuGroup menuGroup);
 	

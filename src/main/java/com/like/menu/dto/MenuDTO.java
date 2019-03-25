@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.QMenu;
+import com.like.menu.domain.model.QMenuGroup;
 import com.like.menu.domain.model.enums.MenuType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.annotations.QueryProjection;
@@ -24,12 +25,17 @@ public class MenuDTO {
 
 		private final QMenu qMenu = QMenu.menu;
 		
+		@NotEmpty
+		String menuGroupCode;
+		
 		String menuCode;
 		
 		String menuName;
 				
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
+						
+			builder.and(QMenuGroup.menuGroup.menuGroupCode.eq(this.menuGroupCode));
 			
 			if (StringUtils.hasText(this.menuCode)) {
 				builder.and(qMenu.menuCode.like("%"+this.menuCode+"%"));

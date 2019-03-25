@@ -34,11 +34,9 @@ public class FileController {
 	private BoardCommandService boardCommandService;
 	
 	@Resource(name = "fileService")
-	private FileService fileService;
-	
-	private static final Logger log = LoggerFactory.getLogger(FileController.class);
+	private FileService fileService;	
 			
-	@RequestMapping(value={"/file/{id}"}, method=RequestMethod.GET) 
+	@RequestMapping(value={"/common/file/{id}"}, method=RequestMethod.GET) 
 	public HttpServletResponse fileDownLoad(HttpServletResponse response,
 			@PathVariable(value="id") String id) throws Exception {
 								
@@ -51,7 +49,7 @@ public class FileController {
 		return response;
 	}	
 	
-	@RequestMapping(value={"/file"}, method=RequestMethod.POST) 
+	@RequestMapping(value={"/common/file"}, method=RequestMethod.POST) 
 	public ResponseEntity<?> fileUpload(final MultipartHttpServletRequest request,
 			@RequestParam(value="pgmId", required=false) String pgmId ) throws Exception {
 				
@@ -75,7 +73,7 @@ public class FileController {
 		return result;
 	}
 	
-	@RequestMapping(value={"/file2"}, method=RequestMethod.POST) 
+	@RequestMapping(value={"/common/file2"}, method=RequestMethod.POST) 
 	public void handleFileUpload(@RequestParam("file") MultipartFile file) throws Exception {
 
 		fileService.uploadFile(file, "kbm", "test");
