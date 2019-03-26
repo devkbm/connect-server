@@ -39,19 +39,22 @@ public class MenuValidController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menugroup/{groupcode}/menu/{menucode}")
-	public ResponseEntity<?> getMenu(
-			@PathVariable(value="groupcode") String menuGroupCode,
+	@GetMapping("/menu/{menucode}/check")
+	public ResponseEntity<?> getMenu(			
 			@PathVariable(value="menucode") String menuCode) {				
-		
+		Boolean isValid = false;
 		Menu menu = menuQueryService.getMenu(menuCode); 		
 		
-		MenuDTO.MenuSave dto = new MenuDTO.MenuSave(menu);			
+		if (menu == null) {
+			isValid = true;
+		} else { 
+			isValid = false;
+		}				
 		
-		return WebControllerUtil.getResponse(dto, 
-				dto != null ? 1 : 0, 
+		return WebControllerUtil.getResponse(isValid, 
+				1, 
 				true, 
-				String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0), 
+				String.format("%d 건 조회되었습니다.", menu != null ? 1 : 0), 
 				HttpStatus.OK);
 	}
 }
