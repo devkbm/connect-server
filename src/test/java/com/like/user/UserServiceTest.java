@@ -38,21 +38,15 @@ public class UserServiceTest {
 	@Test	
 	public void test01_사용자등록및조회() {
 		//Given		
-		/*User user = User.builder()
+		User user = User.builder()
 						.userId("test01")
 						.name("테스트")
 						.password("12345678")
-						.clearAuthorities()
-						.clearMenuGroupList()
-						.build();*/
+						.authorities(null)
+						.menuGroupList(null)											
+						.build();
 		
-		UserDTO.UserSave user = UserSave.builder()
-										.userId("test01")
-										.name("테스트")
-										.password("12345678")
-										.enabled(true)
-										.build();
-		
+				
 		//When
 		userService.createUser(user);
 		

@@ -72,16 +72,11 @@ public class UserService implements UserDetailsService {
 	 * 사용자를 생성한다.
 	 * @param user	사용자 도메인
 	 */
-	public void createUser(UserDTO.UserSave dto) {
+	public void createUser(User user) {
 		//String rawPassword = user.getPassword();
 		//String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
 		//user.setPassword(encodedPassword);	
-		
-		List<Authority> authList = userRepository.getAuthorityList(dto.getAuthorityList());
-		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
-		
-		User user = UserDTOAssembler.createEntity(dto, authList, menuGroupList);
-		
+				
 		userDomainService.createUser(user);						
 	}
 	

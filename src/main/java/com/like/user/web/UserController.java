@@ -68,7 +68,7 @@ public class UserController {
 		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 	}
 		 
-	@PostMapping(value={"/user/login"})
+	@PostMapping(value={"/common/user/login"})
 	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) {
 		
 		if ( result.hasErrors() ) {
@@ -89,19 +89,19 @@ public class UserController {
 		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
 	}
 		
-	@GetMapping(value={"/user/{id}/check"})
+	@GetMapping(value={"/common/user/{id}/check"})
 	public ResponseEntity<?> checkId(@PathVariable(value="id") String userId) {
 						
 		boolean isDuplicated = userService.CheckDuplicationUser(userId);					
 				
-		return WebControllerUtil.getResponse(null,
+		return WebControllerUtil.getResponse(isDuplicated ? false : true,
 				isDuplicated ? 1 : 0, 
 				isDuplicated ? false : true,
 				isDuplicated ? "기존 아이디가 존재합니다." : "신규 등록 가능합니다.",
 				HttpStatus.OK); 
 	}
 		
-	@GetMapping(value={"/user/{id}"})
+	@GetMapping(value={"/common/user/{id}"})
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) throws FileNotFoundException, IOException {
 						
 		User user = userService.getUser(userId);				
@@ -115,7 +115,7 @@ public class UserController {
 				 HttpStatus.OK);
 	}
 		
-	@GetMapping(value={"/user"})
+	@GetMapping(value={"/common/user"})
 	public ResponseEntity<?> getUserList(UserDTO.QueryCondition condition) {
 				
 		List<User> userList = userService.getUserList(condition);						 				
@@ -127,14 +127,26 @@ public class UserController {
 				HttpStatus.OK);
 	}
 	
-	@PostMapping(value={"/user/{id}"})	
+	@PostMapping(value={"/common/user"})	
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO.UserSave dto, BindingResult result) {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		}							
-																		
-		userService.createUser(dto);					
+		}			
+		
+		List<Authority> authList = userService.getAllAuthorityList(dto.getAuthorityList());
+		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
+		
+		User preUser = userService.getUser(dto.getUserId());
+		User user = null;
+		
+		if (preUser == null) { 
+			user = UserDTOAssembler.createEntity(dto, authList, menuGroupList);
+		} else {
+			user = UserDTOAssembler.mergeEntity(preUser, dto, authList, menuGroupList);
+		}
+								
+		userService.createUser(user);					
 																					 		
 		return WebControllerUtil.getResponse(null,
 				1, 
@@ -143,7 +155,7 @@ public class UserController {
 				HttpStatus.OK);
 	}	
 	
-	@DeleteMapping(value={"/user/{id}"})
+	@DeleteMapping(value={"/common/user/{id}"})
 	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String userId) {
 										
 		userService.deleteUser(userId);															
@@ -155,7 +167,7 @@ public class UserController {
 				HttpStatus.OK);
 	}
 		
-	@PostMapping(value={"/user/{id}/changePassword"})
+	@PostMapping(value={"/common/user/{id}/changePassword"})
 	public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDTO dto) {				
 						
 		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());													
@@ -167,7 +179,7 @@ public class UserController {
 				HttpStatus.OK);
 	}
 			
-	@PostMapping(value={"/user/{id}/initPassword"})
+	@PostMapping(value={"/common/user/{id}/initPassword"})
 	public ResponseEntity<?> initializePassword(@PathVariable(value="id") String userId) {			
 				
 		userService.initPassword(userId);														
@@ -179,7 +191,7 @@ public class UserController {
 				HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/authority"}, method=RequestMethod.GET) 
+	@RequestMapping(value={"/common/authority"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getAuthorityList(AuthorityDTO.QueryCondition dto) {				
 		
 		List<Authority> authorityList = userService.getAuthorityList(dto);								 				
@@ -191,7 +203,7 @@ public class UserController {
 				HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/authority/{id}"}, method=RequestMethod.GET) 
+	@RequestMapping(value={"/common/authority/{id}"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getAuthority(@PathVariable(value="id") String authorityName) {			
 		
 		Authority authority = userService.getAuthority(authorityName);										
@@ -203,7 +215,7 @@ public class UserController {
 				 HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/authority"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	@RequestMapping(value={"/common/authority"}, method={RequestMethod.POST,RequestMethod.PUT})	
 	public ResponseEntity<?> saveAuthority(@RequestBody AuthorityDTO.AuthoritySave dto, BindingResult result) {
 		
 		if ( result.hasErrors()) {
@@ -225,7 +237,7 @@ public class UserController {
 				HttpStatus.OK);
 	}	
 	
-	@DeleteMapping("/authority/{id}")
+	@DeleteMapping("/common/authority/{id}")
 	public ResponseEntity<?> deleteAuthority(@PathVariable(value="id") String authorityName) {
 		
 		userService.deleteAuthority(authorityName);					

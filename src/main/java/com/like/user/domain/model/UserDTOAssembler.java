@@ -12,9 +12,6 @@ import com.like.user.dto.UserDTO.UserSave;
 public class UserDTOAssembler {	
 		
 	public static User createEntity(UserDTO.UserSave dto, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
-		if (dto.getUserId() == null) {
-			new IllegalArgumentException("유저 아이디가 없습니다.");
-		}
 		
 		return User.builder()
 					.userId(dto.getUserId())										
@@ -22,16 +19,18 @@ public class UserDTOAssembler {
 					.password(dto.getPassword())
 					.isEnabled(dto.getEnabled())	
 					.authorities(authorityList)
-					.menuGroupList(menuGroupList)
+					.menuGroupList(menuGroupList)					
 					.build();
 	}
 	
-	public static User mergeEntity(User entity, UserDTO.UserSave dto) {
+	public static User mergeEntity(User entity, UserDTO.UserSave dto, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
 		
 		entity.userId		= nvl(dto.getUserId(), 		entity.userId);
 		entity.name			= nvl(dto.getName(),	 	entity.name);
 		entity.password		= nvl(dto.getPassword(), 	entity.password);
 		entity.isEnabled	= nvl(dto.getEnabled(),		entity.isEnabled);
+		entity.authorities 	= authorityList;
+		entity.menuGroupList= menuGroupList;
 		
 		return entity;
 	}	

@@ -140,6 +140,9 @@ public class User extends AuditEntity implements UserDetails {
 		return isEnabled;
 	}
 			
+	public String getUserId() {
+		return this.userId;
+	}
 	public String getName() {
 		return name;
 	}
