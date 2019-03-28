@@ -87,19 +87,7 @@ public class UserController {
 		User user = userService.getUser(username); 			
 		
 		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
-	}
-		
-	@GetMapping(value={"/common/user/{id}/check"})
-	public ResponseEntity<?> checkId(@PathVariable(value="id") String userId) {
-						
-		boolean isDuplicated = userService.CheckDuplicationUser(userId);					
-				
-		return WebControllerUtil.getResponse(isDuplicated ? false : true,
-				isDuplicated ? 1 : 0, 
-				isDuplicated ? false : true,
-				isDuplicated ? "기존 아이디가 존재합니다." : "신규 등록 가능합니다.",
-				HttpStatus.OK); 
-	}
+	}		
 		
 	@GetMapping(value={"/common/user/{id}"})
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) throws FileNotFoundException, IOException {
