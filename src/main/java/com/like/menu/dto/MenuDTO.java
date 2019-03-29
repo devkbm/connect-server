@@ -95,7 +95,7 @@ public class MenuDTO {
 			this.menuType		= menu.getMenuType().toString();				
 			this.sequence 		= menu.getSequence();
 			this.level 			= menu.getLevel();
-			this.resource 		= menu.getResource() == null ? "" : menu.getResource().getResourceCode();
+			this.resource 		= menu.getResource() == null ? null : menu.getResource().getResourceCode();
 		}		
 		
 	}

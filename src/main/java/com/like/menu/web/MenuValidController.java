@@ -39,7 +39,7 @@ public class MenuValidController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping("/menu/{menucode}/check")
+	@GetMapping("/common/menu/{menucode}/check")
 	public ResponseEntity<?> getMenuValid(			
 			@PathVariable(value="menucode") String menuCode) {						
 		Menu menu = menuQueryService.getMenu(menuCode); 		
