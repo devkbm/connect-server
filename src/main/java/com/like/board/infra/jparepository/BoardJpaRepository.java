@@ -52,11 +52,16 @@ public class BoardJpaRepository implements BoardRepository {
 		List<BoardDTO.BoardHierarchy> children = null;
 		
 		for ( BoardDTO.BoardHierarchy dto : list) {
-			if (dto.isLeaf()) {	// leaf 노드이면 다음 리스트 검색
+			
+			children = getBoardHierarchyChildrenList(dto.getKey());
+			
+			if (children.isEmpty()) {	// leaf 노드이면 다음 리스트 검색
+				dto.setLeaf(true);
 				continue;
 			} else {
-				children = getBoardHierarchyChildrenList(dto.getKey());
+				
 				dto.setChildren(children);
+				dto.setLeaf(false);
 				
 				setLinkBoardHierarchy(children);
 			}
@@ -67,32 +72,29 @@ public class BoardJpaRepository implements BoardRepository {
 	
 	private List<BoardDTO.BoardHierarchy> getBoardHierarchyRootList() {									
 		
-		Expression<Boolean> isLeaf = new CaseBuilder()
+		/*Expression<Boolean> isLeaf = new CaseBuilder()
 										.when(qBoard.ppkBoard.isNotNull()).then(true)
-										.otherwise(false).as("leaf");
+										.otherwise(false).as("leaf");*/
 		
 		JPAQuery<BoardDTO.BoardHierarchy> query = queryFactory
 				.select(Projections.constructor(BoardDTO.BoardHierarchy.class
 						, qBoard.pkBoard, qBoard.ppkBoard, qBoard.boardType
 						, qBoard.boardName, qBoard.boardDescription, qBoard.fromDate
-						, qBoard.toDate, qBoard.articleCount, qBoard.sequence, isLeaf))
+						, qBoard.toDate, qBoard.articleCount, qBoard.sequence))
 				.from(qBoard)
-				.where(qBoard.ppkBoard.isNull());
+				.where(qBoard.isRootNode());
 													
 						
 		return query.fetch();	
 	}
 	
 	private List<BoardDTO.BoardHierarchy> getBoardHierarchyChildrenList(Long parentPkBoard) {
-		Expression<Boolean> isLeaf = new CaseBuilder()
-				.when(qBoard.ppkBoard.isNotNull()).then(true)
-				.otherwise(false).as("leaf");
-
+		
 		JPAQuery<BoardDTO.BoardHierarchy> query = queryFactory
 				.select(Projections.constructor(BoardDTO.BoardHierarchy.class
 						, qBoard.pkBoard, qBoard.ppkBoard, qBoard.boardType
 						, qBoard.boardName, qBoard.boardDescription, qBoard.fromDate
-						, qBoard.toDate, qBoard.articleCount, qBoard.sequence, isLeaf))
+						, qBoard.toDate, qBoard.articleCount, qBoard.sequence))
 				.from(qBoard)
 				.where(qBoard.ppkBoard.eq(parentPkBoard));								
 		

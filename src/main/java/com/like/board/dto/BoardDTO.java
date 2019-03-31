@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.QBoard;
 import com.like.board.domain.model.enums.BoardType;
@@ -133,6 +134,7 @@ public class BoardDTO {
 		
 		private boolean selected;
 		
+		@JsonProperty(value="isLeaf")
 		private boolean isLeaf;
 		
 		private boolean active;
@@ -143,7 +145,7 @@ public class BoardDTO {
 		public BoardHierarchy(
 				Long key, Long ppkBoard, BoardType boardType, 
 				String title, String boardDescription, LocalDate fromDate, 
-				LocalDate toDate, Long articleCount, Long sequence, Boolean isLeaf) {
+				LocalDate toDate, Long articleCount, Long sequence) {
 			super();
 			this.key 				= key;
 			this.ppkBoard 			= ppkBoard;
