@@ -18,10 +18,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
 import com.like.menu.dto.MenuGroupDTO;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString(callSuper=true, includeFieldNames=true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Table(name = "commenugroup")
@@ -41,9 +44,7 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "menuGroup", cascade = CascadeType.PERSIST)          
     List<Menu> menuList = new ArrayList<Menu>();
-	
-	public MenuGroup() {}			
-
+				
 	public MenuGroup(String menuGroupCode, String menuGroupName, String description) {	
 		this.menuGroupCode = menuGroupCode;
 		this.menuGroupName = menuGroupName;

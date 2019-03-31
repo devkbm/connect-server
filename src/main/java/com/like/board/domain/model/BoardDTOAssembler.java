@@ -1,16 +1,23 @@
 package com.like.board.domain.model;
 
+import javax.annotation.Resource;
+
 import com.like.board.domain.model.enums.BoardType;
+import com.like.board.domain.repository.BoardRepository;
 import com.like.board.dto.ArticleDTO;
 import com.like.board.dto.BoardDTO;
 import com.like.board.dto.BoardDTO.BoardSaveDTO;
 
 
 public class BoardDTOAssembler {	
+	
+	@Resource(name="boardJpaRepository")
+	private BoardRepository boardRepository;
 		
-	public static Board createEntity(BoardDTO.BoardSaveDTO dto) {
+	public static Board createEntity(BoardDTO.BoardSaveDTO dto, Board parentBoard) {
 		
 		return Board.builder()
+					.parent(parentBoard)
 					.boardName(dto.getBoardName())
 					.boardType(BoardType.valueOf(dto.getBoardType()))
 					.boardDescription(dto.getBoardDescription())
@@ -21,8 +28,9 @@ public class BoardDTOAssembler {
 					.build();
 	}	
 	
-	public static Board mergeEntity(Board entity, BoardDTO.BoardSaveDTO dto) {
-		
+	public static Board mergeEntity(Board entity, BoardDTO.BoardSaveDTO dto, Board parentBoard) {
+						
+		entity.parent			= parentBoard;
 		entity.boardName 		= nvl(dto.getBoardName(), entity.boardName);
 		entity.boardType 		= nvl(BoardType.valueOf(dto.getBoardType()), entity.boardType);
 		entity.boardDescription	= nvl(dto.getBoardDescription(), entity.boardDescription);
@@ -45,8 +53,8 @@ public class BoardDTOAssembler {
 								.createdBy(entity.getCreatedBy())
 								.modifiedDt(entity.getModifiedDt())
 								.modifiedBy(entity.getModifiedBy())
-								.pkBoard(entity.pkBoard)
-								.ppkBoard(entity.ppkBoard)
+								.pkBoard(entity.pkBoard)	
+								.ppkBoard(entity.getParent() == null ? null : entity.getParent().getPkBoard())
 								.boardType(entity.boardType.toString())
 								.boardName(entity.boardName)
 								.boardDescription(entity.boardDescription)

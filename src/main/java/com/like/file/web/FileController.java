@@ -1,6 +1,7 @@
 package com.like.file.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +26,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 import com.like.board.service.BoardCommandService;
+import com.like.common.web.response.ResponseObjectList;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;
+import com.like.file.dto.FileResponseDTO;
 import com.like.file.service.FileService;
 
 @Controller
@@ -64,13 +69,31 @@ public class FileController {
 			list.add(fileService.uploadFile(file, "kbm", pgmId));																
 		}
 		
-		result = WebControllerUtil.getResponse(list,
-				list.size(), 
-				true,
-				String.format("%d 건 저장되었습니다.", list.size()),
-				HttpStatus.OK); 					
+								
+		List<FileResponseDTO> fileList = new ArrayList<>();
 		
-		return result;
+		for (FileInfo info : list) {
+			Map<String, String> res = new HashMap<>();
+			res.put("status", "success");
+			
+			Map<String, String> link = new HashMap<>();
+			link.put("download", "http://localhost:8090/common/file/"+info.getPkFile());
+			
+			FileResponseDTO response = FileResponseDTO.builder()
+														.uid(info.getPkFile())
+														.name(info.getFileName())
+														.status("done")
+														.response(res)
+														.linkProps(link)
+														.url("http://localhost:8090/common/file/"+info.getPkFile())
+														.build();
+			fileList.add(response);
+		}
+		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+						 					
+		return new ResponseEntity<List<FileResponseDTO>>(fileList, responseHeaders, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/common/file2"}, method=RequestMethod.POST) 

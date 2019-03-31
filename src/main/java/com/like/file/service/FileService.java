@@ -84,6 +84,10 @@ public class FileService {
 		return fileInfoRepository.getFileInfo(id);
 	}
 	
+	public List<FileInfo> getFileInfoList(List<String> id) {		
+		return fileInfoRepository.getFileInfoList(id);
+	}
+	
 	private FileInfo newFileInfo(MultipartFile sourceFile, String userId, String pgmId) throws Exception {
 		
 		String uuid = UUID.randomUUID().toString();

@@ -54,8 +54,8 @@ public class ArticleDTO {
 		}
 	}
 	
-	@Data
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@Data	
+	@NoArgsConstructor	
 	@AllArgsConstructor
 	@Builder
 	@ToString
@@ -71,7 +71,7 @@ public class ArticleDTO {
 			
 		String modifiedBy;
 	    	
-	    Long pkArticle;	
+	    String pkArticle;	
 		
 		Long ppkArticle;		
 			
@@ -98,5 +98,50 @@ public class ArticleDTO {
 	            
 	    @JsonIgnore
 	    List<MultipartFile> file = new ArrayList<MultipartFile>();	                	   	    	    	    	  	        
+	}
+	
+	@Data	
+	@NoArgsConstructor	
+	@AllArgsConstructor
+	@Builder
+	@ToString
+	public static class ArticleSaveJson implements Serializable {
+				
+		
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+			
+		LocalDateTime modifiedDt;
+			
+		String modifiedBy;
+	    	
+		Long fkBoard;
+		
+		Long pkArticle;	
+		
+		Long ppkArticle;		
+			
+		@NotEmpty(message="제목은 필수 입력 사항입니다.")
+		String title;
+	    	
+	    String contents;
+	    	
+	    String pwd;
+	    	
+	    int hitCount;
+	        
+	    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	    LocalDate fromDate;
+	    	
+	    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	    LocalDate toDate;
+	    	
+	    Integer seq;
+	    	
+	    Integer depth;	    		   
+	            
+	    @JsonIgnore
+	    List<String> attachFile;	                	   	    	    	    	  	        
 	}
 }

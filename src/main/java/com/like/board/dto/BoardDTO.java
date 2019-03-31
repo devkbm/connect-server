@@ -58,10 +58,10 @@ public class BoardDTO {
 	 * 게시판 저장을 위한 DTO Class
 	 * 	 
 	 */
-	@Getter
+	@Data
 	@Builder
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	@AllArgsConstructor
+	@AllArgsConstructor	
 	public static class BoardSaveDTO implements Serializable {
 						
 		private static final long serialVersionUID = 1L;

@@ -48,12 +48,12 @@ public class BoardCommandService {
 	}
 	
 	public Article convertEntity(ArticleDTO.ArticleSave dto) {
-		
+		log.info(dto.toString());
 		Board board = boardRepository.getBoard(dto.getFkBoard());		
 		Article article = null; 
 		
 		if ( dto.getPkArticle() != null ) {
-			article = articleRepository.getArticle(dto.getPkArticle());
+			article = articleRepository.getArticle(Long.parseLong(dto.getPkArticle()));
 		}
 		
 		if (article == null) {

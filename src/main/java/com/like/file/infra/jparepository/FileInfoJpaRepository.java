@@ -23,6 +23,11 @@ public class FileInfoJpaRepository implements FileRepository {
 	public FileInfo getFileInfo(String id) {
 		return jpaFileInfo.findOne(id);
 	}
+	
+	@Override
+	public List<FileInfo> getFileInfoList(List<String> id) {
+		return jpaFileInfo.findAll(id);
+	}
 
 	@Override
 	public List<FileInfo> getFileInfoList() {
@@ -37,4 +42,5 @@ public class FileInfoJpaRepository implements FileRepository {
 		return jpaFileInfo.saveAndFlush(fileInfo);		
 	}
 	
+
 }

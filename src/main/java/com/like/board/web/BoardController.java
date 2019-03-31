@@ -32,12 +32,15 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.dto.EnumDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 게시판 Rest 컨트롤러
  * 
  * @author 	bmkim
  * @date	2016.2.23
  */
+@Slf4j
 @RestController
 public class BoardController {
 
@@ -45,9 +48,7 @@ public class BoardController {
 	private BoardCommandService boardCommandService;
 	
 	@Resource
-	private BoardQueryService boardQueryService;
-		
-	private static final Logger log = LoggerFactory.getLogger(BoardController.class);	
+	private BoardQueryService boardQueryService;		
 		
 	@GetMapping("/grw/boards/boardType")
 	public ResponseEntity<?> getMenuTypeList() {				
@@ -107,17 +108,19 @@ public class BoardController {
 	@RequestMapping(value={"/grw/boards"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.BoardSaveDTO boardDTO, BindingResult result) {
 							
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		/*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
-		log.info(authentication.getPrincipal().toString());
+		log.info(authentication.getPrincipal().toString());*/
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 			
 		
 		Board board = convertEntity(boardDTO);
+				
+		//log.info(board.toString());
 		
-		boardCommandService.saveBoard(board);																					
+		boardCommandService.saveBoard(board);				
 								 					
 		return WebControllerUtil.getResponse(null,
 				1, 
@@ -141,12 +144,17 @@ public class BoardController {
 	
 	private Board convertEntity(BoardDTO.BoardSaveDTO dto) {
 		Board board = boardQueryService.getBoard(dto.getPkBoard());			
+		Board parentBoard = null; 
 		
-		if (board == null) {
-			board = BoardDTOAssembler.createEntity(dto);
-		} else {
-			board = BoardDTOAssembler.mergeEntity(board, dto);
+		if (dto.getPpkBoard() != null) {
+			parentBoard = boardQueryService.getBoard(dto.getPpkBoard());
 		}
+				
+		if (board == null) {
+			board = BoardDTOAssembler.createEntity(dto, parentBoard);
+		} else {
+			board = BoardDTOAssembler.mergeEntity(board, dto, parentBoard);
+		}			
 		
 		return board;
 	}

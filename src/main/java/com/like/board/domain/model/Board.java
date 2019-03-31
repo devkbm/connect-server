@@ -39,15 +39,10 @@ public class Board extends AuditEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PK_BOARD")
 	Long pkBoard;
+	    
 	
-    /**
-     * 상위 게시판 키
-     */
-	@Column(name="PPK_BOARD")
-    Long ppkBoard;
-	
-	@OneToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="PPK_BOARD", insertable=false, updatable=false )
+	@OneToOne(cascade={CascadeType.PERSIST})
+	@JoinColumn(name="PPK_BOARD")
 	Board parent;
 	
 	/**
@@ -110,11 +105,11 @@ public class Board extends AuditEntity implements Serializable {
     List<Article> articles;           
     
     public boolean hasParentBoard() {    	    		    		
-    	return this.pkBoard != this.ppkBoard ? true : false;
+    	return this.parent != null ? true : false;
 	}
     
     public void setParentRoot() {
-    	this.ppkBoard = this.pkBoard;
+    	
     }
     
     public void setParent(Board board) {
