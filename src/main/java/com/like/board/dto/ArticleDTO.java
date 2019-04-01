@@ -140,8 +140,7 @@ public class ArticleDTO {
 	    Integer seq;
 	    	
 	    Integer depth;	    		   
-	            
-	    @JsonIgnore
+	            	    
 	    List<String> attachFile;	                	   	    	    	    	  	        
 	}
 }

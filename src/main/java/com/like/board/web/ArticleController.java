@@ -178,12 +178,10 @@ public class ArticleController {
 		// 2. 저장된 파일 리스트를 조회한다.
 		if (dto.getAttachFile() != null) {
 			fileInfoList = fileService.getFileInfoList(dto.getAttachFile());
+			
 		}
-
-		// 3. FileInfo를 AttachedFile로 변환한다.
-		attachedFileList = AttachedFileConverter.convert(article, fileInfoList);
 		
-		// 4. 게시글 객체를 생성한다.
+		// 3. 게시글 객체를 생성한다.
 		if (article == null) {
 			article =  Article.builder()	
 								.board(board)
@@ -193,7 +191,7 @@ public class ArticleController {
 								.fromDate(dto.getFromDate())
 								.toDate(dto.getToDate())
 								.pwd(dto.getPwd())		
-								.files(attachedFileList)
+								//.files(attachedFileList)
 								.build();
 		} else {
 			article =  Article.builder()	
@@ -205,9 +203,16 @@ public class ArticleController {
 								.fromDate(dto.getFromDate())
 								.toDate(dto.getToDate())
 								.pwd(dto.getPwd())
-								.files(attachedFileList)
+								//.files(attachedFileList)
 								.build();
-		}					
+		}		
+
+		// 4. FileInfo를 AttachedFile로 변환한다.
+		attachedFileList = AttachedFileConverter.convert(article, fileInfoList);
+		
+		if (attachedFileList != null) {
+			article.setFiles(attachedFileList);
+		}
 		
 		return article;
 	}
