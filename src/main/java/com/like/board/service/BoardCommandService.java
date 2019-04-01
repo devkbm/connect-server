@@ -47,7 +47,7 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(board);
 	}
 	
-	public Article convertEntity(ArticleDTO.ArticleSave dto) {
+	public Article convertEntity(ArticleDTO.ArticleSaveMuiltiPart dto) {
 		log.info(dto.toString());
 		Board board = boardRepository.getBoard(dto.getFkBoard());		
 		Article article = null; 
@@ -65,7 +65,7 @@ public class BoardCommandService {
 		return article;
 	}
 		
-	public String saveArticle(ArticleDTO.ArticleSave dto) throws Exception {
+	public String saveArticle(ArticleDTO.ArticleSaveMuiltiPart dto) throws Exception {
 		
 		List<FileInfo> fileInfoList = null;
 		List<AttachedFile> attachedFileList = null;					

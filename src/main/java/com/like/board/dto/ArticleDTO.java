@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.board.domain.model.QArticle;
+import com.like.file.dto.FileResponseDTO;
 import com.querydsl.core.BooleanBuilder;
 
 import lombok.AccessLevel;
@@ -59,7 +60,7 @@ public class ArticleDTO {
 	@AllArgsConstructor
 	@Builder
 	@ToString
-	public static class ArticleSave implements Serializable {
+	public static class ArticleSaveMuiltiPart implements Serializable {
 		
 		private static final long serialVersionUID = -6844786437530688768L;
 		
@@ -106,8 +107,9 @@ public class ArticleDTO {
 	@Builder
 	@ToString
 	public static class ArticleSaveJson implements Serializable {
-				
-		
+						
+		private static final long serialVersionUID = 919127739529051164L;
+
 		LocalDateTime createdDt;	
 		
 		String createdBy;
@@ -141,6 +143,55 @@ public class ArticleDTO {
 	    	
 	    Integer depth;	    		   
 	            	    
+	    /**
+	     * FileInfo 도메인의 PK 리스트
+	     */
 	    List<String> attachFile;	                	   	    	    	    	  	        
+	}
+	
+	
+	@Data	
+	@NoArgsConstructor	
+	@AllArgsConstructor
+	@Builder
+	@ToString
+	public static class ArticleResponse implements Serializable {
+				
+		private static final long serialVersionUID = 7795172502919533138L;
+
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+			
+		LocalDateTime modifiedDt;
+			
+		String modifiedBy;
+	    	
+		Long fkBoard;
+		
+		Long pkArticle;	
+		
+		Long ppkArticle;		
+			
+		@NotEmpty(message="제목은 필수 입력 사항입니다.")
+		String title;
+	    	
+	    String contents;
+	    	
+	    String pwd;
+	    	
+	    int hitCount;
+	        
+	    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	    LocalDate fromDate;
+	    	
+	    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	    LocalDate toDate;
+	    	
+	    Integer seq;
+	    	
+	    Integer depth;	    		   
+	            	    
+	    List<FileResponseDTO> fileList;	                	   	    	    	    	  	        
 	}
 }

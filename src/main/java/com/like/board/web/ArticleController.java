@@ -99,7 +99,7 @@ public class ArticleController {
 	
 	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
-	public ResponseEntity<?> saveArticleWithFile(ArticleDTO.ArticleSave dto, BindingResult result) throws Exception {
+	public ResponseEntity<?> saveArticleWithMultiPartFile(ArticleDTO.ArticleSaveMuiltiPart dto, BindingResult result) throws Exception {
 											
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
@@ -149,7 +149,7 @@ public class ArticleController {
 	}
 	
 	
-	public Article convertEntity(ArticleDTO.ArticleSave dto) {
+	public Article convertEntity(ArticleDTO.ArticleSaveMuiltiPart dto) {
 		
 		Board board = boardQueryService.getBoard(dto.getFkBoard());		
 		Article article = boardQueryService.getArticle(Long.parseLong(dto.getPkArticle()));

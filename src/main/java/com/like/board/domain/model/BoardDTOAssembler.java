@@ -1,19 +1,20 @@
 package com.like.board.domain.model;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.domain.repository.BoardRepository;
 import com.like.board.dto.ArticleDTO;
 import com.like.board.dto.BoardDTO;
 import com.like.board.dto.BoardDTO.BoardSaveDTO;
+import com.like.file.domain.model.FileInfo;
+import com.like.file.dto.FileResponseDTO;
 
 
 public class BoardDTOAssembler {	
-	
-	@Resource(name="boardJpaRepository")
-	private BoardRepository boardRepository;
-		
+			
 	public static Board createEntity(BoardDTO.BoardSaveDTO dto, Board parentBoard) {
 		
 		return Board.builder()
@@ -67,7 +68,7 @@ public class BoardDTOAssembler {
 		return dto;
 	}
 	
-	public static Article createEntity(ArticleDTO.ArticleSave dto, Board board) {
+	public static Article createEntity(ArticleDTO.ArticleSaveMuiltiPart dto, Board board) {
 						
 		return Article.builder()	
 						.board(board)
@@ -80,7 +81,7 @@ public class BoardDTOAssembler {
 						.build();
 	}
 	
-	public static Article mergeEntity(Article entity, ArticleDTO.ArticleSave dto) {
+	public static Article mergeEntity(Article entity, ArticleDTO.ArticleSaveMuiltiPart dto) {
 					
 		entity.ppkArticle 		= nvl(dto.getPpkArticle(), entity.ppkArticle);
 		entity.title 			= nvl(dto.getTitle(), entity.title);
@@ -93,6 +94,32 @@ public class BoardDTOAssembler {
 		return entity;
 	}
 	
+	public static ArticleDTO.ArticleResponse converDTO(Article entity) {
+		
+		List<FileInfo> fileInfoList = entity.getAttachedFileInfoList();
+		List<FileResponseDTO> responseList = new ArrayList<>();
+		
+		for (FileInfo fileInfo : fileInfoList) {
+			FileResponseDTO dto = FileResponseDTO.builder()
+													.url(fileInfo.getPkFile())
+													.name(fileInfo.getFileName())
+													.status("done")																									
+													.url("http://localhost:8090/common/file/"+fileInfo.getPkFile())
+													.build();
+			
+			responseList.add(dto);				
+		}
+																																														
+		return ArticleDTO.ArticleResponse
+				.builder()
+				.pkArticle(entity.pkArticle)
+				.ppkArticle(entity.ppkArticle)
+				.fkBoard(entity.getBoard().getPkBoard())
+				.title(entity.title)
+				.contents(entity.contents)
+				.fileList(responseList)
+				.build();
+	}
 	
 	/**
 	 * 
