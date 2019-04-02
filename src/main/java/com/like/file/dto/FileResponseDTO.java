@@ -15,11 +15,12 @@ public class FileResponseDTO {
 	
 	String status;
 	
-	Map<String,String> response;
+	String response;
 	
 	String url;	
 	
-	String thumbUrl;
+	//String thumbUrl;
 	
-	Map<String, String> linkProps;
+	//Map<String, String> linkProps;
+	//String linkProps;
 }

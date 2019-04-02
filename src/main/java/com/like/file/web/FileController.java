@@ -83,9 +83,10 @@ public class FileController {
 														.uid(info.getPkFile())
 														.name(info.getFileName())
 														.status("done")
-														.response(res)
-														.linkProps(link)
+														.response("success")
+														//.linkProps("http://localhost:8090/common/file/"+info.getPkFile())
 														.url("http://localhost:8090/common/file/"+info.getPkFile())
+														//.thumbUrl("http://localhost:8090/common/file/"+info.getPkFile())
 														.build();
 			fileList.add(response);
 		}

@@ -112,6 +112,10 @@ public class BoardDTOAssembler {
 																																														
 		return ArticleDTO.ArticleResponse
 				.builder()
+				.createdDt(entity.getCreatedDt())
+				.createdBy(entity.getCreatedBy())
+				.modifiedDt(entity.getModifiedDt())
+				.modifiedBy(entity.getModifiedBy())
 				.pkArticle(entity.pkArticle)
 				.ppkArticle(entity.ppkArticle)
 				.fkBoard(entity.getBoard().getPkBoard())

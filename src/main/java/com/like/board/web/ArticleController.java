@@ -26,6 +26,7 @@ import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.service.AttachedFileConverter;
 import com.like.board.dto.ArticleDTO;
+import com.like.board.dto.ArticleDTO.ArticleResponse;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
@@ -52,8 +53,10 @@ public class ArticleController {
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
 		
 		Article article = boardQueryService.getArticle(id);		
-				
-		return WebControllerUtil.getResponse(article, 
+	
+		ArticleDTO.ArticleResponse response = BoardDTOAssembler.converDTO(article);
+		
+		return WebControllerUtil.getResponse(response, 
 				article == null ? 0 : 1, 
 				article == null ? false : true, 
 				String.format("%d 건 조회되었습니다.", 1), 
