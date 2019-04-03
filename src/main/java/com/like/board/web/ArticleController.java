@@ -49,7 +49,7 @@ public class ArticleController {
 	@Resource
 	private FileService fileService;	
 		
-	@GetMapping("/grw/boards/articles/{id}")
+	@GetMapping("/grw/board/article/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
 		
 		Article article = boardQueryService.getArticle(id);		
@@ -63,7 +63,7 @@ public class ArticleController {
 				HttpStatus.OK);
 	}
 		
-	@DeleteMapping("/grw/boards/articles/{id}")
+	@DeleteMapping("/grw/board/article/{id}")
 	public ResponseEntity<?> deleteArticle(@PathVariable(value="id") Long id) {				
 		
 		boardCommandService.deleteArticle(id);							
@@ -75,7 +75,7 @@ public class ArticleController {
 				HttpStatus.OK);
 	}
 		
-	@GetMapping("/grw/boards/articles")
+	@GetMapping("/grw/board/article")
 	public ResponseEntity<?> getArticleList(ArticleDTO.QueryCondition condition) {
 																	
 		List<Article> list = boardQueryService.getAritlceList(condition);  							
@@ -87,8 +87,8 @@ public class ArticleController {
 				HttpStatus.OK);
 	}
 				
-	
-	@RequestMapping(value={"/grw/boards/articles"}, method=RequestMethod.DELETE) 
+		
+	@DeleteMapping(value={"/grw/board/article"})
 	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {						
 		
 		boardCommandService.deleteArticle(articleList);									
@@ -100,7 +100,7 @@ public class ArticleController {
 				HttpStatus.OK);
 	}	
 	
-	@RequestMapping(value={"/grw/boards/articles"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@RequestMapping(value={"/grw/board/article"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
 	public ResponseEntity<?> saveArticleWithMultiPartFile(ArticleDTO.ArticleSaveMuiltiPart dto, BindingResult result) throws Exception {
 											
@@ -138,7 +138,7 @@ public class ArticleController {
 	}
 		
 	
-	@RequestMapping(value={"/grw/boards/articles/hitcnt"}, method=RequestMethod.GET) 
+	@RequestMapping(value={"/grw/board/article/hitcnt"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,
 			@RequestParam(value="userid", required=true) String userId) {								
 				

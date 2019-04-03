@@ -50,7 +50,7 @@ public class BoardController {
 	@Resource
 	private BoardQueryService boardQueryService;		
 		
-	@GetMapping("/grw/boards/boardType")
+	@GetMapping("/grw/board/boardType")
 	public ResponseEntity<?> getMenuTypeList() {				
 		
 		List<EnumDTO> list = new ArrayList<EnumDTO>();
@@ -79,7 +79,7 @@ public class BoardController {
 				HttpStatus.OK);
 	}
 
-	@GetMapping("/grw/boards")
+	@GetMapping("/grw/board")
 	public ResponseEntity<?> getBoardList(BoardDTO.QueryCondition condition) {						
 		
 		List<Board> list = boardQueryService.getBoardList(condition); 										
@@ -91,7 +91,7 @@ public class BoardController {
 				HttpStatus.OK);
 	}
 		
-	@GetMapping("/grw/boards/{id}")
+	@GetMapping("/grw/board/{id}")
 	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {				
 				
 		Board board = boardQueryService.getBoard(id);		
@@ -105,7 +105,7 @@ public class BoardController {
 				HttpStatus.OK);
 	}	
 		
-	@RequestMapping(value={"/grw/boards"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/grw/board"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.BoardSaveDTO boardDTO, BindingResult result) {
 							
 		/*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -129,7 +129,7 @@ public class BoardController {
 				HttpStatus.OK);
 	}	
 		
-	@DeleteMapping("/grw/boards/{id}")
+	@DeleteMapping("/grw/board/{id}")
 	public ResponseEntity<?> delBoard(@PathVariable(value="id") Long id) {					
 												
 		boardCommandService.deleteBoard(id);							
@@ -143,8 +143,12 @@ public class BoardController {
 	
 	
 	private Board convertEntity(BoardDTO.BoardSaveDTO dto) {
-		Board board = boardQueryService.getBoard(dto.getPkBoard());			
+		Board board = null;			
 		Board parentBoard = null; 
+		
+		if (dto.getPkBoard() != null) {
+			board = boardQueryService.getBoard(dto.getPkBoard());
+		}
 		
 		if (dto.getPpkBoard() != null) {
 			parentBoard = boardQueryService.getBoard(dto.getPpkBoard());
