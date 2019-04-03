@@ -100,7 +100,7 @@ public class ArticleController {
 				HttpStatus.OK);
 	}	
 	
-	@RequestMapping(value={"/grw/board/article"}, method={RequestMethod.POST,RequestMethod.PUT})
+	@RequestMapping(value={"/grw/board/articletemp"}, method={RequestMethod.POST,RequestMethod.PUT})
 	@ResponseBody
 	public ResponseEntity<?> saveArticleWithMultiPartFile(ArticleDTO.ArticleSaveMuiltiPart dto, BindingResult result) throws Exception {
 											
