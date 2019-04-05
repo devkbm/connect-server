@@ -191,6 +191,20 @@ public class User extends AuditEntity implements UserDetails {
 		this.image = imageFileInfo;
 	}
 	
+	public FileInfo getImage() {
+		return this.image;
+	}
+	
+	public String getImageUrl() {
+		String rtn = null;
+		FileInfo imageFileInfo = this.getImage();
+		if ( imageFileInfo != null ) {
+			rtn = imageFileInfo.getPkFile();
+		}
+		
+		return rtn;		
+	}
+	
 	public String getImageBase64() throws FileNotFoundException, IOException {		
 		String rtn = "";
 		

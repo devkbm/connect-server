@@ -16,12 +16,14 @@ import com.like.file.util.FileIdGenerator;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
 @JsonAutoDetect
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "comfileinfo")
 @EntityListeners(AuditingEntityListener.class)
@@ -67,27 +69,7 @@ public class FileInfo extends AuditEntity implements Serializable {
 		this.path = path;
 		this.fileName = fileName;
 		this.size = size;
-	}
-	
-	public String getPkFile() {
-		return this.pkFile;
-	}
-	
-	public long getSize() {
-		return this.size;
-	}
-	
-	public String getFileName() {
-		return this.fileName;
-	}
-	
-	public String getUuid() {
-		return uuid;
-	}
-
-	public String getPath() {
-		return path;
-	}
+	}	
 		
 	public void plusDownloadCount() {
 		this.downloadCnt = this.downloadCnt + 1;

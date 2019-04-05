@@ -69,7 +69,7 @@ public class UserController {
 	}
 		 
 	@PostMapping(value={"/common/user/login"})
-	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) {
+	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) throws FileNotFoundException, IOException {
 		
 		if ( result.hasErrors() ) {
 			log.info(result.toString());
@@ -83,10 +83,10 @@ public class UserController {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));					
 		
         authentication(username, password, authorities, session);
-        
+         
 		User user = userService.getUser(username); 			
-		
-		return new AuthenticationToken(user.getUsername(),user.getName(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
+					
+		return new AuthenticationToken(user.getUsername(),user.getName(), user.getImageUrl(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
 	}		
 		
 	@GetMapping(value={"/common/user/{id}"})

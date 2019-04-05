@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,8 +24,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 import com.like.board.service.BoardCommandService;
-import com.like.common.web.response.ResponseObjectList;
-import com.like.common.web.util.WebControllerUtil;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
 import com.like.file.service.FileService;
@@ -52,13 +48,28 @@ public class FileController {
 		fileService.downloadFile(fileInfo, response.getOutputStream());		
 		
 		return response;
-	}	
+	}
+	
+	@RequestMapping(value={"/common/fileimage/{id}"}, method=RequestMethod.GET) 
+	public HttpServletResponse fileImageDownLoad(HttpServletResponse response,
+			@PathVariable(value="id") String id) throws Exception {
+								
+		FileInfo fileInfo = fileService.getFileInfo(id);
+					
+		// set content attributes for the response
+		response.setContentType(fileInfo.getContentType());
+		response.setContentLengthLong(fileInfo.getSize());
+		response.setCharacterEncoding("UTF-8");
+									
+		fileService.downloadFile(fileInfo, response.getOutputStream());		
+		
+		return response;
+	}
 	
 	@RequestMapping(value={"/common/file"}, method=RequestMethod.POST) 
 	public ResponseEntity<?> fileUpload(final MultipartHttpServletRequest request,
 			@RequestParam(value="pgmId", required=false) String pgmId ) throws Exception {
-				
-		ResponseEntity<?> result = null;		
+						
 		List<FileInfo> list = new ArrayList<FileInfo>();
 		final Map<String, MultipartFile> files = request.getFileMap();
 		Iterator<Entry<String,MultipartFile>> itr = files.entrySet().iterator();		
@@ -121,7 +132,6 @@ public class FileController {
 		
 		// set headers for the response
 		String headerKey = "Content-Disposition";
-		//String headerValue = String.format("attachment;filename=\"%s\"", new String(name.getBytes("EUC-KR"), "8859_1"));
 		String headerValue = String.format("attachment;filename=\"%s\"", new String(fileName.getBytes("EUC-KR"), "8859_1"));
 		
 		response.setHeader(headerKey, headerValue);
